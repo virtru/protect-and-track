@@ -4,10 +4,23 @@
   height: 300px;
   width: 500px;
   margin-right: 20px;
-  text-indent: 200px;
+  text-align: center;
   border: 4px dashed #707070;
   background-repeat: no-repeat;
   border-radius: 25px;
   background-color: white;
+  margin: 20% auto;
 }
 
+.Drop-box {
+  margin-top: 20%;
+}
+
+.Drop-icon {
+  fill: #979797;
+}
+
+.Drop-text {
+  color: black;
+  font-size: x-large;
+}
