@@ -24,3 +24,11 @@
   color: black;
   font-size: x-large;
 }
+
+.Drop-hover {
+  background-color: darkgray;
+}
+
+#dropzone * {
+  pointer-events: none;
+}

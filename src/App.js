@@ -29,7 +29,13 @@ function App() {
               <AuthSelect userId={params.get("id")} />
             );
            }} />
-     <Route path="/drop" component={ Drop } />
+     <Route path="/drop" 
+          component={ ({ location }) => {
+            const params = new URLSearchParams(location.search);
+            return (
+              <Drop userId={params.get("id")} />
+            );
+           }} />
      {/* TODO(dmihalcik): <Route 404 /> */}
     </Router>
   );
