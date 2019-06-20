@@ -2,9 +2,9 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
-import AuthSelect from './AuthSelect.js'
-import Drop from './Drop.js'
-import UserSelect from './UserSelect.js'
+import AuthSelect from '../AuthSelect/AuthSelect'
+import Drop from '../Drop/Drop'
+import UserSelect from '../UserSelect/UserSelect'
 
 /**
  * An SDK Share App.

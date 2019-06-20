@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormBox, FormBoxInstruction, FormBoxAlternative, FormBoxButton } from './FormBox.js';
+import { FormBox, FormBoxInstruction, FormBoxAlternative, FormBoxButton } from '../../components/FormBox/FormBox';
 import './AuthSelect.css';
 
 
