@@ -1,0 +1,67 @@
+.FormBox {
+  margin: 40px auto;
+  width: 310px;
+  padding: 30px 25px;
+  background: white;
+  border: 1px solid #c4c4c4;
+}
+
+.FormBox-title {
+  margin: -28px -25px 25px;
+  padding: 15px 25px;
+}
+
+.FormBox-instruction {
+  font-family: 'Raleway';
+  margin: -28px -25px 25px;
+  padding: 5px 25px;
+  line-height: 30px;
+  font-size: 15px;
+  color: #7E7D7C;
+  text-align:center;
+}
+
+.FormBox-input {
+  width: 295px;
+  height: 50px;
+  margin-bottom: 35px;
+  padding-left:10px;
+}
+
+
+.FormBox-button {
+  font-family: 'Raleway';
+  color: #fff !important;
+  background: #4585ff;
+  padding: 10px 40px;
+  border-radius: 25px;
+  display: inline-block;
+  border: none;
+  font-size: 15px;
+  left: 50%;
+  margin-right: -50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.FormBox-button:hover {
+  background: #003eb3;
+  cursor: pointer;
+}
+
+
+.FormBox-alternative {
+  width:100%; 
+  text-align:center;
+  background-color: #7E7D7C;
+  border-bottom: 1px; 
+  line-height:0.1em; 
+  margin:10px 0 40px; 
+}
+
+.FormBox-alternative-insider {
+   font-size: 15px;
+   color: #7E7D7C;
+   background:#fff; 
+   padding:0 10px; 
+}

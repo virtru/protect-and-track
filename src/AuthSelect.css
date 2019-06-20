@@ -1,0 +1,41 @@
+.login-button-google {
+  width: 570px;
+  height: 100px;
+  margin-top: -30px;
+  margin-left: -125px;
+  color: #fff;
+  transform: scale(0.5);
+  background-image: url("googlelogin.png");
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer; 
+  outline:0;
+}
+
+.login-button-office365 {
+  width: 560px;
+  height: 90px;
+  margin-top: -30px;
+  margin-left: -125px;
+  color: #fff;
+  transform: scale(0.5);
+  background-image: url("office365login.png");
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer; 
+  outline:0;
+}
+
+.login-button-outlook {
+  width: 560px;
+  height: 100px;
+  margin-top: -30px;
+  margin-left: -125px;
+  color: #fff;
+  transform: scale(0.5);
+  background-image: url("outlooklogin.png");
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer; 
+  outline:0;
+}

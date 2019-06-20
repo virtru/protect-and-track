@@ -1,0 +1,14 @@
+.UserSelect {
+  margin: 40px auto;
+  width: 310px;
+  padding: 30px 25px;
+  background: white;
+  border: 1px solid #c4c4c4;
+}
+
+.UserSelect-input {
+  width: 295px;
+  height: 50px;
+  margin-bottom: 35px;
+  padding-left:10px;
+}
