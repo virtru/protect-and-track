@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './index.css';
-import App from './scenes/App/App';
-import * as serviceWorker from './serviceWorker';
-import Store from './store';
+import 'index.css';
+import App from 'scenes/App/App';
+import * as serviceWorker from 'serviceWorker';
+import Store from 'store';
 
 ReactDOM.render(<Store.Container><App /></Store.Container>, document.getElementById('root'));
 
