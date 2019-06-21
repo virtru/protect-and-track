@@ -5,7 +5,7 @@
   margin-left: -125px;
   color: #fff;
   transform: scale(0.5);
-  background-image: url("googlelogin.png");
+  background-image: url("./assets/googlelogin.png");
   border: 0;
   border-radius: 5px;
   cursor: pointer; 
@@ -19,7 +19,7 @@
   margin-left: -125px;
   color: #fff;
   transform: scale(0.5);
-  background-image: url("office365login.png");
+  background-image: url("./assets/office365login.png");
   border: 0;
   border-radius: 5px;
   cursor: pointer; 
@@ -33,7 +33,7 @@
   margin-left: -125px;
   color: #fff;
   transform: scale(0.5);
-  background-image: url("outlooklogin.png");
+  background-image: url("./assets/outlooklogin.png");
   border: 0;
   border-radius: 5px;
   cursor: pointer; 
