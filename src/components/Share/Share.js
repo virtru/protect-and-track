@@ -9,17 +9,19 @@ function Share() {
   const [data, setData] = useState({ status: 'loading', files: [] });
 
   useEffect(() => {
-    shareable(() => {
-      const list = () => {
-        gapi.client.drive.files.list({
+    async function startShare() {
+      await shareable();
+
+      // Run this periodically
+      const list = async () => {
+        const response = await gapi.client.drive.files.list({
             'pageSize': 10,
             'fields': "nextPageToken, files(id, name)"
-        }).then((response) => {
-          setData({files: response.result.files});
         });
+        setData({files: response.result.files});
       };
-    
-      const resetAuthButtons = () => {
+      
+      const resetAuthButtons = async () => {
         const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
         if (signedIn) {
           list();
@@ -28,11 +30,12 @@ function Share() {
           status: signedIn ? 'authorized' : 'unauthorized'
         });
       };
-          resetAuthButtons();
+      resetAuthButtons();
       gapi.auth2.getAuthInstance().isSignedIn.listen(resetAuthButtons);
-    });
+    };
+    startShare();
   }, []);
-  
+
   const authorize = () => {
     gapi.auth2.getAuthInstance().signIn();
   };

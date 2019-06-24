@@ -1,6 +1,7 @@
 /* global gapi */
 
 import { loadGapi } from 'services/core/remoteLoad';
+import awaitify from 'services/core/awaitify';
 
 // API connectors.
 // TODO(dmihalcik): Lock these down
@@ -19,23 +20,20 @@ const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
  *  Initializes the API client library and sets up sign-in state
  *  listeners.
  */
-function initClient(callback) {
-  gapi.client.init({
+async function initClient() {
+  await gapi.client.init({
     apiKey: API_KEY,
     clientId: CLIENT_ID,
     discoveryDocs: DISCOVERY_DOCS,
     scope: SCOPES
-  }).then(() => {
-    callback(gapi);
   });
 }
 
-function init(callback) {
-  loadGapi().then(() => {
-    gapi.load('client:auth2', () => {
-      initClient(callback);
-    });
-  });
+async function init() {
+  await loadGapi();
+  const load = awaitify(gapi.load);
+  await load('client:auth2');
+  await initClient();
 }
 
 export { init };
