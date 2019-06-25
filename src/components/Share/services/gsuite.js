@@ -13,7 +13,12 @@ const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/r
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+const SCOPES =
+    // List files; used for demo 
+    // TODO(dmihalcik) remove
+    'https://www.googleapis.com/auth/drive.metadata.readonly'
+    // Update access to files created by the app.
+    + ' https://www.googleapis.com/auth/drive.file';
 
 
 /**
