@@ -1,41 +1,48 @@
-.login-button-google {
-  width: 570px;
-  height: 100px;
-  margin-top: -30px;
-  margin-left: -125px;
-  color: #fff;
-  transform: scale(0.5);
-  background-image: url("./assets/googlelogin.png");
-  border: 0;
-  border-radius: 5px;
-  cursor: pointer; 
-  outline:0;
+.AuthSelect-button {
+  font-family: 'Raleway';
+  background: white;
+  padding: 0 16px;
+  border: 1px solid darkgray;
+  border-radius: 25px;
+  font-size: 15px;
+  display: flex;
+  min-width: 284px;
+  min-height: 50px;
+  align-items: center;
+  margin: 24px auto;
 }
 
-.login-button-office365 {
-  width: 560px;
-  height: 90px;
-  margin-top: -30px;
-  margin-left: -125px;
-  color: #fff;
-  transform: scale(0.5);
-  background-image: url("./assets/office365login.png");
-  border: 0;
-  border-radius: 5px;
-  cursor: pointer; 
-  outline:0;
+.AuthSelect-button:hover {
+  background: #EEE;
+  cursor: pointer;
+}
+.AuthSelect-button:focus {
+  background: #FFE;
 }
 
-.login-button-outlook {
-  width: 560px;
-  height: 100px;
-  margin-top: -30px;
-  margin-left: -125px;
-  color: #fff;
-  transform: scale(0.5);
-  background-image: url("./assets/outlooklogin.png");
-  border: 0;
-  border-radius: 5px;
-  cursor: pointer; 
-  outline:0;
+.AuthSelect-sep {
+  border-left: 1px solid darkgray;
+  flex: 0;
+  align-self: stretch;
+  margin: -8px 8px;
+}
+
+.AuthSelect-ico {
+  width: 32px;
+  height: 32px;
+}
+
+.AuthSelect-title {
+  text-align: center;
+  flex: 1 1 auto;
+}
+
+.AuthSelect-blue {
+  color: blue;
+  font-weight: bolder;
+}
+
+.AuthSelect-red {
+  color: red;
+  font-weight: bold;
 }

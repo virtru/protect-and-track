@@ -3,14 +3,28 @@ import { FormBox, FormBoxInstruction, FormBoxAlternative, FormBoxButton } from '
 import './AuthSelect.css';
 
 
+function AuthButton(props) {
+  return <button class="AuthSelect-button">
+    <img alt='gmail-logo' src={`/${ props.type }.svg`} className='AuthSelect-ico' />
+    <div className="AuthSelect-sep"></div>
+    <span className='AuthSelect-title'>{ props.children }</span>
+  </button>;
+}
+
 function AuthSelect(props) {
   return (
     <FormBox
         title="Virtru Drag &amp; Drop Demo Login"
         instruction="Select your Login Provider">
-      <input type="button" id="googlebutton" className="login-button-google" />
-      <input type="button" id="office365button" className="login-button-office365" />
-      <input type="button" id="outlookbutton" className="login-button-outlook" />
+      <AuthButton type="gmail">
+        Sign in with <span className='AuthSelect-red'>Google</span>
+      </AuthButton>
+      <AuthButton type="o365">
+        Sign in with <span className='AuthSelect-blue'>Office 365</span>
+      </AuthButton>
+      <AuthButton type="outlook">
+        Sign in with <span className='AuthSelect-blue'>Outlook</span>
+      </AuthButton>
 
       <FormBoxAlternative>OR</FormBoxAlternative>
 
