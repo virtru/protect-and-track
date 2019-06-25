@@ -44,11 +44,8 @@ function Share() {
     gapi.auth2.getAuthInstance().signOut();
   };
 
-  return (
-    <FormBox title="Sharing Provider Tool"
-             onSubmit={ e => { e.preventDefault(); } }>
-      {
-        data.status === 'loading'
+  function renderButton() {
+    return data.status === 'loading'
           ? <FormBoxAlternative>loading...</FormBoxAlternative>
         : data.status === 'unauthorized'
           ? <button id="authorize"
@@ -56,8 +53,12 @@ function Share() {
                     onClick={authorize}>Authorize</button>
           : <button id="signout_button"
                     className="Share-signout-google"
-                    onClick={signOut}>Sign Out</button>
-      }
+                    onClick={signOut}>Sign Out</button>;
+  }
+
+  return (
+    <FormBox title="Sharing Provider Tool" onSubmit={ e => { e.preventDefault(); } }>
+      { renderButton() }
       {data.files && data.files.length &&
         <pre>
           {
