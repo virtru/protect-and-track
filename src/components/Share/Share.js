@@ -5,10 +5,6 @@ import { init as shareable, upload as uploadToDrive } from './services/gsuite';
 
 /* global gapi */
 
-// function sleep(ms) {
-//   return new Promise(resolve => setTimeout(resolve, ms));
-// }
-
 function Share() {
   const [shareState, setShareState] = useState('unshared');
   const [data, setData] = useState({ status: 'loading', files: [] });
@@ -19,7 +15,7 @@ function Share() {
         'pageSize': 10,
         'fields': "nextPageToken, files(id, name)"
     });
-    setData({files: response.result.files});
+    setData({status: 'authorized', files: response.result.files});
   };
 
   useEffect(() => {
@@ -41,8 +37,10 @@ function Share() {
     startShare();
   }, []);
 
-  const authorize = () => {
-    gapi.auth2.getAuthInstance().signIn();
+  const authorize = async () => {
+    setData({ status: 'loading' });
+    await gapi.auth2.getAuthInstance().signIn();
+    setData({ status: 'authorized' });
   };
 
   const signOut = () => {
@@ -52,8 +50,6 @@ function Share() {
   const upload = async () => {
     setShareState('sharing');
     const response = await uploadToDrive('helloworld.txt', 'text/plain', 'Hello World!');
-    // if we need to debug the spinner add this
-    // await sleep(4000);
     setShareState('shared');
     console.log(response);
     list();
@@ -71,7 +67,6 @@ function Share() {
   const ShareDone = props =>
       <div className="Share-done">{ props.children }</div>;
   const ShareStatus = () => {
-    console.log('ShareStatus: ' + JSON.stringify(shareState));
     switch (shareState) {
       case 'unshared': return <ShareButton />;
       case 'sharing': return <ShareUploading />;
@@ -81,37 +76,50 @@ function Share() {
     }
   }
 
-  function renderButton() {
-    return data.status === 'loading'
-          ? <FormBoxAlternative>loading...</FormBoxAlternative>
-        : data.status === 'unauthorized'
-          ? <button id="authorize"
-                    className="Share-authorize-google"
-                    onClick={authorize}>Authorize</button>
-          : 
-            <>
-              <ShareStatus share={data.share} />
-              <FormBoxAlternative>Or</FormBoxAlternative>
-              <button id="signout_button"
-                      className="Share-signout-google"
-                      onClick={signOut}>Sign Out</button>
-            </>;
+  const AuthButton = () =>
+      <button id="authorize"
+              className="Share-authorize-google"
+              onClick={authorize}>
+        Authorize
+      </button>;
+  const AuthLoading = () =>
+      <FormBoxAlternative>
+        Awaiting authorization...
+      </FormBoxAlternative>;
+  const ShareOrSignOut = () =>
+      <>
+        <ShareStatus share={data.share} />
+        <FormBoxAlternative>Or</FormBoxAlternative>
+        <button id="signout_button"
+                className="Share-signout-google"
+                onClick={signOut}>Sign Out</button>
+      </>;
+
+  const AuthAndShareButton = () => {
+    switch (data.status) {
+      case 'unauthorized': return <AuthButton />;
+      case 'authorized': return <ShareOrSignOut />;
+      default: return <AuthLoading />;
+    }
   }
+
+  const LastTenFiles = () => 
+      (data.files && data.files.length &&
+          <pre>
+            {
+              data.files.map((file) =>
+                <>
+                  {file.name + '\n'}
+                </>
+              )
+            }
+          </pre>)
+          || null;
 
   return (
     <FormBox title="Sharing Provider Tool" onSubmit={ e => { e.preventDefault(); } }>
-      { renderButton() }
-      {data.files && data.files.length &&
-        <pre>
-          {
-            data.files.map((file) =>
-              <>
-                {file.name + '\n'}
-              </>
-            )
-          }
-        </pre>
-      }
+      <AuthAndShareButton />
+      <LastTenFiles />
     </FormBox>
   );
 }
