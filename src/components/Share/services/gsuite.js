@@ -41,5 +41,44 @@ async function init() {
   await initClient();
 }
 
-export { init };
+
+async function upload(name, contentType, content) {
+  // NOTE(DSAT-1): Unfortunately, AFAICT the current `drive.files.create` method in GAPI
+  // does not support POST content. See relevant discussions:
+  //   * https://stackoverflow.com/questions/51775917
+  //   * https://stackoverflow.com/questions/34905363
+  //
+  // Instead, create a gapi `request` explicitly for the following POST:
+  //   * https://developers.google.com/drive/api/v3/reference/files/create
+  const boundary = '-------34905363';
+  const delimiter = "\r\n--" + boundary + "\r\n";
+  const close_delim = "\r\n--" + boundary + "--";
+  const metadata = {
+    'name': name,
+    'mimeType': contentType,
+  };
+  const multipartRequestBody =
+      delimiter
+          + 'Content-Type: application/json\r\n\r\n'
+          + JSON.stringify(metadata)
+          + delimiter
+          + 'Content-Type: ' + contentType
+          + '\r\n\r\n'
+          + content
+          + close_delim;
+
+  const request = {
+    'path': '/upload/drive/v3/files',
+    'method': 'POST',
+    'params': {'uploadType': 'multipart'},
+    'headers': {
+      'Content-Type': 'multipart/related; boundary="' + boundary + '"'
+    },
+    'body': multipartRequestBody,
+  };
+
+  return await gapi.client.request(request);
+};
+
+export { init, upload };
 
