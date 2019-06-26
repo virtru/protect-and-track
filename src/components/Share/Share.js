@@ -59,24 +59,18 @@ function Share() {
     list();
   };
 
-  function ShareButton() {
-    return <>
-      <FormBoxInstruction>Write a simple file to drive</FormBoxInstruction>
-      <button id="upload_button"
-              className="Share-upload-google"
-              onClick={upload}>upload</button>
-    </>;
-  }
-
-  function ShareUploading() {
-    return <div className="Share-file-uploading"></div>;
-  }
-
-  function ShareDone(props) {
-    return <div className="Share-done">{ props.children }</div>;
-  }
-
-  function ShareStatus() {
+  const ShareButton = () =>
+      <>
+        <FormBoxInstruction>Write a simple file to drive</FormBoxInstruction>
+        <button id="upload_button"
+                className="Share-upload-google"
+                onClick={upload}>upload</button>
+      </>;
+  const ShareUploading = () =>
+      <div className="Share-file-uploading" />;
+  const ShareDone = props =>
+      <div className="Share-done">{ props.children }</div>;
+  const ShareStatus = () => {
     console.log('ShareStatus: ' + JSON.stringify(shareState));
     switch (shareState) {
       case 'unshared': return <ShareButton />;
