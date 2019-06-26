@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import './Drop.css';
-import Share from 'components/Share/Share';
+import Share from 'scenes/Share/Share';
 // import { encryptOrDecryptFile } from './tdf3.js'
 
 /**
