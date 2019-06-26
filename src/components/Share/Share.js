@@ -24,7 +24,9 @@ function Share() {
       
       const resetAuthButtons = async () => {
         const signedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-        setData({ status: (signedIn ? '' : 'un') + 'authorized' });
+        setData({
+            status: signedIn ? 'authorized' : 'unauthorized'	
+        });
         setShareState('unshared');
 
         if (signedIn) {
