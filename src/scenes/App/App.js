@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import './App.css';
 import AuthSelect from 'scenes/AuthSelect/AuthSelect'
 import Drop from 'scenes/Drop/Drop'
 import UserSelect from 'scenes/UserSelect/UserSelect'
+import { getAppIdBundle } from 'api/accounts';
 
 /**
  * An SDK Share App.
@@ -18,6 +19,11 @@ import UserSelect from 'scenes/UserSelect/UserSelect'
  *  - share panel?
  */
 function App() {
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    getAppIdBundle();
+  });
+
   return (
     <Router>
 

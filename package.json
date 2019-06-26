@@ -11,7 +11,7 @@
     "virtru-tdf3-js": "git@github.com:virtru/virtru-tdf3-js.git#v0.3.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "HTTPS=true PORT=443 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
