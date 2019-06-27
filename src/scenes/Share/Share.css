@@ -9,7 +9,7 @@
   min-width: 206px;
   min-height: 48px;
   align-items: center;
-  margin: 24px auto;
+  margin: 8px auto;
   color: #515864;
 }
 
@@ -33,6 +33,55 @@
   height: 32px;
 }
 
-.ShareSelect-title {
-  margin: 10px; 
+.ShareSelect-button-text {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  margin: 12px;
+}
+
+.Share-trackit {
+  background: #174EB6;
+  color: #FFFFFF;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  align-self: center;
+  padding: 12px 24px;
+}
+
+.Share-title {
+  color: #2D323B;
+  font-family: "Raleway";
+  margin: 0;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.Share-box {
+    background: white;
+    border: 1px solid #c4c4c4;
+    border-radius: 8px;
+    margin: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+  
+    width: 296px;
+}
+
+.Share-box {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+}
+
+.Share-recipient {
+  list-style-position:inside;
+  white-space: nowrap;;
+  margin-left: -32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+}
+
+.Share-center {
+  align-self: center;
 }

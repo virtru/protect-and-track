@@ -1,5 +1,4 @@
 import React from 'react';
-import { FormBox } from 'components/FormBox/FormBox';
 import Loading from './components/Loading/Loading';
 import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
 import './Share.css';
@@ -8,6 +7,14 @@ import Store from 'store.js';
 
 function Ico({ type }) {
   return <img alt="" src={`/${ type }.svg`} className='ShareSelect-ico' />
+}
+
+function Title({ children }) {
+  return <h3 className="Share-title">{ children }</h3>;
+}
+
+function ShareBox({ children }) {
+  return <div className="Share-box">{ children }</div>;
 }
 
 function ShareButton({ children, onClick, type }) {
@@ -20,13 +27,13 @@ function ShareButton({ children, onClick, type }) {
   return (
     <button className="ShareSelect-button" onClick={handleClick} disabled={!action}>
       <Ico type={type} />
-      <span className='ShareSelect-title'>{ children }</span>
+      <div className='ShareSelect-button-text'>{ children }</div>
     </button>
   );
 }
 
 function ShareSelect() {
-  let store = Store.useStore();
+  const store = Store.useStore();
   const shareToDrive = async () => {
     const state = s => store.set('share')({state: s, host: 'googledrive'});
     const api = await initGapi();
@@ -37,56 +44,71 @@ function ShareSelect() {
     state('sharing');
     const uploadResponse = await uploadToDrive('helloworld.txt', 'text/plain', 'Hello World!');
     console.log(uploadResponse);
-    // store.set('share')('cleaning');
+    // TODO(DSAT-14) Store permissions and don't sign out.
     const signOutResponse = api.auth2.getAuthInstance().signOut();
     console.log(signOutResponse);
     state('shared');
   };
   return (
-    <FormBox instruction="Share protected file">
+    <ShareBox>
+      <Title>Share protected file</Title>
       <ShareButton type="googledrive" onClick={shareToDrive}>Google Drive</ShareButton>
       <ShareButton type="onedrive">OneDrive</ShareButton>
       <ShareButton type="dropbox">Dropbox</ShareButton>
       <ShareButton type="box">Box</ShareButton>
-    </FormBox>
+    </ShareBox>
   );
 }
 
 function RecipientList() {
   return (
     <ol>
-      <li>burt.with.the.long.name@domain.example.invalid</li>
-      <li>sally@elsewhere.com</li>
+      <li className="Share-recipient">burt.with.the.long.name@domain.example.invalid</li>
+      <li className="Share-recipient">sally@elsewhere.com</li>
     </ol>
   );
 }
 
 function Sharing() {
   return (
-    <FormBox instruction="Sharing...">
-      <Loading />
+    <ShareBox>
+      <Title>Sharing...</Title>
+      <div className="Share-center">
+        <Loading/>
+      </div>
       <p>We're sharing your file with the following people:</p>
       <RecipientList />
-    </FormBox>
+    </ShareBox>
   );
 }
 
 function TrackItButton() {
-  return <button>Track it!</button>;
+  const handleClick = e => {
+    e.preventDefault();
+  };
+  return (
+    <button onClick={handleClick} className="Share-trackit">
+      Track it!
+    </button>
+  );
 }
 
 function ShareComplete() {
   const { host } = Store.useStore().get('share');
   return (
-    <FormBox instruction="Share protected file">
-      {host && <Ico type={host} />}
+    <ShareBox>
+      <Title>Track your shared file</Title>
+      {host && <div className="Share-center">
+          <Ico type={host} />
+        </div>
+      }
       <p>
         Ask these people to open your file,
         and you should see a <b>Track Event</b>:
       </p>
       <RecipientList />
       <TrackItButton />
-    </FormBox>
+    </ShareBox>
   );
 }
 
@@ -100,6 +122,7 @@ function Share() {
     case 'shared': return <ShareComplete />;
     default: return <p>{share}</p>;
   }
+  // return <ShareComplete />;
 }
 
 export default Share;
