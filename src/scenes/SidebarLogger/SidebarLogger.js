@@ -7,11 +7,11 @@ import Sidebar from './components/Sidebar/Sidebar';
 const { useState } = React;
 
 export default () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return(
     isOpen
-    ? <Sidebar />
-    : <ShowSidebar collapse={() => (setIsOpen(true))} />
+    ? <Sidebar collapse={() => (setIsOpen(false))} />
+    : <ShowSidebar show={() => (setIsOpen(true))} />
   );
 }
