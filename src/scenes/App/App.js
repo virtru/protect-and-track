@@ -46,7 +46,7 @@ function App() {
   return (
     <>
     <Header/>
-    <main class="main">
+    <main className="main">
       <Router>
         <Route path="/" 
               component={ ({ location }) => {
