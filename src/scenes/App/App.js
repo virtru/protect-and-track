@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import './App.css';
 import AuthSelect from 'scenes/AuthSelect/AuthSelect'
 import Drop from 'scenes/Drop/Drop'
+import ShareSelect from 'scenes/Share/Share'
 import UserSelect from 'scenes/UserSelect/UserSelect'
 
 /**
@@ -36,6 +37,7 @@ function App() {
               <Drop userId={params.get("id")} />
             );
            }} />
+     <Route path="/share" exact component={ ShareSelect } />
      {/* TODO(dmihalcik): <Route 404 /> */}
     </Router>
   );
