@@ -4,7 +4,7 @@ import './AuthSelect.css';
 
 
 function AuthButton(props) {
-  return <button class="AuthSelect-button">
+  return <button className="AuthSelect-button">
     <img alt='gmail-logo' src={`/${ props.type }.svg`} className='AuthSelect-ico' />
     <div className="AuthSelect-sep"></div>
     <span className='AuthSelect-title'>{ props.children }</span>
@@ -28,8 +28,24 @@ function AuthSelect(props) {
 
       <FormBoxAlternative>OR</FormBoxAlternative>
 
-      <FormBoxInstruction>Let Virtru send you a code</FormBoxInstruction>
-      <FormBoxButton id="sendcodebutton">Send Code to {props.userId}</FormBoxButton>
+      <FormBoxInstruction>Sign up with your email address:</FormBoxInstruction>
+
+      <input
+        type="email"
+        className="AuthSelect-email"
+        id="email"
+        placeholder="some-user@domain.com"
+        autoFocus
+      />
+      {/* <FormBoxButton
+        id="sendcodebutton"
+        style={{display: 'none'}}
+        onClick={ e => {
+          e.preventDefault();
+          }
+        }>
+        Send Code
+      </FormBoxButton> */}
     </FormBox>
   );
 }
