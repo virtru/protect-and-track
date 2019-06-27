@@ -6,6 +6,8 @@ import AuthSelect from 'scenes/AuthSelect/AuthSelect'
 import Drop from 'scenes/Drop/Drop'
 import UserSelect from 'scenes/UserSelect/UserSelect'
 import { getAppIdBundle } from 'api/accounts';
+import { Decrypting } from 'react-components';
+import Store from '../../store';
 
 /**
  * An SDK Share App.
@@ -19,23 +21,34 @@ import { getAppIdBundle } from 'api/accounts';
  *  - share panel?
  */
 function App() {
+  const store = Store.useStore();
+  const isLoading = store.get('isLoading');
+  const setIsLoading = store.set('isLoading');
+  const appIdBundle = store.get('appIdBundle');
+
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
-    getAppIdBundle();
+    async function login() {
+      const appIdBundle = await getAppIdBundle();
+      store.set('appIdBundle')(appIdBundle);
+    }
+    if (!appIdBundle) {
+      login();
+    }
   });
+
+  if (isLoading) {
+    const step = appIdBundle ? 'done' : 'loading';
+    return (
+      <div className="spinner-container">
+        <Decrypting step={step} onComplete={setIsLoading}/>
+      </div>
+    );
+  }
 
   return (
     <Router>
-
-     <Route path="/" exact component={ UserSelect } />
-     <Route path="/auth"
-          component={ ({ location }) => {
-            const params = new URLSearchParams(location.search);
-            return (
-              <AuthSelect userId={params.get("id")} />
-            );
-           }} />
-     <Route path="/drop" 
+     <Route path="/" 
           component={ ({ location }) => {
             const params = new URLSearchParams(location.search);
             return (
