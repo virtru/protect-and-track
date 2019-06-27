@@ -3,13 +3,13 @@
   font-size: 14px;
   height: 300px;
   width: 500px;
-  margin-right: 20px;
   text-align: center;
   border: 4px dashed #707070;
   background-repeat: no-repeat;
   border-radius: 25px;
   background-color: white;
-  margin: 20% auto;
+  align-self: center;
+  margin: 0 auto;
 }
 
 .Drop-box {
