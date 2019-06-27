@@ -10,10 +10,10 @@ body {
   font-family: "Raleway", sans-serif;
 }
 
-#root {
+main {
   display: flex;
   align-items: center;
-  height: 100%;
+  height: calc(100vh - 55px);
 }
 
 code {

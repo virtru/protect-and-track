@@ -1,0 +1,34 @@
+
+@import '../../styles/colors.css';
+
+.headerContainer {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  height: 55px;
+  padding: 0 36px 0 24px;
+  background: var(--blueDarkest);
+}
+
+.headerLogo {
+  fill: var(--white);
+}
+
+.headerText {
+  flex-grow: 1;
+}
+
+.headerTitle {
+  color: var(--white);
+  font-family: var(--fontSecondary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+
+.delimiter {
+  height: 28px;
+  margin: 0 11px;
+  width: 1px;
+  background: var(--white);
+}

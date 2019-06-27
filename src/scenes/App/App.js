@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import './App.css';
+import Header from 'components/Header/Header'
 import AuthSelect from 'scenes/AuthSelect/AuthSelect'
 import Drop from 'scenes/Drop/Drop'
 import UserSelect from 'scenes/UserSelect/UserSelect'
@@ -43,16 +44,21 @@ function App() {
   }
 
   return (
-    <Router>
-     <Route path="/" 
-          component={ ({ location }) => {
-            const params = new URLSearchParams(location.search);
-            return (
-              <Drop userId={params.get("id") || appIdBundle[0].userId} />
-            );
-           }} />
-     {/* TODO(dmihalcik): <Route 404 /> */}
-    </Router>
+    <>
+    <Header/>
+    <main class="main">
+      <Router>
+        <Route path="/" 
+              component={ ({ location }) => {
+                const params = new URLSearchParams(location.search);
+                return (
+                  <Drop userId={params.get("id") || appIdBundle[0].userId} />
+                );
+              }} />
+      {/* TODO(dmihalcik): <Route 404 /> */}
+      </Router>
+    </main>
+    </>
   );
 }
 
