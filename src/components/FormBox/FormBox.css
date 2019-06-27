@@ -4,6 +4,7 @@
   padding: 30px 25px;
   background: white;
   border: 1px solid #c4c4c4;
+  text-align: center;
 }
 
 .FormBox-title {
@@ -51,17 +52,17 @@
 
 
 .FormBox-alternative {
-  width:100%; 
+  width:100%;
   text-align:center;
   background-color: #7E7D7C;
-  border-bottom: 1px; 
-  line-height:0.1em; 
-  margin:10px 0 40px; 
+  border-bottom: 1px;
+  line-height:0.1em;
+  margin:10px 0 40px;
 }
 
 .FormBox-alternative-insider {
    font-size: 15px;
    color: #7E7D7C;
-   background:#fff; 
-   padding:0 10px; 
+   background:#fff;
+   padding:0 10px;
 }
