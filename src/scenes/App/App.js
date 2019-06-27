@@ -6,7 +6,6 @@ import AuthSelect from 'scenes/AuthSelect/AuthSelect'
 import Drop from 'scenes/Drop/Drop'
 import UserSelect from 'scenes/UserSelect/UserSelect'
 import { getAppIdBundle } from 'api/accounts';
-import { Decrypting } from 'react-components';
 import Store from '../../store';
 
 /**
@@ -22,8 +21,6 @@ import Store from '../../store';
  */
 function App() {
   const store = Store.useStore();
-  const isLoading = store.get('isLoading');
-  const setIsLoading = store.set('isLoading');
   const appIdBundle = store.get('appIdBundle');
 
   // Similar to componentDidMount and componentDidUpdate:
@@ -37,12 +34,11 @@ function App() {
     }
   });
 
-  if (isLoading) {
-    const step = appIdBundle ? 'done' : 'loading';
+  if (!appIdBundle) {
     return (
-      <div className="spinner-container">
-        <Decrypting step={step} onComplete={setIsLoading}/>
-      </div>
+      <h1 className="loading-text">
+        Loading...
+      </h1>
     );
   }
 
@@ -52,7 +48,7 @@ function App() {
           component={ ({ location }) => {
             const params = new URLSearchParams(location.search);
             return (
-              <Drop userId={params.get("id")} />
+              <Drop userId={params.get("id") || appIdBundle[0].userId} />
             );
            }} />
      {/* TODO(dmihalcik): <Route 404 /> */}
