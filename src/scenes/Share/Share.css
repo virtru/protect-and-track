@@ -13,6 +13,13 @@
   color: #515864;
 }
 
+.ShareSelect-button:disabled {
+  background-color: #cccccc;
+  border: 0;
+  color: #666666;
+  filter: grayscale(100%);
+}
+
 .ShareSelect-button:hover {
   background: #EEE;
   cursor: pointer;
@@ -29,14 +36,3 @@
 .ShareSelect-title {
   margin: 10px; 
 }
-
-.ShareSelect-blue {
-  color: blue;
-  font-weight: bolder;
-}
-
-.ShareSelect-red {
-  color: red;
-  font-weight: bold;
-}
-
