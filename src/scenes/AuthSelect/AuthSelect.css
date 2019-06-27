@@ -1,8 +1,9 @@
 .AuthSelect-button {
   font-family: 'Raleway';
   background: white;
-  padding: 0 8px;
+  padding: 0 16px;
   border: 1px solid darkgray;
+  border-radius: 25px;
   font-size: 15px;
   display: flex;
   min-width: 284px;
@@ -44,11 +45,4 @@
 .AuthSelect-red {
   color: red;
   font-weight: bold;
-}
-
-.AuthSelect-email {
-  width: 295px;
-  height: 50px;
-  margin: -35px 0 35px 0;
-  padding-left:10px;
 }
