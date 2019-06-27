@@ -122,7 +122,6 @@ function Share() {
     case 'shared': return <ShareComplete />;
     default: return <p>{share}</p>;
   }
-  // return <ShareComplete />;
 }
 
 export default Share;
