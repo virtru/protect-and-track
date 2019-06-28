@@ -1,3 +1,7 @@
+# Ignore these files while formatting (`npm run pretty`).
+# Imported libraries:
 src/tdf3.js
 *.min.js
 
+# Built artifacts
+/build
