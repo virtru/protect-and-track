@@ -9,17 +9,16 @@ const CLIENT_ID = '685840918809-jtvptmpgsvdkuqqbtjuvqi4ijujviivd.apps.googleuser
 const API_KEY = 'AIzaSyCDUsJwMdEhAuwoUX0yv0RhJOtGXAhLkqw';
 
 // Array of API discovery doc URLs for APIs used by the quickstart
-const DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
+const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
 const SCOPES =
-    // List files; used for demo 
-    // TODO(dmihalcik) remove
-    'https://www.googleapis.com/auth/drive.metadata.readonly'
-    // Update access to files created by the app.
-    + ' https://www.googleapis.com/auth/drive.file';
-
+  // List files; used for demo
+  // TODO(dmihalcik) remove
+  'https://www.googleapis.com/auth/drive.metadata.readonly' +
+  // Update access to files created by the app.
+  ' https://www.googleapis.com/auth/drive.file';
 
 /**
  *  Initializes the API client library and sets up sign-in state
@@ -30,7 +29,7 @@ async function initClient() {
     apiKey: API_KEY,
     clientId: CLIENT_ID,
     discoveryDocs: DISCOVERY_DOCS,
-    scope: SCOPES
+    scope: SCOPES,
   });
 }
 
@@ -41,7 +40,6 @@ async function init() {
   await initClient();
 }
 
-
 async function upload(name, contentType, content) {
   // NOTE(DSAT-1): Unfortunately, AFAICT the current `drive.files.create` method in GAPI
   // does not support POST content. See relevant discussions:
@@ -51,34 +49,34 @@ async function upload(name, contentType, content) {
   // Instead, create a gapi `request` explicitly for the following POST:
   //   * https://developers.google.com/drive/api/v3/reference/files/create
   const boundary = '-------34905363';
-  const delimiter = "\r\n--" + boundary + "\r\n";
-  const close_delim = "\r\n--" + boundary + "--";
+  const delimiter = '\r\n--' + boundary + '\r\n';
+  const close_delim = '\r\n--' + boundary + '--';
   const metadata = {
-    'name': name,
-    'mimeType': contentType,
+    name: name,
+    mimeType: contentType,
   };
   const multipartRequestBody =
-      delimiter
-          + 'Content-Type: application/json\r\n\r\n'
-          + JSON.stringify(metadata)
-          + delimiter
-          + 'Content-Type: ' + contentType
-          + '\r\n\r\n'
-          + content
-          + close_delim;
+    delimiter +
+    'Content-Type: application/json\r\n\r\n' +
+    JSON.stringify(metadata) +
+    delimiter +
+    'Content-Type: ' +
+    contentType +
+    '\r\n\r\n' +
+    content +
+    close_delim;
 
   const request = {
-    'path': '/upload/drive/v3/files',
-    'method': 'POST',
-    'params': {'uploadType': 'multipart'},
-    'headers': {
-      'Content-Type': 'multipart/related; boundary="' + boundary + '"'
+    path: '/upload/drive/v3/files',
+    method: 'POST',
+    params: { uploadType: 'multipart' },
+    headers: {
+      'Content-Type': 'multipart/related; boundary="' + boundary + '"',
     },
-    'body': multipartRequestBody,
+    body: multipartRequestBody,
   };
 
   return await gapi.client.request(request);
-};
+}
 
 export { init, upload };
-
