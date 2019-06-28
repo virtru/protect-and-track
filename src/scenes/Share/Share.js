@@ -17,14 +17,13 @@ function ShareBox({ children }) {
 }
 
 function ShareButton({ children, onClick, type }) {
-  const action = onClick || false;
   const handleClick = e => {
     e.preventDefault();
-    action && action(e);
+    onClick && onClick(e);
   };
 
   return (
-    <button className="ShareSelect-button" onClick={handleClick} disabled={!action}>
+    <button className="ShareSelect-button" onClick={handleClick} disabled={!onClick}>
       <Ico type={type} />
       <div className="ShareSelect-button-text">{children}</div>
     </button>
