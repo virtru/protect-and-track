@@ -1,5 +1,5 @@
-import { createConnectedStore } from 'undux'
+import { createConnectedStore } from 'undux';
 
 export default createConnectedStore({
-  share: {state: 'unshared', host: undefined},
-})
+  share: { state: 'unshared', host: undefined },
+});

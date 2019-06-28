@@ -21,11 +21,11 @@
 }
 
 .ShareSelect-button:hover {
-  background: #EEE;
+  background: #eee;
   cursor: pointer;
 }
 .ShareSelect-button:focus {
-  background: #FFE;
+  background: #ffe;
 }
 
 .ShareSelect-ico {
@@ -40,8 +40,8 @@
 }
 
 .Share-trackit {
-  background: #174EB6;
-  color: #FFFFFF;
+  background: #174eb6;
+  color: #ffffff;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   align-self: center;
@@ -49,23 +49,23 @@
 }
 
 .Share-title {
-  color: #2D323B;
-  font-family: "Raleway";
+  color: #2d323b;
+  font-family: 'Raleway';
   margin: 0;
   font-size: 16px;
   margin-bottom: 24px;
 }
 
 .Share-box {
-    background: white;
-    border: 1px solid #c4c4c4;
-    border-radius: 8px;
-    margin: auto;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-  
-    width: 296px;
+  background: white;
+  border: 1px solid #c4c4c4;
+  border-radius: 8px;
+  margin: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+
+  width: 296px;
 }
 
 .Share-box {
@@ -74,12 +74,11 @@
 }
 
 .Share-recipient {
-  list-style-position:inside;
-  white-space: nowrap;;
+  list-style-position: inside;
+  white-space: nowrap;
   margin-left: -32px;
   overflow: hidden;
   text-overflow: ellipsis;
-
 }
 
 .Share-center {

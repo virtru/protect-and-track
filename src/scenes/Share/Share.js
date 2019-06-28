@@ -4,17 +4,16 @@ import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
 import './Share.css';
 import Store from 'store.js';
 
-
 function Ico({ type }) {
-  return <img alt="" src={`/${ type }.svg`} className='ShareSelect-ico' />
+  return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
 }
 
 function Title({ children }) {
-  return <h3 className="Share-title">{ children }</h3>;
+  return <h3 className="Share-title">{children}</h3>;
 }
 
 function ShareBox({ children }) {
-  return <div className="Share-box">{ children }</div>;
+  return <div className="Share-box">{children}</div>;
 }
 
 function ShareButton({ children, onClick, type }) {
@@ -27,7 +26,7 @@ function ShareButton({ children, onClick, type }) {
   return (
     <button className="ShareSelect-button" onClick={handleClick} disabled={!action}>
       <Ico type={type} />
-      <div className='ShareSelect-button-text'>{ children }</div>
+      <div className="ShareSelect-button-text">{children}</div>
     </button>
   );
 }
@@ -35,7 +34,7 @@ function ShareButton({ children, onClick, type }) {
 function ShareSelect() {
   const store = Store.useStore();
   const shareToDrive = async () => {
-    const state = s => store.set('share')({state: s, host: 'googledrive'});
+    const state = s => store.set('share')({ state: s, host: 'googledrive' });
     const api = await initGapi();
     state('authorizing');
     const authResponse = await api.auth2.getAuthInstance().signIn();
@@ -52,7 +51,9 @@ function ShareSelect() {
   return (
     <ShareBox>
       <Title>Share protected file</Title>
-      <ShareButton type="googledrive" onClick={shareToDrive}>Google Drive</ShareButton>
+      <ShareButton type="googledrive" onClick={shareToDrive}>
+        Google Drive
+      </ShareButton>
       <ShareButton type="onedrive">OneDrive</ShareButton>
       <ShareButton type="dropbox">Dropbox</ShareButton>
       <ShareButton type="box">Box</ShareButton>
@@ -74,7 +75,7 @@ function Sharing() {
     <ShareBox>
       <Title>Sharing...</Title>
       <div className="Share-center">
-        <Loading/>
+        <Loading />
       </div>
       <p>We're sharing your file with the following people:</p>
       <RecipientList />
@@ -98,13 +99,13 @@ function ShareComplete() {
   return (
     <ShareBox>
       <Title>Track your shared file</Title>
-      {host && <div className="Share-center">
+      {host && (
+        <div className="Share-center">
           <Ico type={host} />
         </div>
-      }
+      )}
       <p>
-        Ask these people to open your file,
-        and you should see a <b>Track Event</b>:
+        Ask these people to open your file, and you should see a <b>Track Event</b>:
       </p>
       <RecipientList />
       <TrackItButton />
@@ -116,11 +117,15 @@ function Share() {
   let store = Store.useStore();
   const share = store.get('share');
   switch (share.state) {
-    case 'unshared': return <ShareSelect />;
+    case 'unshared':
+      return <ShareSelect />;
     case 'authorizing':
-    case 'sharing': return <Sharing />;
-    case 'shared': return <ShareComplete />;
-    default: return <p>{share}</p>;
+    case 'sharing':
+      return <Sharing />;
+    case 'shared':
+      return <ShareComplete />;
+    default:
+      return <p>{share}</p>;
   }
 }
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
-import AuthSelect from 'scenes/AuthSelect/AuthSelect'
-import Drop from 'scenes/Drop/Drop'
-import ShareSelect from 'scenes/Share/Share'
-import UserSelect from 'scenes/UserSelect/UserSelect'
+import AuthSelect from 'scenes/AuthSelect/AuthSelect';
+import Drop from 'scenes/Drop/Drop';
+import ShareSelect from 'scenes/Share/Share';
+import UserSelect from 'scenes/UserSelect/UserSelect';
 
 /**
  * An SDK Share App.
@@ -21,24 +21,23 @@ import UserSelect from 'scenes/UserSelect/UserSelect'
 function App() {
   return (
     <Router>
-
-     <Route path="/" exact component={ UserSelect } />
-     <Route path="/auth"
-          component={ ({ location }) => {
-            const params = new URLSearchParams(location.search);
-            return (
-              <AuthSelect userId={params.get("id")} />
-            );
-           }} />
-     <Route path="/drop" 
-          component={ ({ location }) => {
-            const params = new URLSearchParams(location.search);
-            return (
-              <Drop userId={params.get("id")} />
-            );
-           }} />
-     <Route path="/share" exact component={ ShareSelect } />
-     {/* TODO(dmihalcik): <Route 404 /> */}
+      <Route path="/" exact component={UserSelect} />
+      <Route
+        path="/auth"
+        component={({ location }) => {
+          const params = new URLSearchParams(location.search);
+          return <AuthSelect userId={params.get('id')} />;
+        }}
+      />
+      <Route
+        path="/drop"
+        component={({ location }) => {
+          const params = new URLSearchParams(location.search);
+          return <Drop userId={params.get('id')} />;
+        }}
+      />
+      <Route path="/share" exact component={ShareSelect} />
+      {/* TODO(dmihalcik): <Route 404 /> */}
     </Router>
   );
 }
