@@ -33,23 +33,28 @@ function ShareButton({ children, onClick, type }) {
 function ShareSelect() {
   const store = Store.useStore();
   const shareToDrive = async () => {
+    const file = store.get('file');
     const state = s => store.set('share')({ state: s, host: 'googledrive' });
     const api = await initGapi();
     state('authorizing');
     const authResponse = await api.auth2.getAuthInstance().signIn();
-    console.log('await');
     console.log(authResponse);
     state('sharing');
-    const uploadResponse = await uploadToDrive('helloworld.txt', 'text/plain', 'Hello World!');
+    const uploadResponse = await uploadToDrive(file.file.name, file.file.type, file.arrayBuffer);
     console.log(uploadResponse);
     // TODO(DSAT-14) Store permissions and don't sign out.
     const signOutResponse = api.auth2.getAuthInstance().signOut();
     console.log(signOutResponse);
-    state('shared');
+    store.set('share')({
+      state: 'shared',
+      host: 'googledrive',
+      link: 'https://drive.google.com/open?id=' + uploadResponse.result.id,
+    });
   };
+  const { file } = store.get('file');
   return (
     <ShareBox>
-      <Title>Share protected file</Title>
+      <Title>Share {(file && file.name) || 'protected file'}</Title>
       <ShareButton type="googledrive" onClick={shareToDrive}>
         Google Drive
       </ShareButton>
@@ -70,9 +75,10 @@ function RecipientList() {
 }
 
 function Sharing() {
+  const { file: { name } = {} } = Store.useStore().get('file');
   return (
     <ShareBox>
-      <Title>Sharing...</Title>
+      <Title>Sharing{(name && ' ' + name) || ''}...</Title>
       <div className="Share-center">
         <Loading />
       </div>
@@ -94,17 +100,19 @@ function TrackItButton() {
 }
 
 function ShareComplete() {
-  const { host } = Store.useStore().get('share');
+  const { host, link } = Store.useStore().get('share');
+  const { file: { name } = {} } = Store.useStore().get('file');
   return (
     <ShareBox>
-      <Title>Track your shared file</Title>
+      <Title>Track {name || 'your shared file'}</Title>
       {host && (
         <div className="Share-center">
           <Ico type={host} />
         </div>
       )}
       <p>
-        Ask these people to open your file, and you should see a <b>Track Event</b>:
+        Ask these people to open <a href={link}>your file</a>, and you should see a{' '}
+        <b>Track Event</b>:
       </p>
       <RecipientList />
       <TrackItButton />
