@@ -38,6 +38,7 @@ async function init() {
   const load = awaitify(gapi.load);
   await load('client:auth2');
   await initClient();
+  return gapi;
 }
 
 async function upload(name, contentType, content) {

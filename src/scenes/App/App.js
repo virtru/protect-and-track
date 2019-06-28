@@ -3,9 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import Header from 'components/Header/Header';
-import AuthSelect from 'scenes/AuthSelect/AuthSelect';
 import Drop from 'scenes/Drop/Drop';
-import UserSelect from 'scenes/UserSelect/UserSelect';
 import { getAppIdBundle } from 'api/accounts';
 import Store from '../../store';
 
