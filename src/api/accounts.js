@@ -1,5 +1,5 @@
 const USE_SINGLE_ENDPOINT = false;
-const LOGIN_PLATFORM = 'TDF Demo';
+const LOGIN_PLATFORM = 'tdfdemo';
 
 // TODO(DSAT-13): Pick the appropriate backend for the environment
 const ACCOUNTS_URL = USE_SINGLE_ENDPOINT
