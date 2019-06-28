@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
-import Header from 'components/Header/Header'
-import AuthSelect from 'scenes/AuthSelect/AuthSelect'
-import Drop from 'scenes/Drop/Drop'
-import UserSelect from 'scenes/UserSelect/UserSelect'
+import Header from 'components/Header/Header';
+import AuthSelect from 'scenes/AuthSelect/AuthSelect';
+import Drop from 'scenes/Drop/Drop';
+import UserSelect from 'scenes/UserSelect/UserSelect';
 import { getAppIdBundle } from 'api/accounts';
 import Store from '../../store';
 
@@ -36,28 +36,24 @@ function App() {
   });
 
   if (!appIdBundle) {
-    return (
-      <h1 className="loading-text">
-        Loading...
-      </h1>
-    );
+    return <h1 className="loading-text">Loading...</h1>;
   }
 
   return (
     <>
-    <Header/>
-    <main className="main">
-      <Router>
-        <Route path="/" 
-              component={ ({ location }) => {
-                const params = new URLSearchParams(location.search);
-                return (
-                  <Drop userId={params.get("id") || appIdBundle[0].userId} />
-                );
-              }} />
-      {/* TODO(dmihalcik): <Route 404 /> */}
-      </Router>
-    </main>
+      <Header />
+      <main className="main">
+        <Router>
+          <Route
+            path="/"
+            component={({ location }) => {
+              const params = new URLSearchParams(location.search);
+              return <Drop userId={params.get('id') || appIdBundle[0].userId} />;
+            }}
+          />
+          {/* TODO(dmihalcik): <Route 404 /> */}
+        </Router>
+      </main>
     </>
   );
 }

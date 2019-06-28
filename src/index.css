@@ -1,13 +1,14 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
 body {
-  background: #F3F4F7;
+  background: #f3f4f7;
   margin: 0;
-  font-family: "Raleway", sans-serif;
+  font-family: 'Raleway', sans-serif;
 }
 
 main {
@@ -23,7 +24,7 @@ code {
 h1 {
   line-height: 30px;
   font-size: 20px;
-  color: #7E7D7C;
+  color: #7e7d7c;
   text-align: center;
   background: #f7f7f7;
 }
@@ -31,7 +32,7 @@ h1 {
 h2 {
   line-height: 30px;
   font-size: 15px;
-  color: #7E7D7C;
+  color: #7e7d7c;
 }
 
 a {
@@ -46,12 +47,11 @@ input {
 }
 
 input:focus {
-    border-color:#6e8095;
-    outline: none;
+  border-color: #6e8095;
+  outline: none;
 }
 
-input[type="text"]
-{
+input[type='text'] {
   font-family: 'Raleway';
-  font-size:17px;
+  font-size: 17px;
 }
