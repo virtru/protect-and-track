@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Configuration
+
+- Ensure that your /etc/hosts includes the following line: `127.0.0.1 local.virtru.com`
+
 ## Available Scripts
 
 In the project directory, you can run:
