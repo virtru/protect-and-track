@@ -23,11 +23,6 @@
   cursor: pointer;
 }
 
-.SidebarContainer .json {
-  color: white;
-  cursor: pointer;
-}
-
 .SidebarContainer .itemWrapper {
   flex: 1;
 }

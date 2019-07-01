@@ -13,8 +13,17 @@
   margin: 0;
 }
 
-.json-wrapper {
+.SidebarItemWrapper .json-wrapper {
   color: #5893e0;
   cursor: pointer;
   overflow: hidden;
+}
+
+.SidebarItemWrapper .json {
+  color: white;
+  cursor: pointer;
+  width: 90%;
+  padding: 0 5%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
