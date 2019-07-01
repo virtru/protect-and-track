@@ -1,13 +1,15 @@
 import React from 'react';
-import { FormBox, FormBoxInstruction, FormBoxAlternative, FormBoxButton } from 'components/FormBox/FormBox';
+import {
+  FormBox,
+  FormBoxInstruction,
+  FormBoxAlternative,
+  FormBoxButton,
+} from 'components/FormBox/FormBox';
 import './AuthSelect.css';
-
 
 function AuthSelect(props) {
   return (
-    <FormBox
-        title="Virtru Drag &amp; Drop Demo Login"
-        instruction="Select your Login Provider">
+    <FormBox title="Virtru Drag &amp; Drop Demo Login" instruction="Select your Login Provider">
       <input type="button" id="googlebutton" className="login-button-google" />
       <input type="button" id="office365button" className="login-button-office365" />
       <input type="button" id="outlookbutton" className="login-button-outlook" />

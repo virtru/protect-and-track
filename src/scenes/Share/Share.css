@@ -1,0 +1,85 @@
+.ShareSelect-button {
+  font-family: 'Raleway';
+  background: white;
+  padding: 0 8px 0 32px;
+  border: 1px solid #515864;
+  border-radius: 4px;
+  font-size: 15px;
+  display: flex;
+  min-width: 206px;
+  min-height: 48px;
+  align-items: center;
+  margin: 8px auto;
+  color: #515864;
+}
+
+.ShareSelect-button:disabled {
+  background-color: #cccccc;
+  border: 0;
+  color: #666666;
+  filter: grayscale(100%);
+}
+
+.ShareSelect-button:hover {
+  background: #eee;
+  cursor: pointer;
+}
+.ShareSelect-button:focus {
+  background: #ffe;
+}
+
+.ShareSelect-ico {
+  width: 32px;
+  height: 32px;
+}
+
+.ShareSelect-button-text {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  margin: 12px;
+}
+
+.Share-trackit {
+  background: #174eb6;
+  color: #ffffff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  align-self: center;
+  padding: 12px 24px;
+}
+
+.Share-title {
+  color: #2d323b;
+  font-family: 'Raleway';
+  margin: 0;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.Share-box {
+  background: white;
+  border: 1px solid #c4c4c4;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  width: 296px;
+}
+
+.Share-box {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+}
+
+.Share-recipient {
+  list-style-position: inside;
+  white-space: nowrap;
+  margin-left: -32px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Share-center {
+  align-self: center;
+}

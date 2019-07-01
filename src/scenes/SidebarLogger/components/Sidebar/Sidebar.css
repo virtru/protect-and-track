@@ -3,11 +3,10 @@
   width: 270px;
   display: flex;
   flex-direction: column;
-  position: fixed;
   left: 0;
   top: 0;
   box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 4px;
-  background: #282e37;;
+  background: #282e37;
 }
 
 .SidebarContainer .collapseContainer {
@@ -17,7 +16,7 @@
   padding-right: 10px;
 }
 
-.SidebarContainer .collapse{
+.SidebarContainer .collapse {
   color: #5893e0;
   padding: 5px;
   font-size: 14px;

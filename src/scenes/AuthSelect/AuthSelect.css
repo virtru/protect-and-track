@@ -5,11 +5,11 @@
   margin-left: -125px;
   color: #fff;
   transform: scale(0.5);
-  background-image: url("./assets/googlelogin.png");
+  background-image: url('./assets/googlelogin.png');
   border: 0;
   border-radius: 5px;
-  cursor: pointer; 
-  outline:0;
+  cursor: pointer;
+  outline: 0;
 }
 
 .login-button-office365 {
@@ -19,11 +19,11 @@
   margin-left: -125px;
   color: #fff;
   transform: scale(0.5);
-  background-image: url("./assets/office365login.png");
+  background-image: url('./assets/office365login.png');
   border: 0;
   border-radius: 5px;
-  cursor: pointer; 
-  outline:0;
+  cursor: pointer;
+  outline: 0;
 }
 
 .login-button-outlook {
@@ -33,9 +33,9 @@
   margin-left: -125px;
   color: #fff;
   transform: scale(0.5);
-  background-image: url("./assets/outlooklogin.png");
+  background-image: url('./assets/outlooklogin.png');
   border: 0;
   border-radius: 5px;
-  cursor: pointer; 
-  outline:0;
+  cursor: pointer;
+  outline: 0;
 }
