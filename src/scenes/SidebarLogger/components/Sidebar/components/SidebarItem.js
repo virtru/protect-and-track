@@ -6,18 +6,21 @@ export default () => (
   <div className="SidebarItemWrapper">
     <div className="json-wrapper">
       <div className="showPayload">Show payload</div>
-      <pre className="json">
-        {JSON.stringify(
-          {
-            main: 'line-height:1.3;color:#66d9ef;background:#272822;overflow:auto;',
-            key: 'color:#f92672;',
-            string: 'color:#fd971f;',
-            value: 'color:#a6e22e;',
-            boolean: 'color:#ac81fe;',
-          },
-          null,
-          2,
-        )}
+      <pre className="prettyprint">
+        {`
+const client = require("tdf3-js")();
+
+async function encrypt(filename){
+    // Prepare the parameters for encryption, specifying the plaintext file
+    // and the users with decrypt access.
+    let encryptParams = new TDF.EncryptParamsBuilder()
+                                    .withFileSource(filename)
+                                    .withDissem(["has-access@secret.org"])
+                                    .build();
+    // Return the ciphertext read stream for consumption.
+    return await client.encrypt(encryptParams);
+}
+        `}
       </pre>
     </div>
   </div>

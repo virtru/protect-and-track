@@ -8,7 +8,7 @@
 .Drop {
   font-size: 14px;
   height: 300px;
-  width: 500px;
+  max-width: 500px;
   text-align: center;
   border: 4px dashed #707070;
   background-repeat: no-repeat;

@@ -63,7 +63,7 @@
   padding: 24px;
   display: flex;
   flex-direction: column;
-  width: 296px;
+  max-width: 296px;
   margin: 10px;
 }
 
