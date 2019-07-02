@@ -34,15 +34,8 @@ function Drop({ userId }) {
     const shouldEncrypt = !filename.endsWith('.tdf');
 
     const fileBuffer = await fileToArrayBuffer(fileHandle);
-    console.log(
-      (shouldEncrypt ? 'En' : 'De') +
-        'crypt a file: [' +
-        filename +
-        '] for ' +
-        userId +
-        ' as ' +
-        fileBuffer,
-    );
+    const verb = (shouldEncrypt ? 'En' : 'De') + 'crypt';
+    console.log(`${verb} a file [${filename}] for [${userId}] as [${fileBuffer}]`);
     store.set('file')({ file: fileHandle, arrayBuffer: fileBuffer });
   };
 
