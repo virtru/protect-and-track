@@ -19,11 +19,14 @@
   overflow: hidden;
 }
 
-.SidebarItemWrapper .json {
-  color: white;
-  cursor: pointer;
-  width: 90%;
-  padding: 0 5%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.SidebarItemWrapper pre.prettyprint {
+  background: #282e37;
+  border: 1px solid;
+  width: 95%;
+  box-sizing: border-box;
+  margin: 2.5%;
+}
+
+.SidebarItemWrapper .showPayload {
+  text-align: center;
 }

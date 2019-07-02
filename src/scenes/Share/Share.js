@@ -2,7 +2,7 @@ import React from 'react';
 import Loading from './components/Loading/Loading';
 import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
 import './Share.css';
-import Store from 'store.js';
+import Store from '../../store';
 
 function Ico({ type }) {
   return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
