@@ -1,5 +1,5 @@
 import React from 'react';
-import Drop from './scenes/Drop/Drop';
+import Drop from './components/Drop/Drop';
 import Policy from './scenes/Policy/Policy';
 import Share from 'scenes/Share/Share';
 
