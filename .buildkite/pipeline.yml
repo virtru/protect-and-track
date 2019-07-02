@@ -1,6 +1,7 @@
 env:
   AWS_ACCOUNT_ALIAS: common
   ENVIRONMENT_NAME: common
+  DEPLOY_ENVIRONMENT_NAME: production
   S3_PATH: react
   S3_HOSTNAME: demos.developer.virtru.com
 
