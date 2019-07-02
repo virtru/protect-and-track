@@ -2,14 +2,10 @@ import React from 'react';
 import './Sidebar.css';
 import { Scrollbars } from 'react-custom-scrollbars';
 import SidebarItem from './components/SidebarItem';
-import Store from '../../../../store';
 
 const { useEffect } = React;
 
 const Sidebar = ({ collapse }) => {
-  const store = Store.useStore();
-  // const tdfLog = store.get('tdfLog');
-
   useEffect(() => {
     window.PR.prettyPrint();
   }, [window.PR.prettyPrint]);
@@ -30,4 +26,4 @@ const Sidebar = ({ collapse }) => {
   );
 };
 
-export default Store.withStore();
+export default Sidebar;

@@ -4,7 +4,6 @@ import './Drop.css';
 import Share from 'scenes/Share/Share';
 import SidebarLogger from '../SidebarLogger/SidebarLogger';
 import tdf3 from '../../utils/tdfWrapper';
-import Store from '../../store';
 
 /**
  * A place to drop an encrypted or uncrypted file.
@@ -18,14 +17,14 @@ class Drop extends React.Component {
     const reader = new FileReader();
     const filename = fileOb.name;
     const shouldEncrypt = !filename.endsWith('.tdf');
-    const { userId, store } = this.props;
+    const { userId } = this.props;
 
     reader.onload = async e => {
       try {
         console.log(
           (shouldEncrypt ? 'En' : 'De') + 'crypt a file: [' + filename + '] for ' + userId,
         );
-        tdf3.encrypt({ filename, store, userIds: [userId] });
+        // tdf3.encrypt({ filename, store, userIds: [userId] });
         // await encryptOrDecryptFile(reader.result, filename, shouldEncrypt, userId, completion);
       } catch (e) {
         if (shouldEncrypt) {
@@ -112,4 +111,4 @@ class Drop extends React.Component {
   }
 }
 
-export default Store.withStore(Drop);
+export default Drop;

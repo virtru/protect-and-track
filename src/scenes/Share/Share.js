@@ -1,8 +1,9 @@
 import React from 'react';
+import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
 import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
 import './Share.css';
-import Store from '../../store';
+import actions from './actions';
 
 function Ico({ type }) {
   return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
@@ -30,10 +31,9 @@ function ShareButton({ children, onClick, type }) {
   );
 }
 
-function ShareSelect() {
-  const store = Store.useStore();
+function ShareSelect({ updateShare }) {
   const shareToDrive = async () => {
-    const state = s => store.set('share')({ state: s, host: 'googledrive' });
+    const state = s => updateShare({ state: s, host: 'googledrive' });
     const api = await initGapi();
     state('authorizing');
     const authResponse = await api.auth2.getAuthInstance().signIn();
@@ -93,8 +93,7 @@ function TrackItButton() {
   );
 }
 
-function ShareComplete() {
-  const { host } = Store.useStore().get('share');
+function ShareComplete({ host }) {
   return (
     <ShareBox>
       <Title>Track your shared file</Title>
@@ -112,20 +111,23 @@ function ShareComplete() {
   );
 }
 
-function Share() {
-  let store = Store.useStore();
-  const share = store.get('share');
+function Share({ share, updateShare }) {
   switch (share.state) {
     case 'unshared':
-      return <ShareSelect />;
+      return <ShareSelect updateShare={updateShare} />;
     case 'authorizing':
     case 'sharing':
       return <Sharing />;
     case 'shared':
-      return <ShareComplete />;
+      return <ShareComplete host={share.host} />;
     default:
       return <p>{share}</p>;
   }
 }
 
-export default Share;
+const mapToProps = ({ share }) => ({ share });
+
+export default connect(
+  mapToProps,
+  actions,
+)(Share);

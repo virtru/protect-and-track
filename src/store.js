@@ -1,6 +1,6 @@
-import { createConnectedStore } from 'undux';
+import createStore from 'redux-zero';
 
-export default createConnectedStore({
+export default createStore({
   appIdBundle: false,
   share: { state: 'unshared', host: undefined },
   tdfLog: [],

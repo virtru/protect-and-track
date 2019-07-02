@@ -5,7 +5,8 @@ import './App.css';
 import Header from 'components/Header/Header';
 import Drop from 'scenes/Drop/Drop';
 import { getAppIdBundle } from 'api/accounts';
-import Store from '../../store';
+import { connect } from 'redux-zero/react';
+import actions from './actions';
 
 /**
  * An SDK Share App.
@@ -18,15 +19,12 @@ import Store from '../../store';
  *  - Additional helper text and overlays
  *  - share panel?
  */
-function App() {
-  const store = Store.useStore();
-  const appIdBundle = store.get('appIdBundle');
-
+function App({ appIdBundle, setAppIdBundle }) {
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     async function login() {
       const appIdBundle = await getAppIdBundle();
-      store.set('appIdBundle')(appIdBundle);
+      setAppIdBundle(appIdBundle);
     }
     if (!appIdBundle) {
       login();
@@ -56,4 +54,8 @@ function App() {
   );
 }
 
-export default App;
+const mapToProps = ({ appIdBundle }) => ({ appIdBundle });
+export default connect(
+  mapToProps,
+  actions,
+)(App);
