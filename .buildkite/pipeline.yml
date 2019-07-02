@@ -93,11 +93,11 @@ steps:
     agents:
       - *agent_queue
 
+  - wait
+
   - block: 'Check your branch name'
     prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
     branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
-
-  - wait
 
   - label: ':s3: Deploy to S3'
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
