@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Loading from './components/Loading/Loading';
 import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
 import './Share.css';
@@ -32,11 +32,17 @@ function ShareButton({ children, init, onClick, type }) {
     </button>
   );
 
-  init &&
-    init().then(() => {
+  useEffect(() => {
+    if (!init) {
+      return;
+    }
+    async function initializeButtonBackend() {
+      await init();
       console.log('init complete');
       setState(onClick ? 'enabled' : 'misconfigured');
-    });
+    }
+    initializeButtonBackend();
+  }, [init, onClick]);
 
   return button;
 }
