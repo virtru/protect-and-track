@@ -1,14 +1,13 @@
 import React from 'react';
 import './Drop.css';
-import PolicyPanel from 'scenes/Policy/Policy';
-import Share from 'scenes/Share/Share';
-import Store from '../../store';
+import Store from '../../../../store';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
 
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ userId }) {
+function Drop({ children, userId }) {
+  console.log(`<Drop userId="${userId}">`);
   const store = Store.useStore();
   const appIdBundle = store.get('appIdBundle');
   console.log(appIdBundle);
@@ -71,7 +70,7 @@ function Drop({ userId }) {
     }
   };
 
-  function DropZone() {
+  function DropZone({ children }) {
     return (
       <div
         className="Drop"
@@ -81,6 +80,14 @@ function Drop({ userId }) {
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
       >
+        {children}
+      </div>
+    );
+  }
+
+  function EmptyTarget() {
+    return (
+      <>
         <div className="Drop-box">
           <DropIcon className="Drop-icon" />
         </div>
@@ -88,19 +95,18 @@ function Drop({ userId }) {
           Drag a document here to encrypt
           <br /> or a TDF to modify its policy
         </h2>
-      </div>
+      </>
     );
   }
 
-  if (!store.get('file')) {
-    return <DropZone />;
+  if (!children) {
+    return (
+      <DropZone>
+        <EmptyTarget />
+      </DropZone>
+    );
   }
-  return (
-    <>
-      <PolicyPanel />
-      <Share />
-    </>
-  );
+  return <DropZone>{children}</DropZone>;
 }
 
 export default Drop;

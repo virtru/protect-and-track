@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import Header from 'components/Header/Header';
-import Drop from 'scenes/Drop/Drop';
+import Document from 'scenes/Document/Document';
 import { getAppIdBundle } from 'api/accounts';
 import Store from '../../store';
 
@@ -46,7 +46,12 @@ function App() {
             path="/"
             component={({ location }) => {
               const params = new URLSearchParams(location.search);
-              return <Drop userId={params.get('id') || appIdBundle[0].userId} />;
+              return (
+                <Document
+                  file={store.get('file')}
+                  userId={params.get('id') || appIdBundle[0].userId}
+                />
+              );
             }}
           />
           {/* TODO(dmihalcik): <Route 404 /> */}
