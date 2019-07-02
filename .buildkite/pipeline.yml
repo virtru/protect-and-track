@@ -1,3 +1,7 @@
+env:
+  AWS_ACCOUNT_ALIAS: common
+  ENVIRONMENT_NAME: common
+
 agents:
   queue: '${BUILDKITE_QUEUE:-default}'
 agent_queue: &agent_queue 'queue=${BUILDKITE_QUEUE:-default}'
