@@ -57,17 +57,17 @@ steps:
   #     - 'coverage/lcov.info'
   #   agents:
   #     - *agent_queue
-#
-#
-#  - wait
-#
-#  - label: ':cloud: SonarCloud Scan'
-#    command: '.buildkite/scripts/run-sonar-scanner.sh'
-#    agents:
-#      - *agent_queue
-#
-#  - wait
-#
+  #
+  #
+  #  - wait
+  #
+  #  - label: ':cloud: SonarCloud Scan'
+  #    command: '.buildkite/scripts/run-sonar-scanner.sh'
+  #    agents:
+  #      - *agent_queue
+  #
+  #  - wait
+  #
   - label: ':house_with_garden: Create block for deploy environment selection'
     branches: '*feature/* *hotfix/* *bug/*'
     command: 'buildkite-scripts/mars/pipeline-steps/get-and-select-develop-environments.sh | buildkite-agent pipeline upload'
@@ -86,11 +86,6 @@ steps:
 
   - label: ':npm: NPM Build'
     command: 'buildkite-scripts/scripts/npm-build.sh'
-    env:
-      BUILD_CMD_ARGS: '--environment=${DEPLOY_ENVIRONMENT_NAME}'
-
-    artifact_paths:
-      - 'build/**/*'
     agents:
       - *agent_queue
 #
