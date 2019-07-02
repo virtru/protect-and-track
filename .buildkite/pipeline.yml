@@ -82,8 +82,11 @@ steps:
 
   - label: ':npm: NPM Build'
     command: 'buildkite-scripts/scripts/npm-build.sh'
+    env:
+      BUILD_CMD_ARGS: '--environment=${DEPLOY_ENVIRONMENT_NAME}'
+
     artifact_paths:
-      - 'build'
+      - 'build/**/*'
     agents:
       - *agent_queue
 #
