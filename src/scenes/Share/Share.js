@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Loading from './components/Loading/Loading';
 import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
 import './Share.css';
 import Store from 'store.js';
+
+/* global gapi */
 
 function Ico({ type }) {
   return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
@@ -16,46 +18,63 @@ function ShareBox({ children }) {
   return <div className="Share-box">{children}</div>;
 }
 
-function ShareButton({ children, onClick, type }) {
+function ShareButton({ children, init, onClick, type }) {
+  const [state, setState] = useState('start');
   const handleClick = e => {
     e.preventDefault();
     onClick && onClick(e);
   };
 
-  return (
-    <button className="ShareSelect-button" onClick={handleClick} disabled={!onClick}>
+  const button = (
+    <button className="ShareSelect-button" onClick={handleClick} disabled={state !== 'enabled'}>
       <Ico type={type} />
       <div className="ShareSelect-button-text">{children}</div>
     </button>
   );
+
+  init &&
+    init().then(() => {
+      console.log('init complete');
+      setState(onClick ? 'enabled' : 'misconfigured');
+    });
+
+  return button;
 }
 
 function ShareSelect() {
   const store = Store.useStore();
   const shareToDrive = async () => {
-    const file = store.get('file');
-    const state = s => store.set('share')({ state: s, host: 'googledrive' });
-    const api = await initGapi();
-    state('authorizing');
-    const authResponse = await api.auth2.getAuthInstance().signIn();
-    console.log(authResponse);
-    state('sharing');
-    const uploadResponse = await uploadToDrive(file.file.name, file.file.type, file.arrayBuffer);
-    console.log(uploadResponse);
-    // TODO(DSAT-14) Store permissions and don't sign out.
-    const signOutResponse = api.auth2.getAuthInstance().signOut();
-    console.log(signOutResponse);
-    store.set('share')({
-      state: 'shared',
-      host: 'googledrive',
-      link: 'https://drive.google.com/open?id=' + uploadResponse.result.id,
-    });
+    try {
+      const file = store.get('file');
+      const state = s => store.set('share')({ state: s, host: 'googledrive' });
+      state('authorizing');
+      // NOTE(DSAT-1) In Safari, this call must occur in a direct user action handler.
+      // Safari's policy is that popups must be in response to a direct user action,
+      // so no `await` calls can preceded this. To work around this, we load the API
+      // before enabling the share button so this is the first gapi call.
+      const authResponse = await gapi.auth2.getAuthInstance().signIn();
+      console.log(authResponse);
+      state('sharing');
+      const uploadResponse = await uploadToDrive(file.file.name, file.file.type, file.arrayBuffer);
+      console.log(uploadResponse);
+      // TODO(DSAT-14) Store permissions and don't sign out.
+      const signOutResponse = gapi.auth2.getAuthInstance().signOut();
+      console.log(signOutResponse);
+      store.set('share')({
+        state: 'shared',
+        host: 'googledrive',
+        link: 'https://drive.google.com/open?id=' + uploadResponse.result.id,
+      });
+    } catch (e) {
+      console.log(JSON.stringify(e));
+      throw e;
+    }
   };
   const { file } = store.get('file');
   return (
     <ShareBox>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
-      <ShareButton type="googledrive" onClick={shareToDrive}>
+      <ShareButton type="googledrive" onClick={shareToDrive} init={initGapi}>
         Google Drive
       </ShareButton>
       <ShareButton type="onedrive">OneDrive</ShareButton>
