@@ -1,6 +1,8 @@
 env:
   AWS_ACCOUNT_ALIAS: common
   ENVIRONMENT_NAME: common
+  S3_PATH: react
+  S3_HOSTNAME: demos.developer.virtru.com
 
 agents:
   queue: '${BUILDKITE_QUEUE:-default}'
@@ -88,26 +90,27 @@ steps:
     command: 'buildkite-scripts/scripts/npm-build.sh'
     agents:
       - *agent_queue
-#
-#  - block: 'Check your branch name'
-#    prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
-#    branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
-#
-#  - wait
-#
-#  - label: ':s3: Deploy to S3'
-#    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
-#    agents:
-#      - *agent_queue
-#
-#  - wait
-#
-#  - label: ':s3: Invalidate CloudFront Cache'
-#    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
-#    branches: 'master'
-#    agents:
-#      - *agent_queue
-#
+
+  - block: 'Check your branch name'
+    prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
+    branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
+
+  - wait
+
+    #  - label: ':s3: Deploy to S3'
+    #    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+    #    env:
+    #      S3_PATH: react
+    #    agents:
+    #      - *agent_queue
+    #
+    #  - wait
+
+  - label: ':s3: Invalidate CloudFront Cache'
+    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+    agents:
+      - *agent_queue
+
 #  - wait
 #
 #  - block: ':grey_question: Deploy to Production'
