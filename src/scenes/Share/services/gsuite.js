@@ -56,15 +56,23 @@ async function upload(name, contentType, content) {
     name: name,
     mimeType: contentType,
   };
+  const base64 = buffer => {
+    return btoa(
+      new Uint8Array(buffer).reduce((data, byte) => {
+        return data + String.fromCharCode(byte);
+      }, ''),
+    );
+  };
   const multipartRequestBody =
     delimiter +
     'Content-Type: application/json\r\n\r\n' +
     JSON.stringify(metadata) +
     delimiter +
+    'Content-Transfer-Encoding: base64\r\n' +
     'Content-Type: ' +
     contentType +
     '\r\n\r\n' +
-    content +
+    base64(content) +
     close_delim;
 
   const request = {
