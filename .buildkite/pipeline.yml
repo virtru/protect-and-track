@@ -98,14 +98,12 @@ steps:
 
   - wait
 
-    #  - label: ':s3: Deploy to S3'
-    #    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
-    #    env:
-    #      S3_PATH: react
-    #    agents:
-    #      - *agent_queue
-    #
-    #  - wait
+  - label: ':s3: Deploy to S3'
+    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+    agents:
+      - *agent_queue
+
+   - wait
 
   - label: ':s3: Invalidate CloudFront Cache'
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
