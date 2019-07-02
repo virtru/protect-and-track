@@ -33,7 +33,8 @@ steps:
       - *agent_queue
 
   - wait
-    # TODO: focing to pass for now but it really should work
+
+  # TODO: focing to pass for now but it really should work
   - label: ':heavy_check_mark: Linting'
     command: 'buildkite-scripts/scripts/run-linting.sh'
     env:
@@ -103,13 +104,15 @@ steps:
     agents:
       - *agent_queue
 
-   - wait
+  - wait
 
   - label: ':s3: Invalidate CloudFront Cache'
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
     agents:
       - *agent_queue
 
+# TODO: uncomment all this stuff when we can actuall deploy environments
+#
 #  - wait
 #
 #  - block: ':grey_question: Deploy to Production'
