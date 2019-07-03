@@ -5,6 +5,8 @@ import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
 import './Share.css';
 import actions from './actions';
 
+/* global gapi */
+
 function Ico({ type }) {
   return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
 }

@@ -1,5 +1,5 @@
 const actions = {
-  updateShare: (state, value) => ({ file: value }),
+  updateFile: (state, value) => ({ file: value }),
 };
 
 export default actions;
