@@ -42,7 +42,7 @@ function App({ appIdBundle, setAppIdBundle }) {
         <Router>
           <Route
             path="/"
-            component={() => <Document />}
+            component={Document}
           />
           {/* TODO(dmihalcik): <Route 404 /> */}
         </Router>

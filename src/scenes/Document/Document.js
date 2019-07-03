@@ -9,31 +9,18 @@ import actions from './actions';
 import { connect } from "redux-zero/react/index";
 
 
-function Document({ file, userId, updateFile }) {
-  console.log(`<Document file="${file}" userId="${userId}">`);
-  if (!file) {
-    return (
-      <>
-        <SidebarLogger />
-        <div className="document-wrapper">
-          <Drop userId={userId} updateFile={updateFile} />
-        </div>
-      </>
-    );
-  }
-  return (
-    <>
-      <SidebarLogger />
-      <div className="document-wrapper">
-        <Drop userId={userId} updateFile={updateFile} >
-          <Policy file={file} />
-        </Drop>
-        {/* TODO(DSAT-17): make this modal */}
-        <Share />
-      </div>
-    </>
-  );
-}
+const Document = ({ file, userId, updateFile }) => (
+  <>
+    <SidebarLogger />
+    <div className="document-wrapper">
+      <Drop userId={userId} updateFile={updateFile} >
+        { file && <Policy file={file} /> }
+      </Drop>
+      { file && <Share /> }
+    </div>
+  </>
+);
+
 
 const mapToProps = ({ file, appIdBundle }) => ({
   file,
