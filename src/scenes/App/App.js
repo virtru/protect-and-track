@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './App.css';
 import Header from 'components/Header/Header';
-import Drop from 'scenes/Drop/Drop';
+import Document from 'scenes/Document/Document';
 import { getAppIdBundle } from 'api/accounts';
 import { connect } from 'redux-zero/react';
 import actions from './actions';
@@ -42,10 +42,7 @@ function App({ appIdBundle, setAppIdBundle }) {
         <Router>
           <Route
             path="/"
-            component={({ location }) => {
-              const params = new URLSearchParams(location.search);
-              return <Drop userId={params.get('id') || appIdBundle[0].userId} />;
-            }}
+            component={() => <Document />}
           />
           {/* TODO(dmihalcik): <Route 404 /> */}
         </Router>
@@ -54,7 +51,7 @@ function App({ appIdBundle, setAppIdBundle }) {
   );
 }
 
-const mapToProps = ({ appIdBundle }) => ({ appIdBundle });
+const mapToProps = ({ appIdBundle, file }) => ({ appIdBundle, file });
 export default connect(
   mapToProps,
   actions,

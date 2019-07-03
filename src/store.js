@@ -2,6 +2,7 @@ import createStore from 'redux-zero';
 
 export default createStore({
   appIdBundle: false,
-  share: { state: 'unshared', host: undefined },
+  file: false,
   tdfLog: [],
+  share: { state: 'unshared', host: false },
 });
