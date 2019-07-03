@@ -1,5 +1,6 @@
 import React from 'react';
 import Drop from './components/Drop/Drop';
+import SidebarLogger from '../../scenes/SidebarLogger/SidebarLogger';
 import Policy from './scenes/Policy/Policy';
 import Share from 'scenes/Share/Share';
 
@@ -12,19 +13,25 @@ function Document({ file, userId, updateFile }) {
   console.log(`<Document file="${file}" userId="${userId}">`);
   if (!file) {
     return (
-      <div className="document-wrapper">
-        <Drop userId={userId} updateFile={updateFile} />
-      </div>
+      <>
+        <SidebarLogger />
+        <div className="document-wrapper">
+          <Drop userId={userId} updateFile={updateFile} />
+        </div>
+      </>
     );
   }
   return (
-    <div className="document-wrapper">
-      <Drop userId={userId} updateFile={updateFile} >
-        <Policy file={file} />
-      </Drop>
-      {/* TODO(DSAT-17): make this modal */}
-      <Share />
-    </div>
+    <>
+      <SidebarLogger />
+      <div className="document-wrapper">
+        <Drop userId={userId} updateFile={updateFile} >
+          <Policy file={file} />
+        </Drop>
+        {/* TODO(DSAT-17): make this modal */}
+        <Share />
+      </div>
+    </>
   );
 }
 
