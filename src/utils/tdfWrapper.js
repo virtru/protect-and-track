@@ -1,8 +1,17 @@
 import * as logs from '../constans/methodLogs';
+import store from '../store';
+import { bindActions } from "redux-zero/utils";
+
+const actions = {
+  pushLogAction: ({tdfLog}, value) => ({ tdfLog: [ ...tdfLog, value] }),
+};
+
+const boundActions = bindActions(actions, store);
 
 export default {
-  encrypt({ filename, store, userIds }) {
-    // @todo: add actual file encryption
+  encrypt({ filename, userIds }) {
+    // @todo: add actual file encryption here. Replicate file encryption flow for logs.
+    // @todo: Current flow taken from here https://developer.virtru.com/docs/encrypting-files
 
     // logging encryption flow
     const action = {
@@ -15,10 +24,10 @@ export default {
         logs.encryptRequest(),
       ].join('\n'),
     };
-    _pushAction({ store, action });
+    _pushAction(action);
   },
 };
 
-function _pushAction({ store, action }) {
-  store.set('tdfLog')([...store.get('tdfLog'), action]);
+function _pushAction(action) {
+  boundActions.pushLogAction(action);
 }

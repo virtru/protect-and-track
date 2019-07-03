@@ -1,6 +1,7 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
+import tdfWrapper from 'utils/tdfWrapper';
 
 /**
  * A place to drop an encrypted or uncrypted file.
@@ -33,6 +34,9 @@ function Drop({ children, userId, updateFile }) {
     const verb = (shouldEncrypt ? 'En' : 'De') + 'crypt';
     console.log(`${verb} a file [${filename}] for [${userId}] as [${fileBuffer}]`);
     updateFile({ file: fileHandle, arrayBuffer: fileBuffer });
+
+    // @todo: this encrypt method right now doing nothing, only logs possible encryption flow.
+    tdfWrapper.encrypt({ filename, userIds: [userId]  })
   };
 
   const handleDrop = async event => {

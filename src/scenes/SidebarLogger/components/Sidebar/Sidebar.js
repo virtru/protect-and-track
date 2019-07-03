@@ -5,10 +5,10 @@ import SidebarItem from './components/SidebarItem';
 
 const { useEffect } = React;
 
-const Sidebar = ({ collapse }) => {
+const Sidebar = ({ collapse, events }) => {
   useEffect(() => {
     window.PR.prettyPrint();
-  }, [window.PR.prettyPrint]);
+  }, [window.PR.prettyPrint, events]);
 
   return (
     <div className="SidebarContainer">
@@ -18,8 +18,10 @@ const Sidebar = ({ collapse }) => {
         </span>
       </div>
       <div className="itemWrapper">
-        <Scrollbars autoHide renderThumbVertical={() => <div className="custom_scroll" />}>
-          <SidebarItem />
+        <Scrollbars>
+          {
+            events.map((event, i) => <SidebarItem {...event} key={i} />)
+          }
         </Scrollbars>
       </div>
     </div>
