@@ -6,7 +6,7 @@ import Share from 'scenes/Share/Share';
 
 import './Document.css';
 import actions from './actions';
-import { connect } from "redux-zero/react/index";
+import { connect } from 'redux-zero/react/index';
 
 
 const Document = ({ file, userId, updateFile }) => (
