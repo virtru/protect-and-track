@@ -6,7 +6,6 @@ import Header from 'components/Header/Header';
 import Document from 'scenes/Document/Document';
 import { getAppIdBundle } from 'api/accounts';
 import { connect } from 'redux-zero/react';
-import actions from './actions';
 
 /**
  * An SDK Share App.
@@ -40,10 +39,7 @@ function App({ appIdBundle, setAppIdBundle }) {
       <Header />
       <main className="main">
         <Router>
-          <Route
-            path="/"
-            component={Document}
-          />
+          <Route path="/" component={Document} />
           {/* TODO(dmihalcik): <Route 404 /> */}
         </Router>
       </main>
@@ -52,6 +48,9 @@ function App({ appIdBundle, setAppIdBundle }) {
 }
 
 const mapToProps = ({ appIdBundle, file }) => ({ appIdBundle, file });
+const actions = {
+  setAppIdBundle: (state, value) => ({ appIdBundle: value }),
+};
 export default connect(
   mapToProps,
   actions,
