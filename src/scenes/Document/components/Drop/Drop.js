@@ -39,7 +39,7 @@ function Drop({ children, userId, updateFile }) {
     tdfWrapper.encrypt({ filename, userIds: [userId]  })
   };
 
-  const handleDrop = async event => {
+  const handleFileInput = async event => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -70,12 +70,12 @@ function Drop({ children, userId, updateFile }) {
     }
   };
 
-  function DropZone({ children }) {
+  function DropZone({ children, policyState }) {
     return (
       <div
-        className="Drop"
+        className={`Drop Drop-${policyState}`}
         id="dropzone"
-        onDrop={handleDrop}
+        onDrop={handleFileInput}
         onDragOver={handleDrag}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
@@ -85,28 +85,36 @@ function Drop({ children, userId, updateFile }) {
     );
   }
 
+  function UploadButton() {
+    return (
+      <label className="Drop-UploadButton">
+        <input type="file" id="upload" name="upload[]" multiple onChange={handleFileInput} />
+        <h4 className="Drop-UploadButton-label">Choose File</h4>
+      </label>
+    );
+  }
+
   function EmptyTarget() {
     return (
       <>
         <div className="Drop-box">
           <DropIcon className="Drop-icon" />
         </div>
-        <h2 className="Drop-text">
-          Drag a document here to encrypt
-          <br /> or a TDF to modify its policy
-        </h2>
+        <h2 className="Drop-text">Drag in any regular file to protect it</h2>
+        <UploadButton />
+        <h3>Or you can drag in a protected file to track and share it</h3>
       </>
     );
   }
 
   if (!children) {
     return (
-      <DropZone>
+      <DropZone policyState="empty">
         <EmptyTarget />
       </DropZone>
     );
   }
-  return <DropZone>{children}</DropZone>;
+  return <DropZone policyState="encrypted">{children}</DropZone>;
 }
 
 export default Drop;
