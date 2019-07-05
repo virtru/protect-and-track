@@ -58,7 +58,7 @@ async function upload(name, contentType, content) {
   };
   const base64 = buffer => {
     return btoa(
-      new Uint8Array(buffer).reduce((data, byte) => {
+      buffer.reduce((data, byte) => {
         return data + String.fromCharCode(byte);
       }, ''),
     );

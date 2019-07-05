@@ -7,31 +7,34 @@ const envs = {
     kasEndpoint: 'https://api-develop01.develop.virtru.com/kas',
     acmEndpoint: 'https://acm-develop01.develop.virtru.com',
     easEndpoint: 'https://accounts-develop01.develop.virtru.com',
+    startUrl: 'https://secure-develop01.develop.virtru.com/start',
   },
   staging: {
     stage: 'staging',
     kasEndpoint: 'https://api.staging.virtru.com/kas',
     acmEndpoint: 'https://acm.staging.virtru.com',
     easEndpoint: 'https://accounts.staging.virtru.com',
+    startUrl: 'https://secure.staging.virtru.com/start',
   },
   production: {
     stage: 'production',
     kasEndpoint: 'https://api.virtru.com/kas',
     acmEndpoint: 'https://acm.virtru.com',
     easEndpoint: 'https://accounts.virtru.com',
+    startUrl: 'https://secure.virtru.com/start',
   },
 };
 
-//Add required endpoint selections given the correct environment
-function getEndpointsByEnvironment() {
+function getEnvironment() {
   const stage = process.env.VIRTRU_ENV || 'develop01';
   return envs[stage];
 }
 
-function buildClient(user) {
-  const { acmEndpoint, kasEndpoint, easEndpoint, stage } = getEndpointsByEnvironment();
+function buildClient(userEmail) {
+  const { acmEndpoint, kasEndpoint, easEndpoint, stage } = getEnvironment();
+
   const provider = new Virtru.Client.AuthProviders.GoogleAuthProvider(
-    user,
+    userEmail,
     'local.virtru.com',
     stage,
   );
@@ -46,7 +49,6 @@ function buildClient(user) {
   return client;
 }
 
-//Convert a stream to a buffer
 async function streamToBuffer(stream) {
   const bufs = [];
   stream.on('data', function(d) {
@@ -60,16 +62,15 @@ async function streamToBuffer(stream) {
 }
 
 /**
- *
- * @param {*} fileData
- * @param {*} filename
- * @param {*} userId
- * @param {*} asHtml
+ * Encrypt a file
+ * @param {Buffer} fileData
+ * @param {String} filename
+ * @param {String} userEmail
+ * @param {Boolean} asHtml
  */
-async function encrypt(fileData, filename, userId, asHtml) {
-  //TODO use withBuffer
-
-  const client = buildClient();
+async function encrypt(fileData, filename, userEmail, asHtml) {
+  const { startUrl } = getEnvironment();
+  const client = buildClient(userEmail);
   const contentStream = TDF.createMockStream(fileData);
   const policy = new Virtru.Client.VirtruPolicyBuilder().build();
 
@@ -80,8 +81,14 @@ async function encrypt(fileData, filename, userId, asHtml) {
     .build();
 
   const ct = await client.encrypt(encryptParams);
-  const buff = await streamToBuffer(ct);
-  return { content: buff, name: filename };
+  const buffer = await streamToBuffer(ct);
+
+  if (!asHtml) {
+    return buffer;
+  }
+
+  const manifestString = ''; // TODO: Confirmed with Tyler this is not needed for now
+  return TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`);
 }
 
 export { encrypt };
