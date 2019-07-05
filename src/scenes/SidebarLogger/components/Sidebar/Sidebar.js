@@ -3,11 +3,15 @@ import './Sidebar.css';
 import { Scrollbars } from 'react-custom-scrollbars';
 import SidebarItem from './components/SidebarItem';
 
-const { useEffect } = React;
+const { useEffect, useRef } = React;
 
 const Sidebar = ({ collapse, events }) => {
+  const scroll = useRef();
   useEffect(() => {
     window.PR.prettyPrint();
+    // On log update should scroll to last one
+    const scrollHeight = scroll.current.getScrollHeight();
+    scroll.current.scrollTop(scrollHeight);
   }, [window.PR.prettyPrint, events]);
 
   return (
@@ -18,10 +22,14 @@ const Sidebar = ({ collapse, events }) => {
         </span>
       </div>
       <div className="itemWrapper">
-        <Scrollbars>
-          {
-            events.map((event, i) => <SidebarItem {...event} key={i} />)
-          }
+        <Scrollbars
+          ref={scroll}
+          autoHide
+          renderThumbVertical={() => <div className="custom_scroll" />}
+        >
+          {events.map((event, i) => (
+            <SidebarItem {...event} key={i} />
+          ))}
         </Scrollbars>
       </div>
     </div>

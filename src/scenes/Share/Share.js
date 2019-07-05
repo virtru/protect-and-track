@@ -3,7 +3,6 @@ import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
 import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
 import './Share.css';
-import actions from './actions';
 
 /* global gapi */
 
@@ -158,6 +157,10 @@ function Share({ share, file, updateShare }) {
 }
 
 const mapToProps = ({ share, file }) => ({ share, file });
+
+const actions = {
+  updateShare: (state, value) => ({ share: value }),
+};
 
 export default connect(
   mapToProps,
