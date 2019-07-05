@@ -12,7 +12,7 @@ const Sidebar = ({ collapse, events }) => {
     // On log update should scroll to last one
     const scrollHeight = scroll.current.getScrollHeight();
     scroll.current.scrollTop(scrollHeight);
-  }, [window.PR.prettyPrint, events]);
+  }, [events]);
 
   return (
     <div className="SidebarContainer">
