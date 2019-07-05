@@ -51,7 +51,10 @@ const mapToProps = ({ appIdBundle, file }) => ({ appIdBundle, file });
 const actions = {
   setAppIdBundle: (state, value) => ({ appIdBundle: value }),
 };
-export default connect(
+
+const connected = connect(
   mapToProps,
   actions,
 )(App);
+
+export { connected as default, App as Pure };
