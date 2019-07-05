@@ -15,9 +15,9 @@ const Sidebar = ({ collapse, events }) => {
   }, [window.PR.prettyPrint, events]);
 
   return (
-    <div className="SidebarContainer">
+    <div className="SidebarContainer" data-testid="sidebarBody">
       <div className="collapseContainer">
-        <span onClick={collapse} className="collapse">
+        <span onClick={collapse} className="collapse" data-testid="sidebarCloseButton">
           x
         </span>
       </div>

@@ -1,17 +1,23 @@
 import 'jest-dom/extend-expect';
 import '@testing-library/react/cleanup-after-each';
 
-const matchMedia = () => ({
+const matchMedia = {
   matches: false,
-  addListener: jest.fn(),
+  _events: [],
+  _triggerEvents() {
+    this._events.forEach(event => event());
+  },
+  addListener(listener) {
+    this._events.push(listener);
+  },
   removeListener: jest.fn(),
-});
-window.matchMedia = matchMedia;
+};
+window.matchMedia = () => matchMedia;
+window.PR = {
+  prettyPrint: jest.fn(),
+};
 
 afterEach(() => {
   jest.restoreAllMocks();
-});
-
-afterAll(() => {
-  window.matchMedia = matchMedia;
+  matchMedia._events = [];
 });

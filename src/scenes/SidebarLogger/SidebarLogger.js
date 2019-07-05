@@ -8,10 +8,9 @@ import useIsPortrait from '../../commonHooks/useIsPortrait';
 
 const { useState } = React;
 
-const SidebarLogger = ({tdfLog}) => {
+const SidebarLogger = ({ tdfLog }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isPortrait = useIsPortrait();
-
   const contentToRender = isOpen ? (
     <Sidebar events={tdfLog} collapse={() => setIsOpen(false)} />
   ) : (
@@ -21,6 +20,6 @@ const SidebarLogger = ({tdfLog}) => {
 };
 
 const mapToProps = ({ tdfLog }) => ({ tdfLog });
-export default connect(
-  mapToProps
-)(SidebarLogger);
+
+export { SidebarLogger as Pure };
+export default connect(mapToProps)(SidebarLogger);
