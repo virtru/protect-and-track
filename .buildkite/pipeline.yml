@@ -62,7 +62,7 @@ steps:
   #    command: '.buildkite/scripts/run-sonar-scanner.sh'
   #    agents:
   #      - *agent_queue
-  #
+
   - wait
 
   - label: ':house_with_garden: Create block for deploy environment selection'
