@@ -126,6 +126,9 @@ async function encrypt(fileData, filename, userEmail, asHtml) {
     code: logs.encryptFile(encryptParams),
   });
   const ct = await client.encrypt(encryptParams);
+
+  // TODO - DSAT-44: Stream the file instead of storing in buffer. This will allow
+  // us to handle large files.
   const buffer = await streamToBuffer(ct);
 
   if (!asHtml) {
