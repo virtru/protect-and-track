@@ -5,7 +5,7 @@ import './App.css';
 import Header from 'components/Header/Header';
 import Document from 'scenes/Document/Document';
 import { getAppIdBundle } from 'api/accounts';
-import Store from '../../store';
+import { connect } from 'redux-zero/react';
 
 /**
  * An SDK Share App.
@@ -18,15 +18,12 @@ import Store from '../../store';
  *  - Additional helper text and overlays
  *  - share panel?
  */
-function App() {
-  const store = Store.useStore();
-  const appIdBundle = store.get('appIdBundle');
-
+function App({ appIdBundle, setAppIdBundle }) {
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     async function login() {
       const appIdBundle = await getAppIdBundle();
-      store.set('appIdBundle')(appIdBundle);
+      setAppIdBundle(appIdBundle);
     }
     if (!appIdBundle) {
       login();
@@ -42,18 +39,7 @@ function App() {
       <Header />
       <main className="main">
         <Router>
-          <Route
-            path="/"
-            component={({ location }) => {
-              const params = new URLSearchParams(location.search);
-              return (
-                <Document
-                  file={store.get('file')}
-                  userId={params.get('id') || appIdBundle[0].userId}
-                />
-              );
-            }}
-          />
+          <Route path="/" component={Document} />
           {/* TODO(dmihalcik): <Route 404 /> */}
         </Router>
       </main>
@@ -61,4 +47,11 @@ function App() {
   );
 }
 
-export default App;
+const mapToProps = ({ appIdBundle, file }) => ({ appIdBundle, file });
+const actions = {
+  setAppIdBundle: (state, value) => ({ appIdBundle: value }),
+};
+export default connect(
+  mapToProps,
+  actions,
+)(App);

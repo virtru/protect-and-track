@@ -1,16 +1,13 @@
 import React from 'react';
 import './Drop.css';
-import Store from '../../../../store';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
+import tdfWrapper from 'utils/tdfWrapper';
 
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ children, userId }) {
+function Drop({ children, userId, updateFile }) {
   console.log(`<Drop userId="${userId}">`);
-  const store = Store.useStore();
-  const appIdBundle = store.get('appIdBundle');
-  console.log(appIdBundle);
 
   // Asyncify FileReader's `readAsArrayBuffer`.
   const fileToArrayBuffer = file => {
@@ -36,7 +33,10 @@ function Drop({ children, userId }) {
     const fileBuffer = await fileToArrayBuffer(fileHandle);
     const verb = (shouldEncrypt ? 'En' : 'De') + 'crypt';
     console.log(`${verb} a file [${filename}] for [${userId}] as [${fileBuffer}]`);
-    store.set('file')({ file: fileHandle, arrayBuffer: fileBuffer });
+    updateFile({ file: fileHandle, arrayBuffer: fileBuffer });
+
+    // @todo: this encrypt method right now doing nothing, only logs possible encryption flow.
+    tdfWrapper.encrypt({ filename, userIds: [userId]  })
   };
 
   const handleDrop = async event => {

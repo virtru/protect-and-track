@@ -1,0 +1,54 @@
+.SidebarItemWrapper {
+  padding-bottom: 10px;
+}
+
+.SidebarItemWrapper .title {
+  color: white;
+  margin: 0;
+}
+
+.SidebarItemWrapper .value {
+  color: #5893e0;
+  margin: 0;
+}
+
+.SidebarItemWrapper .key {
+  color: #f4cf6f;
+  margin: 0;
+}
+
+.SidebarItemWrapper .json-wrapper {
+  color: #5893e0;
+  overflow: hidden;
+}
+
+.SidebarItemWrapper .button {
+  color: #5893e0;
+  cursor: pointer;
+  float: right;
+  font-size: 14px;
+  margin-right: 2.5%;
+}
+
+.SidebarItemWrapper .button:active {
+  color: #8bace0;
+}
+
+.SidebarItemWrapper pre.prettyprint {
+  background: #282e37;
+  box-sizing: border-box;
+  margin: 0;
+  width: max-content;
+}
+
+.codeWrapper {
+  border: 1px solid;
+  width: 95%;
+  overflow: auto;
+  margin: 2.5%;
+  border-radius: 5px;
+}
+
+.SidebarItemWrapper .showPayload {
+  text-align: center;
+}

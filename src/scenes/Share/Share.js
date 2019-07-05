@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
 import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
 import './Share.css';
-import Store from 'store.js';
 
 /* global gapi */
 
@@ -47,12 +47,10 @@ function ShareButton({ children, init, onClick, type }) {
   return button;
 }
 
-function ShareSelect() {
-  const store = Store.useStore();
+function ShareSelect({ updateShare, file }) {
   const shareToDrive = async () => {
     try {
-      const file = store.get('file');
-      const state = s => store.set('share')({ state: s, host: 'googledrive' });
+      const state = s => updateShare({ state: s, host: 'googledrive' });
       state('authorizing');
       // NOTE(DSAT-1) In Safari, this call must occur in a direct user action handler.
       // Safari's policy is that popups must be in response to a direct user action,
@@ -66,7 +64,7 @@ function ShareSelect() {
       // TODO(DSAT-14) Store permissions and don't sign out.
       const signOutResponse = gapi.auth2.getAuthInstance().signOut();
       console.log(signOutResponse);
-      store.set('share')({
+      updateShare({
         state: 'shared',
         host: 'googledrive',
         link: 'https://drive.google.com/open?id=' + uploadResponse.result.id,
@@ -76,7 +74,6 @@ function ShareSelect() {
       throw e;
     }
   };
-  const { file } = store.get('file');
   return (
     <ShareBox>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
@@ -99,8 +96,8 @@ function RecipientList() {
   );
 }
 
-function Sharing() {
-  const { file: { name } = {} } = Store.useStore().get('file');
+function Sharing({ file }) {
+  const { file: { name } = {} } = file;
   return (
     <ShareBox>
       <Title>Sharing{(name && ' ' + name) || ''}...</Title>
@@ -124,9 +121,9 @@ function TrackItButton() {
   );
 }
 
-function ShareComplete() {
-  const { host, link } = Store.useStore().get('share');
-  const { file: { name } = {} } = Store.useStore().get('file');
+function ShareComplete({ share, file }) {
+  const { host, link } = share;
+  const { file: { name } = {} } = file;
   return (
     <ShareBox>
       <Title>Track {name || 'your shared file'}</Title>
@@ -145,20 +142,27 @@ function ShareComplete() {
   );
 }
 
-function Share() {
-  let store = Store.useStore();
-  const share = store.get('share');
+function Share({ share, file, updateShare }) {
   switch (share.state) {
     case 'unshared':
-      return <ShareSelect />;
+      return <ShareSelect updateShare={updateShare} file={file} />;
     case 'authorizing':
     case 'sharing':
-      return <Sharing />;
+      return <Sharing file={file} />;
     case 'shared':
-      return <ShareComplete />;
+      return <ShareComplete host={share.host} file={file} />;
     default:
       return <p>{share}</p>;
   }
 }
 
-export default Share;
+const mapToProps = ({ share, file }) => ({ share, file });
+
+const actions = {
+  updateShare: (state, value) => ({ share: value }),
+};
+
+export default connect(
+  mapToProps,
+  actions,
+)(Share);
