@@ -34,11 +34,6 @@ steps:
 
   - wait
 
-  - label: ':heavy_check_mark: Linting'
-    command: 'buildkite-scripts/scripts/run-linting.sh'
-    agents:
-      - *agent_queue
-
   # TODO: commenting out for now but this cannot move forward until this
   #       passes successfully
   # - label: ':key: License Checker'

@@ -19,7 +19,7 @@
     "precommit": "pretty-quick --staged",
     "postcommit": "git update-index -g",
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json}\"",
-    "test": "react-scripts test --watchAll=false",
+    "test": "eslint src && react-scripts test --watchAll=false",
     "test-watch": "react-scripts test",
     "eject": "react-scripts eject"
   },
