@@ -1,0 +1,66 @@
+.Access-revokeAll {
+  height: 24px;
+  background: var(--redDarker);
+  border: 1px solid var(--redDarker);
+  border-radius: 3px;
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 18px;
+  text-align: center;
+}
+
+.Access > ol {
+  margin: 0;
+}
+
+.Grant {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Grant-user {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.Grant-owner {
+  line-height: 36px;
+  margin: 4px;
+  min-width: 64px;
+}
+.Grant-reader {
+  background: #fff;
+  border: 1px solid var(--redDarker);
+  border-radius: 3px;
+  margin: 4px;
+  min-height: 36px;
+  min-width: 64px;
+}
+
+.NewGrant button {
+  background: #fff;
+  border: 1px solid var(--slateDarker);
+  border-radius: 3px;
+  margin: 4px;
+  min-height: 36px;
+  min-width: 64px;
+}
+.NewGrant {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 32px;
+  text-align: left;
+}
+.NewGrant input {
+  border: 1px solid var(--slateDarker);
+  border-radius: 3px;
+  background-color: #fff;
+  height: 36px;
+  margin: 4px;
+  min-width: 256px;
+}

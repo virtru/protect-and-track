@@ -1,0 +1,50 @@
+.RadioButton {
+  cursor: pointer;
+  display: block;
+  margin-bottom: 12px;
+  position: relative;
+  text-align: left;
+  user-select: none;
+}
+
+.RadioButton > input {
+  display: none;
+}
+
+.RadioButton > label {
+  margin: 24px;
+}
+
+.RadioButton > label::before {
+  content: '';
+  margin-right: 5px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background: #fff;
+  border: var(--slateDarker) solid 1px;
+  border-radius: 50%;
+}
+
+.RadioButton > input ~ label::after {
+  content: '';
+  margin-right: 5px;
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  height: 0;
+  width: 0;
+  background: var(--slateDarker);
+  border-radius: 50%;
+  transition: 100ms;
+  transition-timing-function: ease-in;
+}
+
+.RadioButton > input:checked ~ label::after {
+  top: 3px;
+  left: 3px;
+  height: 12px;
+  width: 12px;
+}

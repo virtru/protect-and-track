@@ -1,0 +1,8 @@
+.Document-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.Document-details > .PolicyPanel {
+  margin-left: 48px;
+}

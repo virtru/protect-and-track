@@ -1,0 +1,14 @@
+.Filename {
+  color: var(--blueDarkest);
+  /* TODO(dmihalcik) on my laptop anyway, raleway has no weights */
+  font-family: sans-serif;
+  font-size: 25px;
+  line-height: 30px;
+  font-weight: lighter;
+  padding-left: 48px;
+  text-align: left;
+}
+
+.Filename-tdf {
+  font-weight: bold;
+}

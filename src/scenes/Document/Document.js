@@ -1,5 +1,6 @@
 import React from 'react';
 import Drop from './components/Drop/Drop';
+import Filename from './components/Filename/Filename';
 import Policy from './scenes/Policy/Policy';
 import Share from 'scenes/Share/Share';
 
@@ -13,7 +14,10 @@ function Document({ file, userId }) {
   return (
     <>
       <Drop userId={userId}>
-        <Policy file={file} />
+        <div class="Document-details">
+          <Filename file={file} />
+          <Policy file={file} />
+        </div>
       </Drop>
       {/* TODO(DSAT-17): make this modal */}
       <Share file={file} />
