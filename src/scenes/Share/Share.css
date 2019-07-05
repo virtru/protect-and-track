@@ -60,12 +60,11 @@
   background: white;
   border: 1px solid #c4c4c4;
   border-radius: 8px;
-  margin: auto;
   padding: 24px;
   display: flex;
   flex-direction: column;
-
   width: 296px;
+  margin: 10px;
 }
 
 .Share-box {

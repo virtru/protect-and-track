@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "clipboard": "^2.0.4",
     "react": "^16.8.6",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "undux": "^5.0.0-beta.22",
+    "redux-zero": "^5.0.4",
     "virtru-tdf3-js": "git@github.com:virtru/virtru-tdf3-js.git#semver:^0"
   },
   "scripts": {

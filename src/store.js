@@ -1,6 +1,12 @@
-import { createConnectedStore } from 'undux';
+import createStore from 'redux-zero';
+import {clientIntialize} from './constans/methodLogs';
 
-export default createConnectedStore({
+export default createStore({
   appIdBundle: false,
-  share: { state: 'unshared', host: undefined },
+  file: false,
+  tdfLog: [{
+    title: 'Module init',
+    code: clientIntialize(),
+  }],
+  share: { state: 'unshared', host: false },
 });
