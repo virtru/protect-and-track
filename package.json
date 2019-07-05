@@ -2,6 +2,7 @@
   "name": "sdk-share",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://demos.developer.virtru.com/react",
   "dependencies": {
     "clipboard": "^2.0.4",
     "react": "^16.8.6",
