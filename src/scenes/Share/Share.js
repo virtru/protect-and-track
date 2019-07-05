@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
-
 import Loading from './components/Loading/Loading';
 import encrypt from 'utils/tdfWrapper';
 import { init as initGapi, upload as uploadToDrive } from './services/gsuite';

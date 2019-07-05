@@ -1,6 +1,7 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
+import tdfWrapper from 'utils/tdfWrapper';
 
 /**
  * A place to drop an encrypted or uncrypted file.
