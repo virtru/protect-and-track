@@ -2,7 +2,7 @@ import React from 'react';
 import './ShowSidebar.css';
 
 export default ({ show }) => (
-  <div className="ShowSidebarButton" onClick={show}>
+  <div className="ShowSidebarButton" data-testid="sidebarButton" onClick={show}>
     <svg
       className="ShowSidebarIcon"
       xmlns="http://www.w3.org/2000/svg"

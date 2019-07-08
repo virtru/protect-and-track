@@ -21,7 +21,7 @@ const Sidebar = ({ collapse, events }) => {
           x
         </span>
       </div>
-      <div className="itemWrapper">
+      <div className="itemWrapper" data-testid="sidebarScrollbars">
         <Scrollbars
           ref={scroll}
           autoHide
