@@ -8,22 +8,14 @@
 .Drop {
   background: #fff;
   border: 3px dashed var(--slateLighter);
-  border-radius: 25px;
-
+  border-radius: 12px;
   font-size: 14px;
-
   min-height: 480px;
   min-width: 512px;
 
-  border-radius: 12px;
-
-  text-align: center;
-
-  margin: 0 auto;
-
-  display: inline-flex;
-  flex-direction: column;
+  display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
 }
 
@@ -36,7 +28,7 @@
 }
 
 .Drop-icon {
-  fill: #979797;
+  fill: var(--slatePrimary);
 }
 
 .Drop-text {
