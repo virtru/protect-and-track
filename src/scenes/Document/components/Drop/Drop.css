@@ -6,23 +6,30 @@
 }
 
 .Drop {
+  background: #fff;
+  border: 3px dashed var(--slateLighter);
+  border-radius: 12px;
   font-size: 14px;
-  height: 300px;
-  width: 500px;
-  text-align: center;
-  border: 4px dashed #707070;
-  background-repeat: no-repeat;
-  border-radius: 25px;
-  background-color: white;
+  min-height: 480px;
+  max-width: 512px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
   margin: 10px;
 }
 
+.Drop-encrypted {
+  border: 3px solid var(--slateLighter);
+}
+
 .Drop-box {
-  margin-top: 20%;
+  margin-top: 10%;
 }
 
 .Drop-icon {
-  fill: #979797;
+  fill: var(--slatePrimary);
 }
 
 .Drop-text {
@@ -31,9 +38,35 @@
 }
 
 .Drop-hover {
-  background-color: darkgray;
+  border: 3px dashed var(--blueDarker);
 }
 
 #dropzone * {
   pointer-events: none;
+}
+
+.Drop-UploadButton {
+  height: 48px;
+  width: 168px;
+  background: var(--blueDarker);
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Drop-UploadButton-label {
+  color: #fff;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24px;
+  padding: 6px 12px;
+}
+#dropzone .Drop-UploadButton {
+  pointer-events: all;
+}
+
+.Drop-UploadButton input[type='file'] {
+  display: none;
 }
