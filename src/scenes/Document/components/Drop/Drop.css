@@ -7,7 +7,7 @@
 
 .Drop {
   background: #fff;
-  border: 4px dashed #707070;
+  border: 3px dashed var(--slateLighter);
   border-radius: 25px;
 
   font-size: 14px;
@@ -27,14 +27,8 @@
   justify-content: center;
 }
 
-.Drop-empty {
-  background-color: #fff;
-  border: 3px dashed var(--redDarker);
-}
-
 .Drop-encrypted {
-  background-color: #fff;
-  border: 3px solid var(--redDarker);
+  border: 3px solid var(--slateLighter);
 }
 
 .Drop-box {
@@ -51,7 +45,7 @@
 }
 
 .Drop-hover {
-  background-color: darkgray;
+  border: 3px dashed var(--blueDarker);
 }
 
 #dropzone * {
@@ -61,8 +55,8 @@
 .Drop-UploadButton {
   height: 48px;
   width: 168px;
+  background: var(--blueDarker);
   border-radius: 3px;
-  background-color: var(--blueDarker);
   cursor: pointer;
   display: inline-flex;
 
@@ -70,12 +64,12 @@
   justify-content: center;
 }
 .Drop-UploadButton-label {
-  padding: 6px 12px;
+  color: #fff;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
   font-weight: bold;
   line-height: 24px;
-  color: #fff;
+  padding: 6px 12px;
 }
 #dropzone .Drop-UploadButton {
   pointer-events: all;

@@ -46,6 +46,8 @@ function Drop({ children, userId, updateFile }) {
     const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
     for (const file of files) {
       await processFile(file);
+      // TODO(DSAT-45) Handle more than one file, or don't
+      return;
     }
   };
 
