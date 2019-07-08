@@ -40,7 +40,7 @@
 }
 
 .Share-trackit {
-  background: #174eb6;
+  background: #var(--blueDarker);
   color: #ffffff;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
