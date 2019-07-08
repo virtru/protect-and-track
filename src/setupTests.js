@@ -16,6 +16,7 @@ window.matchMedia = () => matchMedia;
 window.PR = {
   prettyPrint: jest.fn(),
 };
+window.alert = jest.fn();
 
 afterEach(() => {
   jest.restoreAllMocks();

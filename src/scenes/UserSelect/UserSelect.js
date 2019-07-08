@@ -53,4 +53,5 @@ class UserSelect extends React.Component {
   }
 }
 
+export { UserSelect as Pure };
 export default withRouter(UserSelect);
