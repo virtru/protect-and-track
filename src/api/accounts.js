@@ -7,9 +7,14 @@ const ACCOUNTS_URL = USE_SINGLE_ENDPOINT
   : 'https://accounts-develop01.develop.virtru.com';
 const ACCOUNTS_APPID_BUNDLE_URL = `${ACCOUNTS_URL}/api/currentAppIdBundle`;
 const LOGIN_URL = `${ACCOUNTS_URL}/login?loginPlatform=${LOGIN_PLATFORM}&loginRedirectUrl=${window.location}`;
+const LOGOUT_URL = `${ACCOUNTS_URL}/logout?loginPlatform=${LOGIN_PLATFORM}&loginRedirectUrl=${window.location}`;
 
 export function getLoginUrl() {
   return LOGIN_URL;
+}
+
+export function getLogoutUrl() {
+  return LOGOUT_URL;
 }
 
 export const redirectToLogin = async () => {

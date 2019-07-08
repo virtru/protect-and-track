@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
 import Header from 'components/Header/Header';
 import Document from 'scenes/Document/Document';
-import { getAppIdBundle, getLoginUrl } from 'api/accounts';
+import { getAppIdBundle, getLoginUrl, getLogoutUrl } from 'api/accounts';
 import { connect } from 'redux-zero/react';
 
 /**
@@ -19,6 +19,7 @@ import { connect } from 'redux-zero/react';
  *  - share panel?
  */
 function App({ appIdBundle, setAppIdBundle }) {
+  console.log(appIdBundle);
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     async function login() {
@@ -30,13 +31,17 @@ function App({ appIdBundle, setAppIdBundle }) {
     }
   });
 
-  if (!appIdBundle) {
-    return <h1 className="loading-text">Loading...</h1>;
-  }
+  // if (!appIdBundle) {
+  //   return <h1 className="loading-text">Loading...</h1>;
+  // }
 
   return (
     <>
-      <Header isLoggedIn={!!appIdBundle} loginUrl={getLoginUrl()} />
+      <Header
+        isLoggedIn={appIdBundle && appIdBundle.length}
+        loginUrl={getLoginUrl()}
+        logoutUrl={getLogoutUrl()}
+      />
       <main className="main">
         <Router>
           <Route path="/" component={Document} />
