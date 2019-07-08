@@ -36,7 +36,7 @@ function Drop({ children, userId, updateFile }) {
     updateFile({ file: fileHandle, arrayBuffer: fileBuffer });
 
     // @todo: this encrypt method right now doing nothing, only logs possible encryption flow.
-    tdfWrapper.encrypt({ filename, userIds: [userId]  })
+    tdfWrapper.encrypt({ filename, userIds: [userId] });
   };
 
   const handleFileInput = async event => {
@@ -88,7 +88,7 @@ function Drop({ children, userId, updateFile }) {
   function UploadButton() {
     return (
       <label className="Drop-UploadButton">
-        <input type="file" id="upload" name="upload[]" multiple onChange={handleFileInput} />
+        <input type="file" id="upload" name="upload[]" onChange={handleFileInput} />
         <h4 className="Drop-UploadButton-label">Choose File</h4>
       </label>
     );

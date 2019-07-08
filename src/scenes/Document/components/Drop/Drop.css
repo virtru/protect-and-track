@@ -62,8 +62,7 @@
   height: 48px;
   width: 168px;
   border-radius: 3px;
-  background-color: #var(--blueDarker);
-  display: inline-block;
+  background-color: var(--blueDarker);
   cursor: pointer;
   display: inline-flex;
 
