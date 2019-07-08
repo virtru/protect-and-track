@@ -40,7 +40,7 @@ h2 {
 }
 
 a {
-  text-decoration: none !important;
+  color: var(--blueLighter);
 }
 
 input {
