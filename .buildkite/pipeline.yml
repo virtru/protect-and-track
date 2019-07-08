@@ -34,7 +34,7 @@ steps:
 
   - wait
 
-  # TODO: commenting out for now but this cannot move forward until this
+  # TODO(DSAT-40): commenting out for now but this cannot move forward until this
   #       passes successfully
   # - label: ':key: License Checker'
   #   command: 'buildkite-scripts/scripts/run-license-checker.sh'
