@@ -15,6 +15,9 @@ const Document = ({ file, userId, updateFile }) => (
         {file && <Policy file={file} />}
       </Drop>
       {file && <Share />}
+      <section>
+        <h3>Placeholder for bottom area</h3>
+      </section>
     </div>
     <Sidebar />
   </>
@@ -22,7 +25,7 @@ const Document = ({ file, userId, updateFile }) => (
 
 const mapToProps = ({ file, appIdBundle }) => ({
   file,
-  userId: new URLSearchParams(window.location.search).get('id') || get(appIdBundle[0], 'userId'),
+  userId: new URLSearchParams(window.location.search).get('id') || get(appIdBundle, '[0].userId'),
 });
 const actions = {
   updateFile: (state, value) => ({ file: value }),

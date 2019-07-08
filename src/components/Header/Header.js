@@ -9,18 +9,21 @@ import { ReactComponent as GithubIcon } from './github-icon.svg';
 /**
  * Header Component that displays content at the top of the page.
  */
-const Header = ({ loginUrl, logoutUrl, isLoggedIn }) => {
+const Header = ({ loginUrl, logoutUrl, isLoggedIn, userEmail }) => {
   function renderAuth() {
     if (isLoggedIn) {
       return (
-        <a href={logoutUrl} className="sign-in">
-          Sign Out
-        </a>
+        <>
+          <span>{userEmail}</span>
+          <a href={logoutUrl} className="signIn">
+            Sign Out
+          </a>
+        </>
       );
     }
 
     return (
-      <a href={loginUrl} className="sign-in">
+      <a href={loginUrl} className="signIn">
         Sign In
       </a>
     );
@@ -45,7 +48,7 @@ const Header = ({ loginUrl, logoutUrl, isLoggedIn }) => {
           <img alt="Virtru SDK Github" src={GithubLogo} />
         </a>
       </button>
-      {renderAuth()}
+      <span className="headerAuth">{renderAuth()}</span>
     </div>
   );
 };

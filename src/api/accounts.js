@@ -34,10 +34,10 @@ export const getAppIdBundle = async () => {
       return await response.json();
     } catch (err) {
       console.error(err);
-      redirectToLogin();
+      // redirectToLogin();
     }
   }
 
   // Go to accounts login page if no appId is returned
-  redirectToLogin();
+  // redirectToLogin();
 };

@@ -43,9 +43,18 @@
   width: auto;
 }
 
-.sign-in {
+.signIn {
   font-size: 13px;
   line-height: 18px;
   flex-grow: 1;
   text-align: right;
+  margin-left: 10px;
+}
+
+.headerAuth {
+  font-size: 13px;
+  line-height: 18px;
+  color: white;
+  text-align: right;
+  flex-grow: 1;
 }

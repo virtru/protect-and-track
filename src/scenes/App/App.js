@@ -31,7 +31,7 @@ function App({ appIdBundle, setAppIdBundle }) {
     }
   });
 
-  // if (!appIdBundle) {
+  // if (!loading) {
   //   return <h1 className="loading-text">Loading...</h1>;
   // }
 
@@ -41,6 +41,7 @@ function App({ appIdBundle, setAppIdBundle }) {
         isLoggedIn={appIdBundle && appIdBundle.length}
         loginUrl={getLoginUrl()}
         logoutUrl={getLogoutUrl()}
+        userEmail={appIdBundle && appIdBundle[0].userId}
       />
       <main className="main">
         <Router>

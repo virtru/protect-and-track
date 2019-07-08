@@ -3,6 +3,7 @@
   flex: 1;
   display: flex;
   width: 100%;
+  height: 100%;
 }
 
 .Drop {
@@ -10,8 +11,8 @@
   border: 3px dashed var(--slateLighter);
   border-radius: 12px;
   font-size: 14px;
-  min-height: 480px;
-  min-width: 512px;
+  width: 100%;
+  height: 100%;
 
   display: flex;
   align-items: center;
