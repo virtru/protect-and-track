@@ -106,7 +106,7 @@ steps:
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
     agents:
       - *agent_queue
-# TODO: uncomment all this stuff when we can actuall deploy environments
+# TODO(DSAT-11): uncomment all this stuff when we can actuall deploy environments
 #
 #  - wait
 #
