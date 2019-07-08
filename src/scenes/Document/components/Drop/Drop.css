@@ -50,8 +50,7 @@
   background: var(--blueDarker);
   border-radius: 3px;
   cursor: pointer;
-  display: inline-flex;
-
+  display: flex;
   align-items: center;
   justify-content: center;
 }
