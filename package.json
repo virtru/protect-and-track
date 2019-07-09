@@ -5,6 +5,7 @@
   "homepage": "https://demos.developer.virtru.com/react",
   "dependencies": {
     "clipboard": "^2.0.4",
+    "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.8.6",

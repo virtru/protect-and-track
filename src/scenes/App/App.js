@@ -18,22 +18,23 @@ import { connect } from 'redux-zero/react';
  *  - Additional helper text and overlays
  *  - share panel?
  */
-function App({ appIdBundle, setAppIdBundle }) {
+function App({ appIdBundle, setAppIdBundle, isLoading, setIsLoading }) {
   console.log(appIdBundle);
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     async function login() {
       const appIdBundle = await getAppIdBundle();
       setAppIdBundle(appIdBundle);
+      setIsLoading(false);
     }
     if (!appIdBundle) {
       login();
     }
   });
 
-  // if (!loading) {
-  //   return <h1 className="loading-text">Loading...</h1>;
-  // }
+  if (isLoading) {
+    return <h1 className="loading-text">Loading...</h1>;
+  }
 
   return (
     <>
@@ -53,9 +54,10 @@ function App({ appIdBundle, setAppIdBundle }) {
   );
 }
 
-const mapToProps = ({ appIdBundle, file }) => ({ appIdBundle, file });
+const mapToProps = ({ appIdBundle, file, isLoading }) => ({ appIdBundle, file, isLoading });
 const actions = {
   setAppIdBundle: (state, value) => ({ appIdBundle: value }),
+  setIsLoading: (state, value) => ({ isLoading: value }),
 };
 
 const connected = connect(
