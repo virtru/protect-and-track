@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Pure as App } from './App';
-import jest from 'jest';
 
 describe('App', () => {
   test('renders without crashing', () => {

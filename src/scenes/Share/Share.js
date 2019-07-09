@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
-import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
+import encrypt from 'utils/tdfWrapper';
+import gsuite from './services/gsuite';
 import './Share.css';
-
-/* global gapi */
 
 function Ico({ type }) {
   return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
@@ -56,14 +55,16 @@ function ShareSelect({ updateShare, file }) {
       // Safari's policy is that popups must be in response to a direct user action,
       // so no `await` calls can preceded this. To work around this, we load the API
       // before enabling the share button so this is the first gapi call.
-      const authResponse = await gapi.auth2.getAuthInstance().signIn();
-      console.log(authResponse);
+      const userEmail = await gsuite.signIn();
+
       state('sharing');
-      const uploadResponse = await uploadToDrive(file.file.name, file.file.type, file.arrayBuffer);
-      console.log(uploadResponse);
+      const asHtml = true;
+      const encryptedContent = await encrypt(file.arrayBuffer, file.file.name, userEmail, asHtml);
+      const filename = asHtml ? `${file.file.name}.html` : `${file.file.name}.tdf`;
+      const uploadResponse = await gsuite.upload(filename, file.file.type, encryptedContent);
+
       // TODO(DSAT-14) Store permissions and don't sign out.
-      const signOutResponse = gapi.auth2.getAuthInstance().signOut();
-      console.log(signOutResponse);
+      gsuite.signOut();
       updateShare({
         state: 'shared',
         host: 'googledrive',
@@ -77,7 +78,7 @@ function ShareSelect({ updateShare, file }) {
   return (
     <ShareBox>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
-      <ShareButton type="googledrive" onClick={shareToDrive} init={initGapi}>
+      <ShareButton type="googledrive" onClick={shareToDrive} init={gsuite.init}>
         Google Drive
       </ShareButton>
       <ShareButton type="onedrive">OneDrive</ShareButton>
@@ -150,7 +151,7 @@ function Share({ share, file, updateShare }) {
     case 'sharing':
       return <Sharing file={file} />;
     case 'shared':
-      return <ShareComplete host={share.host} file={file} />;
+      return <ShareComplete share={share} file={file} />;
     default:
       return <p>{share}</p>;
   }
