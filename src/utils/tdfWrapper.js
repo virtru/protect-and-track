@@ -1,9 +1,11 @@
+import { bindActions } from 'redux-zero/utils';
+import moment from 'moment';
+
 import * as logs from '../constans/methodLogs';
 import store from '../store';
-import { bindActions } from "redux-zero/utils";
 
 const actions = {
-  pushLogAction: ({tdfLog}, value) => ({ tdfLog: [ ...tdfLog, value] }),
+  pushLogAction: ({ tdfLog }, value) => ({ tdfLog: [...tdfLog, value] }),
 };
 
 const boundActions = bindActions(actions, store);
@@ -29,5 +31,6 @@ export default {
 };
 
 function _pushAction(action) {
+  action.timestamp = moment();
   boundActions.pushLogAction(action);
 }

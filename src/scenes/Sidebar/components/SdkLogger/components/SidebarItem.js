@@ -1,5 +1,4 @@
-import React, { useRef, useEffect } from 'react';
-import Clipboard from 'clipboard';
+import React from 'react';
 
 import './SidebarItem.css';
 
@@ -11,7 +10,7 @@ export default ({ title, code, timestamp }) => {
         <div className="codeWrapper">
           <pre className="prettyprint">{code}</pre>
         </div>
-        <div className="timestamp">20:14:13</div>
+        <div className="timestamp">{timestamp.format('h:mm:ss')}</div>
       </div>
     </div>
   );
