@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
 import encrypt from 'utils/tdfWrapper';
-import { init as initGapi, upload as uploadToDrive } from './services/gsuite';
+import gsuite from './services/gsuite';
 import './Share.css';
-
-/* global gapi */
 
 function Ico({ type }) {
   return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
@@ -57,21 +55,16 @@ function ShareSelect({ updateShare, file }) {
       // Safari's policy is that popups must be in response to a direct user action,
       // so no `await` calls can preceded this. To work around this, we load the API
       // before enabling the share button so this is the first gapi call.
-      const authResponse = await gapi.auth2.getAuthInstance().signIn();
-      console.log(authResponse);
+      const userEmail = await gsuite.signIn();
 
-      console.log('encrypting');
-      const userEmail = authResponse.w3.U3; // Grab email from google auth
+      state('sharing');
       const asHtml = true;
       const encryptedContent = await encrypt(file.arrayBuffer, file.file.name, userEmail, asHtml);
       const filename = asHtml ? `${file.file.name}.html` : `${file.file.name}.tdf`;
-      state('sharing');
+      const uploadResponse = await gsuite.upload(filename, file.file.type, encryptedContent);
 
-      const uploadResponse = await uploadToDrive(filename, file.file.type, encryptedContent);
-      console.log(uploadResponse);
       // TODO(DSAT-14) Store permissions and don't sign out.
-      const signOutResponse = gapi.auth2.getAuthInstance().signOut();
-      console.log(signOutResponse);
+      gsuite.signOut();
       updateShare({
         state: 'shared',
         host: 'googledrive',
@@ -85,7 +78,7 @@ function ShareSelect({ updateShare, file }) {
   return (
     <ShareBox>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
-      <ShareButton type="googledrive" onClick={shareToDrive} init={initGapi}>
+      <ShareButton type="googledrive" onClick={shareToDrive} init={gsuite.init}>
         Google Drive
       </ShareButton>
       <ShareButton type="onedrive">OneDrive</ShareButton>
