@@ -1,7 +1,7 @@
 import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
 
-import * as logs from '../constans/methodLogs';
+import * as logs from '../constants/methodLogs';
 import store from '../store';
 
 const actions = {
