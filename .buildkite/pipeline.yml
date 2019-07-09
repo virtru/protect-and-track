@@ -29,7 +29,7 @@ steps:
   - wait
 
   - label: ':npm: Install Dependencies'
-    command: 'buildkite-scripts/scripts/npm-install.sh'
+    command: 'buildkite-scripts/mars/wrap/npm-ci.sh'
     agents:
       - *agent_queue
 
