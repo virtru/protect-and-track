@@ -1,11 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { shallow } from 'enzyme';
 import { Pure as App } from './App';
 
 describe('App', () => {
   test('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<App appIdBundle={false} setAppIdBundle={() => {}} />, div);
-    ReactDOM.unmountComponentAtNode(div);
+    const wrapper = shallow(
+      <App
+        appIdBundle={false}
+        setAppIdBundle={() => {}}
+        isLoading={true}
+        setIsLoading={() => {}}
+      />,
+      div,
+    );
+    expect(wrapper.text()).toContain('Loading');
   });
 });

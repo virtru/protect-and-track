@@ -1,3 +1,6 @@
+import Enzyme from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
 window.matchMedia = jest.fn().mockImplementation(query => {
   return {
     matches: false,
@@ -7,3 +10,5 @@ window.matchMedia = jest.fn().mockImplementation(query => {
     removeListener: jest.fn(),
   };
 });
+
+Enzyme.configure({ adapter: new Adapter() });

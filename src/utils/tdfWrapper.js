@@ -1,9 +1,10 @@
 import Virtru from 'virtru-tdf3-js';
 import TDF from 'tdf3-js';
 import { bindActions } from 'redux-zero/utils';
+import moment from 'moment';
 
-import * as logs from '../constans/methodLogs';
-import envs from '../constans/environment';
+import * as logs from 'constants/methodLogs';
+import envs from 'constants/environment';
 import store from '../store';
 
 function getEnvironment() {
@@ -30,6 +31,7 @@ const actions = {
 const boundActions = bindActions(actions, store);
 
 function _pushAction(action) {
+  action.timestamp = moment();
   boundActions.pushLogAction(action);
 }
 
