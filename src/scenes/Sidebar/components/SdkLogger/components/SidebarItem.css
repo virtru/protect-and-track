@@ -1,10 +1,15 @@
 .SidebarItemWrapper {
-  padding-bottom: 10px;
+  padding: 20px 25px;
+  background-color: var(--slateDarkest);
 }
 
 .SidebarItemWrapper .title {
-  color: white;
-  margin: 0;
+  font-family: 'Open Sans';
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 18px;
+  font-weight: 600;
 }
 
 .SidebarItemWrapper .value {
@@ -42,13 +47,18 @@
 }
 
 .codeWrapper {
-  border: 1px solid;
-  width: 95%;
   overflow: auto;
-  margin: 2.5%;
-  border-radius: 5px;
+  margin: 15px 0;
 }
 
 .SidebarItemWrapper .showPayload {
   text-align: center;
+}
+
+.SidebarItemWrapper .timestamp {
+  font-family: 'Open Sans';
+  color: var(--slateLighter);
+  text-align: right;
+  font-size: 13px;
+  line-height: 18px;
 }

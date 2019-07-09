@@ -1,13 +1,16 @@
 import React from 'react';
-import './Sidebar.css';
+import './SdkLogger.css';
 import { Scrollbars } from 'react-custom-scrollbars';
 import SidebarItem from './components/SidebarItem';
 
 const { useEffect, useRef } = React;
 
-const Sidebar = ({ collapse, events }) => {
+const SdkLogger = ({ collapse, events }) => {
   const scroll = useRef();
   useEffect(() => {
+    if (!window.PR) {
+      return;
+    }
     window.PR.prettyPrint();
     // On log update should scroll to last one
     const scrollHeight = scroll.current.getScrollHeight();
@@ -15,12 +18,7 @@ const Sidebar = ({ collapse, events }) => {
   }, [events]);
 
   return (
-    <div className="SidebarContainer">
-      <div className="collapseContainer">
-        <span onClick={collapse} className="collapse">
-          x
-        </span>
-      </div>
+    <div className="LoggerContainer">
       <div className="itemWrapper">
         <Scrollbars
           ref={scroll}
@@ -36,4 +34,4 @@ const Sidebar = ({ collapse, events }) => {
   );
 };
 
-export default Sidebar;
+export default SdkLogger;
