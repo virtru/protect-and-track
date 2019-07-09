@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'redux-zero/react';
 
 import './App.css';
 import Header from 'components/Header/Header';
 import Document from 'scenes/Document/Document';
-import { getAppIdBundle, getLoginUrl, getLogoutUrl } from 'api/accounts';
-import { connect } from 'redux-zero/react';
+import { getAppIdBundle } from 'api/accounts';
+import { LOGIN_URL, LOGOUT_URL } from 'constants/api';
 
 /**
  * An SDK Share App.
@@ -40,8 +41,8 @@ function App({ appIdBundle, setAppIdBundle, isLoading, setIsLoading }) {
     <>
       <Header
         isLoggedIn={appIdBundle && appIdBundle.length}
-        loginUrl={getLoginUrl()}
-        logoutUrl={getLogoutUrl()}
+        loginUrl={LOGIN_URL}
+        logoutUrl={LOGOUT_URL}
         userEmail={appIdBundle && appIdBundle[0].userId}
       />
       <main className="main">
