@@ -1,16 +1,12 @@
 import React from 'react';
 import './Drop.css';
-import Store from '../../../../store';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
 
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ children, userId }) {
+function Drop({ children, userId, updateFile }) {
   console.log(`<Drop userId="${userId}">`);
-  const store = Store.useStore();
-  const appIdBundle = store.get('appIdBundle');
-  console.log(appIdBundle);
 
   // Asyncify FileReader's `readAsArrayBuffer`.
   const fileToArrayBuffer = file => {
@@ -36,16 +32,18 @@ function Drop({ children, userId }) {
     const fileBuffer = await fileToArrayBuffer(fileHandle);
     const verb = (shouldEncrypt ? 'En' : 'De') + 'crypt';
     console.log(`${verb} a file [${filename}] for [${userId}] as [${fileBuffer}]`);
-    store.set('file')({ file: fileHandle, arrayBuffer: fileBuffer });
+    updateFile({ file: fileHandle, arrayBuffer: fileBuffer });
   };
 
-  const handleDrop = async event => {
+  const handleFileInput = async event => {
     event.stopPropagation();
     event.preventDefault();
 
     const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
     for (const file of files) {
       await processFile(file);
+      // TODO(DSAT-45) Handle more than one file, or don't
+      return;
     }
   };
 
@@ -70,12 +68,12 @@ function Drop({ children, userId }) {
     }
   };
 
-  function DropZone({ children }) {
+  function DropZone({ children, policyState }) {
     return (
       <div
-        className="Drop"
+        className={`Drop Drop-${policyState}`}
         id="dropzone"
-        onDrop={handleDrop}
+        onDrop={handleFileInput}
         onDragOver={handleDrag}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
@@ -85,28 +83,36 @@ function Drop({ children, userId }) {
     );
   }
 
+  function UploadButton() {
+    return (
+      <label className="Drop-UploadButton">
+        <input type="file" id="upload" name="upload[]" onChange={handleFileInput} />
+        <h4 className="Drop-UploadButton-label">Choose File</h4>
+      </label>
+    );
+  }
+
   function EmptyTarget() {
     return (
       <>
         <div className="Drop-box">
           <DropIcon className="Drop-icon" />
         </div>
-        <h2 className="Drop-text">
-          Drag a document here to encrypt
-          <br /> or a TDF to modify its policy
-        </h2>
+        <h2 className="Drop-text">Drag in any regular file to protect it</h2>
+        <UploadButton />
+        <h3>Or you can drag in a protected file to track and share it</h3>
       </>
     );
   }
 
   if (!children) {
     return (
-      <DropZone>
+      <DropZone policyState="empty">
         <EmptyTarget />
       </DropZone>
     );
   }
-  return <DropZone>{children}</DropZone>;
+  return <DropZone policyState="encrypted">{children}</DropZone>;
 }
 
 export default Drop;

@@ -1,0 +1,11 @@
+.sidebarWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  height: 100%;
+}
+
+.sidebarContainer {
+  flex: 1;
+  position: relative;
+}

@@ -41,6 +41,15 @@ async function init() {
   return gapi;
 }
 
+async function signIn() {
+  const authResponse = await gapi.auth2.getAuthInstance().signIn();
+  return authResponse.w3.U3; // Grab email from google auth
+}
+
+async function signOut() {
+  return gapi.auth2.getAuthInstance().signOut();
+}
+
 async function upload(name, contentType, content) {
   // NOTE(DSAT-1): Unfortunately, AFAICT the current `drive.files.create` method in GAPI
   // does not support POST content. See relevant discussions:
@@ -58,7 +67,7 @@ async function upload(name, contentType, content) {
   };
   const base64 = buffer => {
     return btoa(
-      new Uint8Array(buffer).reduce((data, byte) => {
+      buffer.reduce((data, byte) => {
         return data + String.fromCharCode(byte);
       }, ''),
     );
@@ -88,4 +97,4 @@ async function upload(name, contentType, content) {
   return await gapi.client.request(request);
 }
 
-export { init, upload };
+export default { init, upload, signIn, signOut };

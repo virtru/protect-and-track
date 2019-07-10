@@ -40,7 +40,7 @@
 }
 
 .Share-trackit {
-  background: #174eb6;
+  background: #var(--blueDarker);
   color: #ffffff;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -60,12 +60,11 @@
   background: white;
   border: 1px solid #c4c4c4;
   border-radius: 8px;
-  margin: auto;
   padding: 24px;
   display: flex;
   flex-direction: column;
-
   width: 296px;
+  margin: 10px;
 }
 
 .Share-box {

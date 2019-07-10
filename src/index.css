@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700|Raleway&display=swap');
 
 html,
 body {
@@ -16,6 +16,10 @@ body {
   background: #f3f4f7;
   margin: 0;
   font-family: 'Raleway', sans-serif;
+}
+
+#root {
+  height: 100%;
 }
 
 main {
@@ -43,7 +47,7 @@ h2 {
 }
 
 a {
-  text-decoration: none !important;
+  color: var(--blueLighter);
 }
 
 input {
@@ -61,4 +65,8 @@ input:focus {
 input[type='text'] {
   font-family: 'Raleway';
   font-size: 17px;
+}
+
+button {
+  cursor: pointer;
 }

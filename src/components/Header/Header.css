@@ -13,16 +13,11 @@
   fill: var(--white);
 }
 
-.headerText {
-  flex-grow: 1;
-}
-
 .headerTitle {
   color: var(--white);
   font-family: var(--fontSecondary);
   font-size: 1.1rem;
   font-weight: 600;
-  margin-right: 1rem;
 }
 
 .delimiter {
@@ -30,4 +25,36 @@
   margin: 0 11px;
   width: 1px;
   background: var(--white);
+}
+
+.githubButton {
+  height: 32px;
+  width: auto;
+  border: 1px solid #ffffff;
+  border-radius: 3px;
+  background: none;
+  padding: 3px;
+}
+
+.githubButton svg,
+.githubButton img {
+  fill: white;
+  height: 24px;
+  width: auto;
+}
+
+.signIn {
+  font-size: 13px;
+  line-height: 18px;
+  flex-grow: 1;
+  text-align: right;
+  margin-left: 10px;
+}
+
+.headerAuth {
+  font-size: 13px;
+  line-height: 18px;
+  color: white;
+  text-align: right;
+  flex-grow: 1;
 }

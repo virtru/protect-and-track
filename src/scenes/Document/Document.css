@@ -1,8 +1,18 @@
-.Document-details {
+.DocumentDetails {
   display: flex;
   flex-direction: column;
 }
 
-.Document-details > .PolicyPanel {
+.DocumentDetails > .PolicyPanel {
   margin-left: 48px;
+}
+
+.DocumentWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: calc(100% - 400px);
+  margin: 0 50px;
+  height: calc(100% - 50px);
+  flex: 1;
 }

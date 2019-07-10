@@ -1,0 +1,135 @@
+env:
+  AWS_ACCOUNT_ALIAS: common
+  ENVIRONMENT_NAME: common
+  DEPLOY_ENVIRONMENT_NAME: production
+  S3_PATH: react
+  S3_HOSTNAME: demos.developer.virtru.com
+  USE_NODE_10: true
+
+agents:
+  queue: '${BUILDKITE_QUEUE:-default}'
+agent_queue: &agent_queue 'queue=${BUILDKITE_QUEUE:-default}'
+
+steps:
+  # If you find yourself asking, "Why are you tagging this here?" then please
+  # read on.
+  # Tagging early does two things:
+  #   1. Fail fast so we don't waste time on long running tests that won't
+  #      matter anyway because someone forgot to bump the version.
+  #   2. Promotes the idea that versions are immutable and the master branch
+  #      should not get a merge without a version change.  If we're building
+  #      off master and not as a redeploy, then you should be committing to a
+  #      new version and we should tag it.
+  - label: 'Tag Release'
+    command: 'buildkite-scripts/scripts/tag-release.sh'
+    branches: 'master'
+    agents:
+      - *agent_queue
+
+  - wait
+
+  - label: ':npm: Install Dependencies'
+    command: 'buildkite-scripts/mars/wrap/npm-ci.sh'
+    agents:
+      - *agent_queue
+
+  - wait
+
+  # TODO(DSAT-40): commenting out for now but this cannot move forward until this
+  #       passes successfully
+  # - label: ':key: License Checker'
+  #   command: 'buildkite-scripts/scripts/run-license-checker.sh'
+  #   agents:
+  #     - *agent_queue
+
+  - label: ':npm: :lock: NPM Audit'
+    command: 'buildkite-scripts/mars/wrap/npm-audit.sh'
+    env:
+      FORCE_AUDIT_TO_SUCCEED: true # Temporary
+    agents:
+      - *agent_queue
+
+  - label: ':npm: Tests'
+    command: 'buildkite-scripts/scripts/npm-test.sh'
+    artifact_paths:
+      - 'coverage/lcov.info'
+    agents:
+      - *agent_queue
+  #
+  #
+  #  - wait
+  #
+  #  - label: ':cloud: SonarCloud Scan'
+  #    command: '.buildkite/scripts/run-sonar-scanner.sh'
+  #    agents:
+  #      - *agent_queue
+
+  - wait
+
+  - label: ':house_with_garden: Create block for deploy environment selection'
+    branches: '*feature/* *hotfix/* *bug/*'
+    command: 'buildkite-scripts/mars/pipeline-steps/get-and-select-develop-environments.sh | buildkite-agent pipeline upload'
+    agents:
+      - *agent_queue
+
+  - wait
+
+  - label: ':house_with_garden: Set Environment'
+    command: 'buildkite-scripts/mars/scripts/set-deploy-environment.sh'
+    branches: 'master develop *release/* *feature/* *hotfix/* *bug/*'
+    agents:
+      - *agent_queue
+
+  - wait
+
+  - label: ':npm: NPM Build'
+    command: 'buildkite-scripts/scripts/npm-build.sh'
+    agents:
+      - *agent_queue
+
+  - wait
+
+  - block: 'Unblock Deploy'
+    branches: '!master'
+
+  - block: 'Check your branch name'
+    prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
+    branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
+
+  - label: ':s3: Deploy to S3'
+    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+    agents:
+      - *agent_queue
+
+  - wait
+
+  - label: ':s3: Invalidate CloudFront Cache'
+    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+    agents:
+      - *agent_queue
+# TODO(DSAT-11): uncomment all this stuff when we can actuall deploy environments
+#
+#  - wait
+#
+#  - block: ':grey_question: Deploy to Production'
+#    branches: 'master'
+#
+#  - wait
+#
+#  - label: ':s3: Deploy to Production S3'
+#    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+#    branches: 'master'
+#    env:
+#      DEPLOY_ENVIRONMENT_NAME: production
+#    agents:
+#      - *agent_queue
+#
+#  - wait
+#
+#  - label: ':s3: Invalidate Production CloudFront Cache'
+#    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+#    branches: 'master'
+#    env:
+#      DEPLOY_ENVIRONMENT_NAME: production
+#    agents:
+#      - *agent_queue
