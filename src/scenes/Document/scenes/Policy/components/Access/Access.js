@@ -1,19 +1,17 @@
 import React from 'react';
+
 import SectionHeader from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
 import './Access.css';
 
 function Grant({ user, status }) {
-  const action = (s => {
-    switch (status) {
-      case 'owner':
-        return <div className="Grant-owner">Owner</div>;
-      case 'reader':
-        return <button className="Grant-reader">Revoke</button>;
-      default:
-        return <></>;
-    }
-  })(status);
+  let action =
+    status === 'owner' ? (
+      <div className="Grant-owner">Owner</div>
+    ) : (
+      <button className="Grant-reader">Revoke</button>
+    );
+
   return (
     <li>
       <div className="Grant">
