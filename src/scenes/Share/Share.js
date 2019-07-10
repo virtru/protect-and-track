@@ -56,10 +56,7 @@ function ShareSelect({ updateShare, file }) {
       // before enabling the share button so this is the first gapi call.
       const userEmail = await gsuite.signIn();
 
-      // state('sharing');
-      // const asHtml = true;
-      // const encryptedContent = await encrypt(file.arrayBuffer, file.file.name, userEmail, asHtml);
-      // const filename = asHtml ? `${file.file.name}.html` : `${file.file.name}.tdf`;
+      state('sharing');
       const uploadResponse = await gsuite.upload(file.file.name, file.file.type, file.arrayBuffer);
 
       // TODO(DSAT-14) Store permissions and don't sign out.
