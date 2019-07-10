@@ -6,4 +6,6 @@ export default createStore({
   tdfLog: [],
   isLoading: true,
   share: { state: 'unshared', host: false },
+  userId: false,
+  virtruClient: false,
 });

@@ -24,7 +24,7 @@ function Grant({ user, status }) {
 
 function NewGrant() {
   return (
-    <div class="NewGrant">
+    <div className="NewGrant">
       <input type="email" />
       <button>Grant</button>
     </div>

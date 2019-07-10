@@ -69,4 +69,10 @@ input[type='text'] {
 
 button {
   cursor: pointer;
+  background: #fff;
+  border: 1px solid var(--slateDarker);
+  border-radius: 3px;
+  margin: 4px;
+  min-height: 36px;
+  min-width: 64px;
 }

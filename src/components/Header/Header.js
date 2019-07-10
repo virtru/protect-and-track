@@ -9,24 +9,11 @@ import { ReactComponent as GithubIcon } from './github-icon.svg';
 /**
  * Header Component that displays content at the top of the page.
  */
-const Header = ({ loginUrl, logoutUrl, isLoggedIn, userEmail }) => {
+const Header = ({ userId }) => {
   function renderAuth() {
-    if (isLoggedIn) {
-      return (
-        <>
-          <span>{userEmail}</span>
-          <a href={logoutUrl} className="signIn">
-            Sign Out
-          </a>
-        </>
-      );
+    if (userId) {
+      return <span>{userId}</span>;
     }
-
-    return (
-      <a href={loginUrl} className="signIn">
-        Sign In
-      </a>
-    );
   }
   return (
     <div className="headerContainer">
