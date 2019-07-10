@@ -1,27 +1,47 @@
 import React from 'react';
-import Drop from './components/Drop/Drop';
-import Sidebar from '../Sidebar/Sidebar';
-import Policy from './scenes/Policy/Policy';
+import { connect } from 'redux-zero/react/index';
+
 import Share from 'scenes/Share/Share';
+import Sidebar from '../Sidebar/Sidebar';
+
+import Drop from './components/Drop/Drop';
+import Filename from './components/Filename/Filename';
+import Policy from './scenes/Policy/Policy';
 
 import './Document.css';
-import { connect } from 'redux-zero/react/index';
 import { get } from 'lodash';
 
-const Document = ({ file, userId, updateFile }) => (
-  <>
-    <div className="document-wrapper">
-      <Drop userId={userId} updateFile={updateFile}>
-        {file && <Policy file={file} />}
-      </Drop>
-      {file && <Share />}
-      <section>
-        <h3>Placeholder for bottom area</h3>
-      </section>
-    </div>
-    <Sidebar />
-  </>
-);
+function Document({ file, userId, updateFile }) {
+  const renderDrop = () => {
+    if (!file) {
+      return <Drop userId={userId} updateFile={updateFile} />;
+    }
+
+    return (
+      <>
+        <Drop userId={userId} updateFile={updateFile}>
+          <div class="DocumentDetails">
+            <Filename file={file} />
+            <Policy file={file} />
+          </div>
+        </Drop>
+        {/* {file && <Share />} -- add this back in on a button click */}
+      </>
+    );
+  };
+
+  return (
+    <>
+      <div className="DocumentWrapper">
+        {renderDrop()}
+        <section>
+          <h3>Placeholder for bottom area</h3>
+        </section>
+      </div>
+      <Sidebar />
+    </>
+  );
+}
 
 const mapToProps = ({ file, appIdBundle }) => ({
   file,

@@ -1,0 +1,8 @@
+.Expiration {
+  display: flex;
+  flex-direction: column;
+}
+
+.Expiration-form {
+  margin-left: 36px;
+}

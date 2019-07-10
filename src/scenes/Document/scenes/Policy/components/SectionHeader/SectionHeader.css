@@ -1,0 +1,15 @@
+.SectionHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.SectionHeader > svg {
+  width: 24px;
+}
+
+.SectionHeader > h4 {
+  flex: 1;
+  margin: 0 12px;
+  text-align: left;
+}

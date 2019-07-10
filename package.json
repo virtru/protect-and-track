@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://demos.developer.virtru.com/react",
   "dependencies": {
+    "classnames": "^2.2.6",
     "clipboard": "^2.0.4",
     "moment": "^2.24.0",
     "react": "^16.8.6",
@@ -12,8 +13,8 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "redux-zero": "^5.0.4",
-    "virtru-tdf3-js": "git@github.com:virtru/virtru-tdf3-js.git#develop",
-    "tdf3-js": "git@github.com:virtru/tdf3-js.git#semver:^1"
+    "tdf3-js": "git@github.com:virtru/tdf3-js.git#semver:^1",
+    "virtru-tdf3-js": "git@github.com:virtru/virtru-tdf3-js.git#develop"
   },
   "scripts": {
     "start": "HTTPS=true PORT=443 HOST='local.virtru.com' react-app-rewired start",
