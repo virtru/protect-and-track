@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'redux-zero/react/index';
 
-import Share from 'scenes/Share/Share';
 import Sidebar from '../Sidebar/Sidebar';
 
 import * as tdf from 'utils/tdfWrapper';
@@ -10,7 +9,7 @@ import Filename from './components/Filename/Filename';
 import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
 
 import './Document.css';
-import { get } from 'lodash';
+import downloadHtml from '../../utils/downloadHtml';
 
 function Document({
   file,
@@ -44,20 +43,6 @@ function Document({
     setEncryptState(ENCRYPT_STATES.PROTECTED);
   };
 
-  const download = () => {
-    console.log(encrypted);
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(encrypted));
-    element.setAttribute('download', `${file.file.name}.html`);
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
-  };
-
   const renderDrop = () => {
     if (!file) {
       return <Drop userId={userId} updateFile={updateFile} />;
@@ -88,7 +73,10 @@ function Document({
         {renderDrop()}
         <section>
           <h3>
-            Placeholder for bottom area {encrypted && <button onClick={download}>Download</button>}
+            Placeholder for bottom area{' '}
+            {encrypted && (
+              <button onClick={() => downloadHtml(file.file.name, encrypted)}>Download</button>
+            )}
           </h3>
         </section>
       </div>
