@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, getByTestId, act } from '@testing-library/react';
+import { render, fireEvent, getByTestId } from '@testing-library/react';
 
 import UserSelect from './UserSelect';
 const history = { push: jest.fn() };

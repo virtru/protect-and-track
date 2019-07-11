@@ -34,7 +34,11 @@ function App({ appIdBundle, setAppIdBundle, isLoading, setIsLoading }) {
   });
 
   if (isLoading) {
-    return <h1 className="loading-text">Loading...</h1>;
+    return (
+      <h1 data-testid="loadingInProgress" className="loading-text">
+        Loading...
+      </h1>
+    );
   }
 
   return (
@@ -45,7 +49,7 @@ function App({ appIdBundle, setAppIdBundle, isLoading, setIsLoading }) {
         logoutUrl={LOGOUT_URL}
         userEmail={appIdBundle && appIdBundle[0].userId}
       />
-      <main className="main">
+      <main className="main" data-testid="mainApp">
         <Router>
           <Route path="/" component={Document} />
           {/* TODO(dmihalcik): <Route 404 /> */}

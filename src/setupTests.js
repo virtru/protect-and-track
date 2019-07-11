@@ -18,6 +18,8 @@ window.PR = {
 };
 window.alert = jest.fn();
 
+jest.mock('redux-zero/react', () => jest.requireActual('../__mocks__/reduxZeroReact'));
+
 afterEach(() => {
   jest.restoreAllMocks();
   matchMedia._events = [];
