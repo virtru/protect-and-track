@@ -7,7 +7,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import * as tdf from 'utils/tdfWrapper';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
-import Policy from './scenes/Policy/Policy';
+import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
 
 import './Document.css';
 import { get } from 'lodash';
@@ -32,7 +32,7 @@ function Document({
   };
 
   const encrypt = async () => {
-    setEncryptState(1);
+    setEncryptState(ENCRYPT_STATES.PROTECTING);
     const encryptedFile = await tdf.encrypt({
       client: virtruClient,
       fileData: file.data,
@@ -41,7 +41,7 @@ function Document({
       asHtml: true,
     });
     updateEncrypted(encryptedFile);
-    setEncryptState(2);
+    setEncryptState(ENCRYPT_STATES.PROTECTED);
   };
 
   const download = () => {
@@ -67,7 +67,7 @@ function Document({
       <>
         <Drop userId={userId} updateFile={updateFile}>
           <div className="DocumentDetails">
-            <Filename file={file} />
+            <Filename file={file} isTdf={encryptState === ENCRYPT_STATES.PROTECTED} />
             <Policy
               file={file}
               userId={userId}

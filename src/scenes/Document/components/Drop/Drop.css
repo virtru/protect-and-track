@@ -27,10 +27,6 @@
   justify-content: center;
 }
 
-.Drop-box {
-  margin-top: 10%;
-}
-
 .Drop-icon {
   fill: var(--slatePrimary);
 }

@@ -6,26 +6,31 @@ import Watermarking from './components/Watermarking/Watermarking';
 import Forwarding from './components/Forwarding/Forwarding';
 import './Policy.css';
 
+export const ENCRYPT_STATES = {
+  UNPROTECTED: 0,
+  PROTECTING: 1,
+  PROTECTED: 2,
+};
+
 function PolicyPanel({ file, userId, login, encrypt, encryptState }) {
   const renderButtons = () => {
-    if (userId && encryptState === 0) {
-      return <button onClick={encrypt}>Protect File</button>;
-    }
+    switch (encryptState) {
+      case ENCRYPT_STATES.PROTECTING:
+        return <button disabled>Protecting...</button>;
+      case ENCRYPT_STATES.PROTECTED:
+        return null;
+      default:
+        if (userId) {
+          return <button onClick={encrypt}>Protect File</button>;
+        }
 
-    if (encryptState === 1) {
-      return <button disabled>Encrypting...</button>;
+        return (
+          <>
+            <button onClick={login}>Sign in to continue</button>
+            <button disabled>Protect File</button>
+          </>
+        );
     }
-
-    if (encryptState === 2) {
-      return <button disabled>File Protected!</button>;
-    }
-
-    return (
-      <span>
-        <button onClick={login}>Sign in to continue</button>
-        <button disabled>Protect File</button>
-      </span>
-    );
   };
   return (
     <div className="PolicyPanel" id="policypanel">
