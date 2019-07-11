@@ -5,7 +5,7 @@ import SidebarItem from './components/SidebarItem';
 
 const { useEffect, useRef } = React;
 
-const SdkLogger = ({ collapse, events }) => {
+const SdkLogger = ({ events }) => {
   const scroll = useRef();
   useEffect(() => {
     if (!window.PR) {
@@ -18,7 +18,7 @@ const SdkLogger = ({ collapse, events }) => {
   }, [events]);
 
   return (
-    <div className="LoggerContainer">
+    <div className="LoggerContainer" data-testid="SdkLogger">
       <div className="itemWrapper">
         <Scrollbars
           ref={scroll}
