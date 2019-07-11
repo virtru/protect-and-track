@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
@@ -10,6 +10,7 @@ import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
 
 import './Document.css';
 import downloadHtml from '../../utils/downloadHtml';
+import Button from '../../components/Button/Button';
 
 function Document({
   file,
@@ -23,11 +24,24 @@ function Document({
 }) {
   const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
 
+  useEffect(() => {
+    (async () => {
+      if (!userId || virtruClient) {
+        return;
+      }
+      const client = await tdf.authenticate(userId);
+      updateVirtruClient(client);
+      setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+    })();
+  }, [userId, updateVirtruClient, virtruClient]);
+
   const login = async () => {
+    setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
     const email = prompt('Enter email');
     const client = await tdf.authenticate(email);
     updateUserId(email);
     updateVirtruClient(client);
+    setEncryptState(ENCRYPT_STATES.UNPROTECTED);
   };
 
   const encrypt = async () => {
@@ -71,18 +85,27 @@ function Document({
     <>
       <div className="DocumentWrapper">
         {renderDrop()}
-        <section>
-          <h3>
-            Placeholder for bottom area{' '}
-            {encrypted && (
-              <button onClick={() => downloadHtml(file.file.name, encrypted)}>Download</button>
-            )}
-          </h3>
+        <section className="DocumentFooter">
+          {encrypted && (
+            <Button variant="link" onClick={() => downloadHtml(file.file.name, encrypted)}>
+              Download
+            </Button>
+          )}
         </section>
       </div>
       <Sidebar />
     </>
   );
+}
+
+function arrayBufferToBase64(buffer) {
+  var binary = '';
+  var bytes = new Uint8Array(buffer);
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
 }
 
 const mapToProps = ({ file, userId, virtruClient, encrypted }) => ({
@@ -92,7 +115,15 @@ const mapToProps = ({ file, userId, virtruClient, encrypted }) => ({
   encrypted,
 });
 const actions = {
-  updateFile: (state, value) => ({ file: value }),
+  updateFile: (state, value) => {
+    console.log(value);
+    const b64 = arrayBufferToBase64(value.arrayBuffer);
+    const fileName = value.file.name;
+    const fileType = value.file.type;
+
+    localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType }));
+    return { file: value };
+  },
   updateUserId: (state, value) => ({ userId: value }),
   updateVirtruClient: (state, value) => ({ virtruClient: value }),
   updateEncrypted: (state, value) => ({ encrypted: value }),

@@ -1,6 +1,8 @@
 .DocumentDetails {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
 .DocumentDetails > .PolicyPanel {
@@ -15,4 +17,11 @@
   margin: 0 50px;
   height: calc(100% - 50px);
   flex: 1;
+}
+
+.DocumentFooter {
+  height: 72px;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }

@@ -1,0 +1,109 @@
+@import '../../styles/colors.css';
+
+.selected {
+  cursor: auto !important;
+}
+
+.button {
+  box-sizing: border-box;
+  border: 1px solid;
+  border-radius: 3px;
+  font-size: 1rem;
+  font-family: 'Open Sans';
+  font-weight: bold;
+  margin: 0.5rem;
+
+  cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+}
+
+.button:disabled {
+  background-color: var(--white) !important;
+  border-color: var(--alto) !important;
+  color: var(--alto) !important;
+  pointer-events: none;
+}
+
+.mainButton {
+  cursor: pointer;
+  padding: 12px 23px;
+  color: var(--white);
+  background-color: var(--blueDarker);
+  border-color: var(--blueDarker);
+}
+
+.mainButton:hover,
+.mainButton:focus {
+  background-color: var(--blueDarkest);
+  border-color: var(--blueDarkest);
+  box-shadow: 0 2px 4px 0 rgba(var(--black), 0.29);
+}
+
+.mainButton:active {
+  background-color: var(--slatePrimary);
+  border-color: var(--slatePrimary);
+  box-shadow: 0 2px 4px 0 rgba(var(--black), 0.29);
+}
+
+.alternateButton {
+  color: var(--blueDarker);
+  background-color: var(--white);
+  border-color: var(--slateDarker);
+}
+
+.alternateButton:hover,
+.alternateButton:focus {
+  color: var(--blueDarkest);
+  background-color: var(--white);
+  border-color: var(--blueDarkest);
+}
+
+.alternateButton:active {
+  color: var(--white);
+  background-color: var(--slatePrimary);
+  border-color: var(--slatePrimary);
+}
+
+.submitButton {
+  margin-top: 0;
+  font-size: 1.6rem;
+}
+
+.submitButton:disabled {
+  cursor: default;
+  background-color: var(--slateLighter);
+  border-color: var(--slateLighter);
+  color: var(--white);
+}
+
+.link {
+  display: inline-block;
+  color: var(--blueDarker);
+  text-decoration: underline;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  font-weight: normal;
+}
+
+.link:focus,
+.link:hover {
+  color: var(--blueDarkest);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.small {
+  padding: 8px 22px;
+  font-size: 1.3rem;
+}
+
+.verySmall {
+  font-size: 1.3rem;
+  padding: 2px 12px;
+}

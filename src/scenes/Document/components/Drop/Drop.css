@@ -39,27 +39,9 @@
 .Drop-hover {
   border: 3px dashed var(--blueDarker);
 }
-
-#dropzone * {
-  pointer-events: none;
-}
-
-.Drop-UploadButton {
-  height: 48px;
-  width: 168px;
-  background: var(--blueDarker);
-  border-radius: 3px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 .Drop-UploadButton-label {
   color: #fff;
   font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 24px;
   padding: 6px 12px;
 }
 #dropzone .Drop-UploadButton {
