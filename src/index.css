@@ -3,6 +3,13 @@
 html,
 body {
   height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 body {
@@ -58,4 +65,8 @@ input:focus {
 input[type='text'] {
   font-family: 'Raleway';
   font-size: 17px;
+}
+
+button {
+  cursor: pointer;
 }

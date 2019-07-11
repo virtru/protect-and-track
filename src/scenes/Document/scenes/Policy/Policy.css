@@ -1,0 +1,21 @@
+#policypanel * {
+  pointer-events: all;
+}
+
+.PolicyPanel {
+  color: var(--slateDarkest);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  margin: 0 16px;
+}
+
+.PolicyPanel-rule {
+  height: 1px;
+  background: #dce0e5;
+  border: 0;
+  margin-left: 0;
+  margin-right: 0;
+}

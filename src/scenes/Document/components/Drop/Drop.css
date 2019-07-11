@@ -11,6 +11,13 @@
   border: 3px dashed var(--slateLighter);
   border-radius: 12px;
   font-size: 14px;
+  text-align: center;
+  border: 4px dashed #707070;
+  background-repeat: no-repeat;
+  border-radius: 25px;
+  background-color: white;
+  margin: 0 auto;
+
   width: 100%;
   height: 100%;
 
@@ -18,10 +25,6 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-}
-
-.Drop-encrypted {
-  border: 3px solid var(--slateLighter);
 }
 
 .Drop-box {

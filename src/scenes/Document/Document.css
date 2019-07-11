@@ -1,4 +1,13 @@
-.document-wrapper {
+.DocumentDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.DocumentDetails > .PolicyPanel {
+  margin-left: 48px;
+}
+
+.DocumentWrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
