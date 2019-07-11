@@ -21,7 +21,7 @@ function Document({
   encrypted,
   updateEncrypted,
 }) {
-  const [encryptState, setEncryptState] = useState(0);
+  const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
 
   const login = async () => {
     const email = prompt('Enter email');
