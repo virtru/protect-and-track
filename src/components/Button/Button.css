@@ -79,7 +79,7 @@
 
 .link {
   display: inline-block;
-  color: var(--blueDarker);
+  color: var(--blueLighter);
   text-decoration: underline;
   border: none;
   background: none;
@@ -100,10 +100,10 @@
 
 .small {
   padding: 8px 22px;
-  font-size: 1.3rem;
+  font-size: 0.9rem;
 }
 
 .verySmall {
-  font-size: 1.3rem;
+  font-size: 0.8rem;
   padding: 2px 12px;
 }
