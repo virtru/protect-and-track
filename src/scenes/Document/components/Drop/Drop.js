@@ -87,10 +87,8 @@ function Drop({ children, userId, updateFile }) {
   function UploadButton() {
     return (
       <label className="Drop-UploadButton">
-        <Button>
-          Choose File
-          <input type="file" id="upload" name="upload[]" onChange={handleFileInput} />
-        </Button>
+        Choose File
+        <input type="file" id="upload" name="upload[]" onChange={handleFileInput} />
       </label>
     );
   }

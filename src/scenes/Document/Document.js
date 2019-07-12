@@ -7,10 +7,12 @@ import * as tdf from 'utils/tdfWrapper';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
+import Share from '../Share/Share';
 
 import './Document.css';
 import downloadHtml from '../../utils/downloadHtml';
 import Button from '../../components/Button/Button';
+import { arrayBufferToBase64 } from '../../utils/base64';
 
 function Document({
   file,
@@ -23,6 +25,7 @@ function Document({
   updateEncrypted,
 }) {
   const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
+  const [isShareOpen, setShareOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -53,7 +56,11 @@ function Document({
       userEmail: userId,
       asHtml: true,
     });
-    updateEncrypted(encryptedFile);
+    updateEncrypted({
+      payload: encryptedFile,
+      name: `${file.file.name}.html`,
+      type: file.file.type,
+    });
     setEncryptState(ENCRYPT_STATES.PROTECTED);
   };
 
@@ -76,27 +83,20 @@ function Document({
             />
           </div>
         </Drop>
-        {/* {file && <Share />} -- add this back in on a button click */}
+        {isShareOpen && <Share onClose={() => setShareOpen(false)} />}
       </>
     );
   };
 
   const renderButtons = () => {
-    const shareButton = <Button disabled>Share</Button>;
-    const downloadButton = encrypted ? (
-      <Button variant="link" onClick={() => downloadHtml(file.file.name, encrypted)}>
-        Download
-      </Button>
-    ) : (
-      <Button variant="link" onClick={() => downloadHtml(file.file.name, encrypted)} disabled>
-        Download
-      </Button>
-    );
-
     return (
       <>
-        {downloadButton}
-        {shareButton}
+        <Button variant="link" onClick={() => downloadHtml(encrypted)} disabled={!encrypted}>
+          Download
+        </Button>
+        <Button onClick={() => setShareOpen(true)} disabled={!encrypted}>
+          Share
+        </Button>
       </>
     );
   };
@@ -110,16 +110,6 @@ function Document({
       <Sidebar />
     </>
   );
-}
-
-function arrayBufferToBase64(buffer) {
-  var binary = '';
-  var bytes = new Uint8Array(buffer);
-  var len = bytes.byteLength;
-  for (var i = 0; i < len; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return window.btoa(binary);
 }
 
 const mapToProps = ({ file, userId, virtruClient, encrypted }) => ({
