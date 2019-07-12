@@ -43,9 +43,7 @@ const actions = {
   setIsLoading: (state, value) => ({ isLoading: value }),
 };
 
-const connected = connect(
+export default connect(
   mapToProps,
   actions,
 )(App);
-
-export { connected as default, App as Pure };

@@ -1,14 +1,26 @@
-import Enzyme from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import 'jest-dom/extend-expect';
+import '@testing-library/react/cleanup-after-each';
 
-window.matchMedia = jest.fn().mockImplementation(query => {
-  return {
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-  };
+const matchMedia = {
+  matches: false,
+  _events: [],
+  _triggerEvents() {
+    this._events.forEach(event => event());
+  },
+  addListener(listener) {
+    this._events.push(listener);
+  },
+  removeListener: jest.fn(),
+};
+window.matchMedia = () => matchMedia;
+window.PR = {
+  prettyPrint: jest.fn(),
+};
+window.alert = jest.fn();
+
+jest.mock('redux-zero/react', () => jest.requireActual('../__mocks__/reduxZeroReact'));
+
+afterEach(() => {
+  jest.restoreAllMocks();
+  matchMedia._events = [];
 });
-
-Enzyme.configure({ adapter: new Adapter() });
