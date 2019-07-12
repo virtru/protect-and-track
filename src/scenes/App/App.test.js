@@ -1,19 +1,17 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { Pure as App } from './App';
+import { render, getByTestId } from '@testing-library/react';
+import App from './App';
 
 describe('App', () => {
-  test('renders without crashing', () => {
-    const div = document.createElement('div');
-    const wrapper = shallow(
+  test('renders loader if isLoading set as true', () => {
+    const { container } = render(
       <App
         appIdBundle={false}
         setAppIdBundle={() => {}}
         isLoading={true}
         setIsLoading={() => {}}
       />,
-      div,
     );
-    expect(wrapper.text()).toContain('Loading');
+    expect(getByTestId(container, 'loadingInProgress')).toBeInTheDocument();
   });
 });

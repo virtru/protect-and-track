@@ -34,7 +34,7 @@ function FormBoxButton(props) {
 /** A place to put your stuff  */
 function FormBox(props) {
   return (
-    <form className="FormBox" onSubmit={props.onSubmit}>
+    <form className="FormBox" onSubmit={props.onSubmit} data-testid="formBox">
       {props.title && <FormBoxTitle>{props.title}</FormBoxTitle>}
       {props.instruction && <FormBoxInstruction>{props.instruction}</FormBoxInstruction>}
       {props.children}
