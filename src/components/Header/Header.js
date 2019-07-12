@@ -5,28 +5,27 @@ import { ReactComponent as LogoText } from 'assets/logo-text.svg';
 import './Header.css';
 import GithubLogo from './github-logo.png';
 import { ReactComponent as GithubIcon } from './github-icon.svg';
+import Button from '../Button/Button';
 
 /**
  * Header Component that displays content at the top of the page.
  */
-const Header = ({ loginUrl, logoutUrl, isLoggedIn, userEmail }) => {
+const Header = ({ userId }) => {
+  function signOut() {
+    localStorage.clear();
+    window.location.reload();
+  }
   function renderAuth() {
-    if (isLoggedIn) {
+    if (userId) {
       return (
-        <>
-          <span>{userEmail}</span>
-          <a href={logoutUrl} className="signIn">
-            Sign Out
-          </a>
-        </>
+        <span>
+          {userId}{' '}
+          <Button variant="link" onClick={signOut} verySmall light>
+            Sign out
+          </Button>
+        </span>
       );
     }
-
-    return (
-      <a href={loginUrl} className="signIn">
-        Sign In
-      </a>
-    );
   }
   return (
     <div className="headerContainer">

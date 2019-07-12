@@ -1,6 +1,7 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
+import Button from '../../../../components/Button/Button';
 
 /**
  * A place to drop an encrypted or uncrypted file.
@@ -86,8 +87,10 @@ function Drop({ children, userId, updateFile }) {
   function UploadButton() {
     return (
       <label className="Drop-UploadButton">
-        <input type="file" id="upload" name="upload[]" onChange={handleFileInput} />
-        <h4 className="Drop-UploadButton-label">Choose File</h4>
+        <Button>
+          Choose File
+          <input type="file" id="upload" name="upload[]" onChange={handleFileInput} />
+        </Button>
       </label>
     );
   }

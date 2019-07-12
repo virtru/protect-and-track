@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
-import encrypt from 'utils/tdfWrapper';
 import gsuite from './services/gsuite';
 import './Share.css';
 
@@ -58,10 +57,7 @@ function ShareSelect({ updateShare, file }) {
       const userEmail = await gsuite.signIn();
 
       state('sharing');
-      const asHtml = true;
-      const encryptedContent = await encrypt(file.arrayBuffer, file.file.name, userEmail, asHtml);
-      const filename = asHtml ? `${file.file.name}.html` : `${file.file.name}.tdf`;
-      const uploadResponse = await gsuite.upload(filename, file.file.type, encryptedContent);
+      const uploadResponse = await gsuite.upload(file.file.name, file.file.type, file.arrayBuffer);
 
       // TODO(DSAT-14) Store permissions and don't sign out.
       gsuite.signOut();

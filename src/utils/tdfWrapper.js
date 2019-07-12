@@ -36,7 +36,7 @@ function _pushAction(action) {
 }
 
 function buildClient(userEmail) {
-  const redirectUrl = 'local.virtru.com';
+  const redirectUrl = window.location.href;
   const { acmEndpoint, kasEndpoint, easEndpoint, stage } = getEnvironment();
 
   _pushAction({
@@ -74,9 +74,8 @@ function buildClient(userEmail) {
  * @param {String} userEmail
  * @param {Boolean} asHtml
  */
-async function encrypt(fileData, filename, userEmail, asHtml) {
+async function encrypt({ client, fileData, filename, userEmail, asHtml }) {
   const { startUrl } = getEnvironment();
-  const client = buildClient(userEmail);
 
   _pushAction({
     title: 'Create Mock Stream',
@@ -118,4 +117,10 @@ async function encrypt(fileData, filename, userEmail, asHtml) {
   return TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`);
 }
 
-export default encrypt;
+async function authenticate(email) {
+  const client = buildClient(email);
+  await client.clientConfig.authProvider._initAuthForProvider();
+  return client;
+}
+
+export { encrypt, authenticate };

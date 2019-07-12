@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, getByTestId } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import App from './App';
 
 describe('App', () => {
   test('renders loader if isLoading set as true', () => {
-    const { container } = render(
+    const { getByText } = render(
       <App
         appIdBundle={false}
         setAppIdBundle={() => {}}
@@ -12,6 +12,6 @@ describe('App', () => {
         setIsLoading={() => {}}
       />,
     );
-    expect(getByTestId(container, 'loadingInProgress')).toBeInTheDocument();
+    expect(getByText('Demo: Protect & Track')).toBeInTheDocument();
   });
 });

@@ -14,7 +14,7 @@ export const authenticateWithGoogle = (
 ) => `const provider = new Virtru.Client.AuthProviders.GoogleAuthProvider(
   '${userEmail}',
   '${redirectUrl}',
-  '${stage}',,
+  '${stage}',
 );`;
 
 export const createVirtruClient = ({

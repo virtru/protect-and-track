@@ -5,7 +5,6 @@ import { connect } from 'redux-zero/react';
 import './App.css';
 import Header from 'components/Header/Header';
 import Document from 'scenes/Document/Document';
-import { getAppIdBundle } from 'api/accounts';
 import { LOGIN_URL, LOGOUT_URL } from 'constants/api';
 
 /**
@@ -19,37 +18,11 @@ import { LOGIN_URL, LOGOUT_URL } from 'constants/api';
  *  - Additional helper text and overlays
  *  - share panel?
  */
-function App({ appIdBundle, setAppIdBundle, isLoading, setIsLoading }) {
-  console.log(appIdBundle);
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    async function login() {
-      const appIdBundle = await getAppIdBundle();
-      setAppIdBundle(appIdBundle);
-      setIsLoading(false);
-    }
-    if (!appIdBundle) {
-      login();
-    }
-  });
-
-  if (isLoading) {
-    return (
-      <h1 data-testid="loadingInProgress" className="loading-text">
-        Loading...
-      </h1>
-    );
-  }
-
+function App({ appIdBundle, setAppIdBundle, isLoading, setIsLoading, userId }) {
   return (
     <>
-      <Header
-        isLoggedIn={appIdBundle && appIdBundle.length}
-        loginUrl={LOGIN_URL}
-        logoutUrl={LOGOUT_URL}
-        userEmail={appIdBundle && appIdBundle[0].userId}
-      />
-      <main className="main" data-testid="mainApp">
+      <Header isLoggedIn={false} loginUrl={LOGIN_URL} logoutUrl={LOGOUT_URL} userId={userId} />
+      <main className="main">
         <Router>
           <Route path="/" component={Document} />
           {/* TODO(dmihalcik): <Route 404 /> */}
@@ -59,7 +32,12 @@ function App({ appIdBundle, setAppIdBundle, isLoading, setIsLoading }) {
   );
 }
 
-const mapToProps = ({ appIdBundle, file, isLoading }) => ({ appIdBundle, file, isLoading });
+const mapToProps = ({ appIdBundle, file, isLoading, userId }) => ({
+  appIdBundle,
+  file,
+  isLoading,
+  userId,
+});
 const actions = {
   setAppIdBundle: (state, value) => ({ appIdBundle: value }),
   setIsLoading: (state, value) => ({ isLoading: value }),
