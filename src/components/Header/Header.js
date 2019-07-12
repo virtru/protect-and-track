@@ -20,7 +20,7 @@ const Header = ({ userId }) => {
       return (
         <span>
           {userId}{' '}
-          <Button variant="link" onClick={signOut} verySmall>
+          <Button variant="link" onClick={signOut} verySmall light>
             Sign out
           </Button>
         </span>

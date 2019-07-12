@@ -19,9 +19,9 @@
 }
 
 .button:disabled {
-  background-color: var(--white) !important;
-  border-color: var(--alto) !important;
-  color: var(--alto) !important;
+  background-color: var(--white);
+  border-color: var(--alto);
+  color: var(--alto);
   pointer-events: none;
 }
 
@@ -79,7 +79,7 @@
 
 .link {
   display: inline-block;
-  color: var(--blueLighter);
+  color: var(--blueDarker);
   text-decoration: underline;
   border: none;
   background: none;
@@ -89,9 +89,18 @@
   font-weight: normal;
 }
 
+.link.light {
+  color: var(--blueLighter);
+}
+
 .link:focus,
 .link:hover {
   color: var(--blueDarkest);
+}
+
+.link:disabled {
+  background: none;
+  border: none;
 }
 
 .fullWidth {

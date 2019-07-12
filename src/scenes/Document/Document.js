@@ -81,17 +81,31 @@ function Document({
     );
   };
 
+  const renderButtons = () => {
+    const shareButton = <Button disabled>Share</Button>;
+    const downloadButton = encrypted ? (
+      <Button variant="link" onClick={() => downloadHtml(file.file.name, encrypted)}>
+        Download
+      </Button>
+    ) : (
+      <Button variant="link" onClick={() => downloadHtml(file.file.name, encrypted)} disabled>
+        Download
+      </Button>
+    );
+
+    return (
+      <>
+        {downloadButton}
+        {shareButton}
+      </>
+    );
+  };
+
   return (
     <>
       <div className="DocumentWrapper">
         {renderDrop()}
-        <section className="DocumentFooter">
-          {encrypted && (
-            <Button variant="link" onClick={() => downloadHtml(file.file.name, encrypted)}>
-              Download
-            </Button>
-          )}
-        </section>
+        <section className="DocumentFooter">{renderButtons()}</section>
       </div>
       <Sidebar />
     </>

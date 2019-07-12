@@ -44,7 +44,7 @@ function PolicyPanel({ file, userId, login, encrypt, encryptState }) {
       <hr className="PolicyPanel-rule" />
       <Forwarding />
       <Watermarking />
-      <span>{renderButtons()}</span>
+      <span className="PolicyPanel-buttons">{renderButtons()}</span>
     </div>
   );
 }
