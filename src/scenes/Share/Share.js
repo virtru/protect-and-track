@@ -74,7 +74,7 @@ function ShareSelect({ updateShare, file, onClose }) {
   };
   return (
     <ShareBox>
-      <button className="Share-close" onClick={onClose}>
+      <button className="Share-close" onClick={onClose} title="Close Share Modal">
         X
       </button>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
@@ -123,7 +123,7 @@ function ShareComplete({ share, file, onClose }) {
   const { file: { name } = {} } = file;
   return (
     <ShareBox>
-      <button className="Share-close" onClick={onClose}>
+      <button className="Share-close" onClick={onClose} title="Close Share Modal">
         X
       </button>
       <Title>Track {name || 'your shared file'}</Title>

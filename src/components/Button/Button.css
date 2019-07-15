@@ -22,7 +22,7 @@
   background-color: var(--white);
   border-color: var(--alto);
   color: var(--alto);
-  pointer-events: none !important;
+  pointer-events: none;
 }
 
 .mainButton {

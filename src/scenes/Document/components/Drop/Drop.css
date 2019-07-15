@@ -41,7 +41,6 @@
 }
 
 .Drop-UploadButton {
-  box-sizing: border-box;
   border: 1px solid;
   border-radius: 3px;
   font-size: 1rem;
@@ -74,9 +73,6 @@
   color: #fff;
   font-family: 'Open Sans', sans-serif;
   padding: 6px 12px;
-}
-#dropzone .Drop-UploadButton {
-  pointer-events: all;
 }
 
 .Drop-UploadButton input[type='file'] {
