@@ -55,7 +55,7 @@ function ShareSelect({ updateShare, file, onClose }) {
       // Safari's policy is that popups must be in response to a direct user action,
       // so no `await` calls can preceded this. To work around this, we load the API
       // before enabling the share button so this is the first gapi call.
-      const userEmail = await gsuite.signIn();
+      await gsuite.signIn();
 
       state('sharing');
       const uploadResponse = await gsuite.upload(file.name, file.type, file.payload);
