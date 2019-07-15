@@ -114,7 +114,10 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml }) {
   }
 
   const manifestString = ''; // TODO: Confirmed with Tyler this is not needed for now
-  return TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`);
+  return {
+    encryptedFile: TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`),
+    policyId: policy._policyId,
+  };
 }
 
 async function authenticate(email) {
