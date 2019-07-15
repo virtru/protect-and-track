@@ -4,7 +4,7 @@
 }
 
 .SidebarItemWrapper .title {
-  font-family: 'Open Sans';
+  font-family: var(--fontPrimary);
   color: #ffffff;
   font-size: 13px;
   font-weight: bold;
@@ -56,7 +56,7 @@
 }
 
 .SidebarItemWrapper .timestamp {
-  font-family: 'Open Sans';
+  font-family: var(--fontPrimary);
   color: var(--slateLighter);
   text-align: right;
   font-size: 13px;
