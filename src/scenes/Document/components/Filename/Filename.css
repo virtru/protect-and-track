@@ -1,7 +1,7 @@
 .Filename {
   color: var(--blueDarkest);
   /* TODO(dmihalcik) on my laptop anyway, raleway has no weights */
-  font-family: sans-serif;
+  font-family: var(--fontSecondary);
   font-size: 25px;
   line-height: 30px;
   font-weight: lighter;

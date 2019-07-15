@@ -4,7 +4,7 @@
   border: 1px solid var(--redDarker);
   border-radius: 3px;
   color: #fff;
-  font-family: 'Open Sans', sans-serif;
+  font-family: var(--fontPrimary);
   font-size: 13px;
   font-weight: bold;
   line-height: 18px;
