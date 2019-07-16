@@ -10,6 +10,8 @@ import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
 import Share from '../Share/Share';
 
 import './Document.css';
+
+import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import downloadHtml from '../../utils/downloadHtml';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64 } from '../../utils/base64';
@@ -89,6 +91,18 @@ function Document({
   };
 
   const renderButtons = () => {
+    if (!file) {
+      return (
+        <>
+          <span>or...</span>
+          <Button>
+            load <FileIcon className="file-icon" />
+            demo-example.txt
+          </Button>
+        </>
+      );
+    }
+
     return (
       <>
         <Button variant="link" onClick={() => downloadHtml(encrypted)} disabled={!encrypted}>

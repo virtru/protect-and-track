@@ -25,3 +25,9 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.file-icon {
+  fill: var(--white);
+  stroke: var(--white);
+  color: var(--white);
+}
