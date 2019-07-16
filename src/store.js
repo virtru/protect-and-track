@@ -33,12 +33,27 @@ console.log(auths, activeAuth);
 
 export default createStore({
   appIdBundle: false,
+
+  // File content that the user has attached. May be encrypted or not...
   file,
+
   encrypted: false,
+
+  // TDF Event Logger Contents
   tdfLog: [],
+
+  // Audit events associated with the current policy
   auditLog: [],
+
+  // Application loading status
   isLoading: true,
+
+  // Sharing status; maintained by the `Share` scene, see it for details
   share: { state: 'unshared', host: false },
+
+  // Username; displayed in appbar
   userId: activeAuth && activeAuth.split(':')[0],
+
+  // Enhanced TDF client library
   virtruClient: false,
 });
