@@ -3,7 +3,6 @@ import moment from 'moment';
 
 import Sidebar from './Sidebar';
 import { render } from '@testing-library/react';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 describe('SdkLogger', () => {
   test('Should render Protect a file to see SDK calls if logs are empty', () => {

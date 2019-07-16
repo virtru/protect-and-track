@@ -13,7 +13,7 @@
 }
 
 .FormBox-instruction {
-  font-family: 'Raleway';
+  font-family: var(--fontSecondary);
   margin: -28px -25px 25px;
   padding: 5px 25px;
   line-height: 30px;
@@ -30,7 +30,7 @@
 }
 
 .FormBox-button {
-  font-family: 'Raleway';
+  font-family: var(--fontSecondary);
   color: #fff !important;
   background: #4585ff;
   padding: 10px 40px;
