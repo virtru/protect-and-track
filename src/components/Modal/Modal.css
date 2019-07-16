@@ -9,7 +9,7 @@
 
 .Modal-content {
   background: white;
-  border: 1px solid #c4c4c4;
+  border: 1px solid --var(white);
   border-radius: 8px;
   padding: 24px;
   position: absolute;
