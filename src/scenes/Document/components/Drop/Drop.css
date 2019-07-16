@@ -7,7 +7,7 @@
 }
 
 .Drop {
-  background: #fff;
+  background: var(--white);
   border: 3px dashed var(--slateLighter);
   border-radius: 12px;
   font-size: 14px;
@@ -25,6 +25,11 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
+}
+
+.Drop-encrypted {
+  background-color: var(--slateLightest);
+  border-style: solid;
 }
 
 .Drop-icon {
