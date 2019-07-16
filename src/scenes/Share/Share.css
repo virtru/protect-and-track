@@ -39,16 +39,7 @@
   margin: 12px;
 }
 
-<<<<<<< head .Share-trackit {
-  background: var(--blueDarker);
-  color: #ffffff;
-  font-family: var(--fontPrimary);
-  font-size: 16px;
-  align-self: center;
-  padding: 12px 24px;
-}
-
-=======>>>>>>>master .Share-title {
+.Share-title {
   color: #2d323b;
   font-family: var(--fontSecondary);
   margin: 0;
