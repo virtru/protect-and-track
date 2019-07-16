@@ -34,6 +34,7 @@ console.log(auths, activeAuth);
 export default createStore({
   appIdBundle: false,
   file,
+  encrypted: false,
   tdfLog: [],
   isLoading: true,
   share: { state: 'unshared', host: false },
