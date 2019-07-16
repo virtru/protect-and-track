@@ -1,5 +1,5 @@
 .ShareSelect-button {
-  font-family: 'Raleway';
+  font-family: var(--fontSecondary);
   background: white;
   padding: 0 8px 0 32px;
   border: 1px solid #515864;
@@ -34,14 +34,14 @@
 }
 
 .ShareSelect-button-text {
-  font-family: 'Open Sans', sans-serif;
+  font-family: var(--fontPrimary);
   font-size: 16px;
   margin: 12px;
 }
 
 .Share-title {
   color: #2d323b;
-  font-family: 'Raleway';
+  font-family: var(--fontSecondary);
   margin: 0;
   font-size: 16px;
   margin-bottom: 24px;
@@ -69,7 +69,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: 'Open Sans', sans-serif;
+  font-family: var(--fontPrimary);
   font-size: 13px;
 }
 

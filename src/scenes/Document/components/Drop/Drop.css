@@ -76,7 +76,7 @@
 
 .Drop-UploadButton-label {
   color: #fff;
-  font-family: 'Open Sans', sans-serif;
+  font-family: var(--fontPrimary);
   padding: 6px 12px;
 }
 
