@@ -5,6 +5,11 @@
   text-align: center;
 }
 
+.Auth-container input[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 .Email-input {
   width: 100%;
 }

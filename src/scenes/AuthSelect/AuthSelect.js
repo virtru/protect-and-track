@@ -58,9 +58,9 @@ function AuthSelect({ onClose, loginAs }) {
           className="login-button-google"
           onClick={() => loginAs(email)}
         />
+        <input disabled type="button" id="office365button" className="login-button-office365" />
+        <input disabled type="button" id="outlookbutton" className="login-button-outlook" />
       </>
-      /* <input type="button" id="office365button" className="login-button-office365" /> */
-      /* <input type="button" id="outlookbutton" className="login-button-outlook" /> */
       /* <FormBoxAlternative>OR</FormBoxAlternative>
 
       <FormBoxInstruction>Let Virtru send you a code</FormBoxInstruction>

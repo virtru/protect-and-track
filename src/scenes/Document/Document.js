@@ -90,7 +90,15 @@ function Document({
           </div>
         </Drop>
         {isShareOpen && <Share onClose={() => setShareOpen(false)} />}
-        {isAuthOpen && <AuthSelect onClose={() => setAuthOpen(false)} loginAs={loginAs} />}
+        {isAuthOpen && (
+          <AuthSelect
+            onClose={() => {
+              setAuthOpen(false);
+              setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+            }}
+            loginAs={loginAs}
+          />
+        )}
       </>
     );
   };
