@@ -3,6 +3,7 @@ import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
 import gsuite from './services/gsuite';
 import './Share.css';
+import Button from '../../components/Button/Button';
 
 function Ico({ type }) {
   return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
@@ -45,7 +46,7 @@ function ShareButton({ children, init, onClick, type }) {
   return button;
 }
 
-function ShareSelect({ updateShare, file }) {
+function ShareSelect({ updateShare, file, onClose }) {
   const shareToDrive = async () => {
     try {
       const state = s => updateShare({ state: s, host: 'googledrive' });
@@ -54,10 +55,10 @@ function ShareSelect({ updateShare, file }) {
       // Safari's policy is that popups must be in response to a direct user action,
       // so no `await` calls can preceded this. To work around this, we load the API
       // before enabling the share button so this is the first gapi call.
-      const userEmail = await gsuite.signIn();
+      await gsuite.signIn();
 
       state('sharing');
-      const uploadResponse = await gsuite.upload(file.file.name, file.file.type, file.arrayBuffer);
+      const uploadResponse = await gsuite.upload(file.name, file.type, file.payload);
 
       // TODO(DSAT-14) Store permissions and don't sign out.
       gsuite.signOut();
@@ -73,6 +74,9 @@ function ShareSelect({ updateShare, file }) {
   };
   return (
     <ShareBox>
+      <button className="Share-close" onClick={onClose} title="Close Share Modal">
+        X
+      </button>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
       <ShareButton type="googledrive" onClick={shareToDrive} init={gsuite.init}>
         Google Drive
@@ -111,18 +115,17 @@ function TrackItButton() {
   const handleClick = e => {
     e.preventDefault();
   };
-  return (
-    <button onClick={handleClick} className="Share-trackit">
-      Track it!
-    </button>
-  );
+  return <Button onClick={handleClick}>Share</Button>;
 }
 
-function ShareComplete({ share, file }) {
+function ShareComplete({ share, file, onClose }) {
   const { host, link } = share;
   const { file: { name } = {} } = file;
   return (
     <ShareBox>
+      <button className="Share-close" onClick={onClose} title="Close Share Modal">
+        X
+      </button>
       <Title>Track {name || 'your shared file'}</Title>
       {host && (
         <div className="Share-center">
@@ -130,8 +133,11 @@ function ShareComplete({ share, file }) {
         </div>
       )}
       <p>
-        Ask these people to open <a href={link}>your file</a>, and you should see a{' '}
-        <b>Track Event</b>:
+        Ask these people to open{' '}
+        <a href={link} target="_blank" rel="noopener noreferrer">
+          your file
+        </a>
+        , and you should see a <b>Track Event</b>:
       </p>
       <RecipientList />
       <TrackItButton />
@@ -139,21 +145,26 @@ function ShareComplete({ share, file }) {
   );
 }
 
-function Share({ share, file, updateShare }) {
+function Share({ share, encrypted, updateShare, onClose }) {
+  let shareContent;
   switch (share.state) {
     case 'unshared':
-      return <ShareSelect updateShare={updateShare} file={file} />;
+      shareContent = <ShareSelect updateShare={updateShare} file={encrypted} onClose={onClose} />;
+      break;
     case 'authorizing':
     case 'sharing':
-      return <Sharing file={file} />;
+      shareContent = <Sharing file={encrypted} />;
+      break;
     case 'shared':
-      return <ShareComplete share={share} file={file} />;
+      shareContent = <ShareComplete share={share} file={encrypted} onClose={onClose} />;
+      break;
     default:
-      return <p>{share}</p>;
   }
+
+  return <div className="Share-wrapper">{shareContent}</div>;
 }
 
-const mapToProps = ({ share, file }) => ({ share, file });
+const mapToProps = ({ share, encrypted }) => ({ share, encrypted });
 
 const actions = {
   updateShare: (state, value) => ({ share: value }),
