@@ -35,6 +35,7 @@ export default createStore({
   appIdBundle: false,
   file,
   tdfLog: [],
+  auditLog: [],
   isLoading: true,
   share: { state: 'unshared', host: false },
   userId: activeAuth && activeAuth.split(':')[0],

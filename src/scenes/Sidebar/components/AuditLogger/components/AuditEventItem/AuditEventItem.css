@@ -1,0 +1,60 @@
+.auditEventWrapper {
+  height: 66px;
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 1px 0 0 #deeeff;
+  padding: 12px;
+  display: flex;
+}
+
+.auditEventIconWrapper {
+  justify-content: center;
+  width: 30px;
+}
+
+.auditEventIconWrapper .docIcon {
+  height: 18px;
+}
+
+.auditEventInfoWrapper {
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.auditEventDownloadWrapper {
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: right;
+}
+
+.auditEventInfoHeader {
+  color: #2d323b;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.auditEventInfoEmail {
+  color: #2d323b;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.auditEventDownloadWrapper .downloadIcon {
+  cursor: pointer;
+  width: 17px;
+}
+
+.auditEventTimestamp {
+  color: #2d323b;
+  font-size: 13px;
+  line-height: 23px;
+}
