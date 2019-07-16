@@ -16,7 +16,7 @@
   margin: 4px;
   position: relative;
   text-indent: -9999px;
-  transition: background-color 0.03s;
+  transition: background-color 0.2s cubic-bezier(0.6, -0.28, 0.74, 0.05);
 }
 
 .Toggle > label:after {
@@ -36,6 +36,7 @@
 .Toggle > input:checked + label {
   background: var(--blueDarker);
   border-color: var(--blueDarker);
+  transition: background-color 0.125s ease-in;
 }
 
 .Toggle > input:checked + label:after {
