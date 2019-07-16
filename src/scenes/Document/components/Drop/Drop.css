@@ -39,13 +39,40 @@
 .Drop-hover {
   border: 3px dashed var(--blueDarker);
 }
+
+.Drop-UploadButton {
+  border: 1px solid;
+  border-radius: 3px;
+  font-size: 1rem;
+  font-family: 'Open Sans';
+  font-weight: bold;
+  margin: 0.5rem;
+  white-space: nowrap;
+  outline: none;
+  cursor: pointer;
+  padding: 12px 23px;
+  color: var(--white);
+  background-color: var(--blueDarker);
+  border-color: var(--blueDarker);
+}
+
+.Drop-UploadButton:hover,
+.Drop-UploadButton:focus {
+  background-color: var(--blueDarkest);
+  border-color: var(--blueDarkest);
+  box-shadow: 0 2px 4px 0 rgba(var(--black), 0.29);
+}
+
+.Drop-UploadButton:active {
+  background-color: var(--slatePrimary);
+  border-color: var(--slatePrimary);
+  box-shadow: 0 2px 4px 0 rgba(var(--black), 0.29);
+}
+
 .Drop-UploadButton-label {
   color: #fff;
   font-family: var(--fontPrimary);
   padding: 6px 12px;
-}
-#dropzone .Drop-UploadButton {
-  pointer-events: all;
 }
 
 .Drop-UploadButton input[type='file'] {

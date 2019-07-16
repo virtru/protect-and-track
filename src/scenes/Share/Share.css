@@ -39,7 +39,7 @@
   margin: 12px;
 }
 
-.Share-trackit {
+<<<<<<< head .Share-trackit {
   background: var(--blueDarker);
   color: #ffffff;
   font-family: var(--fontPrimary);
@@ -48,12 +48,22 @@
   padding: 12px 24px;
 }
 
-.Share-title {
+=======>>>>>>>master .Share-title {
   color: #2d323b;
   font-family: var(--fontSecondary);
   margin: 0;
   font-size: 16px;
   margin-bottom: 24px;
+  width: 85%;
+}
+
+.Share-wrapper {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--slateDarkerTransparent);
 }
 
 .Share-box {
@@ -64,12 +74,21 @@
   display: flex;
   flex-direction: column;
   width: 296px;
-  margin: 10px;
-}
-
-.Share-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-family: var(--fontPrimary);
   font-size: 13px;
+}
+
+.Share-close {
+  position: absolute;
+  right: 25px;
+  top: 15px;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .Share-recipient {

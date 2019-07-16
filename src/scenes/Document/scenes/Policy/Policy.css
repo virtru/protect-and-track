@@ -1,7 +1,3 @@
-#policypanel * {
-  pointer-events: all;
-}
-
 .PolicyPanel {
   color: var(--slateDarkest);
   display: flex;
