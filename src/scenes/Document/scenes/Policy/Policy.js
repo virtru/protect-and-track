@@ -14,7 +14,7 @@ export const ENCRYPT_STATES = {
   PROTECTED: 3,
 };
 
-function PolicyPanel({ file, userId, login, encrypt, encryptState }) {
+function PolicyPanel({ file, userId, openAuthModal, encrypt, encryptState }) {
   const renderButtons = () => {
     switch (encryptState) {
       case ENCRYPT_STATES.AUTHENTICATING:
@@ -30,7 +30,7 @@ function PolicyPanel({ file, userId, login, encrypt, encryptState }) {
 
         return (
           <>
-            <Button onClick={login}>Sign in to continue</Button>
+            <Button onClick={openAuthModal}>Sign in to continue</Button>
             <Button disabled>Protect File</Button>
           </>
         );
