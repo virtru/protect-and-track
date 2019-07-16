@@ -8,7 +8,7 @@ import AuditEventItem from './components/AuditEventItem/AuditEventItem';
 
 const { useEffect, useRef } = React;
 
-const AuditLogger = ({ auditLog }) => {
+const AuditLogger = ({ auditLog = [] }) => {
   const scroll = useRef();
   useEffect(() => {
     if (!scroll.current) return;
