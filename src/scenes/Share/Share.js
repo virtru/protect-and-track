@@ -133,8 +133,11 @@ function ShareComplete({ share, file, onClose }) {
         </div>
       )}
       <p>
-        Ask these people to open <a href={link}>your file</a>, and you should see a{' '}
-        <b>Track Event</b>:
+        Ask these people to open{' '}
+        <a href={link} target="_blank" rel="noopener noreferrer">
+          your file
+        </a>
+        , and you should see a <b>Track Event</b>:
       </p>
       <RecipientList />
       <TrackItButton />
