@@ -54,7 +54,7 @@
 }
 
 .auditEventTimestamp {
-  color: #2d323b;
+  color: var(--slateDarkest);
   font-size: 13px;
   line-height: 23px;
 }
