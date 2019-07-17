@@ -1,3 +1,5 @@
+// https://github.com/virtru/dashboard-v2/blob/develop/locales/en-US.json#L383
+// audit page from Dasbord-V2 received this tokens from api, keys for translation.
 export default {
   OTHER: 'Other',
   'EMAIL.DRAFTED': 'Secure Email Drafted',
