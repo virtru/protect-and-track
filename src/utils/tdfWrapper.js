@@ -26,6 +26,23 @@ async function streamToBuffer(stream) {
 
 const actions = {
   pushLogAction: ({ tdfLog }, value) => ({ tdfLog: [...tdfLog, value] }),
+  // @todo remove hardcode, audit events should be pushed from api
+  fetchAuditLogAction: () => ({
+    auditLog: [
+      {
+        auditDataType: 'FILE.ACCESS_SUCCEEDED',
+        userId: 'foo@bar.com',
+        timestamp: '2019-07-15T14:48:22+00:00',
+        recordId: 0,
+      },
+      {
+        auditDataType: 'FILE.ACCESS_SUCCEEDED',
+        userId: 'foo@bar.com',
+        timestamp: '2019-07-15T14:48:22+00:00',
+        recordId: 1,
+      },
+    ],
+  }),
 };
 
 const boundActions = bindActions(actions, store);
@@ -112,6 +129,9 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml }) {
   if (!asHtml) {
     return buffer;
   }
+
+  // TODO: add interval request on audit events and put them in store
+  boundActions.fetchAuditLogAction();
 
   const manifestString = ''; // TODO: Confirmed with Tyler this is not needed for now
   return TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`);
