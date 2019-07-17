@@ -1,11 +1,12 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
+import * as tdf from '../../../../utils/tdfWrapper';
 
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ children, userId, updateFile }) {
+function Drop({ children, userId, updateFile, policyState }) {
   console.log(`<Drop userId="${userId}">`);
 
   // Asyncify FileReader's `readAsArrayBuffer`.
@@ -30,9 +31,15 @@ function Drop({ children, userId, updateFile }) {
     const shouldEncrypt = !filename.endsWith('.tdf');
 
     const fileBuffer = await fileToArrayBuffer(fileHandle);
-    const verb = (shouldEncrypt ? 'En' : 'De') + 'crypt';
-    console.log(`${verb} a file [${filename}] for [${userId}] as [${fileBuffer}]`);
-    updateFile({ file: fileHandle, arrayBuffer: fileBuffer });
+    // TODO(DSAT-7) handle TDF file and extract policy
+    // For now, just load an empty policy here.
+    const policyBuilder = tdf.policyBuilder();
+    // Add the current user if present
+    if (userId) {
+      policyBuilder.addUsers(userId);
+    }
+    const policy = policyBuilder.build();
+    updateFile({ file: fileHandle, arrayBuffer: fileBuffer, policy, policyBuilder });
   };
 
   const handleFileInput = async event => {
@@ -112,7 +119,7 @@ function Drop({ children, userId, updateFile }) {
       </DropZone>
     );
   }
-  return <DropZone policyState="encrypted">{children}</DropZone>;
+  return <DropZone policyState={policyState}>{children}</DropZone>;
 }
 
 export default Drop;

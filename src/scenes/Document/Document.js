@@ -16,6 +16,7 @@ import { arrayBufferToBase64 } from '../../utils/base64';
 
 function Document({
   file,
+  policy,
   updateFile,
   userId,
   updateUserId,
@@ -24,6 +25,7 @@ function Document({
   encrypted,
   updateEncrypted,
 }) {
+  console.log(`<Document file=${JSON.stringify(file)} policy=${JSON.stringify(policy)}`);
   const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
   const [isShareOpen, setShareOpen] = useState(false);
 
@@ -53,6 +55,7 @@ function Document({
       client: virtruClient,
       fileData: file.data,
       filename: file.file.name,
+      policy: policy,
       userEmail: userId,
       asHtml: true,
     });
@@ -71,11 +74,16 @@ function Document({
 
     return (
       <>
-        <Drop userId={userId} updateFile={updateFile}>
+        <Drop
+          policyState={encryptState === ENCRYPT_STATES.PROTECTED ? 'encrypted' : 'plain'}
+          userId={userId}
+          updateFile={updateFile}
+        >
           <div className="DocumentDetails">
             <Filename file={file} isTdf={encryptState === ENCRYPT_STATES.PROTECTED} />
             <Policy
               file={file}
+              policy={policy}
               userId={userId}
               login={login}
               encrypt={encrypt}
@@ -112,21 +120,23 @@ function Document({
   );
 }
 
-const mapToProps = ({ file, userId, virtruClient, encrypted }) => ({
+const mapToProps = ({ encrypted, file, policy, userId, virtruClient }) => ({
+  encrypted,
   file,
+  policy,
   userId,
   virtruClient,
-  encrypted,
 });
 const actions = {
   updateFile: (state, value) => {
     console.log(value);
     const b64 = arrayBufferToBase64(value.arrayBuffer);
-    const fileName = value.file.name;
-    const fileType = value.file.type;
+    const { name: fileName, type: fileType } = value.file;
+    const policy = value.policy;
 
-    localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType }));
-    return { file: value };
+    // TODO migrate localStorage update to a subscription to track both policy and file changes centrally
+    localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType, policy }));
+    return { file: value, policy };
   },
   updateUserId: (state, value) => ({ userId: value }),
   updateVirtruClient: (state, value) => ({ virtruClient: value }),

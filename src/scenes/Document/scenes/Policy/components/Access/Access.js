@@ -2,6 +2,7 @@ import React from 'react';
 
 import SectionHeader from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
+import { ENCRYPT_STATES } from '../../Policy';
 import './Access.css';
 
 function Grant({ user, status }) {
@@ -31,18 +32,20 @@ function NewGrant() {
   );
 }
 
-function Access() {
+function Access({ encryptState, policy }) {
   return (
     <div className="Access">
       <SectionHeader>
         <AccessIcon />
         <h4>Who should have access?</h4>
-        <button className="Access-revokeAll">Revoke All</button>
+        {encryptState === ENCRYPT_STATES.PROTECTED && (
+          <button className="Access-revokeAll">Revoke All</button>
+        )}
       </SectionHeader>
       <ol start="0">
-        <Grant user="kathy@domain.com" status="owner" />
-        <Grant user="burt.with.the.long.name@example.com.invalid" status="reader" />
-        <Grant user="sally@elsewhere.com" status="reader" />
+        {policy.getUsers().map((user, i) => {
+          return <Grant user={user} status={i ? 'reader' : 'owner'} />;
+        })}
       </ol>
       <NewGrant />
     </div>

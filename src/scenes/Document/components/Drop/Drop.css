@@ -32,6 +32,10 @@
   border-style: solid;
 }
 
+.Drop-plain {
+  border-style: solid;
+}
+
 .Drop-icon {
   fill: var(--slatePrimary);
 }
