@@ -41,7 +41,7 @@
 }
 
 .auditEventInfoEmail {
-  color: #2d323b;
+  color: var(--slateDarkest);
   font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
