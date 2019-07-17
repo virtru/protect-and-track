@@ -14,7 +14,7 @@ export const ENCRYPT_STATES = {
   PROTECTED: 3,
 };
 
-function PolicyPanel({ file, userId, login, encrypt, encryptState }) {
+function Policy({ file, userId, login, encrypt, encryptState }) {
   const renderButtons = () => {
     switch (encryptState) {
       case ENCRYPT_STATES.AUTHENTICATING:
@@ -37,9 +37,9 @@ function PolicyPanel({ file, userId, login, encrypt, encryptState }) {
     }
   };
   return (
-    <div className="PolicyPanel" id="policypanel">
       <Access />
       <hr className="PolicyPanel-rule" />
+    <div className="Policy" id="policy">
       <Expiration />
       <hr className="PolicyPanel-rule" />
       <Forwarding />
@@ -49,4 +49,4 @@ function PolicyPanel({ file, userId, login, encrypt, encryptState }) {
   );
 }
 
-export default PolicyPanel;
+export default Policy;
