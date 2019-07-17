@@ -3,7 +3,7 @@
   flex-direction: column;
   width: 380px;
   height: 100%;
-  font-family: 'Open Sans';
+  font-family: var(--fontPrimary);
 }
 
 .sidebarContainer {
