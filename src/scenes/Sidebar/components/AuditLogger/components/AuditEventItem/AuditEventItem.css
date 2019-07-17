@@ -31,7 +31,7 @@
 }
 
 .auditEventInfoHeader {
-  color: #2d323b;
+  color: var(--slateDarkest);
   font-size: 13px;
   font-weight: bold;
   margin: 0;
