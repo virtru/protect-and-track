@@ -2,7 +2,7 @@
   height: 66px;
   width: 100%;
   background-color: #ffffff;
-  box-shadow: 0 1px 0 0 #deeeff;
+  box-shadow: 0 1px 0 0 var(--blueLightest);
   padding: 12px;
   display: flex;
 }
