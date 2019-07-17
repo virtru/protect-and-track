@@ -36,9 +36,10 @@ export default createStore({
   file,
   encrypted: false,
   tdfLog: [],
-  auditLog: [],
   isLoading: true,
   share: { state: 'unshared', host: false },
   userId: activeAuth && activeAuth.split(':')[0],
+  appId: activeAuth && activeAuth.split(':')[1],
+  auditEvents: [],
   virtruClient: false,
 });

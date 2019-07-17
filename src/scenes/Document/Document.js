@@ -7,6 +7,7 @@ import * as tdf from 'utils/tdfWrapper';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
+import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
 
 import './Document.css';
@@ -18,11 +19,14 @@ function Document({
   file,
   updateFile,
   userId,
+  appId,
   updateUserId,
   virtruClient,
   updateVirtruClient,
   encrypted,
   updateEncrypted,
+  auditEvents,
+  updateAuditEvents,
 }) {
   const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
   const [isShareOpen, setShareOpen] = useState(false);
@@ -49,7 +53,7 @@ function Document({
 
   const encrypt = async () => {
     setEncryptState(ENCRYPT_STATES.PROTECTING);
-    const encryptedFile = await tdf.encrypt({
+    const { encryptedFile, policyId } = await tdf.encrypt({
       client: virtruClient,
       fileData: file.data,
       filename: file.file.name,
@@ -62,6 +66,11 @@ function Document({
       type: file.file.type,
     });
     setEncryptState(ENCRYPT_STATES.PROTECTED);
+    setInterval(async () => {
+      const auditRes = await getAuditEvents({ userId, appId, policyId });
+      const auditData = await auditRes.json();
+      updateAuditEvents(auditData.data);
+    }, 2000);
   };
 
   const renderDrop = () => {
@@ -112,10 +121,12 @@ function Document({
   );
 }
 
-const mapToProps = ({ file, userId, virtruClient, encrypted }) => ({
+const mapToProps = ({ file, userId, appId, virtruClient, encrypted, auditEvents }) => ({
   file,
   userId,
+  appId,
   virtruClient,
+  auditEvents,
   encrypted,
 });
 const actions = {
@@ -131,6 +142,7 @@ const actions = {
   updateUserId: (state, value) => ({ userId: value }),
   updateVirtruClient: (state, value) => ({ virtruClient: value }),
   updateEncrypted: (state, value) => ({ encrypted: value }),
+  updateAuditEvents: (state, value) => ({ auditEvents: value }),
 };
 
 export default connect(
