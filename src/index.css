@@ -19,7 +19,7 @@ body {
 }
 
 h3 {
-  color: #001e4a;
+  color: var(--blueDarkest);
   font-size: 25px;
   font-weight: bold;
   line-height: 30px;
