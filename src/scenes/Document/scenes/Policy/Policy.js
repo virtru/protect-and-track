@@ -14,7 +14,7 @@ export const ENCRYPT_STATES = {
   PROTECTED: 3,
 };
 
-function Policy({ file, policy, userId, login, encrypt, encryptState }) {
+function Policy({ file, policy, userId, login, encrypt, encryptState, updatePolicy }) {
   console.log(`<Policy policy=${JSON.stringify(policy)}`);
   const renderButtons = () => {
     switch (encryptState) {
@@ -40,14 +40,19 @@ function Policy({ file, policy, userId, login, encrypt, encryptState }) {
   if (encryptState !== ENCRYPT_STATES.PROTECTED) {
     return (
       <div className="Policy" id="policy">
-        <Access policy={policy} />
+        <Access policy={policy} updatePolicy={updatePolicy} userId={userId} />
         <span className="Policy-buttons">{renderButtons()}</span>
       </div>
     );
   }
   return (
     <div className="Policy" id="policy">
-      <Access policy={policy} encryptState={encryptState} />
+      <Access
+        policy={policy}
+        encryptState={encryptState}
+        updatePolicy={updatePolicy}
+        userId={userId}
+      />
       <hr className="Policy-rule" />
       <Expiration />
       <Forwarding />

@@ -18,6 +18,7 @@ function Document({
   file,
   policy,
   updateFile,
+  updatePolicy,
   userId,
   updateUserId,
   virtruClient,
@@ -88,6 +89,7 @@ function Document({
               login={login}
               encrypt={encrypt}
               encryptState={encryptState}
+              updatePolicy={updatePolicy}
             />
           </div>
         </Drop>
@@ -138,6 +140,7 @@ const actions = {
     localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType, policy }));
     return { file: value, policy };
   },
+  updatePolicy: (state, value) => ({ policy: value }),
   updateUserId: (state, value) => ({ userId: value }),
   updateVirtruClient: (state, value) => ({ virtruClient: value }),
   updateEncrypted: (state, value) => ({ encrypted: value }),
