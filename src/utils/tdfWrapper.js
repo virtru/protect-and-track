@@ -162,7 +162,10 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
   boundActions.fetchAuditLogAction();
 
   const manifestString = ''; // TODO: Confirmed with Tyler this is not needed for now
-  return TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`);
+  return {
+    encryptedFile: TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`),
+    policyId: policy._policyId,
+  };
 }
 
 async function authenticate(email) {
@@ -170,5 +173,10 @@ async function authenticate(email) {
   await client.clientConfig.authProvider._initAuthForProvider();
   return client;
 }
+
+_pushAction({
+  title: 'Authenticate',
+  code: logs.buildVirtruPolicy(),
+});
 
 export { authenticate, encrypt, policyBuilder };

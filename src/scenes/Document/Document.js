@@ -7,7 +7,9 @@ import * as tdf from 'utils/tdfWrapper';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
+import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
+import AuthSelect from '../AuthSelect/AuthSelect';
 
 import './Document.css';
 import downloadHtml from '../../utils/downloadHtml';
@@ -15,20 +17,24 @@ import Button from '../../components/Button/Button';
 import { arrayBufferToBase64 } from '../../utils/base64';
 
 function Document({
+  appId,
+  auditEvents,
+  encrypted,
   file,
   policy,
+  updateAuditEvents,
+  updateEncrypted,
   updateFile,
   updatePolicy,
-  userId,
-  updateUserId,
-  virtruClient,
   updateVirtruClient,
-  encrypted,
-  updateEncrypted,
+  updateUserId,
+  userId,
+  virtruClient,
 }) {
   console.log(`<Document file=${JSON.stringify(file)} policy=${JSON.stringify(policy)}`);
   const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
   const [isShareOpen, setShareOpen] = useState(false);
+  const [isAuthOpen, setAuthOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -41,18 +47,22 @@ function Document({
     })();
   }, [userId, updateVirtruClient, virtruClient]);
 
-  const login = async () => {
+  const openAuthModal = () => {
     setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
-    const email = prompt('Enter email');
+    setAuthOpen(true);
+  };
+
+  const loginAs = async email => {
     const client = await tdf.authenticate(email);
     updateUserId(email);
     updateVirtruClient(client);
     setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+    setAuthOpen(false);
   };
 
   const encrypt = async () => {
     setEncryptState(ENCRYPT_STATES.PROTECTING);
-    const encryptedFile = await tdf.encrypt({
+    const { encryptedFile, policyId } = await tdf.encrypt({
       client: virtruClient,
       fileData: file.data,
       filename: file.file.name,
@@ -66,6 +76,11 @@ function Document({
       type: file.file.type,
     });
     setEncryptState(ENCRYPT_STATES.PROTECTED);
+    setInterval(async () => {
+      const auditRes = await getAuditEvents({ userId, appId, policyId });
+      const auditData = await auditRes.json();
+      updateAuditEvents(auditData.data);
+    }, 2000);
   };
 
   const renderDrop = () => {
@@ -86,7 +101,7 @@ function Document({
               file={file}
               policy={policy}
               userId={userId}
-              login={login}
+              openAuthModal={openAuthModal}
               encrypt={encrypt}
               encryptState={encryptState}
               updatePolicy={updatePolicy}
@@ -94,6 +109,15 @@ function Document({
           </div>
         </Drop>
         {isShareOpen && <Share onClose={() => setShareOpen(false)} />}
+        {isAuthOpen && (
+          <AuthSelect
+            onClose={() => {
+              setAuthOpen(false);
+              setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+            }}
+            loginAs={loginAs}
+          />
+        )}
       </>
     );
   };
@@ -122,7 +146,9 @@ function Document({
   );
 }
 
-const mapToProps = ({ encrypted, file, policy, userId, virtruClient }) => ({
+const mapToProps = ({ appId, auditEvents, encrypted, file, policy, userId, virtruClient }) => ({
+  appId,
+  auditEvents,
   encrypted,
   file,
   policy,
@@ -144,6 +170,7 @@ const actions = {
   updateUserId: (state, value) => ({ userId: value }),
   updateVirtruClient: (state, value) => ({ virtruClient: value }),
   updateEncrypted: (state, value) => ({ encrypted: value }),
+  updateAuditEvents: (state, value) => ({ auditEvents: value }),
 };
 
 export default connect(

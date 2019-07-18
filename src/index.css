@@ -71,7 +71,12 @@ input:focus {
   outline: none;
 }
 
-input[type='text'] {
-  font-family: var(--fontSecondary);
-  font-size: 17px;
+input[type='text'],
+input[type='email'] {
+  height: 50px;
+  padding-left: 10px;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

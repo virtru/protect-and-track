@@ -35,5 +35,5 @@ const AuditLogger = ({ auditLog = [] }) => {
   );
 };
 
-const mapToProps = ({ auditLog }) => ({ auditLog });
+const mapToProps = ({ auditEvents }) => ({ auditLog: auditEvents });
 export default connect(mapToProps)(AuditLogger);

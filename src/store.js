@@ -56,9 +56,6 @@ export default createStore({
   // TDF Event Logger Contents
   tdfLog: [],
 
-  // Audit events associated with the current policy
-  auditLog: [],
-
   // Application loading status
   isLoading: true,
 
@@ -67,6 +64,11 @@ export default createStore({
 
   // Username; displayed in appbar
   userId: activeAuth && activeAuth.split(':')[0],
+
+  appId: activeAuth && activeAuth.split(':')[1],
+
+  // Audit events associated with the current policy
+  auditEvents: [],
 
   // Enhanced TDF client library
   virtruClient: false,

@@ -14,7 +14,7 @@ export const ENCRYPT_STATES = {
   PROTECTED: 3,
 };
 
-function Policy({ file, policy, userId, login, encrypt, encryptState, updatePolicy }) {
+function Policy({ encrypt, encryptState, file, login, policy, updatePolicy, userId }) {
   console.log(`<Policy policy=${JSON.stringify(policy)}`);
   const renderButtons = () => {
     switch (encryptState) {
@@ -31,7 +31,7 @@ function Policy({ file, policy, userId, login, encrypt, encryptState, updatePoli
 
         return (
           <>
-            <Button onClick={login}>Sign in to continue</Button>
+            <Button onClick={openAuthModal}>Sign in to continue</Button>
             <Button disabled>Protect File</Button>
           </>
         );
