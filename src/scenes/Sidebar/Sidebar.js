@@ -4,7 +4,7 @@ import './Sidebar.css';
 
 import SdkLogger from './components/SdkLogger/SdkLogger';
 
-const Sidebar = ({ tdfLog }) => {
+const Sidebar = ({ tdfLog = [] }) => {
   return (
     <div className="sidebarWrapper">
       <h3>Tracked events</h3>
