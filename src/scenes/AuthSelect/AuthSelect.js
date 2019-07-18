@@ -1,10 +1,4 @@
 import React, { useState } from 'react';
-import {
-  FormBox,
-  FormBoxInstruction,
-  FormBoxAlternative,
-  FormBoxButton,
-} from 'components/FormBox/FormBox';
 import './AuthSelect.css';
 import Modal from '../../components/Modal/Modal';
 import Button from '../../components/Button/Button';
