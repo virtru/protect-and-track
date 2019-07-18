@@ -27,9 +27,6 @@ function Drop({ children, userId, updateFile, policyState }) {
   };
 
   const processFile = async fileHandle => {
-    const filename = fileHandle.name;
-    const shouldEncrypt = !filename.endsWith('.tdf');
-
     const fileBuffer = await fileToArrayBuffer(fileHandle);
     // TODO(DSAT-7) handle TDF file and extract policy
     // For now, just load an empty policy here.
