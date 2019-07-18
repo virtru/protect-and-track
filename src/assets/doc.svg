@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="18px" viewBox="0 0 16 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 55.2 (78181) - https://sketchapp.com -->
+    <title>EBED9B67-9D94-4219-BF61-9AE06C893118</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="flow---primary---plain-files" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ideal-1---ready-to-share" transform="translate(-657.000000, -157.000000)" fill="#515864" fill-rule="nonzero">
+            <g id="events-pane" transform="translate(644.000000, 55.000000)">
+                <g id="Audit">
+                    <g id="Audit-event/model" transform="translate(0.000000, 90.000000)">
+                        <g id="sizing-constraints">
+                            <g id="icon" transform="translate(12.000000, 12.000000)">
+                                <path d="M14.5636364,6.10641593 L10.1123521,6.10641593 L10.1123521,1.63636364 L3.6,1.63636364 C3.51799028,1.63636364 3.44536364,1.70949463 3.44536332,1.80102273 L3.43636364,16.2 C3.43636364,16.2905054 3.50899028,16.3636364 3.591,16.3636364 L14.4,16.3636364 C14.4862613,16.3636364 14.5636364,16.2862613 14.5636364,16.2 L14.5636364,6.10641593 Z M3.6,0 L10.8,0 L16.2,5.4 L16.2,16.2 C16.2,17.19 15.39,18 14.4,18 L3.591,18 C2.601,18 1.8,17.19 1.8,16.2 L1.809,1.8 C1.809,0.81 2.61,0 3.6,0 Z" id="Icon"></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

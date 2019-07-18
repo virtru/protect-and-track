@@ -19,6 +19,13 @@ body {
   font-family: var(--fontSecondary);
 }
 
+h3 {
+  color: var(--blueDarkest);
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
+}
+
 #root {
   height: 100%;
 }
@@ -27,6 +34,7 @@ main {
   display: flex;
   align-items: center;
   height: calc(100vh - 55px);
+  background: #fff;
 }
 
 code {
