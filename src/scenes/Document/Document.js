@@ -3,7 +3,7 @@ import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
 
-import * as tdf from 'utils/tdfWrapper';
+import Virtru from 'utils/VirtruWrapper';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
@@ -41,7 +41,7 @@ function Document({
       if (!userId || virtruClient) {
         return;
       }
-      const client = await tdf.authenticate(userId);
+      const client = await Virtru.authenticate(userId);
       updateVirtruClient(client);
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
     })();
@@ -53,7 +53,7 @@ function Document({
   };
 
   const loginAs = async email => {
-    const client = await tdf.authenticate(email);
+    const client = await Virtru.authenticate(email);
     updateUserId(email);
     updateVirtruClient(client);
     setEncryptState(ENCRYPT_STATES.UNPROTECTED);
@@ -62,7 +62,7 @@ function Document({
 
   const encrypt = async () => {
     setEncryptState(ENCRYPT_STATES.PROTECTING);
-    const { encryptedFile, policyId } = await tdf.encrypt({
+    const { encryptedFile, policyId } = await Virtru.encrypt({
       client: virtruClient,
       fileData: file.data,
       filename: file.file.name,
@@ -155,18 +155,25 @@ const mapToProps = ({ appId, auditEvents, encrypted, file, policy, userId, virtr
   userId,
   virtruClient,
 });
+const updateLocalStorage = (file, policy) => {
+  const b64 = arrayBufferToBase64(file.arrayBuffer);
+  const { name: fileName, type: fileType } = file.file;
+
+  // TODO migrate localStorage update to a subscription to track both policy and file changes centrally
+  localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType, policy }));
+};
 const actions = {
   updateFile: (state, value) => {
     console.log(value);
-    const b64 = arrayBufferToBase64(value.arrayBuffer);
-    const { name: fileName, type: fileType } = value.file;
     const policy = value.policy;
-
-    // TODO migrate localStorage update to a subscription to track both policy and file changes centrally
-    localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType, policy }));
+    updateLocalStorage(value, policy);
     return { file: value, policy };
   },
-  updatePolicy: (state, value) => ({ policy: value }),
+  updatePolicy: (state, value) => {
+    const { file } = state;
+    updateLocalStorage(file, value);
+    return { policy: value };
+  },
   updateUserId: (state, value) => ({ userId: value }),
   updateVirtruClient: (state, value) => ({ virtruClient: value }),
   updateEncrypted: (state, value) => ({ encrypted: value }),

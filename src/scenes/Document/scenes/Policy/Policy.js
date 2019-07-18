@@ -14,7 +14,16 @@ export const ENCRYPT_STATES = {
   PROTECTED: 3,
 };
 
-function Policy({ encrypt, encryptState, file, login, policy, updatePolicy, userId }) {
+function Policy({
+  encrypt,
+  encryptState,
+  file,
+  login,
+  openAuthModal,
+  policy,
+  updatePolicy,
+  userId,
+}) {
   console.log(`<Policy policy=${JSON.stringify(policy)}`);
   const renderButtons = () => {
     switch (encryptState) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
-import * as tdf from '../../../../utils/tdfWrapper';
+import Virtru from '../../../../utils/VirtruWrapper';
 
 /**
  * A place to drop an encrypted or uncrypted file.
@@ -30,7 +30,7 @@ function Drop({ children, userId, updateFile, policyState }) {
     const fileBuffer = await fileToArrayBuffer(fileHandle);
     // TODO(DSAT-7) handle TDF file and extract policy
     // For now, just load an empty policy here.
-    const policyBuilder = tdf.policyBuilder();
+    const policyBuilder = Virtru.policyBuilder();
     // Add the current user if present
     if (userId) {
       policyBuilder.addUsers(userId);

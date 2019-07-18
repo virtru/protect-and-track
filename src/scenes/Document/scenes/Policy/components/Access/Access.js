@@ -3,13 +3,13 @@ import React, { useState } from 'react';
 import SectionHeader from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
 import { ENCRYPT_STATES } from '../../Policy';
-import * as tdf from '../../../../../../utils/tdfWrapper';
+import Virtru from '../../../../../../utils/VirtruWrapper';
 import './Access.css';
 
 function Access({ encryptState, userId, policy, updatePolicy }) {
   const policyChange = change => e => {
     e && e.preventDefault();
-    const policyBuilder = tdf.policyBuilder(policy);
+    const policyBuilder = Virtru.policyBuilder(policy);
     if (change(policyBuilder) === 'NOPE') {
       return false;
     }

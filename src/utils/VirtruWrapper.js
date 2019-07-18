@@ -179,4 +179,4 @@ _pushAction({
   code: logs.buildVirtruPolicy(),
 });
 
-export { authenticate, encrypt, policyBuilder };
+export default { authenticate, encrypt, policyBuilder };
