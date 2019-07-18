@@ -18,7 +18,6 @@ import { arrayBufferToBase64 } from '../../utils/base64';
 
 function Document({
   appId,
-  auditEvents,
   encrypted,
   file,
   policy,
@@ -146,9 +145,8 @@ function Document({
   );
 }
 
-const mapToProps = ({ appId, auditEvents, encrypted, file, policy, userId, virtruClient }) => ({
+const mapToProps = ({ appId, encrypted, file, policy, userId, virtruClient }) => ({
   appId,
-  auditEvents,
   encrypted,
   file,
   policy,
