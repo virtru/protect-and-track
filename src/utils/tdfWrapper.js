@@ -146,9 +146,12 @@ async function authenticate(email) {
   return client;
 }
 
-_pushAction({
-  title: 'Authenticate',
-  code: logs.buildVirtruPolicy(),
-});
+function unwrapHtml(file) {
+  _pushAction({
+    title: 'Load TDF',
+    code: logs.unwrapHtml(),
+  });
+  return TDF.unwrapHtml(file);
+}
 
-export { encrypt, authenticate };
+export { encrypt, authenticate, unwrapHtml };

@@ -80,13 +80,27 @@ function Document({
   };
 
   const renderDrop = () => {
+    const loadEncrypted = ({ fileName, fileType, fileBuffer }) => {
+      const htmlText = new TextDecoder('utf-8').decode(fileBuffer);
+      const encrypted = tdf.unwrapHtml(htmlText);
+      updateEncrypted({
+        payload: encrypted,
+        name: fileName,
+        type: fileType,
+      });
+      if (userId) {
+        setEncryptState(ENCRYPT_STATES.PROTECTED);
+      } else {
+        setEncryptState(ENCRYPT_STATES.PROTECTED_NO_AUTH);
+      }
+    };
     if (!file) {
-      return <Drop userId={userId} updateFile={updateFile} />;
+      return <Drop userId={userId} updateFile={updateFile} loadEncrypted={loadEncrypted} />;
     }
 
     return (
       <>
-        <Drop userId={userId} updateFile={updateFile}>
+        <Drop userId={userId} updateFile={updateFile} loadEncrypted={loadEncrypted}>
           <div className="DocumentDetails">
             <Filename file={file} isTdf={encryptState === ENCRYPT_STATES.PROTECTED} />
             <Policy
@@ -115,10 +129,14 @@ function Document({
   const renderButtons = () => {
     return (
       <>
-        <Button variant="link" onClick={() => downloadHtml(encrypted)} disabled={!encrypted}>
+        <Button
+          variant="link"
+          onClick={() => downloadHtml(encrypted)}
+          disabled={!encrypted || !userId}
+        >
           Download
         </Button>
-        <Button onClick={() => setShareOpen(true)} disabled={!encrypted}>
+        <Button onClick={() => setShareOpen(true)} disabled={!encrypted || !userId}>
           Share
         </Button>
       </>

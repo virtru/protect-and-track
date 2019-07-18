@@ -12,6 +12,7 @@ export const ENCRYPT_STATES = {
   UNPROTECTED: 1,
   PROTECTING: 2,
   PROTECTED: 3,
+  PROTECTED_NO_AUTH: 4,
 };
 
 function PolicyPanel({ file, userId, openAuthModal, encrypt, encryptState }) {
@@ -23,6 +24,12 @@ function PolicyPanel({ file, userId, openAuthModal, encrypt, encryptState }) {
         return <Button disabled>Protecting...</Button>;
       case ENCRYPT_STATES.PROTECTED:
         return null;
+      case ENCRYPT_STATES.PROTECTED_NO_AUTH:
+        return (
+          <>
+            <Button onClick={openAuthModal}>Sign in to continue</Button>
+          </>
+        );
       default:
         if (userId) {
           return <Button onClick={encrypt}>Protect File</Button>;

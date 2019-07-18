@@ -5,7 +5,7 @@ import { ReactComponent as DropIcon } from './drop-icon.svg';
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ children, userId, updateFile }) {
+function Drop({ children, userId, updateFile, loadEncrypted }) {
   console.log(`<Drop userId="${userId}">`);
 
   // Asyncify FileReader's `readAsArrayBuffer`.
@@ -26,12 +26,21 @@ function Drop({ children, userId, updateFile }) {
   };
 
   const processFile = async fileHandle => {
-    const filename = fileHandle.name;
-    const shouldEncrypt = !filename.endsWith('.tdf');
-
+    const { name: fileName, type: fileType } = fileHandle;
     const fileBuffer = await fileToArrayBuffer(fileHandle);
+    let shouldEncrypt = true;
+
+    if (fileName.endsWith('.html')) {
+      try {
+        loadEncrypted({ fileName, fileType, fileBuffer });
+        shouldEncrypt = false;
+      } catch (err) {
+        console.error('unwrapHtml failed', err);
+      }
+    }
+
     const verb = (shouldEncrypt ? 'En' : 'De') + 'crypt';
-    console.log(`${verb} a file [${filename}] for [${userId}] as [${fileBuffer}]`);
+    console.log(`${verb} a file [${fileName}] for [${userId}] as [${fileBuffer}]`);
     updateFile({ file: fileHandle, arrayBuffer: fileBuffer });
   };
 
