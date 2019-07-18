@@ -9,7 +9,7 @@ afterEach(cleanup);
 
 describe('Access', () => {
   test('Renders an empty policy', () => {
-    const { container, getByRole, getByText } = render(
+    const { getByRole, getByText } = render(
       <Access
         encryptState={ENCRYPT_STATES.UNPROTECTED}
         policy={new Virtru.Client.VirtruPolicyBuilder().build()}
