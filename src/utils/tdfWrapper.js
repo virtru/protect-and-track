@@ -146,4 +146,9 @@ async function authenticate(email) {
   return client;
 }
 
+_pushAction({
+  title: 'Authenticate',
+  code: logs.buildVirtruPolicy(),
+});
+
 export { encrypt, authenticate };

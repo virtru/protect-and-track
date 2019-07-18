@@ -5,6 +5,7 @@
   width: 100vw;
   height: 100vh;
   background-color: var(--slateDarkerTransparent);
+  z-index: 10;
 }
 
 .Modal-content {
