@@ -9,6 +9,7 @@ import Filename from './components/Filename/Filename';
 import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
 import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
+import AuthSelect from '../AuthSelect/AuthSelect';
 
 import './Document.css';
 import downloadHtml from '../../utils/downloadHtml';
@@ -30,6 +31,7 @@ function Document({
 }) {
   const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
   const [isShareOpen, setShareOpen] = useState(false);
+  const [isAuthOpen, setAuthOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -42,13 +44,17 @@ function Document({
     })();
   }, [userId, updateVirtruClient, virtruClient]);
 
-  const login = async () => {
+  const openAuthModal = () => {
     setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
-    const email = prompt('Enter email');
+    setAuthOpen(true);
+  };
+
+  const loginAs = async email => {
     const client = await tdf.authenticate(email);
     updateUserId(email);
     updateVirtruClient(client);
     setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+    setAuthOpen(false);
   };
 
   const encrypt = async () => {
@@ -86,13 +92,22 @@ function Document({
             <Policy
               file={file}
               userId={userId}
-              login={login}
+              openAuthModal={openAuthModal}
               encrypt={encrypt}
               encryptState={encryptState}
             />
           </div>
         </Drop>
         {isShareOpen && <Share onClose={() => setShareOpen(false)} />}
+        {isAuthOpen && (
+          <AuthSelect
+            onClose={() => {
+              setAuthOpen(false);
+              setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+            }}
+            loginAs={loginAs}
+          />
+        )}
       </>
     );
   };

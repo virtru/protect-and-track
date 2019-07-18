@@ -1,0 +1,29 @@
+.Modal-wrapper {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--slateDarkerTransparent);
+  z-index: 10;
+}
+
+.Modal-content {
+  background: white;
+  border: 1px solid --var(white);
+  border-radius: 8px;
+  padding: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.Modal-close {
+  position: absolute;
+  right: 25px;
+  top: 15px;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
