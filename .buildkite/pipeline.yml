@@ -89,15 +89,9 @@ steps:
     branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
 
   # Build and Deploy (Staging)
-  - label: 'Update package.json for staging'
-    branches: '!master'
-    command: './.buildkite/scripts/update-package.sh'
-    agents:
-      - *agent_queue
-  - wait
   - label: ':npm: NPM Build Staging'
     branches: '!master'
-    command: 'buildkite-scripts/scripts/npm-build.sh'
+    command: './.buildkite/scripts/update-package.sh && buildkite-scripts/scripts/npm-build.sh'
     agents:
       - *agent_queue
   - wait
@@ -109,7 +103,7 @@ steps:
     agents:
       - *agent_queue
   - wait
-  - label: ':s3: Invalidate CloudFront Cache'
+  - label: ':s3: Invalidate CloudFront Cache Staging'
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
     branches: '!master'
     env:
