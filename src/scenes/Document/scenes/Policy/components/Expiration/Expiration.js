@@ -27,6 +27,7 @@ function Expiration() {
           Custom
         </RadioButton>
       </div>
+      <hr className="Policy-rule" />
     </div>
   );
 }

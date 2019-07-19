@@ -1,16 +1,3 @@
-.Access-revokeAll {
-  height: 24px;
-  background: var(--redDarker);
-  border: 1px solid var(--redDarker);
-  border-radius: 3px;
-  color: #fff;
-  font-family: var(--fontPrimary);
-  font-size: 13px;
-  font-weight: bold;
-  line-height: 18px;
-  text-align: center;
-}
-
 .Access > ol {
   margin: 0;
 }
@@ -41,14 +28,6 @@
   min-width: 64px;
 }
 
-.NewGrant button {
-  background: #fff;
-  border: 1px solid var(--slateDarker);
-  border-radius: 3px;
-  margin: 4px;
-  min-height: 36px;
-  min-width: 64px;
-}
 .NewGrant {
   align-items: center;
   display: flex;
@@ -56,11 +35,49 @@
   margin-left: 32px;
   text-align: left;
 }
-.NewGrant input {
+
+.NewGrant input[type='email'] {
   border: 1px solid var(--slateDarker);
   border-radius: 3px;
   background-color: #fff;
-  height: 36px;
+  min-height: 36px;
   margin: 4px;
   min-width: 256px;
+}
+
+.Grant-owner,
+.Access-revokeAll,
+.Access input[type='submit'] {
+  font-family: var(--fontPrimary);
+  font-size: 13px;
+  line-height: 18px;
+  min-height: 36px;
+  margin: 4px;
+  min-width: 94px;
+}
+
+.Access-revokeAll {
+  background: var(--redDarker);
+  border: 1px solid var(--redDarker);
+  border-radius: 3px;
+  color: #fff;
+  font-family: var(--fontPrimary);
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 18px;
+  text-align: center;
+}
+
+.Access input[type='submit'] {
+  border: 1px solid var(--slateDarker);
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.Grant input[type='submit'] {
+  color: var(--redDarker);
+}
+.NewGrant input[type='submit'] {
+  color: var(--blueDarker);
+  font-weight: bold;
 }

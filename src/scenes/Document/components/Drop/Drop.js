@@ -1,14 +1,12 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
-import { fileToArrayBuffer } from 'utils/buffer';
 
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ children, userId, setFile, loadEncrypted }) {
+function Drop({ children, userId, setFile, policyState }) {
   console.log(`<Drop userId="${userId}">`);
-
   const handleFileInput = async event => {
     event.stopPropagation();
     event.preventDefault();
@@ -86,7 +84,7 @@ function Drop({ children, userId, setFile, loadEncrypted }) {
       </DropZone>
     );
   }
-  return <DropZone policyState="encrypted">{children}</DropZone>;
+  return <DropZone policyState={policyState}>{children}</DropZone>;
 }
 
 export default Drop;

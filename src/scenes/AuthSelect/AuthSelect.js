@@ -16,7 +16,7 @@ function validateEmail(email) {
 
 function AuthSelect({ onClose, loginAs }) {
   const [authStep, setAuthStep] = useState(AUTH_STEPS.ENTER_EMAIL);
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState('');
 
   const validateAndContinue = () => {
     if (validateEmail(email)) {
@@ -29,12 +29,13 @@ function AuthSelect({ onClose, loginAs }) {
   const renderContent = () => {
     if (authStep === AUTH_STEPS.ENTER_EMAIL) {
       return (
-        <form onSubmit={validateAndContinue}>
+        <form onSubmit={validateAndContinue} data-testid="formAuth">
           <h3>Enter your email address:</h3>
           <input
             required
             className="Email-input"
             type="email"
+            data-testid="emailAuthInput"
             value={email}
             onChange={e => setEmail(e.target.value)}
           />
@@ -51,6 +52,7 @@ function AuthSelect({ onClose, loginAs }) {
           id="googlebutton"
           value=""
           className="login-button-google"
+          data-testid="emailAuthButton"
           onClick={() => loginAs(email)}
         />
         <input disabled type="button" id="office365button" className="login-button-office365" />
