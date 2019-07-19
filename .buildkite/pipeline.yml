@@ -91,7 +91,7 @@ steps:
   # Build and Deploy (Staging)
   - label: ':npm: NPM Build Staging'
     branches: '!master'
-    command: './.buildkite/scripts/update-package.sh && buildkite-scripts/scripts/npm-build.sh'
+    command: 'buildkite-scripts/scripts/npm-build.sh'
     agents:
       - *agent_queue
   - wait
