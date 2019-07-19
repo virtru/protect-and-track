@@ -25,7 +25,11 @@ function PolicyPanel({ file, userId, openAuthModal, encrypt, encryptState }) {
         return null;
       default:
         if (userId) {
-          return <Button onClick={encrypt}>Protect File</Button>;
+          return (
+            <Button data-testid="encryptFile" onClick={encrypt}>
+              Protect File
+            </Button>
+          );
         }
 
         return (

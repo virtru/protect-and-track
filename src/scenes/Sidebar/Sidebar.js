@@ -5,7 +5,7 @@ import AuditLogger from './components/AuditLogger/AuditLogger';
 
 import SdkLogger from './components/SdkLogger/SdkLogger';
 
-const Sidebar = ({ tdfLog }) => {
+const Sidebar = ({ tdfLog = [] }) => {
   return (
     <div className="sidebarWrapper">
       <div className="auditEvents">
