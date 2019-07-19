@@ -46,7 +46,7 @@ function ShareButton({ children, init, onClick, type }) {
   return button;
 }
 
-function ShareSelect({ updateShare, file, onClose }) {
+function ShareSelect({ updateShare, file, recipients, onClose }) {
   const shareToDrive = async () => {
     try {
       const state = s => updateShare({ state: s, host: 'googledrive' });
@@ -59,7 +59,9 @@ function ShareSelect({ updateShare, file, onClose }) {
 
       state('sharing');
       const uploadResponse = await gsuite.upload(file.name, file.type, file.payload);
-
+      console.log('upload: ' + JSON.stringify(uploadResponse));
+      const shareResponse = await gsuite.share(uploadResponse.result.id, recipients);
+      console.log('share: ' + JSON.stringify(shareResponse));
       // TODO(DSAT-14) Store permissions and don't sign out.
       gsuite.signOut();
       updateShare({
@@ -85,16 +87,21 @@ function ShareSelect({ updateShare, file, onClose }) {
   );
 }
 
-function RecipientList() {
+function RecipientList({ recipients }) {
   return (
     <ol>
-      <li className="Share-recipient">burt.with.the.long.name@domain.example.invalid</li>
-      <li className="Share-recipient">sally@elsewhere.com</li>
+      {recipients.map(user => {
+        return (
+          <li key={user} className="Share-recipient">
+            {user}
+          </li>
+        );
+      })}
     </ol>
   );
 }
 
-function Sharing({ file }) {
+function Sharing({ file, recipients }) {
   const { file: { name } = {} } = file;
   return (
     <ShareBox>
@@ -103,7 +110,7 @@ function Sharing({ file }) {
         <Loading />
       </div>
       <p>We're sharing your file with the following people:</p>
-      <RecipientList />
+      <RecipientList recipients={recipients} />
     </ShareBox>
   );
 }
@@ -115,7 +122,7 @@ function TrackItButton() {
   return <Button onClick={handleClick}>Share</Button>;
 }
 
-function ShareComplete({ share, file, onClose }) {
+function ShareComplete({ share, file, onClose, recipients }) {
   const { host, link } = share;
   const { file: { name } = {} } = file;
   return (
@@ -133,24 +140,26 @@ function ShareComplete({ share, file, onClose }) {
         </a>
         , and you should see a <b>Track Event</b>:
       </p>
-      <RecipientList />
+      <RecipientList recipients={recipients} />
       <TrackItButton />
     </ShareBox>
   );
 }
 
-function Share({ share, encrypted, updateShare, onClose }) {
+function Share({ encrypted, onClose, recipients, share, updateShare }) {
   let shareContent;
   switch (share.state) {
     case 'unshared':
-      shareContent = <ShareSelect updateShare={updateShare} file={encrypted} />;
+      shareContent = (
+        <ShareSelect updateShare={updateShare} file={encrypted} recipients={recipients} />
+      );
       break;
     case 'authorizing':
     case 'sharing':
-      shareContent = <Sharing file={encrypted} />;
+      shareContent = <Sharing file={encrypted} recipients={recipients} />;
       break;
     case 'shared':
-      shareContent = <ShareComplete share={share} file={encrypted} />;
+      shareContent = <ShareComplete share={share} file={encrypted} recipients={recipients} />;
       break;
     default:
   }
@@ -158,7 +167,11 @@ function Share({ share, encrypted, updateShare, onClose }) {
   return <Modal onClose={onClose}>{shareContent}</Modal>;
 }
 
-const mapToProps = ({ share, encrypted }) => ({ share, encrypted });
+const mapToProps = ({ encrypted, policy, share }) => ({
+  encrypted,
+  recipients: policy.getUsers(),
+  share,
+});
 
 const actions = {
   updateShare: (state, value) => ({ share: value }),

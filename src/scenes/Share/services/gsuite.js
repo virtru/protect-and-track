@@ -50,6 +50,30 @@ async function signOut() {
   return gapi.auth2.getAuthInstance().signOut();
 }
 
+async function share(fileId, recipients) {
+  if (!recipients.length) {
+    return;
+  }
+  const makeRequest = user => ({
+    path: `drive/v2/files/${fileId}/permissions`,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      value: user,
+      type: 'user',
+      role: 'reader',
+    }),
+  });
+  if (recipients.length === 1) {
+    return await gapi.client.request(makeRequest(recipients[0]));
+  }
+  const httpBatch = gapi.client.newBatch();
+  recipients.map(rcpt => httpBatch.add(gapi.client.request(makeRequest(rcpt))));
+  return await httpBatch;
+}
+
 async function upload(name, contentType, content) {
   // NOTE(DSAT-1): Unfortunately, AFAICT the current `drive.files.create` method in GAPI
   // does not support POST content. See relevant discussions:
@@ -97,4 +121,4 @@ async function upload(name, contentType, content) {
   return await gapi.client.request(request);
 }
 
-export default { init, upload, signIn, signOut };
+export default { init, share, upload, signIn, signOut };
