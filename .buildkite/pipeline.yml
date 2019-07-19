@@ -89,7 +89,7 @@ steps:
   - wait
 
   - block: 'Unblock Deploy'
-    branches: '!master'
+    branches: '!master !develop'
 
   - block: 'Check your branch name'
     prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
