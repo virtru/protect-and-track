@@ -1,48 +1,13 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
+import { fileToArrayBuffer } from 'utils/buffer';
 
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ children, userId, updateFile, loadEncrypted }) {
+function Drop({ children, userId, setFile, loadEncrypted }) {
   console.log(`<Drop userId="${userId}">`);
-
-  // Asyncify FileReader's `readAsArrayBuffer`.
-  const fileToArrayBuffer = file => {
-    const reader = new FileReader();
-
-    return new Promise((resolve, reject) => {
-      reader.onerror = () => {
-        reader.abort();
-        reject(new DOMException(file));
-      };
-
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  };
-
-  const processFile = async fileHandle => {
-    const { name: fileName, type: fileType } = fileHandle;
-    const fileBuffer = await fileToArrayBuffer(fileHandle);
-    let shouldEncrypt = true;
-
-    if (fileName.endsWith('.html')) {
-      try {
-        loadEncrypted({ fileName, fileType, fileBuffer });
-        shouldEncrypt = false;
-      } catch (err) {
-        console.error('unwrapHtml failed', err);
-      }
-    }
-
-    const verb = (shouldEncrypt ? 'En' : 'De') + 'crypt';
-    console.log(`${verb} a file [${fileName}] for [${userId}] as [${fileBuffer}]`);
-    updateFile({ file: fileHandle, arrayBuffer: fileBuffer });
-  };
 
   const handleFileInput = async event => {
     event.stopPropagation();
@@ -50,7 +15,7 @@ function Drop({ children, userId, updateFile, loadEncrypted }) {
 
     const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
     for (const file of files) {
-      await processFile(file);
+      await setFile(file);
       // TODO(DSAT-45) Handle more than one file, or don't
       return;
     }

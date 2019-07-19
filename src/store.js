@@ -1,5 +1,9 @@
 import createStore from 'redux-zero';
 
+import ENCRYPT_STATES from 'constants/encryptStates';
+
+let encryptState = ENCRYPT_STATES.UNPROTECTED;
+
 function base64ToArrayBuffer(base64) {
   var binary_string = window.atob(base64);
   var len = binary_string.length;
@@ -12,8 +16,24 @@ function base64ToArrayBuffer(base64) {
 
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];
+const userId = activeAuth && activeAuth.split(':')[0];
+const appId = activeAuth && activeAuth.split(':')[1];
+
 let file = false;
+let encrypted = false;
+
 try {
+  const encryptedFileData = JSON.parse(localStorage.getItem('virtru-demo-file-encrypted'));
+  if (encryptedFileData) {
+    const buffer = encryptedFileData && base64ToArrayBuffer(encryptedFileData.b64);
+    encrypted = {
+      payload: buffer,
+      name: encryptedFileData.name,
+      type: encryptedFileData.type,
+    };
+    encryptState = userId ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
+  }
+
   const fileData = JSON.parse(localStorage.getItem('virtru-demo-file'));
   if (fileData) {
     const buffer = fileData && base64ToArrayBuffer(fileData.b64);
@@ -29,17 +49,16 @@ try {
   console.error(err);
 }
 
-console.log(auths, activeAuth);
-
 export default createStore({
   appIdBundle: false,
   file,
-  encrypted: false,
+  encrypted,
+  encryptState,
   tdfLog: [],
   isLoading: true,
   share: { state: 'unshared', host: false },
-  userId: activeAuth && activeAuth.split(':')[0],
-  appId: activeAuth && activeAuth.split(':')[1],
+  userId,
+  appId,
   auditEvents: [],
   virtruClient: false,
 });

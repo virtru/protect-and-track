@@ -6,30 +6,32 @@ import Sidebar from '../Sidebar/Sidebar';
 import * as tdf from 'utils/tdfWrapper';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
-import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
+import Policy from './scenes/Policy/Policy';
 import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
 import AuthSelect from '../AuthSelect/AuthSelect';
+import ENCRYPT_STATES from 'constants/encryptStates';
 
 import './Document.css';
 import downloadHtml from '../../utils/downloadHtml';
 import Button from '../../components/Button/Button';
-import { arrayBufferToBase64 } from '../../utils/base64';
+import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 
 function Document({
   file,
-  updateFile,
+  setFile,
   userId,
   appId,
-  updateUserId,
+  setUserId,
   virtruClient,
-  updateVirtruClient,
+  setVirtruClient,
   encrypted,
-  updateEncrypted,
+  setEncrypted,
   auditEvents,
-  updateAuditEvents,
+  setAuditEvents,
+  encryptState,
+  setEncryptState,
 }) {
-  const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
 
@@ -39,10 +41,14 @@ function Document({
         return;
       }
       const client = await tdf.authenticate(userId);
-      updateVirtruClient(client);
-      setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+      setVirtruClient(client);
+      if (!encrypted) {
+        setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+      } else {
+        setEncryptState(ENCRYPT_STATES.PROTECTED);
+      }
     })();
-  }, [userId, updateVirtruClient, virtruClient]);
+  }, [userId, setVirtruClient, virtruClient, setEncryptState, encrypted]);
 
   const openAuthModal = () => {
     setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
@@ -51,9 +57,13 @@ function Document({
 
   const loginAs = async email => {
     const client = await tdf.authenticate(email);
-    updateUserId(email);
-    updateVirtruClient(client);
-    setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+    setUserId(email);
+    setVirtruClient(client);
+    if (!encrypted) {
+      setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+    } else {
+      setEncryptState(ENCRYPT_STATES.PROTECTED);
+    }
     setAuthOpen(false);
   };
 
@@ -66,7 +76,7 @@ function Document({
       userEmail: userId,
       asHtml: true,
     });
-    updateEncrypted({
+    setEncrypted({
       payload: encryptedFile,
       name: `${file.file.name}.html`,
       type: file.file.type,
@@ -75,34 +85,21 @@ function Document({
     setInterval(async () => {
       const auditRes = await getAuditEvents({ userId, appId, policyId });
       const auditData = await auditRes.json();
-      updateAuditEvents(auditData.data);
+      setAuditEvents(auditData.data);
     }, 2000);
   };
 
   const renderDrop = () => {
-    const loadEncrypted = ({ fileName, fileType, fileBuffer }) => {
-      const htmlText = new TextDecoder('utf-8').decode(fileBuffer);
-      const encrypted = tdf.unwrapHtml(htmlText);
-      updateEncrypted({
-        payload: encrypted,
-        name: fileName,
-        type: fileType,
-      });
-      if (userId) {
-        setEncryptState(ENCRYPT_STATES.PROTECTED);
-      } else {
-        setEncryptState(ENCRYPT_STATES.PROTECTED_NO_AUTH);
-      }
-    };
+    const loadEncrypted = ({ fileName, fileType, fileBuffer }) => {};
     if (!file) {
-      return <Drop userId={userId} updateFile={updateFile} loadEncrypted={loadEncrypted} />;
+      return <Drop userId={userId} setFile={setFile} loadEncrypted={loadEncrypted} />;
     }
 
     return (
       <>
-        <Drop userId={userId} updateFile={updateFile} loadEncrypted={loadEncrypted}>
+        <Drop userId={userId} setFile={setFile} loadEncrypted={loadEncrypted}>
           <div className="DocumentDetails">
-            <Filename file={file} isTdf={encryptState === ENCRYPT_STATES.PROTECTED} />
+            <Filename file={file} isTdf={!!encrypted} />
             <Policy
               file={file}
               userId={userId}
@@ -154,28 +151,73 @@ function Document({
   );
 }
 
-const mapToProps = ({ file, userId, appId, virtruClient, encrypted, auditEvents }) => ({
+const mapToProps = ({
+  file,
+  userId,
+  appId,
+  virtruClient,
+  encrypted,
+  auditEvents,
+  encryptState,
+}) => ({
   file,
   userId,
   appId,
   virtruClient,
   auditEvents,
   encrypted,
+  encryptState,
 });
-const actions = {
-  updateFile: (state, value) => {
-    console.log(value);
-    const b64 = arrayBufferToBase64(value.arrayBuffer);
-    const fileName = value.file.name;
-    const fileType = value.file.type;
 
+const actions = {
+  setFile: async (state, fileHandle) => {
+    localStorage.removeItem('virtru-demo-file');
+    localStorage.removeItem('virtru-demo-file-encrypted');
+    const { name: fileName, type: fileType } = fileHandle;
+    const fileBuffer = await fileToArrayBuffer(fileHandle);
+    let encryptState = ENCRYPT_STATES.UNPROTECTED;
+    let encrypted = false;
+
+    // Attempt to parse as TDF
+    if (fileName.endsWith('.html')) {
+      try {
+        const htmlText = new TextDecoder('utf-8').decode(fileBuffer);
+        const encryptedPayload = tdf.unwrapHtml(htmlText);
+        encrypted = {
+          payload: encryptedPayload,
+          name: fileName,
+          type: fileType,
+        };
+        if (state.userId) {
+          encryptState = ENCRYPT_STATES.PROTECTED;
+        } else {
+          encryptState = ENCRYPT_STATES.PROTECTED_NO_AUTH;
+        }
+        const b64 = arrayBufferToBase64(encryptedPayload);
+        localStorage.setItem(
+          'virtru-demo-file-encrypted',
+          JSON.stringify({ b64, name: fileName, type: fileType }),
+        );
+      } catch (err) {
+        console.error('unwrapHtml failed', err);
+      }
+    }
+
+    const b64 = arrayBufferToBase64(fileBuffer);
     localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType }));
-    return { file: value };
+    return { file: { file: fileHandle, arrayBuffer: fileBuffer }, encryptState, encrypted };
   },
-  updateUserId: (state, value) => ({ userId: value }),
-  updateVirtruClient: (state, value) => ({ virtruClient: value }),
-  updateEncrypted: (state, value) => ({ encrypted: value }),
-  updateAuditEvents: (state, value) => ({ auditEvents: value }),
+  setUserId: (state, value) => ({ userId: value }),
+  setVirtruClient: (state, value) => ({ virtruClient: value }),
+  setEncrypted: (state, value) => {
+    console.log(value);
+    const { payload, name, type } = value;
+    const b64 = arrayBufferToBase64(payload);
+    localStorage.setItem('virtru-demo-file-encrypted', JSON.stringify({ b64, name, type }));
+    return { encrypted: value };
+  },
+  setAuditEvents: (state, value) => ({ auditEvents: value }),
+  setEncryptState: (state, value) => ({ encryptState: value }),
 };
 
 export default connect(

@@ -5,15 +5,8 @@ import Expiration from './components/Expiration/Expiration';
 import Watermarking from './components/Watermarking/Watermarking';
 import Forwarding from './components/Forwarding/Forwarding';
 import Button from 'components/Button/Button';
+import ENCRYPT_STATES from 'constants/encryptStates';
 import './Policy.css';
-
-export const ENCRYPT_STATES = {
-  AUTHENTICATING: 0,
-  UNPROTECTED: 1,
-  PROTECTING: 2,
-  PROTECTED: 3,
-  PROTECTED_NO_AUTH: 4,
-};
 
 function PolicyPanel({ file, userId, openAuthModal, encrypt, encryptState }) {
   const renderButtons = () => {
