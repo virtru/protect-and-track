@@ -179,11 +179,19 @@ const mapToProps = ({
   encryptState,
 });
 
-const updateLocalStorage = ({ fileBuffer, fileName, fileType, policy }) => {
+const saveFileToLocalStorage = ({ fileBuffer, fileName, fileType, policy }) => {
   const b64 = arrayBufferToBase64(fileBuffer);
 
   // TODO migrate localStorage update to a subscription to track both policy and file changes centrally
   localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType, policy }));
+};
+
+const saveEncryptedToLocalStorage = ({ encryptedPayload, fileName, fileType }) => {
+  const b64 = arrayBufferToBase64(encryptedPayload);
+  localStorage.setItem(
+    'virtru-demo-file-encrypted',
+    JSON.stringify({ b64, name: fileName, type: fileType }),
+  );
 };
 
 const actions = {
@@ -218,27 +226,20 @@ const actions = {
         } else {
           encryptState = ENCRYPT_STATES.PROTECTED_NO_AUTH;
         }
-        const b64 = arrayBufferToBase64(encryptedPayload);
-        localStorage.setItem(
-          'virtru-demo-file-encrypted',
-          JSON.stringify({ b64, name: fileName, type: fileType }),
-        );
+        saveEncryptedToLocalStorage({ encryptedPayload, fileName, fileType });
       } catch (err) {
         console.error('unwrapHtml failed', err);
       }
     }
 
-    updateLocalStorage({ fileName, fileType, fileBuffer, policy });
-    console.log(fileHandle);
+    saveFileToLocalStorage({ fileName, fileType, fileBuffer, policy });
     return { file: { file: fileHandle, arrayBuffer: fileBuffer }, policy, encrypted, encryptState };
   },
   setUserId: (state, value) => ({ userId: value }),
   setVirtruClient: (state, value) => ({ virtruClient: value }),
   setEncrypted: (state, value) => {
-    console.log(value);
     const { payload, name, type } = value;
-    const b64 = arrayBufferToBase64(payload);
-    localStorage.setItem('virtru-demo-file-encrypted', JSON.stringify({ b64, name, type }));
+    saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
     return { encrypted: value };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),
@@ -246,7 +247,7 @@ const actions = {
     const { file } = state;
     const { name: fileName, type: fileType } = file.file;
     const fileBuffer = file.arrayBuffer;
-    updateLocalStorage({ fileBuffer, fileName, fileType, policy });
+    saveFileToLocalStorage({ fileBuffer, fileName, fileType, policy });
     return { policy };
   },
   setAuditEvents: (state, value) => ({ auditEvents: value }),

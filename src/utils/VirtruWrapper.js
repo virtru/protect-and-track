@@ -158,7 +158,6 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
     return buffer;
   }
 
-  // TODO: add interval request on audit events and put them in store
   boundActions.fetchAuditLogAction();
 
   const manifestString = ''; // TODO: Confirmed with Tyler this is not needed for now
