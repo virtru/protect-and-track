@@ -1,16 +1,19 @@
 import React from 'react';
-import { render, wait, fireEvent, getByTestId, act } from '@testing-library/react';
+import { cleanup, render, wait, fireEvent, getByTestId, act } from '@testing-library/react';
 import Document from './Document';
-import * as tdf from 'utils/tdfWrapper';
+import Virtru from 'utils/VirtruWrapper';
+import VirtruClient from 'virtru-tdf3-js';
 import * as services from 'services/audit';
-jest.mock('utils/tdfWrapper');
+jest.mock('utils/VirtruWrapper');
 jest.mock('services/audit');
+
+afterEach(cleanup);
 
 describe('Document', () => {
   test('should trigger auth and and updates Virtru Client on every update, if userId defined but there is no virtruClient Document ', async () => {
     const client = { userId: 'foo' };
     const spy = jest.fn();
-    tdf.authenticate.mockImplementation(() => Promise.resolve(client));
+    Virtru.authenticate.mockImplementation(() => Promise.resolve(client));
 
     const { rerender } = render(<Document updateVirtruClient={spy} />);
     expect(spy).not.toHaveBeenCalled();
@@ -24,26 +27,34 @@ describe('Document', () => {
     expect(getByText('Choose File')).toBeInTheDocument();
 
     const file = { file: { name: 'foo.txt' } };
-    rerender(<Document file={file} />);
+    const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
+    rerender(<Document file={file} policy={policy} />);
     expect(getByText('foo.txt')).toBeInTheDocument();
   });
 
   test('should open auth select modal', () => {
     const file = { file: { name: 'foo.txt' } };
-    const { getByText } = render(<Document file={file} />);
+    const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
+    const { getByText } = render(<Document file={file} policy={policy} />);
     fireEvent.click(getByText('Sign in to continue'));
     expect(getByText('Enter your email address:')).toBeInTheDocument();
   });
 
-  test('should trigger loginAs on auth form submit, that will call tdf.authenticate and will update userId and virtru client', async () => {
+  test('should trigger loginAs on auth form submit, that will call Virtru.authenticate and will update userId and virtru client', async () => {
     const client = { userId: 'foo' };
     const updateVirtruClient = jest.fn();
     const updateUserId = jest.fn();
-    tdf.authenticate.mockImplementation(() => Promise.resolve(client));
+    Virtru.authenticate.mockImplementation(() => Promise.resolve(client));
     const file = { file: { name: 'foo.txt' } };
+    const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
 
     const { container, getByText } = render(
-      <Document file={file} updateVirtruClient={updateVirtruClient} updateUserId={updateUserId} />,
+      <Document
+        file={file}
+        policy={policy}
+        updateVirtruClient={updateVirtruClient}
+        updateUserId={updateUserId}
+      />,
     );
     fireEvent.click(getByText('Sign in to continue'));
 
@@ -69,14 +80,14 @@ describe('Document', () => {
     const timeout = 2000;
     const triggerTimes = 5;
     const file = { file: { name: 'foo.txt' }, data: 'biteArr' };
+    const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
     const client = 'clientVirttu';
     const spy = jest.fn(() =>
       Promise.resolve({ encryptedFile: 'encFile', policyId: 'foo1bar', type: 'someType' }),
     );
     const updateEncrypted = jest.fn();
     const updateAuditEvents = jest.fn();
-    tdf.encrypt.mockImplementation(spy);
-    tdf.encrypt.mockImplementation(spy);
+    Virtru.encrypt.mockImplementation(spy);
     services.getAuditEvents.mockImplementation(() =>
       Promise.resolve({ json: () => Promise.resolve({ data: 'someData' }) }),
     );
@@ -84,6 +95,7 @@ describe('Document', () => {
     const { container } = render(
       <Document
         file={file}
+        policy={policy}
         virtruClient={client}
         userId="foo@bar.com"
         updateEncrypted={updateEncrypted}
@@ -99,6 +111,7 @@ describe('Document', () => {
         client,
         fileData: file.data,
         filename: file.file.name,
+        policy,
         userEmail: 'foo@bar.com',
         asHtml: true,
       });
