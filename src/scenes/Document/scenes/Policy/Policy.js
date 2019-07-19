@@ -14,7 +14,17 @@ export const ENCRYPT_STATES = {
   PROTECTED: 3,
 };
 
-function PolicyPanel({ file, userId, openAuthModal, encrypt, encryptState }) {
+function Policy({
+  encrypt,
+  encryptState,
+  file,
+  login,
+  openAuthModal,
+  policy,
+  updatePolicy,
+  userId,
+}) {
+  console.log(`<Policy policy=${JSON.stringify(policy)}`);
   const renderButtons = () => {
     switch (encryptState) {
       case ENCRYPT_STATES.AUTHENTICATING:
@@ -40,17 +50,28 @@ function PolicyPanel({ file, userId, openAuthModal, encrypt, encryptState }) {
         );
     }
   };
+  if (encryptState !== ENCRYPT_STATES.PROTECTED) {
+    return (
+      <div className="Policy" id="policy">
+        <Access policy={policy} updatePolicy={updatePolicy} userId={userId} />
+        <span className="Policy-buttons">{renderButtons()}</span>
+      </div>
+    );
+  }
   return (
-    <div className="PolicyPanel" id="policypanel">
-      <Access />
-      <hr className="PolicyPanel-rule" />
+    <div className="Policy" id="policy">
+      <Access
+        policy={policy}
+        encryptState={encryptState}
+        updatePolicy={updatePolicy}
+        userId={userId}
+      />
+      <hr className="Policy-rule" />
       <Expiration />
-      <hr className="PolicyPanel-rule" />
       <Forwarding />
       <Watermarking />
-      <span className="PolicyPanel-buttons">{renderButtons()}</span>
     </div>
   );
 }
 
-export default PolicyPanel;
+export default Policy;

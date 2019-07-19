@@ -3,7 +3,7 @@ import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
 
-import * as tdf from 'utils/tdfWrapper';
+import Virtru from 'utils/VirtruWrapper';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy, { ENCRYPT_STATES } from './scenes/Policy/Policy';
@@ -17,18 +17,20 @@ import Button from '../../components/Button/Button';
 import { arrayBufferToBase64 } from '../../utils/base64';
 
 function Document({
-  file,
-  updateFile,
-  userId,
   appId,
-  updateUserId,
-  virtruClient,
-  updateVirtruClient,
   encrypted,
-  updateEncrypted,
-  auditEvents,
+  file,
+  policy,
   updateAuditEvents,
+  updateEncrypted,
+  updateFile,
+  updatePolicy,
+  updateVirtruClient,
+  updateUserId,
+  userId,
+  virtruClient,
 }) {
+  console.log(`<Document file=${JSON.stringify(file)} policy=${JSON.stringify(policy)}`);
   const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
@@ -38,7 +40,7 @@ function Document({
       if (!userId || virtruClient) {
         return;
       }
-      const client = await tdf.authenticate(userId);
+      const client = await Virtru.authenticate(userId);
       updateVirtruClient(client);
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
     })();
@@ -50,7 +52,7 @@ function Document({
   };
 
   const loginAs = async email => {
-    const client = await tdf.authenticate(email);
+    const client = await Virtru.authenticate(email);
     updateUserId(email);
     updateVirtruClient(client);
     setEncryptState(ENCRYPT_STATES.UNPROTECTED);
@@ -59,10 +61,11 @@ function Document({
 
   const encrypt = async () => {
     setEncryptState(ENCRYPT_STATES.PROTECTING);
-    const { encryptedFile, policyId } = await tdf.encrypt({
+    const { encryptedFile, policyId } = await Virtru.encrypt({
       client: virtruClient,
       fileData: file.data,
       filename: file.file.name,
+      policy: policy,
       userEmail: userId,
       asHtml: true,
     });
@@ -86,15 +89,21 @@ function Document({
 
     return (
       <>
-        <Drop userId={userId} updateFile={updateFile}>
+        <Drop
+          policyState={encryptState === ENCRYPT_STATES.PROTECTED ? 'encrypted' : 'plain'}
+          userId={userId}
+          updateFile={updateFile}
+        >
           <div className="DocumentDetails">
             <Filename file={file} isTdf={encryptState === ENCRYPT_STATES.PROTECTED} />
             <Policy
               file={file}
+              policy={policy}
               userId={userId}
               openAuthModal={openAuthModal}
               encrypt={encrypt}
               encryptState={encryptState}
+              updatePolicy={updatePolicy}
             />
           </div>
         </Drop>
@@ -136,23 +145,32 @@ function Document({
   );
 }
 
-const mapToProps = ({ file, userId, appId, virtruClient, encrypted, auditEvents }) => ({
-  file,
-  userId,
+const mapToProps = ({ appId, encrypted, file, policy, userId, virtruClient }) => ({
   appId,
-  virtruClient,
-  auditEvents,
   encrypted,
+  file,
+  policy,
+  userId,
+  virtruClient,
 });
+const updateLocalStorage = (file, policy) => {
+  const b64 = arrayBufferToBase64(file.arrayBuffer);
+  const { name: fileName, type: fileType } = file.file;
+
+  // TODO migrate localStorage update to a subscription to track both policy and file changes centrally
+  localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType, policy }));
+};
 const actions = {
   updateFile: (state, value) => {
     console.log(value);
-    const b64 = arrayBufferToBase64(value.arrayBuffer);
-    const fileName = value.file.name;
-    const fileType = value.file.type;
-
-    localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType }));
-    return { file: value };
+    const policy = value.policy;
+    updateLocalStorage(value, policy);
+    return { file: value, policy };
+  },
+  updatePolicy: (state, value) => {
+    const { file } = state;
+    updateLocalStorage(file, value);
+    return { policy: value };
   },
   updateUserId: (state, value) => ({ userId: value }),
   updateVirtruClient: (state, value) => ({ virtruClient: value }),
