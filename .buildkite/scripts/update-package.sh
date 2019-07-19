@@ -1,1 +1,0 @@
-npx json -I -f package.json -e 'this.homepage="https://demos.developer.virtru.com/react-staging"'

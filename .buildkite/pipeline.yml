@@ -81,6 +81,14 @@ steps:
 
   - wait
 
+  - label: ':npm: NPM Build'
+    branches: 'master'
+    command: 'buildkite-scripts/scripts/npm-build.sh'
+    agents:
+      - *agent_queue
+
+  - wait
+
   - block: 'Unblock Deploy'
     branches: '!master'
 
@@ -89,12 +97,6 @@ steps:
     branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
 
   # Build and Deploy (Staging)
-  - label: ':npm: NPM Build Staging'
-    branches: '!master'
-    command: 'buildkite-scripts/scripts/npm-build.sh'
-    agents:
-      - *agent_queue
-  - wait
   - label: ':s3: Deploy to S3 Staging'
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
     branches: '!master'
@@ -112,12 +114,6 @@ steps:
       - *agent_queue
 
   # Build and Deploy (Production)
-  - label: ':npm: NPM Build'
-    branches: 'master'
-    command: 'buildkite-scripts/scripts/npm-build.sh'
-    agents:
-      - *agent_queue
-  - wait
   - label: ':s3: Deploy to S3'
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
     branches: 'master'
