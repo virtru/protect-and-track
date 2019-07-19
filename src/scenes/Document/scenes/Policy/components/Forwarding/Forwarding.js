@@ -5,7 +5,7 @@ import { ReactComponent as ForwardIcon } from './forward.svg';
 import { generatePolicyChanger } from '../../services/policyChanger';
 import './Forwarding.css';
 
-function Forwarding({ encryptState, userId, policy, updatePolicy }) {
+function Forwarding({ policy, updatePolicy }) {
   const policyChange = change => generatePolicyChanger(policy, updatePolicy, change);
   const onChange = policyChange((builder, e) =>
     e.target.checked ? builder.disableReshare() : builder.enableReshare(),

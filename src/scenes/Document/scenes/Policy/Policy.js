@@ -67,8 +67,8 @@ function Policy({
       />
       <hr className="Policy-rule" />
       <Expiration />
-      <Watermarking />
       <Forwarding policy={policy} updatePolicy={updatePolicy} />
+      <Watermarking policy={policy} updatePolicy={updatePolicy} />
     </div>
   );
 }
