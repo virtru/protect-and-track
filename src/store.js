@@ -39,8 +39,6 @@ try {
   console.error(err);
 }
 
-console.log(auths, activeAuth);
-
 export default createStore({
   appIdBundle: false,
 
