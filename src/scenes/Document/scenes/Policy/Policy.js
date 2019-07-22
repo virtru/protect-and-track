@@ -24,7 +24,6 @@ function Policy({
   updatePolicy,
   userId,
 }) {
-  console.log(`<Policy policy=${JSON.stringify(policy)}`);
   const renderButtons = () => {
     switch (encryptState) {
       case ENCRYPT_STATES.AUTHENTICATING:

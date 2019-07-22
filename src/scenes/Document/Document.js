@@ -30,7 +30,6 @@ function Document({
   userId,
   virtruClient,
 }) {
-  console.log(`<Document file=${JSON.stringify(file)} policy=${JSON.stringify(policy)}`);
   const [encryptState, setEncryptState] = useState(ENCRYPT_STATES.UNPROTECTED);
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
@@ -162,7 +161,6 @@ const updateLocalStorage = (file, policy) => {
 };
 const actions = {
   updateFile: (state, value) => {
-    console.log(value);
     const policy = value.policy;
     updateLocalStorage(value, policy);
     return { file: value, policy };

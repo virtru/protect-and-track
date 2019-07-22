@@ -7,8 +7,6 @@ import Virtru from '../../../../utils/VirtruWrapper';
  * A place to drop an encrypted or uncrypted file.
  */
 function Drop({ children, userId, updateFile, policyState }) {
-  console.log(`<Drop userId="${userId}">`);
-
   // Asyncify FileReader's `readAsArrayBuffer`.
   const fileToArrayBuffer = file => {
     const reader = new FileReader();
