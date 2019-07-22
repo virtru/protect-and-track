@@ -6,6 +6,7 @@ import { generatePolicyChanger } from '../../services/policyChanger';
 import { ReactComponent as HourglassIcon } from './hourglass.svg';
 import './Expiration.css';
 
+// now - exposed for testing
 function Expiration({ policy, updatePolicy, now = new Date() }) {
   // NOTE(DSAT-59) Chrome `datetime-local` expects ISO dates with no trailing `Z`
   // But the Virtru policy requires them. So use the right one to convert from a JS Date to
@@ -57,7 +58,6 @@ function Expiration({ policy, updatePolicy, now = new Date() }) {
   const isDay = currentDeadlineTime === oneDayFromNow.getTime();
   const isWeek = currentDeadlineTime === oneWeekFromNow.getTime();
   const isCustom = !(isNone || isDay || isWeek);
-  console.log(`${currentDeadlineString} => ${currentDeadline} => ${currentDeadlineTime}`);
 
   return (
     <div className="Expiration">
