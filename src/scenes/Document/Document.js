@@ -33,7 +33,6 @@ function Document({
   setEncryptState,
   setPolicy,
 }) {
-  console.log(`<Document file=${JSON.stringify(file)} policy=${JSON.stringify(policy)}`);
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
 
