@@ -93,25 +93,25 @@ function Document({
   const renderButtons = () => {
     if (!file) {
       return (
-        <>
-          <span>or...</span>
-          <Button>
-            load <FileIcon className="file-icon" />
+        <section className="DocumentFooter center">
+          <span>or drag this... </span>
+          <h3 draggable="true">
+            <FileIcon className="file-icon" />
             demo-example.txt
-          </Button>
-        </>
+          </h3>
+        </section>
       );
     }
 
     return (
-      <>
+      <section className="DocumentFooter">
         <Button variant="link" onClick={() => downloadHtml(encrypted)} disabled={!encrypted}>
           Download
         </Button>
         <Button onClick={() => setShareOpen(true)} disabled={!encrypted}>
           Share
         </Button>
-      </>
+      </section>
     );
   };
 
@@ -119,7 +119,7 @@ function Document({
     <>
       <div className="DocumentWrapper">
         {renderDrop()}
-        <section className="DocumentFooter">{renderButtons()}</section>
+        {renderButtons()}
       </div>
       <Sidebar />
     </>
