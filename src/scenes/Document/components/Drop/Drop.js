@@ -30,8 +30,7 @@ function Drop({ children, userId, updateFile, policyState }) {
     });
   };
 
-  const processFile = async fileHandle => {
-    const fileBuffer = await fileToArrayBuffer(fileHandle);
+  const processFile = async files => {
     // TODO(DSAT-7) handle TDF file and extract policy
     // For now, just load an empty policy here.
     const policyBuilder = Virtru.policyBuilder();
@@ -40,6 +39,19 @@ function Drop({ children, userId, updateFile, policyState }) {
       policyBuilder.addUsers(userId);
     }
     const policy = policyBuilder.build();
+
+    // Default to hello world
+    if (!files.length) {
+      return updateFile({
+        file: helloWorldHandle,
+        arrayBuffer: helloWorldBuffer,
+        policy,
+        policyBuilder,
+      });
+    }
+
+    const fileHandle = files[0];
+    const fileBuffer = await fileToArrayBuffer(fileHandle);
     updateFile({ file: fileHandle, arrayBuffer: fileBuffer, policy, policyBuilder });
   };
 
@@ -49,13 +61,8 @@ function Drop({ children, userId, updateFile, policyState }) {
 
     const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
 
-    // Default to hello world
-    if (!files.length) {
-      return updateFile({ file: helloWorldHandle, arrayBuffer: helloWorldBuffer });
-    }
-
     // TODO(DSAT-45) Handle more than one file, or don't
-    await processFile(files[0]);
+    await processFile(files);
   };
 
   const handleDrag = event => {
