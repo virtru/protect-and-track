@@ -13,7 +13,6 @@ function Expiration({ policy, updatePolicy, now = new Date() }) {
   const d2sZ = d => d.toISOString();
   const d2s = d => d.toISOString().slice(0, -1);
   const policyChange = change => generatePolicyChanger(policy, updatePolicy, change);
-  const now = new Date();
   const withDate = (toChange, ...args) => {
     let d = new Date(toChange);
     d.setDate(...args);
