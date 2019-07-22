@@ -211,13 +211,12 @@ const actions = {
     }
     const policy = policyBuilder.build();
 
-    // Attempt to parse as TDF
+    // Attempt to parse as TDF. If successful, load as encrypted data.
     if (fileName.endsWith('.html')) {
-      try {
-        const htmlText = new TextDecoder('utf-8').decode(fileBuffer);
-        const encryptedPayload = Virtru.unwrapHtml(htmlText);
+      const htmlText = new TextDecoder('utf-8').decode(fileBuffer);
+      if (Virtru.unwrapHtml(htmlText)) {
         encrypted = {
-          payload: encryptedPayload,
+          payload: fileBuffer,
           name: fileName,
           type: fileType,
         };
@@ -226,9 +225,7 @@ const actions = {
         } else {
           encryptState = ENCRYPT_STATES.PROTECTED_NO_AUTH;
         }
-        saveEncryptedToLocalStorage({ encryptedPayload, fileName, fileType });
-      } catch (err) {
-        console.error('unwrapHtml failed', err);
+        saveEncryptedToLocalStorage({ encryptedPayload: fileBuffer, fileName, fileType });
       }
     }
 
