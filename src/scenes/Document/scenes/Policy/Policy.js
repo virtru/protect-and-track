@@ -19,11 +19,7 @@ function Policy({ userId, openAuthModal, encrypt, encryptState, policy, setPolic
       case ENCRYPT_STATES.PROTECTED:
         return null;
       case ENCRYPT_STATES.PROTECTED_NO_AUTH:
-        return (
-          <>
-            <Button onClick={openAuthModal}>Sign in to continue</Button>
-          </>
-        );
+        return <Button onClick={openAuthModal}>Sign in to continue</Button>;
       default:
         if (userId) {
           return (
