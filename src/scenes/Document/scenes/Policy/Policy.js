@@ -66,7 +66,7 @@ function Policy({
         userId={userId}
       />
       <hr className="Policy-rule" />
-      <Expiration />
+      <Expiration policy={policy} updatePolicy={updatePolicy} />
       <Forwarding policy={policy} updatePolicy={updatePolicy} />
       <Watermarking policy={policy} updatePolicy={updatePolicy} />
     </div>
