@@ -48,38 +48,12 @@
   width: 85%;
 }
 
-.Share-wrapper {
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  width: 100vw;
-  height: 100vh;
-  background-color: var(--slateDarkerTransparent);
-}
-
 .Share-box {
-  background: white;
-  border: 1px solid #c4c4c4;
-  border-radius: 8px;
-  padding: 24px;
   display: flex;
   flex-direction: column;
   width: 296px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   font-family: var(--fontPrimary);
   font-size: 13px;
-}
-
-.Share-close {
-  position: absolute;
-  right: 25px;
-  top: 15px;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
 }
 
 .Share-recipient {

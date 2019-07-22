@@ -14,7 +14,16 @@ export const ENCRYPT_STATES = {
   PROTECTED: 3,
 };
 
-function PolicyPanel({ file, userId, login, encrypt, encryptState }) {
+function Policy({
+  encrypt,
+  encryptState,
+  file,
+  login,
+  openAuthModal,
+  policy,
+  updatePolicy,
+  userId,
+}) {
   const renderButtons = () => {
     switch (encryptState) {
       case ENCRYPT_STATES.AUTHENTICATING:
@@ -25,28 +34,43 @@ function PolicyPanel({ file, userId, login, encrypt, encryptState }) {
         return null;
       default:
         if (userId) {
-          return <Button onClick={encrypt}>Protect File</Button>;
+          return (
+            <Button data-testid="encryptFile" onClick={encrypt}>
+              Protect File
+            </Button>
+          );
         }
 
         return (
           <>
-            <Button onClick={login}>Sign in to continue</Button>
+            <Button onClick={openAuthModal}>Sign in to continue</Button>
             <Button disabled>Protect File</Button>
           </>
         );
     }
   };
+  if (encryptState !== ENCRYPT_STATES.PROTECTED) {
+    return (
+      <div className="Policy" id="policy">
+        <Access policy={policy} updatePolicy={updatePolicy} userId={userId} />
+        <span className="Policy-buttons">{renderButtons()}</span>
+      </div>
+    );
+  }
   return (
-    <div className="PolicyPanel" id="policypanel">
-      <Access />
-      <hr className="PolicyPanel-rule" />
+    <div className="Policy" id="policy">
+      <Access
+        policy={policy}
+        encryptState={encryptState}
+        updatePolicy={updatePolicy}
+        userId={userId}
+      />
+      <hr className="Policy-rule" />
       <Expiration />
-      <hr className="PolicyPanel-rule" />
       <Forwarding />
       <Watermarking />
-      <span className="PolicyPanel-buttons">{renderButtons()}</span>
     </div>
   );
 }
 
-export default PolicyPanel;
+export default Policy;

@@ -25,10 +25,15 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  overflow-y: auto;
 }
 
 .Drop-encrypted {
   background-color: var(--slateLightest);
+  border-style: solid;
+}
+
+.Drop-plain {
   border-style: solid;
 }
 
@@ -49,7 +54,7 @@
   border: 1px solid;
   border-radius: 3px;
   font-size: 1rem;
-  font-family: 'Open Sans';
+  font-family: var(--fontPrimary);
   font-weight: bold;
   margin: 0.5rem;
   white-space: nowrap;

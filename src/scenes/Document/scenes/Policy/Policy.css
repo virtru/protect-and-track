@@ -1,4 +1,4 @@
-.PolicyPanel {
+.Policy {
   color: var(--slateDarkest);
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@
   margin: 0 20px;
 }
 
-.PolicyPanel-rule {
+.Policy-rule {
   height: 1px;
   background: #dce0e5;
   border: 0;
@@ -16,6 +16,6 @@
   margin-right: 0;
 }
 
-.PolicyPanel-buttons {
+.Policy-buttons {
   text-align: right;
 }

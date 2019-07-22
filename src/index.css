@@ -19,6 +19,13 @@ body {
   font-family: var(--fontSecondary);
 }
 
+h3 {
+  color: var(--blueDarkest);
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 30px;
+}
+
 #root {
   height: 100%;
 }
@@ -27,6 +34,7 @@ main {
   display: flex;
   align-items: center;
   height: calc(100vh - 55px);
+  background: #fff;
 }
 
 code {
@@ -63,7 +71,12 @@ input:focus {
   outline: none;
 }
 
-input[type='text'] {
-  font-family: var(--fontSecondary);
-  font-size: 17px;
+input[type='text'],
+input[type='email'] {
+  height: 50px;
+  padding-left: 10px;
+  font-size: 15px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

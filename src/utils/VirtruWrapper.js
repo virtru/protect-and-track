@@ -26,6 +26,23 @@ async function streamToBuffer(stream) {
 
 const actions = {
   pushLogAction: ({ tdfLog }, value) => ({ tdfLog: [...tdfLog, value] }),
+  // @todo remove hardcode, audit events should be pushed from api
+  fetchAuditLogAction: () => ({
+    auditLog: [
+      {
+        auditDataType: 'FILE.ACCESS_SUCCEEDED',
+        userId: 'foo@bar.com',
+        timestamp: '2019-07-15T14:48:22+00:00',
+        recordId: 0,
+      },
+      {
+        auditDataType: 'FILE.ACCESS_SUCCEEDED',
+        userId: 'foo@bar.com',
+        timestamp: '2019-07-15T14:48:22+00:00',
+        recordId: 1,
+      },
+    ],
+  }),
 };
 
 const boundActions = bindActions(actions, store);
@@ -68,13 +85,47 @@ function buildClient(userEmail) {
 }
 
 /**
- * Encrypt a file
+ * Wrapper for `new Virtru.Client.VirtruPolicyBuilder(opts)`.
+ *
+ * @param {?object} opts
+ */
+function policyBuilder(opts) {
+  const builder = new Virtru.Client.VirtruPolicyBuilder(opts);
+  let actions = [`const policy = new Virtru.Client.VirtruPolicyBuilder(${opts ? 'policy' : ''})`];
+  // This proxy records all calls, then logs them to the UI on `build` invocations.
+  return new Proxy(builder, {
+    get(target, propKey, receiver) {
+      const origMethod = target[propKey];
+      if (!origMethod) {
+        return origMethod;
+      }
+      return function(...args) {
+        if ('build' === propKey) {
+          actions.push('    .build()');
+          _pushAction({
+            title: 'Build Virtru Policy',
+            code: actions.join('\r\n'),
+          });
+        } else {
+          actions.push(`    .${propKey}(${JSON.stringify(args)})`);
+        }
+        const result = origMethod.apply(target, args);
+        return result;
+      };
+    },
+  });
+}
+
+/**
+ * Encrypt a file given a policy.
+ *
  * @param {Buffer} fileData
  * @param {String} filename
  * @param {String} userEmail
  * @param {Boolean} asHtml
+ * @param {Policy} policy
  */
-async function encrypt({ client, fileData, filename, userEmail, asHtml }) {
+async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }) {
   const { startUrl } = getEnvironment();
 
   _pushAction({
@@ -82,12 +133,6 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml }) {
     code: logs.createMockStream(),
   });
   const contentStream = TDF.createMockStream(fileData);
-
-  _pushAction({
-    title: 'Build Virtru Policy',
-    code: logs.buildVirtruPolicy(),
-  });
-  const policy = new Virtru.Client.VirtruPolicyBuilder().build();
 
   _pushAction({
     title: 'Build Virtru Encryption Params',
@@ -113,8 +158,14 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml }) {
     return buffer;
   }
 
+  // TODO: add interval request on audit events and put them in store
+  boundActions.fetchAuditLogAction();
+
   const manifestString = ''; // TODO: Confirmed with Tyler this is not needed for now
-  return TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`);
+  return {
+    encryptedFile: TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`),
+    policyId: policy._policyId,
+  };
 }
 
 async function authenticate(email) {
@@ -123,4 +174,9 @@ async function authenticate(email) {
   return client;
 }
 
-export { encrypt, authenticate };
+_pushAction({
+  title: 'Authenticate',
+  code: logs.buildVirtruPolicy(),
+});
+
+export default { authenticate, encrypt, policyBuilder };

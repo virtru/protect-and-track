@@ -3,7 +3,8 @@ import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
 import gsuite from './services/gsuite';
 import './Share.css';
-import Button from '../../components/Button/Button';
+import Button from 'components/Button/Button';
+import Modal from 'components/Modal/Modal';
 
 function Ico({ type }) {
   return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
@@ -37,7 +38,6 @@ function ShareButton({ children, init, onClick, type }) {
     }
     async function initializeButtonBackend() {
       await init();
-      console.log('init complete');
       setState(onClick ? 'enabled' : 'misconfigured');
     }
     initializeButtonBackend();
@@ -74,9 +74,6 @@ function ShareSelect({ updateShare, file, onClose }) {
   };
   return (
     <ShareBox>
-      <button className="Share-close" onClick={onClose} title="Close Share Modal">
-        X
-      </button>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
       <ShareButton type="googledrive" onClick={shareToDrive} init={gsuite.init}>
         Google Drive
@@ -123,9 +120,6 @@ function ShareComplete({ share, file, onClose }) {
   const { file: { name } = {} } = file;
   return (
     <ShareBox>
-      <button className="Share-close" onClick={onClose} title="Close Share Modal">
-        X
-      </button>
       <Title>Track {name || 'your shared file'}</Title>
       {host && (
         <div className="Share-center">
@@ -149,19 +143,19 @@ function Share({ share, encrypted, updateShare, onClose }) {
   let shareContent;
   switch (share.state) {
     case 'unshared':
-      shareContent = <ShareSelect updateShare={updateShare} file={encrypted} onClose={onClose} />;
+      shareContent = <ShareSelect updateShare={updateShare} file={encrypted} />;
       break;
     case 'authorizing':
     case 'sharing':
       shareContent = <Sharing file={encrypted} />;
       break;
     case 'shared':
-      shareContent = <ShareComplete share={share} file={encrypted} onClose={onClose} />;
+      shareContent = <ShareComplete share={share} file={encrypted} />;
       break;
     default:
   }
 
-  return <div className="Share-wrapper">{shareContent}</div>;
+  return <Modal onClose={onClose}>{shareContent}</Modal>;
 }
 
 const mapToProps = ({ share, encrypted }) => ({ share, encrypted });

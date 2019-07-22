@@ -2,7 +2,7 @@
 
 React application for demonstrating the TDF3 library.
 
-The demo is hosted at [https://demos.developer.virtru.com/react/](https://demos.developer.virtru.com/react/)
+The demo is hosted at [https://demos.developer.virtru.com/protect/](https://demos.developer.virtru.com/protect/)
 
 ## Quick Start
 
