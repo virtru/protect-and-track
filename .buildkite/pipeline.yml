@@ -100,7 +100,7 @@ steps:
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
     branches: '!master'
     env:
-      S3_PATH: 'react-staging'
+      S3_PATH: 'protect-staging'
     agents:
       - *agent_queue
   - wait
@@ -108,7 +108,7 @@ steps:
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
     branches: '!master'
     env:
-      S3_PATH: 'react-staging'
+      S3_PATH: 'protect-staging'
     agents:
       - *agent_queue
 
@@ -117,7 +117,7 @@ steps:
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
     branches: 'master'
     env:
-      S3_PATH: 'react'
+      S3_PATH: 'protect'
     agents:
       - *agent_queue
   - wait
@@ -125,6 +125,6 @@ steps:
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
     branches: 'master'
     env:
-      S3_PATH: 'react'
+      S3_PATH: 'protect'
     agents:
       - *agent_queue
