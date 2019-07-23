@@ -42,7 +42,7 @@ describe('Share', () => {
         encrypted={file}
         recipients={['a', 'b']}
         providers={{ googledrive: doneState }}
-        updateShare={updateShare}
+        setShare={setShare}
         onClose={onClose}
       />,
     );

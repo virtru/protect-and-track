@@ -1,6 +1,6 @@
 import createStore from 'redux-zero';
 import Virtru from 'virtru-tdf3-js';
-import { SHARE_PROVIDERS } from 'constants/sharing';
+import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import { base64ToArrayBuffer } from 'utils/buffer';
 
 import ENCRYPT_STATES from 'constants/encryptStates';
