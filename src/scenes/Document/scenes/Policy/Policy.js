@@ -49,9 +49,9 @@ function Policy({ userId, openAuthModal, encrypt, encryptState, policy, setPolic
     <div className="Policy" id="policy">
       <Access policy={policy} encryptState={encryptState} setPolicy={setPolicy} userId={userId} />
       <hr className="Policy-rule" />
-      <Expiration policy={policy} updatePolicy={updatePolicy} />
-      <Resharing policy={policy} updatePolicy={updatePolicy} />
-      <Watermarking policy={policy} updatePolicy={updatePolicy} />
+      <Expiration policy={policy} setPolicy={setPolicy} />
+      <Resharing policy={policy} setPolicy={setPolicy} />
+      <Watermarking policy={policy} setPolicy={setPolicy} />
     </div>
   );
 }

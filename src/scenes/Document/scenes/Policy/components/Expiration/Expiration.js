@@ -7,13 +7,13 @@ import { ReactComponent as HourglassIcon } from './hourglass.svg';
 import './Expiration.css';
 
 // now - exposed for testing
-function Expiration({ policy, updatePolicy, now = new Date() }) {
+function Expiration({ policy, setPolicy, now = new Date() }) {
   // NOTE(DSAT-59) Chrome `datetime-local` expects ISO dates with no trailing `Z`
   // But the Virtru policy requires them. So use the right one to convert from a JS Date to
   // the appropriate field value.
   const d2sZ = d => d.toISOString();
   const d2s = d => d.toISOString().slice(0, -1);
-  const policyChange = change => generatePolicyChanger(policy, updatePolicy, change);
+  const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
   const withDate = (toChange, ...args) => {
     let d = new Date(toChange);
     d.setDate(...args);

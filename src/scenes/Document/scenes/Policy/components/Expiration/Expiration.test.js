@@ -16,14 +16,14 @@ describe('Expiration', () => {
   });
 
   test('Custom', () => {
-    const updatePolicy = jest.fn();
+    const setPolicy = jest.fn();
     const now = new Date();
     let later = new Date(now);
     later.setMinutes(now.getMinutes() + 5, 0, 0);
     const { container } = render(
       <Expiration
         policy={new Virtru.Client.VirtruPolicyBuilder().build()}
-        updatePolicy={updatePolicy}
+        setPolicy={setPolicy}
         now={now}
       />,
     );
@@ -31,7 +31,7 @@ describe('Expiration', () => {
     const checkbox = container.querySelector('input[type=checkbox]');
     fireEvent.click(checkbox);
 
-    expect(updatePolicy).toBeCalledWith(
+    expect(setPolicy).toBeCalledWith(
       expect.objectContaining({
         _deadline: later.toISOString(),
       }),
