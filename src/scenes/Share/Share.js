@@ -62,7 +62,8 @@ function ShareSelect({ updateShare, file, recipients, onClose }) {
       state(SHARING.STATE.UPLOADING);
       const uploadResponse = await gsuite.upload(file.name, file.type, file.payload);
       state(SHARING.STATE.SHARING);
-      const shareResponse = await gsuite.share(uploadResponse.result.id, recipients);
+      await gsuite.share(uploadResponse.result.id, recipients);
+      // TODO(DSAT-67) Validate response
       // TODO(DSAT-14) Store permissions and don't sign out.
       gsuite.signOut();
       updateShare({
