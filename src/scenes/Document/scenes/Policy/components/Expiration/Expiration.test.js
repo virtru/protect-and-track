@@ -17,13 +17,14 @@ describe('Expiration', () => {
 
   test('Custom', () => {
     const updatePolicy = jest.fn();
-    let d = new Date();
-    d.setMinutes(d.getMinutes() + 5, 0, 0);
+    const now = new Date();
+    let later = new Date(now);
+    later.setMinutes(now.getMinutes() + 5, 0, 0);
     const { container } = render(
       <Expiration
         policy={new Virtru.Client.VirtruPolicyBuilder().build()}
         updatePolicy={updatePolicy}
-        now={d}
+        now={now}
       />,
     );
 
@@ -32,7 +33,7 @@ describe('Expiration', () => {
 
     expect(updatePolicy).toBeCalledWith(
       expect.objectContaining({
-        _deadline: d.toISOString(),
+        _deadline: later.toISOString(),
       }),
     );
   });
