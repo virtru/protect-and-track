@@ -1,7 +1,6 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
-import Virtru from '../../../../utils/VirtruWrapper';
 
 const helloWorldBuffer = new TextEncoder().encode('Hello world!');
 const helloWorldHandle = {
@@ -12,47 +11,18 @@ const helloWorldHandle = {
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ children, userId, updateFile, policyState }) {
-  // Asyncify FileReader's `readAsArrayBuffer`.
-  const fileToArrayBuffer = file => {
-    const reader = new FileReader();
-
-    return new Promise((resolve, reject) => {
-      reader.onerror = () => {
-        reader.abort();
-        reject(new DOMException(file));
-      };
-
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  };
-
+function Drop({ children, setFile, policyState }) {
   const processFile = async files => {
-    // TODO(DSAT-7) handle TDF file and extract policy
-    // For now, just load an empty policy here.
-    const policyBuilder = Virtru.policyBuilder();
-    // Add the current user if present
-    if (userId) {
-      policyBuilder.addUsers(userId);
-    }
-    const policy = policyBuilder.build();
-
     // Default to hello world
     if (!files.length) {
-      return updateFile({
-        file: helloWorldHandle,
-        arrayBuffer: helloWorldBuffer,
-        policy,
-        policyBuilder,
+      return setFile({
+        fileHandle: helloWorldHandle,
+        fileBuffer: helloWorldBuffer,
       });
     }
 
     const fileHandle = files[0];
-    const fileBuffer = await fileToArrayBuffer(fileHandle);
-    updateFile({ file: fileHandle, arrayBuffer: fileBuffer, policy, policyBuilder });
+    setFile({ fileHandle });
   };
 
   const handleFileInput = async event => {

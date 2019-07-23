@@ -1,9 +1,7 @@
 export default encryptedFile => {
-  var element = document.createElement('a');
-  element.setAttribute(
-    'href',
-    'data:text/plain;charset=utf-8,' + encodeURIComponent(encryptedFile.payload),
-  );
+  const html = new TextDecoder('utf-8').decode(encryptedFile.payload);
+  const element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(html));
   element.setAttribute('download', encryptedFile.name);
 
   element.style.display = 'none';

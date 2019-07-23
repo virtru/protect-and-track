@@ -1,0 +1,7 @@
+export default {
+  AUTHENTICATING: 0,
+  UNPROTECTED: 1,
+  PROTECTING: 2,
+  PROTECTED: 3,
+  PROTECTED_NO_AUTH: 4,
+};
