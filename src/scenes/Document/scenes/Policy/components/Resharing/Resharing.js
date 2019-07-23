@@ -3,22 +3,22 @@ import SectionHeader from '../SectionHeader/SectionHeader';
 import Toggle from '../Toggle/Toggle';
 import { ReactComponent as ForwardIcon } from './forward.svg';
 import { generatePolicyChanger } from '../../services/policyChanger';
-import './Forwarding.css';
+import './Resharing.css';
 
-function Forwarding({ policy, updatePolicy }) {
+function Resharing({ policy, updatePolicy }) {
   const policyChange = change => generatePolicyChanger(policy, updatePolicy, change);
   const onChange = policyChange((builder, e) =>
     e.target.checked ? builder.disableReshare() : builder.enableReshare(),
   );
   return (
-    <div className="Forwarding">
+    <div className="Resharing">
       <SectionHeader>
         <ForwardIcon />
-        <h4>Forwarding</h4>
+        <h4>Disable Re-sharing</h4>
         <Toggle id="forward" checked={policy && !policy.hasReshare()} onChange={onChange} />
       </SectionHeader>
     </div>
   );
 }
 
-export default Forwarding;
+export default Resharing;

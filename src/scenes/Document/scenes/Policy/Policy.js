@@ -3,7 +3,7 @@ import React from 'react';
 import Access from './components/Access/Access';
 import Expiration from './components/Expiration/Expiration';
 import Watermarking from './components/Watermarking/Watermarking';
-import Forwarding from './components/Forwarding/Forwarding';
+import Resharing from './components/Resharing/Resharing';
 import Button from 'components/Button/Button';
 import './Policy.css';
 
@@ -67,7 +67,7 @@ function Policy({
       />
       <hr className="Policy-rule" />
       <Expiration policy={policy} updatePolicy={updatePolicy} />
-      <Forwarding policy={policy} updatePolicy={updatePolicy} />
+      <Resharing policy={policy} updatePolicy={updatePolicy} />
       <Watermarking policy={policy} updatePolicy={updatePolicy} />
     </div>
   );
