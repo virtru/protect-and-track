@@ -140,7 +140,10 @@ function Document({
         >
           Download
         </Button>
-        <Button onClick={() => setShareOpen(true)} disabled={!encrypted || !userId}>
+        <Button
+          onClick={() => setShareOpen(true)}
+          disabled={!encrypted || !userId || !policy || !policy.getUsers().length}
+        >
           Share
         </Button>
       </>

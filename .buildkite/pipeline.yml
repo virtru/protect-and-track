@@ -2,7 +2,6 @@ env:
   AWS_ACCOUNT_ALIAS: common
   ENVIRONMENT_NAME: common
   DEPLOY_ENVIRONMENT_NAME: production
-  S3_PATH: react
   S3_HOSTNAME: demos.developer.virtru.com
   USE_NODE_10: true
 
@@ -90,46 +89,42 @@ steps:
   - wait
 
   - block: 'Unblock Deploy'
-    branches: '!master'
+    branches: '!master !develop'
 
   - block: 'Check your branch name'
     prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
     branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
 
+  # Build and Deploy (Staging)
+  - label: ':s3: Deploy to S3 Staging'
+    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+    branches: '!master'
+    env:
+      S3_PATH: 'protect-staging'
+    agents:
+      - *agent_queue
+  - wait
+  - label: ':s3: Invalidate CloudFront Cache Staging'
+    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+    branches: '!master'
+    env:
+      S3_PATH: 'protect-staging'
+    agents:
+      - *agent_queue
+
+  # Build and Deploy (Production)
   - label: ':s3: Deploy to S3'
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+    branches: 'master'
+    env:
+      S3_PATH: 'protect'
     agents:
       - *agent_queue
-
   - wait
-
   - label: ':s3: Invalidate CloudFront Cache'
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+    branches: 'master'
+    env:
+      S3_PATH: 'protect'
     agents:
       - *agent_queue
-# TODO(DSAT-11): uncomment all this stuff when we can actuall deploy environments
-#
-#  - wait
-#
-#  - block: ':grey_question: Deploy to Production'
-#    branches: 'master'
-#
-#  - wait
-#
-#  - label: ':s3: Deploy to Production S3'
-#    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
-#    branches: 'master'
-#    env:
-#      DEPLOY_ENVIRONMENT_NAME: production
-#    agents:
-#      - *agent_queue
-#
-#  - wait
-#
-#  - label: ':s3: Invalidate Production CloudFront Cache'
-#    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
-#    branches: 'master'
-#    env:
-#      DEPLOY_ENVIRONMENT_NAME: production
-#    agents:
-#      - *agent_queue
