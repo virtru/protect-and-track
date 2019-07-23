@@ -4,13 +4,8 @@ import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
 
 import * as logs from 'constants/methodLogs';
-import envs from 'constants/environment';
+import getEnvironment from 'constants/environment';
 import store from '../store';
-
-function getEnvironment() {
-  const stage = process.env.VIRTRU_ENV || 'develop01';
-  return envs[stage];
-}
 
 async function streamToBuffer(stream) {
   const bufs = [];
