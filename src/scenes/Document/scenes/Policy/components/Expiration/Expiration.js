@@ -101,8 +101,7 @@ function Expiration({ policy, updatePolicy, now = new Date() }) {
               Custom
               {isCustom && (
                 <>
-                  {' '}
-                  -
+                  {' — '}
                   <input
                     type="datetime-local"
                     id="custom-time"
