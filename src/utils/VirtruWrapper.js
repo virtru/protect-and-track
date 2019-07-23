@@ -107,7 +107,7 @@ function policyBuilder(opts) {
             code: actions.join('\r\n'),
           });
         } else {
-          actions.push(`    .${propKey}(${JSON.stringify(args)})`);
+          actions.push(`    .${propKey}(${args.length ? JSON.stringify(args) : ''})`);
         }
         const result = origMethod.apply(target, args);
         return result;

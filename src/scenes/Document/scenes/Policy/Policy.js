@@ -3,7 +3,7 @@ import React from 'react';
 import Access from './components/Access/Access';
 import Expiration from './components/Expiration/Expiration';
 import Watermarking from './components/Watermarking/Watermarking';
-import Forwarding from './components/Forwarding/Forwarding';
+import Resharing from './components/Resharing/Resharing';
 import Button from 'components/Button/Button';
 import ENCRYPT_STATES from 'constants/encryptStates';
 import './Policy.css';
@@ -49,9 +49,9 @@ function Policy({ userId, openAuthModal, encrypt, encryptState, policy, setPolic
     <div className="Policy" id="policy">
       <Access policy={policy} encryptState={encryptState} setPolicy={setPolicy} userId={userId} />
       <hr className="Policy-rule" />
-      <Expiration />
-      <Forwarding />
-      <Watermarking />
+      <Expiration policy={policy} setPolicy={setPolicy} />
+      <Resharing policy={policy} setPolicy={setPolicy} />
+      <Watermarking policy={policy} setPolicy={setPolicy} />
     </div>
   );
 }
