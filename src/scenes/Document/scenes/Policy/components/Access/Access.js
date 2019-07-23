@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 
 import SectionHeader from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
-import { ENCRYPT_STATES } from '../../Policy';
+import ENCRYPT_STATES from 'constants/encryptStates';
 import Virtru from '../../../../../../utils/VirtruWrapper';
 import './Access.css';
 
-function Access({ encryptState, userId, policy, updatePolicy }) {
+function Access({ encryptState, userId, policy, setPolicy }) {
   const policyChange = change => e => {
     e && e.preventDefault();
     const policyBuilder = Virtru.policyBuilder(policy);
     if (change(policyBuilder) === 'NOPE') {
       return false;
     }
-    updatePolicy(policyBuilder.build());
+    setPolicy(policyBuilder.build());
     return false;
   };
 

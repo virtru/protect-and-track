@@ -2,7 +2,7 @@ import React from 'react';
 import Virtru from 'virtru-tdf3-js';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
-import { ENCRYPT_STATES } from '../../Policy';
+import ENCRYPT_STATES from 'constants/encryptStates';
 import Access from './Access';
 
 afterEach(cleanup);
@@ -54,12 +54,9 @@ describe('Access', () => {
   });
 
   test('Adds a new user', () => {
-    const updatePolicy = jest.fn();
+    const setPolicy = jest.fn();
     const { getByRole } = render(
-      <Access
-        policy={new Virtru.Client.VirtruPolicyBuilder().build()}
-        updatePolicy={updatePolicy}
-      />,
+      <Access policy={new Virtru.Client.VirtruPolicyBuilder().build()} setPolicy={setPolicy} />,
     );
 
     const textForm = getByRole('form');
@@ -67,7 +64,7 @@ describe('Access', () => {
     fireEvent.change(textField, { target: { value: 'recipient@example.com' } });
     fireEvent.submit(textField);
 
-    expect(updatePolicy).toBeCalledWith(
+    expect(setPolicy).toBeCalledWith(
       expect.objectContaining({
         _users: expect.objectContaining({
           'recipient@example.com': true,

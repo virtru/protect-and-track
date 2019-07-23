@@ -1,20 +1,34 @@
 import createStore from 'redux-zero';
 import Virtru from 'virtru-tdf3-js';
+import { base64ToArrayBuffer } from 'utils/buffer';
 
-function base64ToArrayBuffer(base64) {
-  var binary_string = window.atob(base64);
-  var len = binary_string.length;
-  var bytes = new Uint8Array(len);
-  for (var i = 0; i < len; i++) {
-    bytes[i] = binary_string.charCodeAt(i);
-  }
-  return bytes.buffer;
-}
+import ENCRYPT_STATES from 'constants/encryptStates';
+
+let encryptState = ENCRYPT_STATES.UNPROTECTED;
 
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];
-let file = false;
+const userId = activeAuth && activeAuth.split(':')[0];
+const appId = activeAuth && activeAuth.split(':')[1];
 let policy = false;
+let file = false;
+let encrypted = false;
+
+try {
+  const encryptedFileData = JSON.parse(localStorage.getItem('virtru-demo-file-encrypted'));
+  if (encryptedFileData) {
+    const buffer = encryptedFileData && base64ToArrayBuffer(encryptedFileData.b64);
+    encrypted = {
+      payload: buffer,
+      name: encryptedFileData.name,
+      type: encryptedFileData.type,
+    };
+    encryptState = userId ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
+  }
+} catch (err) {
+  console.error(err);
+}
+
 try {
   const localData = JSON.parse(localStorage.getItem('virtru-demo-file'));
   if (localData) {
@@ -45,8 +59,11 @@ export default createStore({
   // File content that the user has attached. May be encrypted or not...
   file,
 
-  //
-  encrypted: false,
+  // Stage of the encryption process
+  encryptState,
+
+  // The encrypted payload of the current TDF
+  encrypted,
 
   // The policy associated with the current document, if any
   policy,
@@ -61,9 +78,9 @@ export default createStore({
   share: { state: 'unshared', host: false },
 
   // Username; displayed in appbar
-  userId: activeAuth && activeAuth.split(':')[0],
+  userId,
 
-  appId: activeAuth && activeAuth.split(':')[1],
+  appId,
 
   // Audit events associated with the current policy
   auditEvents: [],

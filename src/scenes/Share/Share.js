@@ -46,10 +46,10 @@ function ShareButton({ children, init, onClick, type }) {
   return button;
 }
 
-function ShareSelect({ updateShare, file, recipients, onClose }) {
+function ShareSelect({ setShare, file, recipients, onClose }) {
   const shareToDrive = async () => {
     try {
-      const state = s => updateShare({ state: s, host: 'googledrive' });
+      const state = s => setShare({ state: s, host: 'googledrive' });
       state('authorizing');
       // NOTE(DSAT-1) In Safari, this call must occur in a direct user action handler.
       // Safari's policy is that popups must be in response to a direct user action,
@@ -64,7 +64,7 @@ function ShareSelect({ updateShare, file, recipients, onClose }) {
       console.log('share: ' + JSON.stringify(shareResponse));
       // TODO(DSAT-14) Store permissions and don't sign out.
       gsuite.signOut();
-      updateShare({
+      setShare({
         state: 'shared',
         host: 'googledrive',
         link: 'https://drive.google.com/open?id=' + uploadResponse.result.id,
@@ -146,13 +146,11 @@ function ShareComplete({ share, file, onClose, recipients }) {
   );
 }
 
-function Share({ encrypted, onClose, recipients, share, updateShare }) {
+function Share({ encrypted, onClose, recipients, share, setShare }) {
   let shareContent;
   switch (share.state) {
     case 'unshared':
-      shareContent = (
-        <ShareSelect updateShare={updateShare} file={encrypted} recipients={recipients} />
-      );
+      shareContent = <ShareSelect setShare={setShare} file={encrypted} recipients={recipients} />;
       break;
     case 'authorizing':
     case 'sharing':
@@ -174,7 +172,7 @@ const mapToProps = ({ encrypted, policy, share }) => ({
 });
 
 const actions = {
-  updateShare: (state, value) => ({ share: value }),
+  setShare: (state, value) => ({ share: value }),
 };
 
 export default connect(
