@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import SectionHeader from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
 import { ENCRYPT_STATES } from '../../Policy';
-import { generatePolicyChanger } from '../../services/policyChanger';
+import { generatePolicyChanger, NOPE } from '../../services/policyChanger';
 import './Access.css';
 
 function Access({ encryptState, userId, policy, updatePolicy }) {
@@ -32,7 +32,7 @@ function Access({ encryptState, userId, policy, updatePolicy }) {
     return (
       <form
         className="NewGrant"
-        onSubmit={policyChange(p => (input.valid ? p.addUsers(input.text) : 'NOPE'))}
+        onSubmit={policyChange(p => (input.valid ? p.addUsers(input.text) : NOPE))}
       >
         <input
           type="email"

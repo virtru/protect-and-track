@@ -1,4 +1,6 @@
-import Virtru from '../../../../../utils/VirtruWrapper';
+import Virtru from 'utils/VirtruWrapper';
+
+export const NOPE = 'NOPE';
 
 /**
  * Event handler generator that updates a the policy as a side effect.
@@ -9,7 +11,7 @@ export function generatePolicyChanger(policy, updatePolicy, change) {
   return e => {
     e && e.preventDefault();
     const policyBuilder = Virtru.policyBuilder(policy);
-    if (change(policyBuilder, e) === 'NOPE') {
+    if (change(policyBuilder, e) === NOPE) {
       return false;
     }
     updatePolicy(policyBuilder.build());

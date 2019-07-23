@@ -1,7 +1,7 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
-import Virtru from '../../../../utils/VirtruWrapper';
+import Virtru from 'utils/VirtruWrapper';
 
 /**
  * A place to drop an encrypted or uncrypted file.

@@ -2,7 +2,7 @@ import React from 'react';
 import RadioButton from '../RadioButton/RadioButton';
 import SectionHeader from '../SectionHeader/SectionHeader';
 import Toggle from '../Toggle/Toggle';
-import { generatePolicyChanger } from '../../services/policyChanger';
+import { generatePolicyChanger, NOPE } from '../../services/policyChanger';
 import { ReactComponent as HourglassIcon } from './hourglass.svg';
 import './Expiration.css';
 
@@ -45,7 +45,7 @@ function Expiration({ policy, updatePolicy, now = new Date() }) {
   const onInputChange = policyChange((builder, e) => {
     const d2 = isNaN(new Date(e.target.value || NaN)) ? false : new Date(e.target.value);
     if (!d2) {
-      return 'NOPE';
+      return NOPE;
     }
     builder.enableExpirationDeadline(d2sZ(d2));
   });
