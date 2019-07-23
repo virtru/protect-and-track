@@ -14,7 +14,7 @@ function Watermarking({ policy, updatePolicy }) {
       <SectionHeader>
         <WatermarkIcon />
         <h4>Watermarking</h4>
-        <Toggle id="watermark" checked={policy && !policy.hasWatermarking()} onChange={onChange} />
+        <Toggle id="watermark" checked={policy && policy.hasWatermarking()} onChange={onChange} />
       </SectionHeader>
     </div>
   );
