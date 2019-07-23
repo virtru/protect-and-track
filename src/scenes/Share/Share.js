@@ -3,7 +3,7 @@ import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
 import gsuite from './services/gsuite';
 import './Share.css';
-import { SHARING } from 'constants/api';
+import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 
@@ -47,26 +47,26 @@ function ShareButton({ children, init, onClick, type }) {
   return button;
 }
 
-function ShareSelect({ updateShare, file, recipients, onClose }) {
+function ShareSelect({ setShare, file, recipients, onClose }) {
   const shareToDrive = async () => {
     try {
       const state = s =>
-        updateShare({ provider: 'googledrive', providerState: { state: s, recipients } });
-      state(SHARING.STATE.AUTHORIZING);
+        setShare({ provider: 'googledrive', providerState: { state: s, recipients } });
+      state(SHARE_STATE.AUTHORIZING);
       // NOTE(DSAT-1) In Safari, this call must occur in a direct user action handler.
       // Safari's policy is that popups must be in response to a direct user action,
       // so no `await` calls can preceded this. To work around this, we load the API
       // before enabling the share button so this is the first gapi call.
       await gsuite.signIn();
 
-      state(SHARING.STATE.UPLOADING);
+      state(SHARE_STATE.UPLOADING);
       const uploadResponse = await gsuite.upload(file.name, file.type, file.payload);
-      state(SHARING.STATE.SHARING);
+      state(SHARE_STATE.SHARING);
       await gsuite.share(uploadResponse.result.id, recipients);
       // TODO(DSAT-67) Validate response
       // TODO(DSAT-14) Store permissions and don't sign out.
       gsuite.signOut();
-      updateShare({
+      setShare({
         provider: 'googledrive',
         providerState: {
           state: 'shared',
@@ -175,27 +175,25 @@ function ShareComplete({ provider, providerState, file, onClose, recipients }) {
   );
 }
 
-function Share({ encrypted, onClose, providers, recipients, share, updateShare }) {
+function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
   let shareContent;
   if (!share) {
-    shareContent = (
-      <ShareSelect updateShare={updateShare} file={encrypted} recipients={recipients} />
-    );
+    shareContent = <ShareSelect setShare={setShare} file={encrypted} recipients={recipients} />;
   } else {
     const { state } = providers[share];
     switch (state) {
-      case SHARING.STATE.UNSHARED:
+      case SHARE_STATE.UNSHARED:
         break;
-      case SHARING.STATE.AUTHORIZING:
+      case SHARE_STATE.AUTHORIZING:
         shareContent = <Connecting provider={share} />;
         break;
-      case SHARING.STATE.UPLOADING:
+      case SHARE_STATE.UPLOADING:
         shareContent = <Uploading file={encrypted} />;
         break;
-      case SHARING.STATE.SHARING:
+      case SHARE_STATE.SHARING:
         shareContent = <Sharing file={encrypted} recipients={recipients} />;
         break;
-      case SHARING.STATE.SHARED:
+      case SHARE_STATE.SHARED:
         shareContent = (
           <ShareComplete
             file={encrypted}
@@ -218,7 +216,7 @@ share: {
   provider: null | ∈ {box dropbox googledrive onedrive},
 }
 share_${serviceProviderName}: {
-  state: ∈ SHARING.STATE,
+  state: ∈ SHARE_STATE,
     link: url,
     id: per-service-id
   }
@@ -230,8 +228,8 @@ const mapToProps = ({ encrypted, policy, share, ...rest }) => ({
   share,
   providers: (() => {
     let o = {};
-    for (let k in SHARING.PROVIDERS) {
-      const provider = SHARING.PROVIDERS[k];
+    for (let k in SHARE_PROVIDERS) {
+      const provider = SHARE_PROVIDERS[k];
       o[provider] = rest['share_' + provider];
     }
     return o;
@@ -239,7 +237,7 @@ const mapToProps = ({ encrypted, policy, share, ...rest }) => ({
 });
 
 const actions = {
-  updateShare: (state, value) => ({
+  setShare: (state, value) => ({
     share: value.provider,
     ['share_' + value.provider]: value.providerState,
   }),

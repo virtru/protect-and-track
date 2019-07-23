@@ -41,3 +41,5 @@ export const buildVirtruEncryptParams = filename => `const encryptParams = new V
 
 export const encryptFile = encryptParams =>
   `await client.encrypt(${JSON.stringify(encryptParams, null, 2)});`;
+
+export const unwrapHtml = () => 'TDF.unwrapHtml(file);';

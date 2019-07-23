@@ -1,7 +1,7 @@
 import React from 'react';
 import { cleanup, render, wait, fireEvent, getByTestId, act } from '@testing-library/react';
 import Share from './Share';
-import { SHARING } from 'constants/api';
+import { SHARE_STATE } from 'constants/sharing';
 import gsuite from './services/gsuite';
 
 jest.mock('./services/gsuite');
@@ -10,10 +10,10 @@ afterEach(cleanup);
 
 describe('Share', () => {
   test('to gsuite', async () => {
-    const updateShare = jest.fn();
+    const setShare = jest.fn();
     const file = { name: 'a.tdf' };
     const { getByText, rerender } = render(
-      <Share encrypted={file} recipients={['a', 'b']} updateShare={updateShare} />,
+      <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
     );
     expect(getByText('Share a.tdf')).toBeInTheDocument();
     await wait(() => expect(gsuite.init).toHaveBeenCalled());
@@ -30,7 +30,7 @@ describe('Share', () => {
       recipients: ['a', 'b'],
     };
     await wait(() =>
-      expect(updateShare).toHaveBeenCalledWith({
+      expect(setShare).toHaveBeenCalledWith({
         provider: 'googledrive',
         providerState: doneState,
       }),

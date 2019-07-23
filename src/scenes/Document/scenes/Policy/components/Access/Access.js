@@ -2,21 +2,11 @@ import React, { useState } from 'react';
 
 import SectionHeader from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
-import { ENCRYPT_STATES } from '../../Policy';
-import Virtru from '../../../../../../utils/VirtruWrapper';
+import ENCRYPT_STATES from 'constants/encryptStates';
+import { generatePolicyChanger, NOPE } from '../../services/policyChanger';
 import './Access.css';
-
-function Access({ encryptState, userId, policy, updatePolicy }) {
-  const policyChange = change => e => {
-    e && e.preventDefault();
-    const policyBuilder = Virtru.policyBuilder(policy);
-    if (change(policyBuilder) === 'NOPE') {
-      return false;
-    }
-    updatePolicy(policyBuilder.build());
-    return false;
-  };
-
+function Access({ encryptState, userId, policy, setPolicy }) {
+  const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
   const Grant = ({ user, status }) => {
     if (status === 'owner') {
       return (
@@ -41,7 +31,7 @@ function Access({ encryptState, userId, policy, updatePolicy }) {
     return (
       <form
         className="NewGrant"
-        onSubmit={policyChange(p => (input.valid ? p.addUsers(input.text) : 'NOPE'))}
+        onSubmit={policyChange(p => (input.valid ? p.addUsers(input.text) : NOPE))}
       >
         <input
           type="email"

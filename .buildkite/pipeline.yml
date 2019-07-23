@@ -10,15 +10,6 @@ agents:
 agent_queue: &agent_queue 'queue=${BUILDKITE_QUEUE:-default}'
 
 steps:
-  # If you find yourself asking, "Why are you tagging this here?" then please
-  # read on.
-  # Tagging early does two things:
-  #   1. Fail fast so we don't waste time on long running tests that won't
-  #      matter anyway because someone forgot to bump the version.
-  #   2. Promotes the idea that versions are immutable and the master branch
-  #      should not get a merge without a version change.  If we're building
-  #      off master and not as a redeploy, then you should be committing to a
-  #      new version and we should tag it.
   - label: 'Tag Release'
     command: 'buildkite-scripts/scripts/tag-release.sh'
     branches: 'master'
@@ -83,6 +74,25 @@ steps:
 
   - label: ':npm: NPM Build'
     command: 'buildkite-scripts/scripts/npm-build.sh'
+    branches: 'master'
+    env:
+      REACT_APP_VIRTRU_ENV: 'production'
+    agents:
+      - *agent_queue
+
+  - label: ':npm: NPM Build'
+    command: 'buildkite-scripts/scripts/npm-build.sh'
+    branches: 'develop'
+    env:
+      REACT_APP_VIRTRU_ENV: 'staging'
+    agents:
+      - *agent_queue
+
+  - label: ':npm: NPM Build'
+    command: 'buildkite-scripts/scripts/npm-build.sh'
+    branches: '!master !develop'
+    env:
+      REACT_APP_VIRTRU_ENV: 'develop01'
     agents:
       - *agent_queue
 
