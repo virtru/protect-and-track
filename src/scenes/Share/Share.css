@@ -48,7 +48,7 @@
   width: 85%;
 }
 
-.Share-box {
+.Share-container {
   display: flex;
   flex-direction: column;
   width: 296px;

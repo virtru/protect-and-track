@@ -1,5 +1,6 @@
 import createStore from 'redux-zero';
 import Virtru from 'virtru-tdf3-js';
+import { SHARING } from 'constants/api';
 
 function base64ToArrayBuffer(base64) {
   var binary_string = window.atob(base64);
@@ -57,8 +58,18 @@ export default createStore({
   // Application loading status
   isLoading: true,
 
-  // Sharing status; maintained by the `Share` scene, see it for details
-  share: { state: 'unshared', host: false },
+  // Current share provider displayed in the 'sharing' wizard
+  share: false,
+
+  // State for the differnet sharing providers
+  ...(() => {
+    let o = {};
+    for (let k in SHARING.PROVIDERS) {
+      const provider = SHARING.PROVIDERS[k];
+      o['share_' + provider] = { state: SHARING.STATE.UNSHARED };
+    }
+    return o;
+  })(),
 
   // Username; displayed in appbar
   userId: activeAuth && activeAuth.split(':')[0],

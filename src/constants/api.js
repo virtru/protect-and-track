@@ -9,4 +9,21 @@ const ACCOUNTS_APPID_BUNDLE_URL = `${ACCOUNTS_URL}/api/currentAppIdBundle`;
 const LOGIN_URL = `${ACCOUNTS_URL}/login?loginPlatform=${LOGIN_PLATFORM}&loginRedirectUrl=${window.location}`;
 const LOGOUT_URL = `${ACCOUNTS_URL}/logout?loginPlatform=${LOGIN_PLATFORM}&loginRedirectUrl=${window.location}`;
 
-export { LOGIN_PLATFORM, ACCOUNTS_APPID_BUNDLE_URL, LOGIN_URL, LOGOUT_URL };
+// Constants for the share state in the store.
+const SHARING = {
+  PROVIDERS: {
+    BOX: 'box',
+    DROPBOX: 'dropbox',
+    GOOGLEDRIVE: 'googledrive',
+    ONEDRIVE: 'onedrive',
+  },
+  STATE: {
+    UNSHARED: 'unshared',
+    AUTHORIZING: 'authorizing',
+    UPLOADING: 'uploading',
+    SHARING: 'sharing',
+    SHARED: 'shared',
+  },
+};
+
+export { LOGIN_PLATFORM, ACCOUNTS_APPID_BUNDLE_URL, LOGIN_URL, LOGOUT_URL, SHARING };
