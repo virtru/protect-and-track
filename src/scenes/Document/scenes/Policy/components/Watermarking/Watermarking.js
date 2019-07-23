@@ -7,7 +7,7 @@ import { ReactComponent as WatermarkIcon } from './watermark.svg';
 function Watermarking({ policy, updatePolicy }) {
   const policyChange = change => generatePolicyChanger(policy, updatePolicy, change);
   const onChange = policyChange((builder, e) =>
-    e.target.checked ? builder.disableWatermarking() : builder.enableWatermarking(),
+    e.target.checked ? builder.enableWatermarking() : builder.disableWatermarking(),
   );
   return (
     <div className="Watermarking">
