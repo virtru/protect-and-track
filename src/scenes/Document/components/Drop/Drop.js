@@ -1,49 +1,19 @@
 import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
-import Virtru from 'utils/VirtruWrapper';
 
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ children, userId, updateFile, policyState }) {
-  // Asyncify FileReader's `readAsArrayBuffer`.
-  const fileToArrayBuffer = file => {
-    const reader = new FileReader();
-
-    return new Promise((resolve, reject) => {
-      reader.onerror = () => {
-        reader.abort();
-        reject(new DOMException(file));
-      };
-
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  };
-
-  const processFile = async fileHandle => {
-    const fileBuffer = await fileToArrayBuffer(fileHandle);
-    // TODO(DSAT-7) handle TDF file and extract policy
-    // For now, just load an empty policy here.
-    const policyBuilder = Virtru.policyBuilder();
-    // Add the current user if present
-    if (userId) {
-      policyBuilder.addUsers(userId);
-    }
-    const policy = policyBuilder.build();
-    updateFile({ file: fileHandle, arrayBuffer: fileBuffer, policy, policyBuilder });
-  };
-
+function Drop({ children, userId, setFile, policyState }) {
+  console.log(`<Drop userId="${userId}">`);
   const handleFileInput = async event => {
     event.stopPropagation();
     event.preventDefault();
 
     const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
     for (const file of files) {
-      await processFile(file);
+      await setFile(file);
       // TODO(DSAT-45) Handle more than one file, or don't
       return;
     }

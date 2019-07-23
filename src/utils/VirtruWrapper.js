@@ -158,7 +158,6 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
     return buffer;
   }
 
-  // TODO: add interval request on audit events and put them in store
   boundActions.fetchAuditLogAction();
 
   const manifestString = ''; // TODO: Confirmed with Tyler this is not needed for now
@@ -174,9 +173,12 @@ async function authenticate(email) {
   return client;
 }
 
-_pushAction({
-  title: 'Authenticate',
-  code: logs.buildVirtruPolicy(),
-});
+function unwrapHtml(file) {
+  _pushAction({
+    title: 'Load TDF',
+    code: logs.unwrapHtml(),
+  });
+  return TDF.unwrapHtml(file);
+}
 
-export default { authenticate, encrypt, policyBuilder };
+export default { authenticate, encrypt, policyBuilder, unwrapHtml };

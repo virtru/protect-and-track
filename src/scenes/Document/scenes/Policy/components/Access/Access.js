@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 
 import SectionHeader from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
-import { ENCRYPT_STATES } from '../../Policy';
+import ENCRYPT_STATES from 'constants/encryptStates';
 import { generatePolicyChanger, NOPE } from '../../services/policyChanger';
 import './Access.css';
-
-function Access({ encryptState, userId, policy, updatePolicy }) {
-  const policyChange = change => generatePolicyChanger(policy, updatePolicy, change);
+function Access({ encryptState, userId, policy, setPolicy }) {
+  const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
   const Grant = ({ user, status }) => {
     if (status === 'owner') {
       return (

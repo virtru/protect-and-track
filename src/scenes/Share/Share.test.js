@@ -9,11 +9,11 @@ afterEach(cleanup);
 
 describe('Share', () => {
   test('to gsuite', async () => {
-    const updateShare = jest.fn();
+    const setShare = jest.fn();
     const unshared = { state: 'unshared', host: false };
     const file = { name: 'a.tdf' };
     const { getByText } = render(
-      <Share encrypted={file} recipients={['a', 'b']} share={unshared} updateShare={updateShare} />,
+      <Share encrypted={file} recipients={['a', 'b']} share={unshared} setShare={setShare} />,
     );
     expect(getByText('Share a.tdf')).toBeInTheDocument();
     await wait(() => expect(gsuite.init).toHaveBeenCalled());
@@ -24,7 +24,7 @@ describe('Share', () => {
     await wait(() => expect(gsuite.share).toHaveBeenCalledWith('fake-id', ['a', 'b']));
     // Make sure we update the share state after
     await wait(() =>
-      expect(updateShare).toHaveBeenCalledWith({
+      expect(setShare).toHaveBeenCalledWith({
         state: 'shared',
         host: 'googledrive',
         link: 'https://drive.google.com/open?id=fake-id',
