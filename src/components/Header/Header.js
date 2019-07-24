@@ -26,11 +26,7 @@ const Header = ({ userId }) => {
         </span>
       );
     }
-    if (
-      localStorage.length > 1 ||
-      // something is setting `locale` to `null` on app start
-      (localStorage.key(0) === 'locale' && !localStorage.getItem('locale'))
-    ) {
+    if (localStorage.length) {
       return (
         <span>
           <Button variant="link" onClick={signOut} verySmall light>
