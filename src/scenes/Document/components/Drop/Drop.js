@@ -4,7 +4,7 @@ import { ReactComponent as DropIcon } from './drop-icon.svg';
 
 const helloWorldBuffer = new TextEncoder().encode('Hello world!');
 const helloWorldHandle = {
-  name: 'hello-world.txt',
+  name: 'demo-example.txt',
   type: 'text/plain',
 };
 
