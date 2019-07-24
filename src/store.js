@@ -1,5 +1,6 @@
 import createStore from 'redux-zero';
 import Virtru from 'virtru-tdf3-js';
+import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import { base64ToArrayBuffer } from 'utils/buffer';
 
 import ENCRYPT_STATES from 'constants/encryptStates';
@@ -74,8 +75,18 @@ export default createStore({
   // Application loading status
   isLoading: true,
 
-  // Sharing status; maintained by the `Share` scene, see it for details
-  share: { state: 'unshared', host: false },
+  // Current share provider displayed in the 'sharing' wizard
+  share: false,
+
+  // State for the differnet sharing providers
+  ...(() => {
+    let o = {};
+    for (let k in SHARE_PROVIDERS) {
+      const provider = SHARE_PROVIDERS[k];
+      o['share_' + provider] = { state: SHARE_STATE.UNSHARED };
+    }
+    return o;
+  })(),
 
   // Username; displayed in appbar
   userId,

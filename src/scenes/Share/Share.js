@@ -3,6 +3,7 @@ import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
 import gsuite from './services/gsuite';
 import './Share.css';
+import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 
@@ -14,8 +15,8 @@ function Title({ children }) {
   return <h3 className="Share-title">{children}</h3>;
 }
 
-function ShareBox({ children }) {
-  return <div className="Share-box">{children}</div>;
+function ShareContainer({ children }) {
+  return <div className="Share-container">{children}</div>;
 }
 
 function ShareButton({ children, init, onClick, type }) {
@@ -49,25 +50,33 @@ function ShareButton({ children, init, onClick, type }) {
 function ShareSelect({ setShare, file, recipients, onClose }) {
   const shareToDrive = async () => {
     try {
-      const state = s => setShare({ state: s, host: 'googledrive' });
-      state('authorizing');
+      const state = s =>
+        setShare({
+          provider: SHARE_PROVIDERS.GOOGLEDRIVE,
+          providerState: { state: s, recipients },
+        });
+      state(SHARE_STATE.AUTHORIZING);
       // NOTE(DSAT-1) In Safari, this call must occur in a direct user action handler.
       // Safari's policy is that popups must be in response to a direct user action,
       // so no `await` calls can preceded this. To work around this, we load the API
       // before enabling the share button so this is the first gapi call.
       await gsuite.signIn();
 
-      state('sharing');
+      state(SHARE_STATE.UPLOADING);
       const uploadResponse = await gsuite.upload(file.name, file.type, file.payload);
-      console.log('upload: ' + JSON.stringify(uploadResponse));
-      const shareResponse = await gsuite.share(uploadResponse.result.id, recipients);
-      console.log('share: ' + JSON.stringify(shareResponse));
+      state(SHARE_STATE.SHARING);
+      await gsuite.share(uploadResponse.result.id, recipients);
+      // TODO(DSAT-67) Validate response
       // TODO(DSAT-14) Store permissions and don't sign out.
       gsuite.signOut();
       setShare({
-        state: 'shared',
-        host: 'googledrive',
-        link: 'https://drive.google.com/open?id=' + uploadResponse.result.id,
+        provider: SHARE_PROVIDERS.GOOGLEDRIVE,
+        providerState: {
+          state: SHARE_STATE.SHARED,
+          id: uploadResponse.result.id,
+          link: 'https://drive.google.com/open?id=' + uploadResponse.result.id,
+          recipients,
+        },
       });
     } catch (e) {
       console.log(JSON.stringify(e));
@@ -75,7 +84,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
     }
   };
   return (
-    <ShareBox>
+    <ShareContainer>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
       <ShareButton type="googledrive" onClick={shareToDrive} init={gsuite.init}>
         Google Drive
@@ -83,7 +92,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       <ShareButton type="onedrive">OneDrive</ShareButton>
       <ShareButton type="dropbox">Dropbox</ShareButton>
       <ShareButton type="box">Box</ShareButton>
-    </ShareBox>
+    </ShareContainer>
   );
 }
 
@@ -101,36 +110,59 @@ function RecipientList({ recipients }) {
   );
 }
 
+function Connecting({ provider }) {
+  return (
+    <ShareContainer>
+      <Title>Connecting{(provider && ' to  ' + provider) || ''}...</Title>
+      <div className="Share-center">
+        <Loading />
+      </div>
+      <p>We're connecting to the service provider</p>
+    </ShareContainer>
+  );
+}
+
+function Uploading({ file }) {
+  const { file: { name } = {} } = file;
+  return (
+    <ShareContainer>
+      <Title>Uploading{(name && ' ' + name) || ''}...</Title>
+      <div className="Share-center">
+        <Loading />
+      </div>
+      <p>We're uploading your file to the service provider</p>
+    </ShareContainer>
+  );
+}
+
 function Sharing({ file, recipients }) {
   const { file: { name } = {} } = file;
   return (
-    <ShareBox>
+    <ShareContainer>
       <Title>Sharing{(name && ' ' + name) || ''}...</Title>
       <div className="Share-center">
         <Loading />
       </div>
       <p>We're sharing your file with the following people:</p>
       <RecipientList recipients={recipients} />
-    </ShareBox>
+    </ShareContainer>
   );
 }
 
-function TrackItButton() {
-  const handleClick = e => {
-    e.preventDefault();
-  };
-  return <Button onClick={handleClick}>Share</Button>;
-}
-
-function ShareComplete({ share, file, onClose, recipients }) {
-  const { host, link } = share;
+function ShareComplete({ provider, providerState, file, onClose, recipients }) {
+  // console.log(`<ShareComplete provider=${JSON.stringify(provider)} providerState=${JSON.stringify(providerState)} file=${JSON.stringify(file)} onClose=${JSON.stringify(onclose)} recipients=${JSON.stringify(recipients)} />`);
+  const { link } = providerState;
   const { file: { name } = {} } = file;
+  const handleDoneClick = e => {
+    e.preventDefault();
+    onClose();
+  };
   return (
-    <ShareBox>
-      <Title>Track {name || 'your shared file'}</Title>
-      {host && (
+    <ShareContainer>
+      <Title>Shared {name || 'your file'}</Title>
+      {provider && (
         <div className="Share-center">
-          <Ico type={host} />
+          <Ico type={provider} />
         </div>
       )}
       <p>
@@ -141,38 +173,77 @@ function ShareComplete({ share, file, onClose, recipients }) {
         , and you should see a <b>Track Event</b>:
       </p>
       <RecipientList recipients={recipients} />
-      <TrackItButton />
-    </ShareBox>
+      <Button onClick={handleDoneClick}>Done</Button>
+    </ShareContainer>
   );
 }
 
-function Share({ encrypted, onClose, recipients, share, setShare }) {
+function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
   let shareContent;
-  switch (share.state) {
-    case 'unshared':
-      shareContent = <ShareSelect setShare={setShare} file={encrypted} recipients={recipients} />;
-      break;
-    case 'authorizing':
-    case 'sharing':
-      shareContent = <Sharing file={encrypted} recipients={recipients} />;
-      break;
-    case 'shared':
-      shareContent = <ShareComplete share={share} file={encrypted} recipients={recipients} />;
-      break;
-    default:
+  if (!share) {
+    shareContent = <ShareSelect setShare={setShare} file={encrypted} recipients={recipients} />;
+  } else {
+    const { state } = providers[share];
+    switch (state) {
+      case SHARE_STATE.UNSHARED:
+        break;
+      case SHARE_STATE.AUTHORIZING:
+        shareContent = <Connecting provider={share} />;
+        break;
+      case SHARE_STATE.UPLOADING:
+        shareContent = <Uploading file={encrypted} />;
+        break;
+      case SHARE_STATE.SHARING:
+        shareContent = <Sharing file={encrypted} recipients={recipients} />;
+        break;
+      case SHARE_STATE.SHARED:
+        shareContent = (
+          <ShareComplete
+            file={encrypted}
+            recipients={recipients}
+            provider={share}
+            providerState={providers[share]}
+            onClose={onClose}
+          />
+        );
+        break;
+      default:
+    }
   }
 
   return <Modal onClose={onClose}>{shareContent}</Modal>;
 }
 
-const mapToProps = ({ encrypted, policy, share }) => ({
+/* TODO(dmihalcik) maybe move this to a separate store?
+share: {
+  provider: null | ∈ {box dropbox googledrive onedrive},
+}
+share_${serviceProviderName}: {
+  state: ∈ SHARE_STATE,
+    link: url,
+    id: per-service-id
+  }
+}
+*/
+const mapToProps = ({ encrypted, policy, share, ...rest }) => ({
   encrypted,
   recipients: policy.getUsers(),
   share,
+  providers: (() => {
+    let o = {};
+    for (let k in SHARE_PROVIDERS) {
+      const provider = SHARE_PROVIDERS[k];
+      o[provider] = rest['share_' + provider];
+    }
+    return o;
+  })(),
 });
 
 const actions = {
-  setShare: (state, value) => ({ share: value }),
+  setShare: (state, value) => ({
+    share: value.provider,
+    ['share_' + value.provider]: value.providerState,
+  }),
 };
 
 export default connect(
