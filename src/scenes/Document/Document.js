@@ -200,6 +200,9 @@ const actions = {
   setFile: async (state, fileHandle) => {
     localStorage.removeItem('virtru-demo-file');
     localStorage.removeItem('virtru-demo-file-encrypted');
+    if (!fileHandle) {
+      return { file: false, policy: false, encrypted: false, encryptState: false, auditEvents: [] };
+    }
     const { userId } = state;
     const { name: fileName, type: fileType } = fileHandle;
     const fileBuffer = await fileToArrayBuffer(fileHandle);
