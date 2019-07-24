@@ -99,6 +99,11 @@
   color: var(--blueDarkest);
 }
 
+.link.light:focus,
+.link.light:hover {
+  color: var(--blueLightest);
+}
+
 .link:disabled {
   background: none;
   border: none;
