@@ -74,7 +74,7 @@ function Document({
     setEncryptState(ENCRYPT_STATES.PROTECTING);
     const { encryptedFile, policyId } = await Virtru.encrypt({
       client: virtruClient,
-      fileData: file.data,
+      fileData: file.arrayBuffer,
       filename: file.file.name,
       policy: policy,
       userEmail: userId,

@@ -82,7 +82,7 @@ describe('Document', () => {
     jest.useFakeTimers();
     const timeout = 2000;
     const triggerTimes = 5;
-    const file = { file: { name: 'foo.txt' }, data: 'biteArr' };
+    const file = { file: { name: 'foo.txt' }, arrayBuffer: 'arrayBuffer' };
     const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
     const client = 'clientVirttu';
     const spy = jest.fn(() =>
@@ -113,7 +113,7 @@ describe('Document', () => {
     await wait(() => {
       expect(spy).toHaveBeenCalledWith({
         client,
-        fileData: file.data,
+        fileData: file.arrayBuffer,
         filename: file.file.name,
         policy,
         userEmail: 'foo@bar.com',
