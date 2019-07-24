@@ -24,4 +24,16 @@
   text-align: right;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.DocumentFooter.center {
+  justify-content: center;
+}
+
+.file-icon {
+  vertical-align: middle;
+  margin-left: 0.5rem;
+  margin-right: 0.2rem;
 }
