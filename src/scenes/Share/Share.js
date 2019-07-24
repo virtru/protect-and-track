@@ -51,7 +51,10 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
   const shareToDrive = async () => {
     try {
       const state = s =>
-        setShare({ provider: 'googledrive', providerState: { state: s, recipients } });
+        setShare({
+          provider: SHARE_PROVIDERS.GOOGLEDRIVE,
+          providerState: { state: s, recipients },
+        });
       state(SHARE_STATE.AUTHORIZING);
       // NOTE(DSAT-1) In Safari, this call must occur in a direct user action handler.
       // Safari's policy is that popups must be in response to a direct user action,
@@ -67,9 +70,9 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       // TODO(DSAT-14) Store permissions and don't sign out.
       gsuite.signOut();
       setShare({
-        provider: 'googledrive',
+        provider: SHARE_PROVIDERS.GOOGLEDRIVE,
         providerState: {
-          state: 'shared',
+          state: SHARE_STATE.SHARED,
           id: uploadResponse.result.id,
           link: 'https://drive.google.com/open?id=' + uploadResponse.result.id,
           recipients,
