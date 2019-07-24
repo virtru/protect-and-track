@@ -104,7 +104,7 @@ function Document({
           setFile={setFile}
         >
           <div className="DocumentDetails">
-            <Filename file={file} isTdf={!!encrypted} />
+            <Filename file={file} isTdf={!!encrypted} setFile={setFile} />
             <Policy
               file={file}
               policy={policy}
