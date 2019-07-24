@@ -72,7 +72,7 @@ steps:
 
   - wait
 
-  - label: ':npm: NPM Build'
+  - label: ':npm: NPM Build (Production)'
     command: 'buildkite-scripts/scripts/npm-build.sh'
     branches: 'master'
     env:
@@ -80,19 +80,11 @@ steps:
     agents:
       - *agent_queue
 
-  - label: ':npm: NPM Build'
+  - label: ':npm: NPM Build (Staging)'
     command: 'buildkite-scripts/scripts/npm-build.sh'
-    branches: 'develop'
+    branches: '!master'
     env:
       REACT_APP_VIRTRU_ENV: 'staging'
-    agents:
-      - *agent_queue
-
-  - label: ':npm: NPM Build'
-    command: 'buildkite-scripts/scripts/npm-build.sh'
-    branches: '!master !develop'
-    env:
-      REACT_APP_VIRTRU_ENV: 'develop01'
     agents:
       - *agent_queue
 
