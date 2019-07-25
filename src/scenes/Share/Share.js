@@ -28,7 +28,11 @@ function ShareButton({ children, init, onClick, type }) {
   };
 
   const button = (
-    <button className="ShareSelect-button" onClick={handleClick} disabled={state !== 'enabled'}>
+    <button
+      className="ShareSelect-button"
+      onClick={handleClick}
+      disabled={false && state !== 'enabled'}
+    >
       <Ico type={type} />
       <div className="ShareSelect-button-text">{children}</div>
     </button>
@@ -60,7 +64,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       const accessToken = await dropboxsuite.signIn();
       state('sharing');
       const uploadResponse = await dropboxsuite.upload(accessToken, file);
-      const shareResponse = await dropboxsuite.share(accessToken, uploadResponse.id, recipients);
+      await dropboxsuite.share(accessToken, uploadResponse.id, recipients);
       state('shared');
     } catch (e) {
       console.log(e);
