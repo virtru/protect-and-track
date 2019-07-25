@@ -28,11 +28,7 @@ function ShareButton({ children, init, onClick, type }) {
   };
 
   const button = (
-    <button
-      className="ShareSelect-button"
-      onClick={handleClick}
-      disabled={false && state !== 'enabled'}
-    >
+    <button className="ShareSelect-button" onClick={handleClick} disabled={state !== 'enabled'}>
       <Ico type={type} />
       <div className="ShareSelect-button-text">{children}</div>
     </button>
@@ -112,7 +108,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
         Google Drive
       </ShareButton>
       <ShareButton type="onedrive">OneDrive</ShareButton>
-      <ShareButton type="dropbox" onClick={shareToDropBox}>
+      <ShareButton type="dropbox" init={dropboxsuite.init} onClick={shareToDropBox}>
         Dropbox
       </ShareButton>
       <ShareButton type="box">Box</ShareButton>
