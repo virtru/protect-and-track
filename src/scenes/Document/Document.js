@@ -13,6 +13,8 @@ import AuthSelect from '../AuthSelect/AuthSelect';
 import ENCRYPT_STATES from 'constants/encryptStates';
 
 import './Document.css';
+
+import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import downloadHtml from '../../utils/downloadHtml';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
@@ -131,8 +133,20 @@ function Document({
   };
 
   const renderButtons = () => {
+    if (!file) {
+      return (
+        <section className="DocumentFooter center">
+          <span>or drag this... </span>
+          <h3 draggable="true">
+            <FileIcon className="file-icon" />
+            demo-example.txt
+          </h3>
+        </section>
+      );
+    }
+
     return (
-      <>
+      <section className="DocumentFooter">
         <Button
           variant="link"
           onClick={() => downloadHtml(encrypted)}
@@ -146,7 +160,7 @@ function Document({
         >
           Share
         </Button>
-      </>
+      </section>
     );
   };
 
@@ -154,7 +168,7 @@ function Document({
     <>
       <div className="DocumentWrapper">
         {renderDrop()}
-        <section className="DocumentFooter">{renderButtons()}</section>
+        {renderButtons()}
       </div>
       <Sidebar />
     </>
@@ -197,7 +211,7 @@ const saveEncryptedToLocalStorage = ({ encryptedPayload, fileName, fileType }) =
 };
 
 const actions = {
-  setFile: async (state, fileHandle) => {
+  setFile: async (state, { fileHandle, fileBuffer }) => {
     localStorage.removeItem('virtru-demo-file');
     localStorage.removeItem('virtru-demo-file-encrypted');
     if (!fileHandle) {
@@ -205,7 +219,7 @@ const actions = {
     }
     const { userId } = state;
     const { name: fileName, type: fileType } = fileHandle;
-    const fileBuffer = await fileToArrayBuffer(fileHandle);
+    fileBuffer = fileBuffer || (await fileToArrayBuffer(fileHandle));
     let encryptState = ENCRYPT_STATES.UNPROTECTED;
     let encrypted = false;
 
