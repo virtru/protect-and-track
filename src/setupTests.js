@@ -24,3 +24,9 @@ afterEach(() => {
   jest.restoreAllMocks();
   matchMedia._events = [];
 });
+
+global.TextEncoder = class {
+  constructor() {} // eslint-disable-line no-useless-constructor
+  encode() {}
+  decode() {}
+};

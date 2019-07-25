@@ -2,21 +2,37 @@ import React from 'react';
 import './Drop.css';
 import { ReactComponent as DropIcon } from './drop-icon.svg';
 
+const helloWorldBuffer = new TextEncoder().encode('Hello world!');
+const helloWorldHandle = {
+  name: 'demo-example.txt',
+  type: 'text/plain',
+};
+
 /**
  * A place to drop an encrypted or uncrypted file.
  */
-function Drop({ children, userId, setFile, policyState }) {
-  console.log(`<Drop userId="${userId}">`);
+function Drop({ children, setFile, policyState }) {
+  const processFile = async files => {
+    // Default to hello world
+    if (!files.length) {
+      return setFile({
+        fileHandle: helloWorldHandle,
+        fileBuffer: helloWorldBuffer,
+      });
+    }
+
+    const fileHandle = files[0];
+    setFile({ fileHandle });
+  };
+
   const handleFileInput = async event => {
     event.stopPropagation();
     event.preventDefault();
 
     const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
-    for (const file of files) {
-      await setFile(file);
-      // TODO(DSAT-45) Handle more than one file, or don't
-      return;
-    }
+
+    // TODO(DSAT-45) Handle more than one file, or don't
+    await processFile(files);
   };
 
   const handleDrag = event => {
