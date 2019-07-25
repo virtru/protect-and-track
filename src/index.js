@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'redux-zero/react';
+import dropBoxPostMessage from 'utils/dropBoxPostMessage';
 
 import 'index.css';
 import App from './scenes/App/App';
@@ -13,6 +14,8 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root'),
 );
+
+dropBoxPostMessage();
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
