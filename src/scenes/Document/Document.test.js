@@ -15,35 +15,37 @@ describe('Document', () => {
     const spy = jest.fn();
     Virtru.authenticate.mockImplementation(() => Promise.resolve(client));
 
-    const { rerender } = render(<Document updateVirtruClient={spy} />);
+    const { rerender } = render(<Document setVirtruClient={spy} setEncryptState={() => {}} />);
     expect(spy).not.toHaveBeenCalled();
 
-    rerender(<Document userId="foo@bar.com" updateVirtruClient={spy} />);
+    rerender(<Document userId="foo@bar.com" setVirtruClient={spy} setEncryptState={() => {}} />);
     await wait(() => expect(spy).toHaveBeenCalledWith(client));
   });
 
   test('should show dropzone if no file passed and document details if file defined', () => {
-    const { rerender, getByText } = render(<Document />);
+    const { rerender, getByText } = render(<Document setEncryptState={() => {}} />);
     expect(getByText('Choose File')).toBeInTheDocument();
 
     const file = { file: { name: 'foo.txt' } };
     const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
-    rerender(<Document file={file} policy={policy} />);
+    rerender(<Document file={file} policy={policy} setEncryptState={() => {}} />);
     expect(getByText('foo.txt')).toBeInTheDocument();
   });
 
   test('should open auth select modal', () => {
     const file = { file: { name: 'foo.txt' } };
     const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
-    const { getByText } = render(<Document file={file} policy={policy} />);
+    const { getByText } = render(
+      <Document file={file} policy={policy} setEncryptState={() => {}} />,
+    );
     fireEvent.click(getByText('Sign in to continue'));
     expect(getByText('Enter your email address:')).toBeInTheDocument();
   });
 
   test('should trigger loginAs on auth form submit, that will call Virtru.authenticate and will update userId and virtru client', async () => {
     const client = { userId: 'foo' };
-    const updateVirtruClient = jest.fn();
-    const updateUserId = jest.fn();
+    const setVirtruClient = jest.fn();
+    const setUserId = jest.fn();
     Virtru.authenticate.mockImplementation(() => Promise.resolve(client));
     const file = { file: { name: 'foo.txt' } };
     const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
@@ -52,8 +54,9 @@ describe('Document', () => {
       <Document
         file={file}
         policy={policy}
-        updateVirtruClient={updateVirtruClient}
-        updateUserId={updateUserId}
+        setVirtruClient={setVirtruClient}
+        setEncryptState={() => {}}
+        setUserId={setUserId}
       />,
     );
     fireEvent.click(getByText('Sign in to continue'));
@@ -70,23 +73,23 @@ describe('Document', () => {
     });
 
     await wait(() => {
-      expect(updateVirtruClient).toHaveBeenCalledWith(client);
-      expect(updateUserId).toHaveBeenCalledWith('foo@bar.com');
+      expect(setVirtruClient).toHaveBeenCalledWith(client);
+      expect(setUserId).toHaveBeenCalledWith('foo@bar.com');
     });
   });
 
-  test('should encrypt file, trigger updateEncrypted and set 2sec interval audit update', async () => {
+  test('should encrypt file, trigger setEncrypted and set 2sec interval audit update', async () => {
     jest.useFakeTimers();
     const timeout = 2000;
     const triggerTimes = 5;
-    const file = { file: { name: 'foo.txt' }, data: 'biteArr' };
+    const file = { file: { name: 'foo.txt' }, arrayBuffer: 'arrayBuffer' };
     const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
     const client = 'clientVirttu';
     const spy = jest.fn(() =>
       Promise.resolve({ encryptedFile: 'encFile', policyId: 'foo1bar', type: 'someType' }),
     );
-    const updateEncrypted = jest.fn();
-    const updateAuditEvents = jest.fn();
+    const setEncrypted = jest.fn();
+    const setAuditEvents = jest.fn();
     Virtru.encrypt.mockImplementation(spy);
     services.getAuditEvents.mockImplementation(() =>
       Promise.resolve({ json: () => Promise.resolve({ data: 'someData' }) }),
@@ -98,8 +101,9 @@ describe('Document', () => {
         policy={policy}
         virtruClient={client}
         userId="foo@bar.com"
-        updateEncrypted={updateEncrypted}
-        updateAuditEvents={updateAuditEvents}
+        setEncrypted={setEncrypted}
+        setEncryptState={() => {}}
+        setAuditEvents={setAuditEvents}
       />,
     );
     act(() => {
@@ -109,24 +113,24 @@ describe('Document', () => {
     await wait(() => {
       expect(spy).toHaveBeenCalledWith({
         client,
-        fileData: file.data,
+        fileData: file.arrayBuffer,
         filename: file.file.name,
         policy,
         userEmail: 'foo@bar.com',
         asHtml: true,
       });
     });
-    expect(updateEncrypted).toHaveBeenCalledWith({
+    expect(setEncrypted).toHaveBeenCalledWith({
       payload: 'encFile',
       name: `${file.file.name}.html`,
       type: file.file.type,
     });
-    expect(updateAuditEvents).toHaveBeenCalledTimes(0);
+    expect(setAuditEvents).toHaveBeenCalledTimes(0);
     act(() => {
       jest.runTimersToTime(timeout * triggerTimes);
     });
     await wait(() => {
-      expect(updateAuditEvents).toHaveBeenCalledTimes(triggerTimes);
+      expect(setAuditEvents).toHaveBeenCalledTimes(triggerTimes);
     });
   });
 });

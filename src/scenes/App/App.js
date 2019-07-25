@@ -5,7 +5,6 @@ import { connect } from 'redux-zero/react';
 import './App.css';
 import Header from 'components/Header/Header';
 import Document from 'scenes/Document/Document';
-import { LOGIN_URL, LOGOUT_URL } from 'constants/api';
 
 /**
  * An SDK Share App.
@@ -21,7 +20,7 @@ import { LOGIN_URL, LOGOUT_URL } from 'constants/api';
 function App({ appIdBundle, setAppIdBundle, isLoading, setIsLoading, userId }) {
   return (
     <>
-      <Header isLoggedIn={false} loginUrl={LOGIN_URL} logoutUrl={LOGOUT_URL} userId={userId} />
+      <Header isLoggedIn={false} userId={userId} />
       <main className="main">
         <Router>
           <Route path="/" component={Document} />
