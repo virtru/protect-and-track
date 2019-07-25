@@ -9,7 +9,7 @@ afterEach(cleanup);
 describe('Expiration', () => {
   test('Renders a toggled off expiration', () => {
     const { container, queryByRole } = render(
-      <Expiration policy={new Virtru.Client.VirtruPolicyBuilder().build()} />,
+      <Expiration policy={new Virtru.Client.PolicyBuilder().build()} />,
     );
     expect(container.querySelector('input[type=checkbox]').checked).toBeFalsy();
     expect(queryByRole('textinput')).toBeFalsy();
@@ -22,7 +22,7 @@ describe('Expiration', () => {
     later.setMinutes(now.getMinutes() + 5, 0, 0);
     const { container } = render(
       <Expiration
-        policy={new Virtru.Client.VirtruPolicyBuilder().build()}
+        policy={new Virtru.Client.PolicyBuilder().build()}
         setPolicy={setPolicy}
         now={now}
       />,

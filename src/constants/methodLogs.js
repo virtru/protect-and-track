@@ -1,12 +1,3 @@
-export const importTdf = () => `import Virtru from 'virtru-tdf3-js';`;
-export const importVirtru = () => `import TDF from 'tdf3-js';`;
-export const initEncryptParams = () => 'const encryptParams = new TDF.EncryptParamsBuilder();';
-export const setFilename = filename => `encryptParams.withFileSource(${filename});`;
-export const setPermisions = permisions =>
-  `encryptParams.withDissem(${JSON.stringify(permisions)});`;
-export const finilizeEncryptParams = () => 'encryptParams.build();';
-export const encryptRequest = () => 'await client.encrypt(encryptParams);';
-
 export const authenticateWithGoogle = (
   userEmail,
   redirectUrl,
@@ -21,7 +12,7 @@ export const createVirtruClient = ({
   acmEndpoint,
   kasEndpoint,
   easEndpoint,
-}) => `const client = new Virtru.Client.VirtruClient({
+}) => `const client = new Virtru.Client.Client({
   acmEndpoint: '${acmEndpoint}',
   kasEndpoint: '${kasEndpoint}',
   easEndpoint: '${easEndpoint}',
@@ -30,10 +21,9 @@ export const createVirtruClient = ({
 
 export const createMockStream = () => 'const contentStream = TDF.createMockStream(fileData);';
 
-export const buildVirtruPolicy = () =>
-  'const policy = new Virtru.Client.VirtruPolicyBuilder().build();';
+export const buildVirtruPolicy = () => 'const policy = new Virtru.Client.PolicyBuilder().build();';
 
-export const buildVirtruEncryptParams = filename => `const encryptParams = new Virtru.Client.VirtruEncryptParamsBuilder()
+export const buildEncryptParams = filename => `const encryptParams = new Virtru.Client.EncryptParamsBuilder()
   .withStreamSource(contentStream)
   .withPolicy(policy)
   .withDisplayFilename('${filename}')

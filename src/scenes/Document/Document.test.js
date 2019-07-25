@@ -27,14 +27,14 @@ describe('Document', () => {
     expect(getByText('Choose File')).toBeInTheDocument();
 
     const file = { file: { name: 'foo.txt' } };
-    const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
+    const policy = new VirtruClient.Client.PolicyBuilder().build();
     rerender(<Document file={file} policy={policy} setEncryptState={() => {}} />);
     expect(getByText('foo.txt')).toBeInTheDocument();
   });
 
   test('should open auth select modal', () => {
     const file = { file: { name: 'foo.txt' } };
-    const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
+    const policy = new VirtruClient.Client.PolicyBuilder().build();
     const { getByText } = render(
       <Document file={file} policy={policy} setEncryptState={() => {}} />,
     );
@@ -48,7 +48,7 @@ describe('Document', () => {
     const setUserId = jest.fn();
     Virtru.authenticate.mockImplementation(() => Promise.resolve(client));
     const file = { file: { name: 'foo.txt' } };
-    const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
+    const policy = new VirtruClient.Client.PolicyBuilder().build();
 
     const { container, getByText } = render(
       <Document
@@ -83,7 +83,7 @@ describe('Document', () => {
     const timeout = 2000;
     const triggerTimes = 5;
     const file = { file: { name: 'foo.txt' }, arrayBuffer: 'arrayBuffer' };
-    const policy = new VirtruClient.Client.VirtruPolicyBuilder().build();
+    const policy = new VirtruClient.Client.PolicyBuilder().build();
     const client = 'clientVirttu';
     const spy = jest.fn(() =>
       Promise.resolve({ encryptedFile: 'encFile', policyId: 'foo1bar', type: 'someType' }),

@@ -12,7 +12,7 @@ describe('Access', () => {
     const { getByRole, getByText } = render(
       <Access
         encryptState={ENCRYPT_STATES.UNPROTECTED}
-        policy={new Virtru.Client.VirtruPolicyBuilder().build()}
+        policy={new Virtru.Client.PolicyBuilder().build()}
       />,
     );
     // We should have just one form to grant a new user access
@@ -27,7 +27,7 @@ describe('Access', () => {
     const { getByRole, getByText, queryAllByText } = render(
       <Access
         encryptState={ENCRYPT_STATES.UNPROTECTED}
-        policy={new Virtru.Client.VirtruPolicyBuilder().build()}
+        policy={new Virtru.Client.PolicyBuilder().build()}
         userId="user@example.com"
       />,
     );
@@ -41,7 +41,7 @@ describe('Access', () => {
     const { getByText } = render(
       <Access
         encryptState={ENCRYPT_STATES.PROTECTED}
-        policy={new Virtru.Client.VirtruPolicyBuilder().addUsers('a@abc.xyz', 'b@abc.xyz').build()}
+        policy={new Virtru.Client.PolicyBuilder().addUsers('a@abc.xyz', 'b@abc.xyz').build()}
         userId="a@abc.xyz"
       />,
     );
@@ -56,7 +56,7 @@ describe('Access', () => {
   test('Adds a new user', () => {
     const setPolicy = jest.fn();
     const { getByRole } = render(
-      <Access policy={new Virtru.Client.VirtruPolicyBuilder().build()} setPolicy={setPolicy} />,
+      <Access policy={new Virtru.Client.PolicyBuilder().build()} setPolicy={setPolicy} />,
     );
 
     const textForm = getByRole('form');

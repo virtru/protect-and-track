@@ -69,7 +69,7 @@ function buildClient(userEmail) {
       easEndpoint,
     }),
   });
-  const client = new Virtru.Client.VirtruClient({
+  const client = new Virtru.Client.Client({
     acmEndpoint,
     kasEndpoint,
     easEndpoint,
@@ -80,13 +80,13 @@ function buildClient(userEmail) {
 }
 
 /**
- * Wrapper for `new Virtru.Client.VirtruPolicyBuilder(opts)`.
+ * Wrapper for `new Virtru.Client.PolicyBuilder(opts)`.
  *
  * @param {?object} opts
  */
 function policyBuilder(opts) {
-  const builder = new Virtru.Client.VirtruPolicyBuilder(opts);
-  let actions = [`const policy = new Virtru.Client.VirtruPolicyBuilder(${opts ? 'policy' : ''})`];
+  const builder = new Virtru.Client.PolicyBuilder(opts);
+  let actions = [`const policy = new Virtru.Client.PolicyBuilder(${opts ? 'policy' : ''})`];
   // This proxy records all calls, then logs them to the UI on `build` invocations.
   return new Proxy(builder, {
     get(target, propKey, receiver) {
@@ -131,9 +131,9 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
 
   _pushAction({
     title: 'Build Virtru Encryption Params',
-    code: logs.buildVirtruEncryptParams(filename),
+    code: logs.buildEncryptParams(filename),
   });
-  const encryptParams = new Virtru.Client.VirtruEncryptParamsBuilder()
+  const encryptParams = new Virtru.Client.EncryptParamsBuilder()
     .withStreamSource(contentStream)
     .withPolicy(policy)
     .withDisplayFilename(filename)
