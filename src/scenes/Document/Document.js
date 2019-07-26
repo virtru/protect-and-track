@@ -161,9 +161,11 @@ function Document({
 
     return (
       <section className="DocumentFooter">
-        <Button variant="link" onClick={() => openStayUpModal()}>
-          Stay Up to Date
-        </Button>
+        {userId && (
+          <Button variant="link" onClick={() => openStayUpModal()}>
+            Stay Up to Date
+          </Button>
+        )}
         <div className="DocumentFooterButtons">
           <Button
             variant="link"
