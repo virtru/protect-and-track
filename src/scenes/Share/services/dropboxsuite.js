@@ -4,7 +4,7 @@ const ClientOAuth2 = require('client-oauth2');
 const CLIENT_ID = '4d5l64xynrxded2';
 const AUTHORIZATION_URI = 'https://www.dropbox.com/oauth2/authorize';
 const AUTHORIZATION_TOKEN_URI = 'https://www.dropbox.com/oauth2/authorize';
-const REDIRECT_URI = window.location.href;
+const REDIRECT_URI = window.location.origin;
 
 async function init() {
   return new ClientOAuth2({
@@ -44,6 +44,12 @@ async function upload(accessToken, file) {
   return await dropBox.filesUpload({ path: '/' + file.name, contents: file });
 }
 
+/**
+ * Add listener to message type event for getting url with access token from dropbox after log in
+ * (see src/utils/dropBoxPostMessage.js)
+ * @param dropBoxAuth
+ * @returns {Promise<any>}
+ */
 function getToken(dropBoxAuth) {
   return new Promise(resolve => {
     window.addEventListener(
