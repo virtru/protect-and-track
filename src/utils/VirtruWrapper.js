@@ -47,19 +47,9 @@ function _pushAction(action) {
   boundActions.pushLogAction(action);
 }
 
-function buildClient(userEmail) {
+async function buildClient(userEmail) {
   const redirectUrl = window.location.href;
   const { acmEndpoint, kasEndpoint, easEndpoint, stage } = getEnvironment();
-
-  _pushAction({
-    title: 'Authenticate',
-    code: logs.authenticateWithGoogle(userEmail, redirectUrl, stage),
-  });
-  const provider = new Virtru.Client.AuthProviders.GoogleAuthProvider(
-    userEmail,
-    redirectUrl,
-    stage,
-  );
 
   _pushAction({
     title: 'Create Virtru Client',
@@ -73,8 +63,16 @@ function buildClient(userEmail) {
     acmEndpoint,
     kasEndpoint,
     easEndpoint,
-    authProvider: provider,
   });
+
+  // _pushAction({
+  //   title: 'Authenticate',
+  //   code: logs.authenticateWithGoogle(userEmail, redirectUrl, stage),
+  // });
+  // await Virtru.Client.Auth.loginWithGoogle({
+  //   email: userEmail,
+  //   redirectUrl,
+  // });
 
   return client;
 }
@@ -163,8 +161,12 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
 }
 
 async function authenticate(email) {
+  const redirectUrl = window.location.href;
   const client = buildClient(email);
-  await client.clientConfig.authProvider._initAuthForProvider();
+  await Virtru.Client.Auth.loginWithGoogle({
+    email,
+    redirectUrl,
+  });
   return client;
 }
 
