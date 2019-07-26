@@ -161,11 +161,13 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
 }
 
 async function authenticate(email) {
+  const { stage } = getEnvironment();
   const redirectUrl = window.location.href;
   const client = buildClient(email);
   await Virtru.Client.Auth.loginWithGoogle({
     email,
     redirectUrl,
+    stage,
   });
   return client;
 }
