@@ -4,7 +4,7 @@ const ClientOAuth2 = require('client-oauth2');
 const CLIENT_ID = '4d5l64xynrxded2';
 const AUTHORIZATION_URI = 'https://www.dropbox.com/oauth2/authorize';
 const AUTHORIZATION_TOKEN_URI = 'https://www.dropbox.com/oauth2/authorize';
-const REDIRECT_URI = window.location.origin;
+const REDIRECT_URI = `${window.location.origin}/`;
 
 async function init() {
   return new ClientOAuth2({
