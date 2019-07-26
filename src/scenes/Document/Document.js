@@ -42,6 +42,7 @@ function Document({
 
   useEffect(() => {
     (async () => {
+      return;
       if (!userId || virtruClient) {
         return;
       }
@@ -167,16 +168,12 @@ function Document({
           </Button>
         )}
         <div className="DocumentFooterButtons">
-          <Button
-            variant="link"
-            onClick={() => downloadHtml(encrypted)}
-            disabled={!encrypted || !userId}
-          >
+          <Button variant="link" onClick={() => downloadHtml(encrypted)} disabled={!encrypted}>
             Download
           </Button>
           <Button
             onClick={() => setShareOpen(true)}
-            disabled={!encrypted || !userId || !policy || !policy.getUsers().length}
+            disabled={!policy || !policy.getUsers().length}
           >
             Share
           </Button>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
-import gsuite from './services/gsuite';
 import dropboxsuite from './services/dropboxsuite';
+import gsuite from './services/gsuite';
+import onedrive from './services/onedrive';
 import './Share.css';
 import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
 import Button from 'components/Button/Button';
@@ -56,12 +57,12 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
           provider: SHARE_PROVIDERS.DROPBOX,
           providerState: { state: s, recipients },
         });
-      state('authorizing');
+      state(SHARE_STATE.AUTHORIZING);
       const accessToken = await dropboxsuite.signIn();
-      state('sharing');
+      state(SHARE_STATE.UPLOADING);
       const uploadResponse = await dropboxsuite.upload(accessToken, file);
       await dropboxsuite.share(accessToken, uploadResponse.id, recipients);
-      state('shared');
+      state(SHARE_STATE.SHARED);
     } catch (e) {
       console.log(e);
     }
@@ -101,13 +102,32 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       throw e;
     }
   };
+  const shareToOnedrive = async () => {
+    try {
+      const state = s =>
+        setShare({
+          provider: SHARE_PROVIDERS.ONEDRIVE,
+          providerState: { state: s, recipients },
+        });
+      state(SHARE_STATE.AUTHORIZING);
+      const accessToken = await onedrive.signIn();
+      state(SHARE_STATE.SHARING);
+      const uploadResponse = await onedrive.upload(accessToken, file);
+      await onedrive.share(accessToken, uploadResponse.id, recipients);
+      state(SHARE_STATE.SHARED);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <ShareContainer>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
       <ShareButton type="googledrive" onClick={shareToDrive} init={gsuite.init}>
         Google Drive
       </ShareButton>
-      <ShareButton type="onedrive">OneDrive</ShareButton>
+      <ShareButton type="onedrive" init={onedrive.init} onClick={shareToOnedrive}>
+        OneDrive
+      </ShareButton>
       <ShareButton type="dropbox" init={dropboxsuite.init} onClick={shareToDropBox}>
         Dropbox
       </ShareButton>

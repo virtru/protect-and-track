@@ -6,7 +6,7 @@ const AUTHORIZATION_URI = 'https://www.dropbox.com/oauth2/authorize';
 const AUTHORIZATION_TOKEN_URI = 'https://www.dropbox.com/oauth2/authorize';
 const REDIRECT_URI = `${window.location.origin}/`;
 
-async function init() {
+function init() {
   return new ClientOAuth2({
     clientId: CLIENT_ID,
     authorizationUri: AUTHORIZATION_URI,
@@ -16,8 +16,8 @@ async function init() {
 }
 
 async function signIn() {
-  const dropBoxAuth = await init();
-  const url = await dropBoxAuth.token.getUri();
+  const dropBoxAuth = init();
+  const url = dropBoxAuth.token.getUri();
   window.open(
     url,
     'DropBoxAuthPopup',
