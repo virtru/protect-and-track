@@ -9,7 +9,7 @@ function StayUp({ onClose, userId }) {
       portalId: "1769758",
       formId: "a033c54f-7ee6-4e4d-9324-1f52454f17dc",
       onFormReady: function($form, ctx){
-        $form.find('input[name="email"]').val('${userId}');
+        $form.find('input[name="email"]').val('${userId}').change();
       }
     });
   `;
