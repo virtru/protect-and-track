@@ -9,7 +9,7 @@ export default function() {
 
     if (window.opener && message) {
       window.opener.postMessage(message, window.location.origin);
+      window.close();
     }
-    window.close();
   });
 }
