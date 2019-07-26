@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
 import gsuite from './services/gsuite';
+import dropboxsuite from './services/dropboxsuite';
 import './Share.css';
 import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
 import Button from 'components/Button/Button';
@@ -48,6 +49,23 @@ function ShareButton({ children, init, onClick, type }) {
 }
 
 function ShareSelect({ setShare, file, recipients, onClose }) {
+  const shareToDropBox = async () => {
+    try {
+      const state = s =>
+        setShare({
+          provider: SHARE_PROVIDERS.DROPBOX,
+          providerState: { state: s, recipients },
+        });
+      state('authorizing');
+      const accessToken = await dropboxsuite.signIn();
+      state('sharing');
+      const uploadResponse = await dropboxsuite.upload(accessToken, file);
+      await dropboxsuite.share(accessToken, uploadResponse.id, recipients);
+      state('shared');
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const shareToDrive = async () => {
     try {
       const state = s =>
@@ -90,7 +108,9 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
         Google Drive
       </ShareButton>
       <ShareButton type="onedrive">OneDrive</ShareButton>
-      <ShareButton type="dropbox">Dropbox</ShareButton>
+      <ShareButton type="dropbox" init={dropboxsuite.init} onClick={shareToDropBox}>
+        Dropbox
+      </ShareButton>
       <ShareButton type="box">Box</ShareButton>
     </ShareContainer>
   );
