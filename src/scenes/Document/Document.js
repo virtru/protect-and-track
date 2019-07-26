@@ -10,6 +10,7 @@ import Policy from './scenes/Policy/Policy';
 import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
 import AuthSelect from '../AuthSelect/AuthSelect';
+import StayUp from '../StayUp/StayUp';
 import ENCRYPT_STATES from 'constants/encryptStates';
 
 import './Document.css';
@@ -37,6 +38,7 @@ function Document({
 }) {
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
+  const [isStayUpOpen, setStayUpOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -56,6 +58,10 @@ function Document({
   const openAuthModal = () => {
     setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
     setAuthOpen(true);
+  };
+
+  const openStayUpModal = () => {
+    setStayUpOpen(true);
   };
 
   const loginAs = async email => {
@@ -128,6 +134,14 @@ function Document({
             loginAs={loginAs}
           />
         )}
+        {isStayUpOpen && (
+          <StayUp
+            onClose={() => {
+              setStayUpOpen(false);
+            }}
+            userId={userId}
+          />
+        )}
       </>
     );
   };
@@ -147,19 +161,24 @@ function Document({
 
     return (
       <section className="DocumentFooter">
-        <Button
-          variant="link"
-          onClick={() => downloadHtml(encrypted)}
-          disabled={!encrypted || !userId}
-        >
-          Download
+        <Button variant="link" onClick={() => openStayUpModal()}>
+          Stay Up to Date
         </Button>
-        <Button
-          onClick={() => setShareOpen(true)}
-          disabled={!encrypted || !userId || !policy || !policy.getUsers().length}
-        >
-          Share
-        </Button>
+        <div className="DocumentFooterButtons">
+          <Button
+            variant="link"
+            onClick={() => downloadHtml(encrypted)}
+            disabled={!encrypted || !userId}
+          >
+            Download
+          </Button>
+          <Button
+            onClick={() => setShareOpen(true)}
+            disabled={!encrypted || !userId || !policy || !policy.getUsers().length}
+          >
+            Share
+          </Button>
+        </div>
       </section>
     );
   };
