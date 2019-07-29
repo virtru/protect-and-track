@@ -150,7 +150,7 @@ async function upload(token, file) {
       'Content-Type': 'text/html',
       Authorization: `bearer ${token}`,
     },
-    body: arrayBufferToBase64(file.payload),
+    body: file.payload,
   });
   if (!response.ok) {
     // TODO handle not ok responses

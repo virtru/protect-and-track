@@ -113,9 +113,17 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       const token = await onedrive.signIn();
       state(SHARE_STATE.SHARING);
       const uploadResponse = await onedrive.upload(token, file);
-      const shareResponse = await onedrive.share(token, uploadResponse.id, recipients);
+      await onedrive.share(token, uploadResponse.id, recipients);
       onedrive.signOut();
-      state(SHARE_STATE.SHARED);
+      setShare({
+        provider: SHARE_PROVIDERS.ONEDRIVE,
+        providerState: {
+          state: SHARE_STATE.SHARED,
+          id: uploadResponse.result.id,
+          link: 'https://onedrive.live.com/?id=' + uploadResponse.result.id,
+          recipients,
+        },
+      });
     } catch (e) {
       console.log('1drive error: ' + JSON.stringify(e));
       throw e;
