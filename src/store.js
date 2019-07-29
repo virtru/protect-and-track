@@ -8,7 +8,7 @@ import ENCRYPT_STATES from 'constants/encryptStates';
 let encryptState = ENCRYPT_STATES.UNPROTECTED;
 
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
-const activeAuth = auths && Object.values(auths)[0];
+const activeAuth = auths && Object.values(auths).find(auth => auth.includes(':active'));
 const userId = activeAuth && activeAuth.split(':')[0];
 const appId = activeAuth && activeAuth.split(':')[1];
 let policy = false;
@@ -43,7 +43,7 @@ try {
     };
     policy =
       localData.policy &&
-      new Virtru.Client.VirtruPolicy(
+      new Virtru.Client.Policy(
         localData.policy._policyId,
         localData.policy._users,
         localData.policy._authZFlags,
