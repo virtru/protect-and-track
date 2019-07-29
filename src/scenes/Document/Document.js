@@ -112,7 +112,7 @@ function Document({
           setFile={setFile}
         >
           <div className="DocumentDetails">
-            <Filename file={file} isTdf={!!encrypted} />
+            <Filename file={file} isTdf={!!encrypted} setFile={setFile} />
             <Policy
               file={file}
               policy={policy}
@@ -235,6 +235,9 @@ const actions = {
   setFile: async (state, { fileHandle, fileBuffer }) => {
     localStorage.removeItem('virtru-demo-file');
     localStorage.removeItem('virtru-demo-file-encrypted');
+    if (!fileHandle) {
+      return { file: false, policy: false, encrypted: false, encryptState: false, auditEvents: [] };
+    }
     const { userId } = state;
     const { name: fileName, type: fileType } = fileHandle;
     fileBuffer = fileBuffer || (await fileToArrayBuffer(fileHandle));

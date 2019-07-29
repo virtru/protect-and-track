@@ -1,13 +1,16 @@
 import React from 'react';
 
+import Button from 'components/Button/Button';
 import './Filename.css';
 
-function Filename({ file, isTdf }) {
+function Filename({ file, isTdf, setFile }) {
   return (
     <h2 className="Filename">
       {file.file.name}
       {isTdf && <span className="Filename-tdf">.tdf</span>}
-      {/* TODO(dmihalcik) File upload link */}
+      <Button variant="link" onClick={e => setFile(null)} verySmall>
+        Start over
+      </Button>
     </h2>
   );
 }

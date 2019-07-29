@@ -8,6 +8,7 @@ import App from './scenes/App/App';
 import * as serviceWorker from 'serviceWorker';
 import store from './store';
 
+console.log(`AppInfo: ${process.env.REACT_APP_NAME}:${process.env.REACT_APP_VERSION}`);
 ReactDOM.render(
   <Provider store={store}>
     <App />
