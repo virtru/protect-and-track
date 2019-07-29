@@ -60,7 +60,22 @@ function buildClient({ userEmail, authMethod }) {
       });
       provider = new Virtru.Client.AuthProviders.GoogleAuthProvider(userEmail, redirectUrl, stage);
       break;
+    case 'o365':
+      _pushAction({
+        title: 'Authenticate',
+        code: logs.authenticateWithO365(userEmail, redirectUrl, stage),
+      });
+      provider = new Virtru.Client.AuthProviders.O365AuthProvider(userEmail, redirectUrl, stage);
+      break;
+    case 'outlook':
+      _pushAction({
+        title: 'Authenticate',
+        code: logs.authenticateWithOutlook(userEmail, redirectUrl, stage),
+      });
+      provider = new Virtru.Client.AuthProviders.OutlookAuthProvider(userEmail, redirectUrl, stage);
+      break;
     default:
+      return;
   }
 
   _pushAction({
