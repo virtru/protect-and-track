@@ -42,7 +42,7 @@ describe('Document', () => {
     expect(getByText('Enter your email address:')).toBeInTheDocument();
   });
 
-  test('should trigger loginAs on auth form submit, that will call Virtru.authenticate and will update userId and virtru client', async () => {
+  test('should trigger login on auth form submit, that will call Virtru.authenticate and will update userId and virtru client', async () => {
     const client = { userId: 'foo' };
     const setVirtruClient = jest.fn();
     const setUserId = jest.fn();

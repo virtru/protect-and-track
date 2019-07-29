@@ -14,7 +14,7 @@ function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-function AuthSelect({ onClose, loginAs }) {
+function AuthSelect({ onClose, login }) {
   const [authStep, setAuthStep] = useState(AUTH_STEPS.ENTER_EMAIL);
   const [email, setEmail] = useState('');
 
@@ -53,7 +53,7 @@ function AuthSelect({ onClose, loginAs }) {
           value=""
           className="login-button-google"
           data-testid="emailAuthButton"
-          onClick={() => loginAs(email)}
+          onClick={() => login({ userEmail: email, authMethod: 'google' })}
         />
         <input disabled type="button" id="office365button" className="login-button-office365" />
         <input disabled type="button" id="outlookbutton" className="login-button-outlook" />
