@@ -1,7 +1,7 @@
 import { Dropbox } from 'dropbox';
 const ClientOAuth2 = require('client-oauth2');
 
-const CLIENT_ID = '4d5l64xynrxded2';
+const CLIENT_ID = 'ssol0phott1nv4q';
 const AUTHORIZATION_URI = 'https://www.dropbox.com/oauth2/authorize';
 const AUTHORIZATION_TOKEN_URI = 'https://www.dropbox.com/oauth2/authorize';
 const REDIRECT_URI = `${window.location.origin}/`;
@@ -52,18 +52,14 @@ async function upload(accessToken, file) {
  */
 function getToken(dropBoxAuth) {
   return new Promise(resolve => {
-    window.addEventListener(
-      'message',
-      async e => {
-        if (window.location.origin === e.origin) {
-          try {
-            const token = await dropBoxAuth.token.getToken(e.data);
-            resolve(token);
-          } catch {}
-        }
-      },
-      false,
-    );
+    async function dropboxMessageListener(e) {
+      if (window.location.origin === e.origin) {
+        const token = await dropBoxAuth.token.getToken(e.data);
+        window.removeEventListener('message', dropboxMessageListener, false);
+        resolve(token);
+      }
+    }
+    window.addEventListener('message', dropboxMessageListener, false);
   });
 }
 

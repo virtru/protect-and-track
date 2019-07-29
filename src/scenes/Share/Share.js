@@ -82,7 +82,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       await gsuite.signIn();
 
       state(SHARE_STATE.UPLOADING);
-      const uploadResponse = await gsuite.upload(file.name, file.type, file.payload);
+      const uploadResponse = await gsuite.upload(file.name, file.payload);
       state(SHARE_STATE.SHARING);
       await gsuite.share(uploadResponse.result.id, recipients);
       // TODO(DSAT-67) Validate response
@@ -110,13 +110,15 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
           providerState: { state: s, recipients },
         });
       state(SHARE_STATE.AUTHORIZING);
-      const accessToken = await onedrive.signIn();
+      const token = await onedrive.signIn();
       state(SHARE_STATE.SHARING);
-      const uploadResponse = await onedrive.upload(accessToken, file);
-      await onedrive.share(accessToken, uploadResponse.id, recipients);
+      const uploadResponse = await onedrive.upload(token, file);
+      const shareResponse = await onedrive.share(token, uploadResponse.id, recipients);
+      onedrive.signOut();
       state(SHARE_STATE.SHARED);
     } catch (e) {
-      console.log(e);
+      console.log('1drive error: ' + JSON.stringify(e));
+      throw e;
     }
   };
   return (
@@ -220,6 +222,10 @@ function ShareComplete({ provider, providerState, file, onClose, recipients }) {
 
 function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
   let shareContent;
+  const closeAndResetState = (...args) => {
+    onClose(...args);
+    setShare(false);
+  };
   if (!share) {
     shareContent = <ShareSelect setShare={setShare} file={encrypted} recipients={recipients} />;
   } else {
@@ -243,7 +249,7 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
             recipients={recipients}
             provider={share}
             providerState={providers[share]}
-            onClose={onClose}
+            onClose={closeAndResetState}
           />
         );
         break;
@@ -251,7 +257,7 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
     }
   }
 
-  return <Modal onClose={onClose}>{shareContent}</Modal>;
+  return <Modal onClose={closeAndResetState}>{shareContent}</Modal>;
 }
 
 /* TODO(dmihalcik) maybe move this to a separate store?
@@ -280,10 +286,13 @@ const mapToProps = ({ encrypted, policy, share, ...rest }) => ({
 });
 
 const actions = {
-  setShare: (state, value) => ({
-    share: value.provider,
-    ['share_' + value.provider]: value.providerState,
-  }),
+  setShare: (state, value) =>
+    value
+      ? {
+          share: value.provider,
+          ['share_' + value.provider]: value.providerState,
+        }
+      : { share: false },
 };
 
 export default connect(

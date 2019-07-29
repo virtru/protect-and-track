@@ -1,4 +1,5 @@
 import awaitify from 'services/core/awaitify';
+import { arrayBufferToBase64 } from 'utils/buffer';
 
 // OneDrive apps can only redirect to a single host, so we need separate client ids for
 // both local(host) and demos.developers.virtru.com
@@ -27,10 +28,27 @@ function initiateOauth(andThen) {
     // https://docs.microsoft.com/en-us/onedrive/developer/rest-api/concepts/special-folders-appfolder?view=odsp-graph-online
   });
 
-  // TODO: consider using window.open
-  window.addEventListener('message', e => {
-    processOneDrive(e.data) && andThen && andThen();
-  });
+  function handleMesssage(e) {
+    if (window.location.origin !== e.origin) {
+      return;
+    }
+
+    const token = processOneDrive(e.data);
+    if (!token) {
+      // TODO if we don't find a valid token after x minutes or the window is closed,
+      // report an error in the first argument to andThen.
+      return;
+    }
+
+    // YAY! We found a token! Remove the handler to avoid conflicts with other auth callbacks
+    window.removeEventListener('message', handleMesssage);
+    if (andThen) {
+      // we got a token, and have a callback
+      andThen(false, token);
+    }
+  }
+
+  window.addEventListener('message', handleMesssage);
   window.open(
     oauthUrl,
     'OneDriveAuthPopup',
@@ -40,15 +58,21 @@ function initiateOauth(andThen) {
 
 // Handles the redirect-applied fragment, parsing it and removing the fragment string
 function processOneDrive(authResponse) {
-  console.log(`processOneDrive('${authResponse}')`);
+  const authResponseFragment = authResponse.split(/[?#]/)[1];
+  const authResponseDecoded = authResponseFragment && decodeURI(authResponseFragment);
+  if (!authResponseDecoded) {
+    console.log('No auth fragment for onedrive found');
+    return;
+  }
   const authResponseJSON =
-    '{' + authResponse.replace(/([^=]+)=([^&]+)&?/g, '"$1":"$2",').slice(0, -1) + '}';
+    '{' + authResponseDecoded.replace(/([^=]+)=([^&]+)&?/g, '"$1":"$2",').slice(0, -1) + '}';
   const authInfo = JSON.parse(authResponseJSON, (k, v) => (k === '' ? v : decodeURIComponent(v)));
   if (!authInfo) {
-    console.log('No authInfo found');
+    console.log(`No authInfo found in ${authResponseJSON}`);
+    return;
   }
   if (!authInfo.access_token) {
-    console.log('No access_token found');
+    console.log(`No access_token found in ${authResponseJSON}`);
     return;
   }
   const expiresInSeconds = parseInt(authInfo.expires_in);
@@ -61,29 +85,79 @@ function processOneDrive(authResponse) {
       expiration: expiration.toUTCString(),
     }),
   );
-  return true;
+  return authInfo.access_token;
 }
 
 async function signIn() {
   const auth = JSON.parse(localStorage.getItem('virtru-onedrive-auth'));
-  if (!auth) {
+  if (!auth || !auth.token) {
     // TODO check expiration
     const doAuth = awaitify(initiateOauth);
-    await doAuth();
+    try {
+      const token = await doAuth();
+      return token;
+    } catch (e) {
+      throw e;
+    }
   }
-  return true;
+  return auth.token;
 }
 
 async function signOut() {
-  // TODO signout
+  localStorage.removeItem('virtru-onedrive-auth');
 }
 
-async function share(accessToken, fileId, recipients) {
-  // TODO share
+async function share(token, fileId, recipients) {
+  if (!(fileId && token && recipients && recipients.length)) {
+    console.log('invalid share request: ' + JSON.stringify(arguments));
+    return;
+  }
+  const root = 'https://graph.microsoft.com/v1.0/me';
+  const response = await fetch(`${root}/drive/items/${fileId}/invite`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({
+      recipients: recipients.map(email => ({ email })),
+      message: 'Please view this Virtru encrypted content',
+      // Arguably unnecessary
+      requireSignIn: true,
+      // Maybe we shouldn't enable this in the demo to avoid spamminess.
+      sendInvitation: true,
+      roles: ['read'],
+    }),
+  });
+  if (!response.ok) {
+    // TODO handle not ok responses
+    console.log(response.ok);
+    return;
+  }
+  return response.json();
 }
 
-async function upload(accessToken, file) {
-  // TODO upload
+async function upload(token, file) {
+  // https://docs.microsoft.com/en-us/onedrive/developer/rest-api/api/driveitem_put_content?view=odsp-graph-online
+  if (!(token && file && file.name && file.payload)) {
+    console.log('invalid upload request: ' + JSON.stringify(arguments));
+    return;
+  }
+  const root = 'https://graph.microsoft.com/v1.0/me';
+  const response = await fetch(`${root}/drive/special/approot:/${file.name}:/content`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'text/html',
+      Authorization: `bearer ${token}`,
+    },
+    body: arrayBufferToBase64(file.payload),
+  });
+  if (!response.ok) {
+    // TODO handle not ok responses
+    console.log(response.ok);
+    return;
+  }
+  return response.json();
 }
 
 export default { init, share, upload, signIn, signOut };

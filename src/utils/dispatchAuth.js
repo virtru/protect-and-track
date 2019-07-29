@@ -1,5 +1,3 @@
-import { OwnerFlow } from 'client-oauth2';
-
 /**
  * Handle the case where we are loading in a popover and pass the oauth2 information to the `opener`.
  *
@@ -9,36 +7,27 @@ import { OwnerFlow } from 'client-oauth2';
  * After user log in in dropbox, dropbox will redirect user to our page with params. We getting url and send it by postMessage
  */
 export default function() {
-  console.log(`document.referrer = [${document.referrer}]`);
   if (!window.opener && !window.parent) {
     return false;
   }
-  const postAndClose = message => {
+
+  const hasAccessToken = window.location.hash && window.location.hash.includes('accessToken=');
+  const localReferrer = document.referrer.startsWith(window.location.origin);
+
+  if (localReferrer && !hasAccessToken) {
+    console.log('local referrer and no access token, so not an auth redirect');
+    return false;
+  }
+
+  window.addEventListener('load', () => {
     if (window.parent !== window.top) {
       window.opener = window.opener || window.parent;
     }
 
-    if (window.opener && message) {
-      window.opener.postMessage(message, window.location.origin);
+    if (window.opener) {
+      window.opener.postMessage(window.location.href, window.location.origin);
       window.close();
     }
-  };
-
-  let handler = false;
-  if (document.referrer.startsWith('https://login.microsoftonline.com')) {
-    const msg = window.location.hash && window.location.hash.substring(1);
-    // TODO maybe handle error codes here???
-    handler = () => {
-      postAndClose(msg);
-    };
-  } else if (document.referrer.includes('https://login.dropbox.com')) {
-    handler = () => {
-      postAndClose(window.location.href);
-    };
-  }
-
-  if (handler) {
-    window.addEventListener('load', handler);
-    return true;
-  }
+  });
+  return true;
 }
