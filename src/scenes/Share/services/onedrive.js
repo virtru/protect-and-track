@@ -1,5 +1,4 @@
 import awaitify from 'services/core/awaitify';
-import { arrayBufferToBase64 } from 'utils/buffer';
 
 // OneDrive apps can only redirect to a single host, so we need separate client ids for
 // both local(host) and demos.developers.virtru.com

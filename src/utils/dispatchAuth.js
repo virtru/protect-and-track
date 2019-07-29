@@ -12,10 +12,9 @@ export default function() {
   }
 
   const hasAccessToken = window.location.hash && window.location.hash.includes('access');
-  const localReferrer = !document.referrer || document.referrer.startsWith(window.location.origin);
 
-  if (localReferrer || !hasAccessToken) {
-    console.log('local referrer and no access token, so not an auth redirect');
+  if (!hasAccessToken) {
+    console.log('no access token, so not an auth redirect');
     return false;
   }
 

@@ -61,10 +61,17 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       const accessToken = await dropboxsuite.signIn();
       state(SHARE_STATE.UPLOADING);
       const uploadResponse = await dropboxsuite.upload(accessToken, file);
-      const link = 'https://www.dropbox.com/h?preview=v.png.html' + uploadResponse.path_lower;
+      const link = 'https://www.dropbox.com/preview' + uploadResponse.path_lower;
       await dropboxsuite.share(accessToken, uploadResponse.id, recipients);
-      console.log('dbu: ' + JSON.stringify(uploadResponse));
-      state(SHARE_STATE.SHARED);
+      setShare({
+        provider: SHARE_PROVIDERS.DROPBOX,
+        providerState: {
+          state: SHARE_STATE.SHARED,
+          id: uploadResponse.id,
+          link,
+          recipients,
+        },
+      });
     } catch (e) {
       console.log(e);
     }
