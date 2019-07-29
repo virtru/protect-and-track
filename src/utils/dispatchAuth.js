@@ -11,10 +11,10 @@ export default function() {
     return false;
   }
 
-  const hasAccessToken = window.location.hash && window.location.hash.includes('accessToken=');
-  const localReferrer = document.referrer.startsWith(window.location.origin);
+  const hasAccessToken = window.location.hash && window.location.hash.includes('access');
+  const localReferrer = !document.referrer || document.referrer.startsWith(window.location.origin);
 
-  if (localReferrer && !hasAccessToken) {
+  if (localReferrer || !hasAccessToken) {
     console.log('local referrer and no access token, so not an auth redirect');
     return false;
   }
@@ -29,5 +29,6 @@ export default function() {
       window.close();
     }
   });
+  console.log('Auth redirect...');
   return true;
 }
