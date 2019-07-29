@@ -41,7 +41,8 @@ async function share(accessToken, fileId, recipients) {
 
 async function upload(accessToken, file) {
   const dropBox = new Dropbox(accessToken);
-  return await dropBox.filesUpload({ path: '/' + file.name, contents: file });
+  const fname = file.name + (file.name.endsWith('.html') ? '' : '.html');
+  return await dropBox.filesUpload({ path: '/' + fname, contents: file.payload });
 }
 
 /**
