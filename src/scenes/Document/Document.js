@@ -21,6 +21,8 @@ import downloadHtml from '../../utils/downloadHtml';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 
+let auditTimerId;
+
 function Document({
   appId,
   encrypted,
@@ -79,7 +81,7 @@ function Document({
 
   const encrypt = async () => {
     setEncryptState(ENCRYPT_STATES.PROTECTING);
-    const { encryptedFile, policyId } = await Virtru.encrypt({
+    const { encryptedFile } = await Virtru.encrypt({
       client: virtruClient,
       fileData: file.arrayBuffer,
       filename: file.file.name,
@@ -93,12 +95,35 @@ function Document({
       type: file.file.type,
     });
     setEncryptState(ENCRYPT_STATES.PROTECTED);
-    setInterval(async () => {
+  };
+
+  useEffect(() => {
+    const policyId = policy && policy.getPolicyId();
+    async function updateAuditEvents() {
+      const currentTimerId = auditTimerId;
+      // Stop updating the audit log when policy or file changes
+      if (encryptState !== ENCRYPT_STATES.PROTECTED || policy.getPolicyId() !== policyId) {
+        return;
+      }
       const auditRes = await getAuditEvents({ userId, appId, policyId });
       const auditData = await auditRes.json();
+      if (currentTimerId !== auditTimerId) {
+        // The policy changed while waiting for the audit log, so don't update it.
+        return;
+      }
       setAuditEvents(auditData.data);
-    }, 2000);
-  };
+      auditTimerId = setTimeout(updateAuditEvents, 2000);
+    }
+    if (auditTimerId) {
+      // Clear the existing timer
+      window.clearTimeout(auditTimerId);
+    }
+    if (!policyId || encryptState !== ENCRYPT_STATES.PROTECTED) {
+      // We aren't connected to a document with a policy on the ACM service
+      return;
+    }
+    auditTimerId = setTimeout(updateAuditEvents, 2000);
+  }, [appId, encryptState, policy, setAuditEvents, userId]);
 
   const renderDrop = () => {
     if (!file) {
