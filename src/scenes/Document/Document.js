@@ -26,6 +26,7 @@ let auditTimerId;
 function Document({
   appId,
   encrypted,
+  auditEvents,
   file,
   policy,
   userId,
@@ -111,7 +112,9 @@ function Document({
         // The policy changed while waiting for the audit log, so don't update it.
         return;
       }
-      setAuditEvents(auditData.data);
+      if (auditData.data.length !== auditEvents.length) {
+        setAuditEvents(auditData.data);
+      }
       auditTimerId = setTimeout(updateAuditEvents, 2000);
     }
     if (auditTimerId) {
@@ -123,7 +126,7 @@ function Document({
       return;
     }
     auditTimerId = setTimeout(updateAuditEvents, 2000);
-  }, [appId, encryptState, policy, setAuditEvents, userId]);
+  }, [appId, encryptState, policy, setAuditEvents, userId, auditEvents]);
 
   const renderDrop = () => {
     if (!file) {
