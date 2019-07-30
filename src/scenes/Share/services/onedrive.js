@@ -2,9 +2,10 @@ import awaitify from 'services/core/awaitify';
 
 // OneDrive apps can only redirect to a single host, so we need separate client ids for
 // both local(host) and demos.developers.virtru.com
+// To edit: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade
 const CLIENT_ID = window.location.host.includes('local')
   ? 'a6419f7b-80cb-4d9a-abe1-4573cfd3709f'
-  : '64d97da6-c38a-49d5-a472-7874958718ab';
+  : '2ecdc44f-18de-4170-ad27-bbfb61a27bf3';
 const AUTHORIZATION_URI = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize';
 const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 
