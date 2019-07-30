@@ -122,7 +122,13 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       const token = await onedrive.signIn();
       state(SHARE_STATE.SHARING);
       const uploadResponse = await onedrive.upload(token, file);
-      await onedrive.share(token, uploadResponse.id, recipients);
+      // NOTE onedrive doesn't like sharing with yourself, so break this into two bits
+      // The owner may sign into onedrive with another account, and they may share with
+      // the onedrive owner explicitly, so maybe we should break this into one request per recipient.
+      if (recipients.length > 1) {
+        await onedrive.share(token, uploadResponse.id, recipients.slice(1));
+      }
+      await onedrive.share(token, uploadResponse.id, recipients.slice(0, 1));
       onedrive.signOut();
       setShare({
         provider: SHARE_PROVIDERS.ONEDRIVE,
