@@ -10,6 +10,10 @@ import store from './store';
 
 if (dispatchAuth()) {
   // TODO consider rendering 'loading' or something. Also handle errors?
+  // 'close' or 'app' <- close closes window, home reloads app
+  // Maybe try to do the localstorage bits of the auth flows, too, in case we are here by mistake?
+  // dispatchAuth just sends a message to the parent window, but if auth parts use clientside storage
+  // we could do that part so the auth will work on a refresh (or click of the 'app' button above)
 } else {
   ReactDOM.render(
     <Provider store={store}>
