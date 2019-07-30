@@ -12,6 +12,6 @@ describe('App', () => {
         setIsLoading={() => {}}
       />,
     );
-    expect(getByText('Demo: Protect & Track')).toBeInTheDocument();
+    expect(getByText('Protect & Track Demo')).toBeInTheDocument();
   });
 });
