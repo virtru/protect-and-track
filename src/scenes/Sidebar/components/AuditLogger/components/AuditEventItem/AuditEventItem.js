@@ -20,7 +20,7 @@ export default ({ auditDataType, userId, timestamp, index, onDownload }) => (
         onClick={() => onDownload(index)}
         data-testid="auditEventDownload"
       />
-      <div className="auditEventTimestamp">{moment(timestamp).format('HH:MM:SS')}</div>
+      <div className="auditEventTimestamp">{moment(timestamp).format('hh:mm:ss')}</div>
     </div>
   </div>
 );

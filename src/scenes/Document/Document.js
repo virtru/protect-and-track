@@ -21,9 +21,12 @@ import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 
+let auditTimerId;
+
 function Document({
   appId,
   encrypted,
+  auditEvents,
   file,
   policy,
   userId,
@@ -80,7 +83,7 @@ function Document({
 
   const encrypt = async () => {
     setEncryptState(ENCRYPT_STATES.PROTECTING);
-    const { encryptedFile, policyId } = await Virtru.encrypt({
+    const { encryptedFile } = await Virtru.encrypt({
       client: virtruClient,
       fileData: file.arrayBuffer,
       filename: file.file.name,
@@ -94,12 +97,37 @@ function Document({
       type: file.file.type,
     });
     setEncryptState(ENCRYPT_STATES.PROTECTED);
-    setInterval(async () => {
+  };
+
+  useEffect(() => {
+    const policyId = policy && policy.getPolicyId();
+    async function updateAuditEvents() {
+      const currentTimerId = auditTimerId;
+      // Stop updating the audit log when policy or file changes
+      if (encryptState !== ENCRYPT_STATES.PROTECTED || policy.getPolicyId() !== policyId) {
+        return;
+      }
       const auditRes = await getAuditEvents({ userId, appId, policyId });
       const auditData = await auditRes.json();
-      setAuditEvents(auditData.data);
-    }, 2000);
-  };
+      if (currentTimerId !== auditTimerId) {
+        // The policy changed while waiting for the audit log, so don't update it.
+        return;
+      }
+      if (auditData.data.length !== auditEvents.length) {
+        setAuditEvents(auditData.data);
+      }
+      auditTimerId = setTimeout(updateAuditEvents, 2000);
+    }
+    if (auditTimerId) {
+      // Clear the existing timer
+      window.clearTimeout(auditTimerId);
+    }
+    if (!policyId || encryptState !== ENCRYPT_STATES.PROTECTED) {
+      // We aren't connected to a document with a policy on the ACM service
+      return;
+    }
+    auditTimerId = setTimeout(updateAuditEvents, 2000);
+  }, [appId, encryptState, policy, setAuditEvents, userId, auditEvents]);
 
   const renderDrop = () => {
     if (!file) {
@@ -286,7 +314,13 @@ const actions = {
 
     saveFileToLocalStorage({ fileName, fileType, fileBuffer });
     savePolicyToLocalStorage({ policy });
-    return { file: { file: fileHandle, arrayBuffer: fileBuffer }, policy, encrypted, encryptState };
+    return {
+      file: { file: fileHandle, arrayBuffer: fileBuffer },
+      policy,
+      encrypted,
+      encryptState,
+      auditEvents: [],
+    };
   },
   setUserId: (state, value) => ({ userId: value }),
   setVirtruClient: (state, value) => ({ virtruClient: value }),
@@ -294,7 +328,7 @@ const actions = {
     const { payload, name, type } = value;
     saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
     savePolicyToLocalStorage({ policy });
-    return { encrypted: value };
+    return { encrypted: value, auditEvents: [] };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),
   setPolicy: (state, policy) => {
