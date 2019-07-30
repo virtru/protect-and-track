@@ -10,7 +10,7 @@ import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 
 function Ico({ type }) {
-  return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
+  return <img alt="" src={`${type}.svg`} className="ShareSelect-ico" />;
 }
 
 function Title({ children }) {
