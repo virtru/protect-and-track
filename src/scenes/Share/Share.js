@@ -128,7 +128,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
         provider: SHARE_PROVIDERS.ONEDRIVE,
         providerState: {
           state: SHARE_STATE.SHARED,
-          id: uploadResponse.result.id,
+          id: uploadResponse.id,
           link: 'https://onedrive.live.com/?id=' + uploadResponse.id,
           recipients,
         },
