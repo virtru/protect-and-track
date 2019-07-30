@@ -26,6 +26,15 @@ const Header = ({ userId }) => {
         </span>
       );
     }
+    if (localStorage.length) {
+      return (
+        <span>
+          <Button variant="link" onClick={signOut} verySmall light>
+            Reset
+          </Button>
+        </span>
+      );
+    }
   }
   return (
     <div className="headerContainer">

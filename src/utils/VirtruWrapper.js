@@ -47,19 +47,36 @@ function _pushAction(action) {
   boundActions.pushLogAction(action);
 }
 
-function buildClient(userEmail) {
+function buildClient({ userEmail, authMethod }) {
   const redirectUrl = window.location.href;
   const { acmEndpoint, kasEndpoint, easEndpoint, stage } = getEnvironment();
+  let provider;
 
-  _pushAction({
-    title: 'Authenticate',
-    code: logs.authenticateWithGoogle(userEmail, redirectUrl, stage),
-  });
-  const provider = new Virtru.Client.AuthProviders.GoogleAuthProvider(
-    userEmail,
-    redirectUrl,
-    stage,
-  );
+  switch (authMethod) {
+    case 'google':
+      _pushAction({
+        title: 'Authenticate',
+        code: logs.authenticateWithGoogle(userEmail, redirectUrl, stage),
+      });
+      provider = new Virtru.Client.AuthProviders.GoogleAuthProvider(userEmail, redirectUrl, stage);
+      break;
+    case 'o365':
+      _pushAction({
+        title: 'Authenticate',
+        code: logs.authenticateWithO365(userEmail, redirectUrl, stage),
+      });
+      provider = new Virtru.Client.AuthProviders.O365AuthProvider(userEmail, redirectUrl, stage);
+      break;
+    case 'outlook':
+      _pushAction({
+        title: 'Authenticate',
+        code: logs.authenticateWithOutlook(userEmail, redirectUrl, stage),
+      });
+      provider = new Virtru.Client.AuthProviders.OutlookAuthProvider(userEmail, redirectUrl, stage);
+      break;
+    default:
+      return;
+  }
 
   _pushAction({
     title: 'Create Virtru Client',
@@ -162,10 +179,25 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
   };
 }
 
-async function authenticate(email) {
-  const client = buildClient(email);
+async function authenticate({ userEmail, authMethod }) {
+  // Store the auth method so that when the app refreshes, it still
+  // knows what method to try.
+  if (authMethod) {
+    localStorage.setItem('virtru-demo-auth-method', authMethod);
+  } else {
+    authMethod = localStorage.getItem('virtru-demo-auth-method');
+  }
+  const client = buildClient({ userEmail, authMethod });
   await client.clientConfig.authProvider._initAuthForProvider();
   return client;
+}
+
+function updatePolicy(client, policy) {
+  _pushAction({
+    title: 'Update Policy',
+    code: `client.updatePolicy(policy);`,
+  });
+  return client.updatePolicy(policy);
 }
 
 function unwrapHtml(file) {
@@ -176,4 +208,4 @@ function unwrapHtml(file) {
   return TDF.unwrapHtml(file);
 }
 
-export default { authenticate, encrypt, policyBuilder, unwrapHtml };
+export default { authenticate, encrypt, policyBuilder, updatePolicy, unwrapHtml };
