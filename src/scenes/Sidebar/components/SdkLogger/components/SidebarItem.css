@@ -1,5 +1,6 @@
 .SidebarItemWrapper {
-  padding: 20px 25px;
+  border-top: 1px solid var(--slatePrimary);
+  padding: 15px 20px;
   background-color: var(--slateDarkest);
 }
 
@@ -40,9 +41,10 @@
 }
 
 .SidebarItemWrapper pre.prettyprint {
-  background: #282e37;
+  background: none;
   box-sizing: border-box;
   margin: 0;
+  font-size: 12px;
   width: max-content;
 }
 

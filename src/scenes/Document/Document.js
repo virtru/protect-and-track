@@ -270,14 +270,20 @@ const actions = {
     }
 
     saveFileToLocalStorage({ fileName, fileType, fileBuffer, policy });
-    return { file: { file: fileHandle, arrayBuffer: fileBuffer }, policy, encrypted, encryptState };
+    return {
+      file: { file: fileHandle, arrayBuffer: fileBuffer },
+      policy,
+      encrypted,
+      encryptState,
+      auditEvents: [],
+    };
   },
   setUserId: (state, value) => ({ userId: value }),
   setVirtruClient: (state, value) => ({ virtruClient: value }),
   setEncrypted: (state, value) => {
     const { payload, name, type } = value;
     saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
-    return { encrypted: value };
+    return { encrypted: value, auditEvents: [] };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),
   setPolicy: (state, policy) => {
