@@ -9,11 +9,7 @@ const AUTHORIZATION_URI = 'https://login.microsoftonline.com/common/oauth2/v2.0/
 const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 
 async function init() {
-  //   return new ClientOAuth2({
-  //   clientId: CLIENT_ID,
-  //   authorizationUri: AUTHORIZATION_URI,
-  //   redirectUri: REDIRECT_URI,
-  // });
+  // Nothing to initialize, since this is a pure rest api.
 }
 
 // Starts oauth flow. Note that this will reload the current page.
@@ -63,6 +59,7 @@ function processOneDrive(authResponse) {
     console.log('No auth fragment for onedrive found');
     return;
   }
+  // Convert CGI-encoded params into a JSON object literal notation.
   const authResponseJSON =
     '{' + authResponseDecoded.replace(/([^=]+)=([^&]+)&?/g, '"$1":"$2",').slice(0, -1) + '}';
   const authInfo = JSON.parse(authResponseJSON, (k, v) => (k === '' ? v : decodeURIComponent(v)));
@@ -90,7 +87,7 @@ function processOneDrive(authResponse) {
 async function signIn() {
   const auth = JSON.parse(localStorage.getItem('virtru-onedrive-auth'));
   if (!auth || !auth.token) {
-    // TODO check expiration
+    // TODO check expiration, or store as a time limited cookie so we don't have to...
     const doAuth = awaitify(initiateOauth);
     try {
       const token = await doAuth();
