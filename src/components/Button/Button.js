@@ -28,7 +28,10 @@ export const BUTTON_VARIANT = {
 const Button = ({ variant, fullWidth, small, verySmall, light, children, ...props }) => {
   return (
     // eslint-disable-next-line react/button-has-type
-    <button className={cn({ [variant]: true, button: true, small, verySmall, light })} {...props}>
+    <button
+      className={cn({ [variant]: true, button: true, small, verySmall, light, fullWidth })}
+      {...props}
+    >
       {children}
     </button>
   );
