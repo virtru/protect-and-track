@@ -89,7 +89,6 @@ function Document({
     });
     setEncrypted({
       payload: encryptedFile,
-      policyId,
       name: `${file.file.name}.html`,
       type: file.file.type,
     });
