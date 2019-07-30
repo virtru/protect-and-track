@@ -127,7 +127,7 @@ async function share(token, fileId, recipients) {
   });
   if (!response.ok) {
     // TODO handle not ok responses
-    console.log(response.ok);
+    console.log(`share status: [${response.status}]`);
     return;
   }
   return response.json();
@@ -150,7 +150,7 @@ async function upload(token, file) {
   });
   if (!response.ok) {
     // TODO handle not ok responses
-    console.log(response.ok);
+    console.log(`upload status: [${response.status}]`);
     return;
   }
   return response.json();

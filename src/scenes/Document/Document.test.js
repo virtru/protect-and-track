@@ -1,6 +1,7 @@
 import React from 'react';
 import { cleanup, render, wait, fireEvent, getByTestId, act } from '@testing-library/react';
 import Document from './Document';
+import ENCRYPT_STATES from 'constants/encryptStates';
 import Virtru from 'utils/VirtruWrapper';
 import VirtruClient from 'virtru-tdf3-js';
 import * as services from 'services/audit';
@@ -95,8 +96,9 @@ describe('Document', () => {
       Promise.resolve({ json: () => Promise.resolve({ data: 'someData' }) }),
     );
 
-    const { container } = render(
+    const { container, rerender } = render(
       <Document
+        encryptState={ENCRYPT_STATES.UNPROTECTED}
         file={file}
         policy={policy}
         virtruClient={client}
@@ -120,17 +122,49 @@ describe('Document', () => {
         asHtml: true,
       });
     });
-    expect(setEncrypted).toHaveBeenCalledWith({
+    const expectedEncrypted = {
       payload: 'encFile',
       name: `${file.file.name}.html`,
       type: file.file.type,
-    });
+    };
+    expect(setEncrypted).toHaveBeenCalledWith(expectedEncrypted);
     expect(setAuditEvents).toHaveBeenCalledTimes(0);
-    act(() => {
-      jest.runTimersToTime(timeout * triggerTimes);
-    });
+
+    rerender(
+      <Document
+        encrypted={expectedEncrypted}
+        encryptState={ENCRYPT_STATES.PROTECTED}
+        file={file}
+        policy={policy}
+        userId="foo@bar.com"
+        virtruClient={client}
+        setAuditEvents={setAuditEvents}
+        setEncrypted={setEncrypted}
+        setEncryptState={() => {}}
+      />,
+    );
+
+    for (let i = 1; i <= 5; i++) {
+      jest.runOnlyPendingTimers();
+      await wait(() => {
+        expect(setAuditEvents).toHaveBeenCalledTimes(i);
+      });
+    }
+    rerender(
+      <Document
+        encryptState={ENCRYPT_STATES.UNPROTECTED}
+        file={file}
+        policy={policy}
+        userId="foo@bar.com"
+        virtruClient={client}
+        setAuditEvents={setAuditEvents}
+        setEncrypted={setEncrypted}
+        setEncryptState={() => {}}
+      />,
+    );
+    jest.runOnlyPendingTimers();
     await wait(() => {
-      expect(setAuditEvents).toHaveBeenCalledTimes(triggerTimes);
+      expect(setAuditEvents).toHaveBeenCalledTimes(5);
     });
   });
 });
