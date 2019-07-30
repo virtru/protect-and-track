@@ -293,7 +293,7 @@ const actions = {
   setPolicy: (state, policy) => {
     const { encrypted, virtruClient } = state;
     if (encrypted && virtruClient && policy.getPolicyId()) {
-      virtruClient.updatePolicy(policy);
+      Virtru.updatePolicy(virtruClient, policy);
     }
     savePolicyToLocalStorage({ policy });
     return { policy };
