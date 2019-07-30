@@ -2,11 +2,9 @@ import React from 'react';
 import SectionHeader from '../SectionHeader/SectionHeader';
 import Toggle from '../Toggle/Toggle';
 import { ReactComponent as ForwardIcon } from './forward.svg';
-import { generatePolicyChanger } from '../../services/policyChanger';
 import './Resharing.css';
 
-function Resharing({ policy, setPolicy }) {
-  const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
+function Resharing({ policy, policyChange }) {
   const onChange = policyChange((builder, e) =>
     e.target.checked ? builder.disableReshare() : builder.enableReshare(),
   );

@@ -1,11 +1,9 @@
 import React from 'react';
 import SectionHeader from '../SectionHeader/SectionHeader';
 import Toggle from '../Toggle/Toggle';
-import { generatePolicyChanger } from '../../services/policyChanger';
 import { ReactComponent as WatermarkIcon } from './watermark.svg';
 
-function Watermarking({ policy, setPolicy }) {
-  const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
+function Watermarking({ policy, policyChange }) {
   const onChange = policyChange((builder, e) =>
     e.target.checked ? builder.enableWatermarking() : builder.disableWatermarking(),
   );

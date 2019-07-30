@@ -11,6 +11,7 @@ import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
 import AuthSelect from '../AuthSelect/AuthSelect';
 import StayUp from '../StayUp/StayUp';
+import { generatePolicyChanger } from './scenes/Policy/services/policyChanger';
 import ENCRYPT_STATES from 'constants/encryptStates';
 
 import './Document.css';
@@ -104,6 +105,7 @@ function Document({
       return <Drop userId={userId} setFile={setFile} />;
     }
 
+    const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
     return (
       <>
         <Drop
@@ -120,7 +122,7 @@ function Document({
               openAuthModal={openAuthModal}
               encrypt={encrypt}
               encryptState={encryptState}
-              setPolicy={setPolicy}
+              policyChange={policyChange}
             />
           </div>
         </Drop>
@@ -216,11 +218,15 @@ const mapToProps = ({
   encryptState,
 });
 
-const saveFileToLocalStorage = ({ fileBuffer, fileName, fileType, policy }) => {
+const saveFileToLocalStorage = ({ fileBuffer, fileName, fileType }) => {
   const b64 = arrayBufferToBase64(fileBuffer);
 
   // TODO migrate localStorage update to a subscription to track both policy and file changes centrally
-  localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType, policy }));
+  localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType }));
+};
+
+const savePolicyToLocalStorage = ({ policy }) => {
+  localStorage.setItem('virtru-demo-policy', JSON.stringify({ policy }));
 };
 
 const saveEncryptedToLocalStorage = ({ encryptedPayload, fileName, fileType }) => {
@@ -234,6 +240,7 @@ const saveEncryptedToLocalStorage = ({ encryptedPayload, fileName, fileType }) =
 const actions = {
   setFile: async (state, { fileHandle, fileBuffer }) => {
     localStorage.removeItem('virtru-demo-file');
+    localStorage.removeItem('virtru-demo-policy');
     localStorage.removeItem('virtru-demo-file-encrypted');
     if (!fileHandle) {
       return { file: false, policy: false, encrypted: false, encryptState: false, auditEvents: [] };
@@ -269,22 +276,25 @@ const actions = {
       }
     }
 
-    saveFileToLocalStorage({ fileName, fileType, fileBuffer, policy });
+    saveFileToLocalStorage({ fileName, fileType, fileBuffer });
+    savePolicyToLocalStorage({ policy });
     return { file: { file: fileHandle, arrayBuffer: fileBuffer }, policy, encrypted, encryptState };
   },
   setUserId: (state, value) => ({ userId: value }),
   setVirtruClient: (state, value) => ({ virtruClient: value }),
-  setEncrypted: (state, value) => {
+  setEncrypted: ({ policy }, value) => {
     const { payload, name, type } = value;
     saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
+    savePolicyToLocalStorage({ policy });
     return { encrypted: value };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),
   setPolicy: (state, policy) => {
-    const { file } = state;
-    const { name: fileName, type: fileType } = file.file;
-    const fileBuffer = file.arrayBuffer;
-    saveFileToLocalStorage({ fileBuffer, fileName, fileType, policy });
+    const { encrypted, virtruClient } = state;
+    if (encrypted && virtruClient && policy.getPolicyId()) {
+      Virtru.updatePolicy(virtruClient, policy);
+    }
+    savePolicyToLocalStorage({ policy });
     return { policy };
   },
   setAuditEvents: (state, value) => ({ auditEvents: value }),
