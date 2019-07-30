@@ -192,6 +192,14 @@ async function authenticate({ userEmail, authMethod }) {
   return client;
 }
 
+function updatePolicy(client, policy) {
+  _pushAction({
+    title: 'Update Policy',
+    code: `client.updatePolicy(policy);`,
+  });
+  return client.updatePolicy(policy);
+}
+
 function unwrapHtml(file) {
   _pushAction({
     title: 'Load TDF',
@@ -200,4 +208,4 @@ function unwrapHtml(file) {
   return TDF.unwrapHtml(file);
 }
 
-export default { authenticate, encrypt, policyBuilder, unwrapHtml };
+export default { authenticate, encrypt, policyBuilder, updatePolicy, unwrapHtml };

@@ -8,8 +8,7 @@ import Button from 'components/Button/Button';
 import ENCRYPT_STATES from 'constants/encryptStates';
 import './Policy.css';
 
-function Policy({ userId, openAuthModal, encrypt, encryptState, policy, setPolicy }) {
-  console.log(`<Policy policy=${JSON.stringify(policy)}`);
+function Policy({ userId, openAuthModal, encrypt, encryptState, policy, policyChange }) {
   const renderButtons = () => {
     switch (encryptState) {
       case ENCRYPT_STATES.AUTHENTICATING:
@@ -40,18 +39,23 @@ function Policy({ userId, openAuthModal, encrypt, encryptState, policy, setPolic
   if (encryptState !== ENCRYPT_STATES.PROTECTED) {
     return (
       <div className="Policy" id="policy">
-        <Access policy={policy} setPolicy={setPolicy} userId={userId} />
+        <Access policy={policy} policyChange={policyChange} userId={userId} />
         <span className="Policy-buttons">{renderButtons()}</span>
       </div>
     );
   }
   return (
     <div className="Policy" id="policy">
-      <Access policy={policy} encryptState={encryptState} setPolicy={setPolicy} userId={userId} />
+      <Access
+        policy={policy}
+        encryptState={encryptState}
+        policyChange={policyChange}
+        userId={userId}
+      />
       <hr className="Policy-rule" />
-      <Expiration policy={policy} setPolicy={setPolicy} />
-      <Resharing policy={policy} setPolicy={setPolicy} />
-      <Watermarking policy={policy} setPolicy={setPolicy} />
+      <Expiration policy={policy} policyChange={policyChange} />
+      <Resharing policy={policy} policyChange={policyChange} />
+      <Watermarking policy={policy} policyChange={policyChange} />
     </div>
   );
 }
