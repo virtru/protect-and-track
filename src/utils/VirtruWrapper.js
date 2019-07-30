@@ -180,6 +180,8 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
 }
 
 async function authenticate({ userEmail, authMethod }) {
+  // Store the auth method so that when the app refreshes, it still
+  // knows what method to try.
   if (authMethod) {
     localStorage.setItem('virtru-demo-auth-method', authMethod);
   } else {
