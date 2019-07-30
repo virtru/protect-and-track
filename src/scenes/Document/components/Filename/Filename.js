@@ -8,7 +8,7 @@ function Filename({ file, isTdf, setFile }) {
     <h2 className="Filename">
       {file.file.name}
       {isTdf && <span className="Filename-tdf">.tdf</span>}
-      <Button variant="link" onClick={e => setFile(null)} verySmall>
+      <Button variant="link" onClick={e => setFile({})} verySmall>
         Start over
       </Button>
     </h2>

@@ -30,9 +30,6 @@ export const createVirtruClient = ({
 
 export const createMockStream = () => 'const contentStream = TDF.createMockStream(fileData);';
 
-export const buildVirtruPolicy = () =>
-  'const policy = new Virtru.Client.VirtruPolicyBuilder().build();';
-
 export const buildVirtruEncryptParams = filename => `const encryptParams = new Virtru.Client.VirtruEncryptParamsBuilder()
   .withStreamSource(contentStream)
   .withPolicy(policy)

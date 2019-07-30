@@ -122,6 +122,7 @@ describe('Document', () => {
     });
     expect(setEncrypted).toHaveBeenCalledWith({
       payload: 'encFile',
+      policyId: 'foo1bar',
       name: `${file.file.name}.html`,
       type: file.file.type,
     });

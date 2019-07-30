@@ -41,14 +41,16 @@ try {
         type: localData.fileType,
       },
     };
+    const policyData = JSON.parse(localStorage.getItem('virtru-demo-policy'));
     policy =
-      localData.policy &&
+      policyData &&
       new Virtru.Client.VirtruPolicy(
-        localData.policy._policyId,
-        localData.policy._users,
-        localData.policy._authZFlags,
-        localData.policy._deadline,
+        policyData.policy._policyId,
+        policyData.policy._users,
+        policyData.policy._authZFlags,
+        policyData.policy._deadline,
       );
+    policy = policy || new Virtru.Client.VirtruPolicyBuilder().build();
   }
 } catch (err) {
   console.error(err);
