@@ -26,6 +26,7 @@ let auditTimerId;
 function Document({
   appId,
   encrypted,
+  auditEvents,
   file,
   policy,
   userId,
@@ -111,7 +112,9 @@ function Document({
         // The policy changed while waiting for the audit log, so don't update it.
         return;
       }
-      setAuditEvents(auditData.data);
+      if (auditData.data.length !== auditEvents.length) {
+        setAuditEvents(auditData.data);
+      }
       auditTimerId = setTimeout(updateAuditEvents, 2000);
     }
     if (auditTimerId) {
@@ -123,7 +126,7 @@ function Document({
       return;
     }
     auditTimerId = setTimeout(updateAuditEvents, 2000);
-  }, [appId, encryptState, policy, setAuditEvents, userId]);
+  }, [appId, encryptState, policy, setAuditEvents, userId, auditEvents]);
 
   const renderDrop = () => {
     if (!file) {
@@ -303,7 +306,13 @@ const actions = {
 
     saveFileToLocalStorage({ fileName, fileType, fileBuffer });
     savePolicyToLocalStorage({ policy });
-    return { file: { file: fileHandle, arrayBuffer: fileBuffer }, policy, encrypted, encryptState };
+    return {
+      file: { file: fileHandle, arrayBuffer: fileBuffer },
+      policy,
+      encrypted,
+      encryptState,
+      auditEvents: [],
+    };
   },
   setUserId: (state, value) => ({ userId: value }),
   setVirtruClient: (state, value) => ({ virtruClient: value }),
@@ -311,7 +320,7 @@ const actions = {
     const { payload, name, type } = value;
     saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
     savePolicyToLocalStorage({ policy });
-    return { encrypted: value };
+    return { encrypted: value, auditEvents: [] };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),
   setPolicy: (state, policy) => {
