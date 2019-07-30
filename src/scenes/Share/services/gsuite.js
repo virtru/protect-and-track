@@ -74,7 +74,11 @@ async function share(fileId, recipients) {
   return await httpBatch;
 }
 
-async function upload(name, contentType, content) {
+/**
+ * @param {String} name the file name
+ * @param {*} content ArrayBuffer object containing the TDF.html content
+ */
+async function upload(name, content) {
   // NOTE(DSAT-1): Unfortunately, AFAICT the current `drive.files.create` method in GAPI
   // does not support POST content. See relevant discussions:
   //   * https://stackoverflow.com/questions/51775917
@@ -87,7 +91,7 @@ async function upload(name, contentType, content) {
   const close_delim = '\r\n--' + boundary + '--';
   const metadata = {
     name: name,
-    mimeType: contentType,
+    mimeType: 'text/html',
   };
   const base64 = buffer => {
     return btoa(
@@ -102,9 +106,7 @@ async function upload(name, contentType, content) {
     JSON.stringify(metadata) +
     delimiter +
     'Content-Transfer-Encoding: base64\r\n' +
-    'Content-Type: ' +
-    contentType +
-    '\r\n\r\n' +
+    'Content-Type: text/html\r\n\r\n' +
     base64(content) +
     close_delim;
 
