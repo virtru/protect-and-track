@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import './AuthSelect.css';
 import Modal from '../../components/Modal/Modal';
 import Button from '../../components/Button/Button';
+// import Virtru from 'utils/VirtruWrapper';
 
 const AUTH_STEPS = {
   ENTER_EMAIL: 0,
   CHOOSE_PROVIDER: 1,
+  ENTER_CODE: 2,
 };
 
 function validateEmail(email) {
@@ -14,9 +16,10 @@ function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-function AuthSelect({ onClose, loginAs }) {
+function AuthSelect({ onClose, login }) {
   const [authStep, setAuthStep] = useState(AUTH_STEPS.ENTER_EMAIL);
   const [email, setEmail] = useState('');
+  const [authCode, setAuthCode] = useState('');
 
   const validateAndContinue = () => {
     if (validateEmail(email)) {
@@ -26,11 +29,17 @@ function AuthSelect({ onClose, loginAs }) {
     alert('Invalid email address');
   };
 
+  // TODO - Email auth
+  // const beginEmailAuth = async () => {
+  //   await Virtru.sendEmailCode(email)
+  //   setAuthStep(AUTH_STEPS.ENTER_CODE);
+  // };
+
   const renderContent = () => {
     if (authStep === AUTH_STEPS.ENTER_EMAIL) {
       return (
         <form onSubmit={validateAndContinue} data-testid="formAuth">
-          <h3>Enter your email address:</h3>
+          <h3 className="auth-title">Enter your email address:</h3>
           <input
             required
             className="Email-input"
@@ -42,27 +51,55 @@ function AuthSelect({ onClose, loginAs }) {
           <Button type="submit">Continue</Button>
         </form>
       );
+    } else if (authStep === AUTH_STEPS.CHOOSE_PROVIDER) {
+      return (
+        <>
+          <h3 className="auth-title">Select your auth provider:</h3>
+          <input
+            type="button"
+            id="googlebutton"
+            value=""
+            className="login-button login-button-google"
+            data-testid="emailAuthButton"
+            onClick={() => login({ userEmail: email, authMethod: 'google' })}
+          />
+          <input
+            type="button"
+            id="office365button"
+            className="login-button login-button-office365"
+            onClick={() => login({ userEmail: email, authMethod: 'o365' })}
+          />
+          <input
+            type="button"
+            id="outlookbutton"
+            className="login-button  login-button-outlook"
+            onClick={() => login({ userEmail: email, authMethod: 'outlook' })}
+          />
+          {/* <h3 className="auth-title">Or let Virtru send you a code</h3>
+          <Button onClick={beginEmailAuth} >Send Code to {email}</Button> */}
+        </>
+      );
+    } else if (authStep === AUTH_STEPS.ENTER_CODE) {
+      return (
+        <form data-testid="formAuth">
+          <h3 className="auth-title">
+            Enter the code sent to <br /> {email}:
+          </h3>
+          <input
+            required
+            className="Email-input"
+            type="text"
+            data-testid="emailAuthInput"
+            value={authCode}
+            onChange={e => setAuthCode(e.target.value)}
+            onSubmit={() => {}}
+          />
+          <Button type="submit" disabled={authCode.length !== 6}>
+            Continue
+          </Button>
+        </form>
+      );
     }
-
-    return (
-      <>
-        <h3>Select your auth provider:</h3>
-        <input
-          type="button"
-          id="googlebutton"
-          value=""
-          className="login-button-google"
-          data-testid="emailAuthButton"
-          onClick={() => loginAs(email)}
-        />
-        <input disabled type="button" id="office365button" className="login-button-office365" />
-        <input disabled type="button" id="outlookbutton" className="login-button-outlook" />
-      </>
-      /* <FormBoxAlternative>OR</FormBoxAlternative>
-
-      <FormBoxInstruction>Let Virtru send you a code</FormBoxInstruction>
-      <FormBoxButton id="sendcodebutton">Send Code to {userId}</FormBoxButton> */
-    );
   };
 
   return (

@@ -45,7 +45,7 @@ function Document({
       if (!userId || virtruClient) {
         return;
       }
-      const client = await Virtru.authenticate(userId);
+      const client = await Virtru.authenticate({ userEmail: userId });
       setVirtruClient(client);
       if (!encrypted) {
         setEncryptState(ENCRYPT_STATES.UNPROTECTED);
@@ -64,9 +64,9 @@ function Document({
     setStayUpOpen(true);
   };
 
-  const loginAs = async email => {
-    const client = await Virtru.authenticate(email);
-    setUserId(email);
+  const login = async ({ userEmail, authMethod }) => {
+    const client = await Virtru.authenticate({ userEmail, authMethod });
+    setUserId(userEmail);
     setVirtruClient(client);
     if (!encrypted) {
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
@@ -131,7 +131,7 @@ function Document({
               setAuthOpen(false);
               setEncryptState(ENCRYPT_STATES.UNPROTECTED);
             }}
-            loginAs={loginAs}
+            login={login}
           />
         )}
         {isStayUpOpen && (
