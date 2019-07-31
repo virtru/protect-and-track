@@ -44,7 +44,7 @@ describe('Access', () => {
     const { getByText } = render(
       <Access
         encryptState={ENCRYPT_STATES.PROTECTED}
-        policy={new Virtru.PolicyBuilder().addUsers('a@abc.xyz', 'b@abc.xyz').build()}
+        policy={new Virtru.PolicyBuilder().addUsersWithAccess('a@abc.xyz', 'b@abc.xyz').build()}
         policyChange={() => {}}
         userId="a@abc.xyz"
       />,

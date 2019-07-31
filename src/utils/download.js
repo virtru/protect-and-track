@@ -15,9 +15,8 @@ export const downloadTdf = encrypted => {
 };
 
 export const downloadDecrypted = async ({ encrypted, virtruClient }) => {
-  const html = new TextDecoder('utf-8').decode(encrypted.payload);
-  const tdf = Virtru.unwrapHtml(html);
-  const decrypted = await Virtru.decrypt({ virtruClient, encryptedFile: tdf });
+  const encryptedBuffer = encrypted.payload;
+  const decrypted = await Virtru.decrypt({ virtruClient, encryptedBuffer });
   const blob = new Blob(decrypted);
   return FileSaver.saveAs(blob, encrypted.name.replace('.html', ''));
 };

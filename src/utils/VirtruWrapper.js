@@ -130,19 +130,16 @@ function unwrapHtml(file) {
   return TDF.unwrapHtml(file);
 }
 
-async function decrypt({ virtruClient, encryptedFile }) {
-  const decryptParams = new Virtru.Client.VirtruDecryptParamsBuilder()
-    .withBufferSource(encryptedFile)
-    .build();
+async function decrypt({ virtruClient, encryptedBuffer }) {
+  const decryptParams = new Virtru.DecryptParamsBuilder().withBufferSource(encryptedBuffer).build();
 
-  const content = await virtruClient.decrypt(decryptParams);
-  const buff = await streamToBuffer(content);
-  return buff;
+  const decryptStream = await virtruClient.decrypt(decryptParams);
+  const decryptBuffer = await decryptStream.toBuffer();
+  return decryptBuffer;
 }
 
 function createClient({ email }) {
   // TODO logger here
-  console.log(email);
   return new Virtru.Client({ email });
 }
 

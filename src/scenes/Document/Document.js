@@ -33,13 +33,10 @@ function Document({
   virtruClient,
   encryptState,
   setFile,
-  setUserId,
-  setVirtruClient,
   setEncrypted,
   setAuditEvents,
   setEncryptState,
   setPolicy,
-  setIsLoggedIn,
 }) {
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
@@ -56,15 +53,8 @@ function Document({
   };
 
   const login = async email => {
-    setUserId(email);
-    setIsLoggedIn(true);
-    setVirtruClient(Virtru.createClient({ email }));
-    if (!encrypted) {
-      setEncryptState(ENCRYPT_STATES.UNPROTECTED);
-    } else {
-      setEncryptState(ENCRYPT_STATES.PROTECTED);
-    }
-    setAuthOpen(false);
+    // Just refresh with the email query param
+    window.location = `${window.location}?virtruAuthWidgetEmail=${email}`;
   };
 
   const encrypt = async () => {
@@ -308,8 +298,6 @@ const actions = {
       auditEvents: [],
     };
   },
-  setUserId: (state, value) => ({ userId: value }),
-  setVirtruClient: (state, value) => ({ virtruClient: value }),
   setEncrypted: ({ policy }, value) => {
     const { payload, name, type } = value;
     saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
@@ -326,7 +314,6 @@ const actions = {
     return { policy };
   },
   setAuditEvents: (state, value) => ({ auditEvents: value }),
-  setIsLoggedIn: (state, value) => ({ isLoggedIn: value }),
 };
 
 export default connect(

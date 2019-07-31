@@ -17,7 +17,7 @@ function Access({ encryptState, userId, policy, policyChange }) {
     }
 
     return (
-      <form className="Grant" onSubmit={policyChange(p => p.removeUsers(user))}>
+      <form className="Grant" onSubmit={policyChange(p => p.removeUsersWithAccess(user))}>
         <span className="Grant-user">{user}</span>
         <input type="submit" className="Grant-revoke" value="Revoke" />
       </form>
@@ -30,7 +30,7 @@ function Access({ encryptState, userId, policy, policyChange }) {
     return (
       <form
         className="NewGrant"
-        onSubmit={policyChange(p => (input.valid ? p.addUsers(input.text) : NOPE))}
+        onSubmit={policyChange(p => (input.valid ? p.addUsersWithAccess(input.text) : NOPE))}
       >
         <input
           type="email"
