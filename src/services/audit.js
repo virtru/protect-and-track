@@ -1,6 +1,4 @@
-import getEnvironment from 'constants/environment';
-
-const { auditUrl } = getEnvironment();
+const auditUrl = 'https://audit.virtru.com/api/messages';
 
 // TODO: Replace with SDK
 const buildAuditReq = policyId => `${auditUrl}?sort=timestamp:asc&objectId=${policyId}`;

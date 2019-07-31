@@ -1,10 +1,9 @@
 import Virtru from 'virtru-sdk';
-import TDF from 'tdf3-js';
+import { TDF } from 'tdf3-js';
 import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
 
 import * as logs from 'constants/methodLogs';
-import getEnvironment from 'constants/environment';
 import store from '../store';
 
 async function streamToBuffer(stream) {
@@ -45,26 +44,6 @@ const boundActions = bindActions(actions, store);
 function _pushAction(action) {
   action.timestamp = moment();
   boundActions.pushLogAction(action);
-}
-
-function buildClient(userEmail) {
-  const { acmEndpoint, kasEndpoint, easEndpoint } = getEnvironment();
-
-  _pushAction({
-    title: 'Create Virtru Client',
-    code: logs.createVirtruClient({
-      acmEndpoint,
-      kasEndpoint,
-      easEndpoint,
-    }),
-  });
-  const client = new Virtru.Client({
-    acmEndpoint,
-    kasEndpoint,
-    easEndpoint,
-  });
-
-  return client;
 }
 
 /**
@@ -109,20 +88,13 @@ function policyBuilder(opts) {
  * @param {Policy} policy
  */
 async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }) {
-  const { startUrl } = getEnvironment();
-
-  // _pushAction({
-  //   title: 'Create Mock Stream',
-  //   code: logs.createMockStream(),
-  // });
-  // const contentStream = TDF.createMockStream(fileData);
-
+  const buffer = new Uint8Array(fileData);
   _pushAction({
     title: 'Build Virtru Encryption Params',
     code: logs.buildEncryptParams(filename),
   });
   const encryptParams = new Virtru.EncryptParamsBuilder()
-    .withBufferSource(fileData)
+    .withBufferSource(buffer)
     .withPolicy(policy)
     .withDisplayFilename(filename)
     .build();
@@ -131,34 +103,15 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
     title: 'Encrypt File',
     code: logs.encryptFile(encryptParams),
   });
-  const encryptedFile = await client.encrypt(encryptParams);
+  const encryptedStream = await client.encrypt(encryptParams);
+  const encryptedFile = await encryptedStream.toBuffer();
 
   boundActions.fetchAuditLogAction();
 
   return {
-    encryptedFile,
+    encryptedFile: encryptedFile,
     policyId: policy._policyId,
   };
-}
-
-async function authenticate(email) {
-  const redirectUrl = window.location.href;
-  const client = buildClient(email);
-  const { acmEndpoint, apiEndpoint, easEndpoint, eventsEndpoint } = getEnvironment();
-
-  // _pushAction({
-  //   title: 'Login',
-  //   code: logs.authenticateWithGoogle(userEmail, redirectUrl, stage),
-  // });
-  await Virtru.Client.Auth.loginWithGoogle({
-    email,
-    redirectUrl,
-    accountsUrl: easEndpoint,
-    acmUrl: acmEndpoint,
-    apiUrl: apiEndpoint,
-    eventsUrl: eventsEndpoint,
-  });
-  return client;
 }
 
 function updatePolicy(client, policy) {
@@ -177,15 +130,6 @@ function unwrapHtml(file) {
   return TDF.unwrapHtml(file);
 }
 
-function wrapHtml(buffer) {
-  const { startUrl } = getEnvironment();
-  _pushAction({
-    title: 'Wrap TDF as HTML',
-    code: logs.wrapHtml(),
-  });
-  return TDF.wrapHtml(buffer, '', `${startUrl}?htmlProtocol=1`);
-}
-
 async function decrypt({ virtruClient, encryptedFile }) {
   const decryptParams = new Virtru.Client.VirtruDecryptParamsBuilder()
     .withBufferSource(encryptedFile)
@@ -196,12 +140,17 @@ async function decrypt({ virtruClient, encryptedFile }) {
   return buff;
 }
 
+function createClient({ email }) {
+  // TODO logger here
+  console.log(email);
+  return new Virtru.Client({ email });
+}
+
 export default {
-  authenticate,
   encrypt,
   policyBuilder,
   updatePolicy,
   unwrapHtml,
-  wrapHtml,
   decrypt,
+  createClient,
 };

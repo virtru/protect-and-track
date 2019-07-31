@@ -14,7 +14,6 @@ describe('Document', () => {
   test('should trigger auth and and updates Virtru Client on every update, if userId defined but there is no virtruClient Document ', async () => {
     const client = { userId: 'foo' };
     const spy = jest.fn();
-    Virtru.authenticate.mockImplementation(() => Promise.resolve(client));
 
     const { rerender } = render(<Document setVirtruClient={spy} setEncryptState={() => {}} />);
     expect(spy).not.toHaveBeenCalled();
@@ -43,11 +42,10 @@ describe('Document', () => {
     expect(getByText('Enter your email address:')).toBeInTheDocument();
   });
 
-  test('should trigger login on auth form submit, that will call Virtru.authenticate and will update userId and virtru client', async () => {
+  test('should trigger login on auth form submit and will update userId and virtru client', async () => {
     const client = { userId: 'foo' };
     const setVirtruClient = jest.fn();
     const setUserId = jest.fn();
-    Virtru.authenticate.mockImplementation(() => Promise.resolve(client));
     const file = { file: { name: 'foo.txt' } };
     const policy = new VirtruClient.Client.PolicyBuilder().build();
 

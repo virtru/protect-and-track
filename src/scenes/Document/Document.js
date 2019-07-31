@@ -39,6 +39,7 @@ function Document({
   setAuditEvents,
   setEncryptState,
   setPolicy,
+  setIsLoggedIn,
 }) {
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
@@ -54,10 +55,10 @@ function Document({
     setStayUpOpen(true);
   };
 
-  const login = async ({ userEmail, authMethod }) => {
-    const client = await Virtru.authenticate({ userEmail, authMethod });
-    setUserId(userEmail);
-    setVirtruClient(client);
+  const login = async email => {
+    setUserId(email);
+    setIsLoggedIn(true);
+    setVirtruClient(Virtru.createClient({ email }));
     if (!encrypted) {
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
     } else {
@@ -76,7 +77,6 @@ function Document({
       userEmail: userId,
       asHtml: true,
     });
-    console.log(encryptedFile);
     setEncrypted({
       payload: encryptedFile,
       name: `${file.file.name}.html`,
@@ -326,6 +326,7 @@ const actions = {
     return { policy };
   },
   setAuditEvents: (state, value) => ({ auditEvents: value }),
+  setIsLoggedIn: (state, value) => ({ isLoggedIn: value }),
 };
 
 export default connect(

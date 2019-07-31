@@ -16,11 +16,11 @@ function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-function AuthSelect({ onClose, loginAs }) {
+function AuthSelect({ onClose, login }) {
   useEffect(() => {
     console.log('Mounting auth UI...');
-    window.Virtru.AuthWidget('virtru-auth-widget-mount', { afterAuth: loginAs });
-  }, [loginAs]);
+    window.Virtru.AuthWidget('virtru-auth-widget-mount', { afterAuth: login });
+  }, [login]);
 
   return (
     <Modal raw onClose={onClose}>
