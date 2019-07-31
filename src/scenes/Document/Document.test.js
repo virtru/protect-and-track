@@ -39,7 +39,7 @@ describe('Document', () => {
     const { getByText } = render(
       <Document file={file} policy={policy} setEncryptState={() => {}} />,
     );
-    fireEvent.click(getByText('Sign in to continue'));
+    fireEvent.click(getByText('Sign in to Protect'));
     expect(getByText('Enter your email address:')).toBeInTheDocument();
   });
 
@@ -60,7 +60,7 @@ describe('Document', () => {
         setUserId={setUserId}
       />,
     );
-    fireEvent.click(getByText('Sign in to continue'));
+    fireEvent.click(getByText('Sign in to Protect'));
 
     fireEvent.change(getByTestId(container, 'emailAuthInput'), {
       target: { value: 'foo@bar.com' },
