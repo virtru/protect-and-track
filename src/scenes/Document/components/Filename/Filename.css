@@ -12,3 +12,23 @@
 .Filename-tdf {
   font-weight: bold;
 }
+
+.Filename-Replace {
+  color: var(--blueDarker);
+  cursor: pointer;
+  display: inline;
+  font-family: var(--fontPrimary);
+  font-size: 1rem;
+  outline: none;
+  padding-left: 23px;
+  text-decoration: underline;
+}
+
+.Filename-Replace:hover,
+.Filename-Replace:focus {
+  color: var(--blueDarkest);
+}
+
+.Filename-Replace input[type='file'] {
+  display: none;
+}

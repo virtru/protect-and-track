@@ -29,7 +29,7 @@ class UserSelect extends React.Component {
           e.preventDefault();
           this.handleSubmit(history);
         }}
-        title="DSAT with TDF3.0"
+        title="Protect and Track"
         instruction="Welcome! Enter your e-mail below and click 'Start' to begin the demo."
       >
         <input

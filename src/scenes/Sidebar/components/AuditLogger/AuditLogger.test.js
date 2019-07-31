@@ -21,7 +21,7 @@ describe('AuditLogger', () => {
       recordId: 0,
     };
     const { getByText } = render(<AuditLogger auditLog={[event]} />);
-    const formattedDate = moment(event.timestamp).format('HH:MM:SS');
+    const formattedDate = moment(event.timestamp).format('hh:mm:ss');
 
     expect(getByText(auditEvents[event.auditDataType])).toBeInTheDocument();
     expect(getByText(formattedDate)).toBeInTheDocument();

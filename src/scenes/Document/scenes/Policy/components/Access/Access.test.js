@@ -1,5 +1,6 @@
 import React from 'react';
 import Virtru from 'virtru-sdk';
+import { generatePolicyChanger } from '../../services/policyChanger';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
 import ENCRYPT_STATES from 'constants/encryptStates';
@@ -12,6 +13,7 @@ describe('Access', () => {
     const { getByRole, getByText } = render(
       <Access
         encryptState={ENCRYPT_STATES.UNPROTECTED}
+        policyChange={() => {}}
         policy={new Virtru.PolicyBuilder().build()}
       />,
     );
@@ -28,6 +30,7 @@ describe('Access', () => {
       <Access
         encryptState={ENCRYPT_STATES.UNPROTECTED}
         policy={new Virtru.PolicyBuilder().build()}
+        policyChange={() => {}}
         userId="user@example.com"
       />,
     );
@@ -42,6 +45,7 @@ describe('Access', () => {
       <Access
         encryptState={ENCRYPT_STATES.PROTECTED}
         policy={new Virtru.PolicyBuilder().addUsers('a@abc.xyz', 'b@abc.xyz').build()}
+        policyChange={() => {}}
         userId="a@abc.xyz"
       />,
     );
@@ -55,9 +59,9 @@ describe('Access', () => {
 
   test('Adds a new user', () => {
     const setPolicy = jest.fn();
-    const { getByRole } = render(
-      <Access policy={new Virtru.PolicyBuilder().build()} setPolicy={setPolicy} />,
-    );
+    const policy = new Virtru.PolicyBuilder().build();
+    const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
+    const { getByRole } = render(<Access policy={policy} policyChange={policyChange} />);
 
     const textForm = getByRole('form');
     const textField = textForm.querySelector('input[type="email"]');

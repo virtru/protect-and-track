@@ -161,6 +161,14 @@ async function authenticate(email) {
   return client;
 }
 
+function updatePolicy(client, policy) {
+  _pushAction({
+    title: 'Update Policy',
+    code: `client.updatePolicy(policy);`,
+  });
+  return client.updatePolicy(policy);
+}
+
 function unwrapHtml(file) {
   _pushAction({
     title: 'Load TDF',
@@ -169,4 +177,31 @@ function unwrapHtml(file) {
   return TDF.unwrapHtml(file);
 }
 
-export default { authenticate, encrypt, policyBuilder, unwrapHtml };
+function wrapHtml(buffer) {
+  const { startUrl } = getEnvironment();
+  _pushAction({
+    title: 'Wrap TDF as HTML',
+    code: logs.wrapHtml(),
+  });
+  return TDF.wrapHtml(buffer, '', `${startUrl}?htmlProtocol=1`);
+}
+
+async function decrypt({ virtruClient, encryptedFile }) {
+  const decryptParams = new Virtru.Client.VirtruDecryptParamsBuilder()
+    .withBufferSource(encryptedFile)
+    .build();
+
+  const content = await virtruClient.decrypt(decryptParams);
+  const buff = await streamToBuffer(content);
+  return buff;
+}
+
+export default {
+  authenticate,
+  encrypt,
+  policyBuilder,
+  updatePolicy,
+  unwrapHtml,
+  wrapHtml,
+  decrypt,
+};

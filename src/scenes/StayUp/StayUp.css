@@ -1,0 +1,38 @@
+.StayUp-container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  text-align: center;
+}
+
+.hbspt-form {
+  width: 100%;
+}
+
+.hbspt-form iframe {
+  width: 100% !important;
+}
+
+.StayUp-title {
+  color: #2d323b;
+  font-family: var(--fontSecondary);
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.StayUp-text {
+  color: #2d323b;
+  font-size: 13px;
+  line-height: 18px;
+  text-align: left;
+  margin: 15px 0 20px;
+  font-family: var(--fontSecondary);
+}
+
+.hbspt-form .hs-input,
+.hbspt-form select {
+  height: 48px;
+  line-height: 48px;
+}

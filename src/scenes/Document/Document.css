@@ -23,13 +23,19 @@
   height: 72px;
   text-align: right;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   font-size: 1.1rem;
 }
 
 .DocumentFooter.center {
   justify-content: center;
+}
+
+.DocumentFooterButtons {
+  justify-content: flex-end;
+  display: flex;
+  width: 100%;
 }
 
 .file-icon {

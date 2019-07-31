@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './AuthSelect.css';
 import Modal from '../../components/Modal/Modal';
 import Button from '../../components/Button/Button';
+// import Virtru from 'utils/VirtruWrapper';
 
 const AUTH_STEPS = {
   ENTER_EMAIL: 0,
   CHOOSE_PROVIDER: 1,
+  ENTER_CODE: 2,
 };
 
 function validateEmail(email) {

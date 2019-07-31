@@ -26,6 +26,15 @@ const Header = ({ userId }) => {
         </span>
       );
     }
+    if (localStorage.length) {
+      return (
+        <span>
+          <Button variant="link" onClick={signOut} verySmall light>
+            Reset
+          </Button>
+        </span>
+      );
+    }
   }
   return (
     <div className="headerContainer">
@@ -34,7 +43,7 @@ const Header = ({ userId }) => {
       </div>
       <div className="delimiter" />
       <span className="headerText">
-        <span className="headerTitle">Demo: Protect & Track</span>
+        <span className="headerTitle">Protect & Track Demo</span>
       </span>
       <div className="delimiter" />
       <button className="githubButton">

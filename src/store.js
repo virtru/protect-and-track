@@ -8,7 +8,7 @@ import ENCRYPT_STATES from 'constants/encryptStates';
 let encryptState = ENCRYPT_STATES.UNPROTECTED;
 
 let userId = getQueryParam('virtruAuthWidgetEmail');
-let isLoggedIn = Virtru.Auth.isLoggedIn({ email: userId });
+let isLoggedIn = userId && Virtru.Auth.isLoggedIn({ email: userId });
 let appId = '';
 let policy = false;
 let file = false;
@@ -45,14 +45,16 @@ try {
         type: localData.fileType,
       },
     };
+    const policyData = JSON.parse(localStorage.getItem('virtru-demo-policy'));
     policy =
-      localData.policy &&
-      new Virtru.Policy(
-        localData.policy._policyId,
-        localData.policy._users,
-        localData.policy._authZFlags,
-        localData.policy._deadline,
-      );
+      policyData && policyData.policy
+        ? new Virtru.Policy(
+            policyData.policy._policyId,
+            policyData.policy._users,
+            policyData.policy._authZFlags,
+            policyData.policy._deadline,
+          )
+        : new Virtru.PolicyBuilder().build();
   }
 } catch (err) {
   console.error(err);

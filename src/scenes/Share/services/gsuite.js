@@ -4,9 +4,9 @@ import { loadGapi } from 'services/core/remoteLoad';
 import awaitify from 'services/core/awaitify';
 
 // API connectors.
-// TODO(dmihalcik): Lock these down
+// To edit: https://console.developers.google.com/apis/api/drive.googleapis.com/overview
 const CLIENT_ID = '685840918809-jtvptmpgsvdkuqqbtjuvqi4ijujviivd.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyCDUsJwMdEhAuwoUX0yv0RhJOtGXAhLkqw';
+const API_KEY = 'AIzaSyDCMZYdYYNTdYy_qC1V1a-JcuiouQBLi4A';
 
 // Array of API discovery doc URLs for APIs used by the quickstart
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
@@ -74,7 +74,11 @@ async function share(fileId, recipients) {
   return await httpBatch;
 }
 
-async function upload(name, contentType, content) {
+/**
+ * @param {String} name the file name
+ * @param {*} content ArrayBuffer object containing the TDF.html content
+ */
+async function upload(name, content) {
   // NOTE(DSAT-1): Unfortunately, AFAICT the current `drive.files.create` method in GAPI
   // does not support POST content. See relevant discussions:
   //   * https://stackoverflow.com/questions/51775917
@@ -87,7 +91,7 @@ async function upload(name, contentType, content) {
   const close_delim = '\r\n--' + boundary + '--';
   const metadata = {
     name: name,
-    mimeType: contentType,
+    mimeType: 'text/html',
   };
   const base64 = buffer => {
     return btoa(
@@ -102,9 +106,7 @@ async function upload(name, contentType, content) {
     JSON.stringify(metadata) +
     delimiter +
     'Content-Transfer-Encoding: base64\r\n' +
-    'Content-Type: ' +
-    contentType +
-    '\r\n\r\n' +
+    'Content-Type: text/html\r\n\r\n' +
     base64(content) +
     close_delim;
 

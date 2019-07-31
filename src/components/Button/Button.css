@@ -13,6 +13,7 @@
   font-family: var(--fontPrimary);
   font-weight: bold;
   margin: 0.5rem;
+  padding: 12px 23px;
 
   cursor: pointer;
   white-space: nowrap;
@@ -97,6 +98,11 @@
 .link:focus,
 .link:hover {
   color: var(--blueDarkest);
+}
+
+.link.light:focus,
+.link.light:hover {
+  color: var(--blueLightest);
 }
 
 .link:disabled {

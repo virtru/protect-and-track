@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
+import dropboxsuite from './services/dropboxsuite';
 import gsuite from './services/gsuite';
+import onedrive from './services/onedrive';
 import './Share.css';
 import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 
 function Ico({ type }) {
-  return <img alt="" src={`/${type}.svg`} className="ShareSelect-ico" />;
+  return <img alt="" src={`${type}.svg`} className="ShareSelect-ico" />;
 }
 
 function Title({ children }) {
@@ -48,6 +50,32 @@ function ShareButton({ children, init, onClick, type }) {
 }
 
 function ShareSelect({ setShare, file, recipients, onClose }) {
+  const shareToDropBox = async () => {
+    try {
+      const state = s =>
+        setShare({
+          provider: SHARE_PROVIDERS.DROPBOX,
+          providerState: { state: s, recipients },
+        });
+      state(SHARE_STATE.AUTHORIZING);
+      const accessToken = await dropboxsuite.signIn();
+      state(SHARE_STATE.UPLOADING);
+      const uploadResponse = await dropboxsuite.upload(accessToken, file);
+      const link = 'https://www.dropbox.com/preview' + uploadResponse.path_lower;
+      await dropboxsuite.share(accessToken, uploadResponse.id, recipients);
+      setShare({
+        provider: SHARE_PROVIDERS.DROPBOX,
+        providerState: {
+          state: SHARE_STATE.SHARED,
+          id: uploadResponse.id,
+          link,
+          recipients,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const shareToDrive = async () => {
     try {
       const state = s =>
@@ -63,7 +91,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       await gsuite.signIn();
 
       state(SHARE_STATE.UPLOADING);
-      const uploadResponse = await gsuite.upload(file.name, file.type, file.payload);
+      const uploadResponse = await gsuite.upload(file.name, file.payload);
       state(SHARE_STATE.SHARING);
       await gsuite.share(uploadResponse.result.id, recipients);
       // TODO(DSAT-67) Validate response
@@ -83,14 +111,51 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       throw e;
     }
   };
+  const shareToOnedrive = async () => {
+    try {
+      const state = s =>
+        setShare({
+          provider: SHARE_PROVIDERS.ONEDRIVE,
+          providerState: { state: s, recipients },
+        });
+      state(SHARE_STATE.AUTHORIZING);
+      const token = await onedrive.signIn();
+      state(SHARE_STATE.SHARING);
+      const uploadResponse = await onedrive.upload(token, file);
+      // NOTE onedrive doesn't like sharing with yourself, so break this into two bits
+      // The owner may sign into onedrive with another account, and they may share with
+      // the onedrive owner explicitly, so maybe we should break this into one request per recipient.
+      if (recipients.length > 1) {
+        await onedrive.share(token, uploadResponse.id, recipients.slice(1));
+      }
+      await onedrive.share(token, uploadResponse.id, recipients.slice(0, 1));
+      onedrive.signOut();
+      setShare({
+        provider: SHARE_PROVIDERS.ONEDRIVE,
+        providerState: {
+          state: SHARE_STATE.SHARED,
+          id: uploadResponse.id,
+          link: 'https://onedrive.live.com/?id=' + uploadResponse.id,
+          recipients,
+        },
+      });
+    } catch (e) {
+      console.log('1drive error: ' + JSON.stringify(e));
+      throw e;
+    }
+  };
   return (
     <ShareContainer>
       <Title>Share {(file && file.name) || 'protected file'}</Title>
       <ShareButton type="googledrive" onClick={shareToDrive} init={gsuite.init}>
         Google Drive
       </ShareButton>
-      <ShareButton type="onedrive">OneDrive</ShareButton>
-      <ShareButton type="dropbox">Dropbox</ShareButton>
+      <ShareButton type="onedrive" init={onedrive.init} onClick={shareToOnedrive}>
+        OneDrive
+      </ShareButton>
+      <ShareButton type="dropbox" init={dropboxsuite.init} onClick={shareToDropBox}>
+        Dropbox
+      </ShareButton>
       <ShareButton type="box">Box</ShareButton>
     </ShareContainer>
   );
@@ -180,6 +245,10 @@ function ShareComplete({ provider, providerState, file, onClose, recipients }) {
 
 function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
   let shareContent;
+  const closeAndResetState = (...args) => {
+    onClose(...args);
+    setShare(false);
+  };
   if (!share) {
     shareContent = <ShareSelect setShare={setShare} file={encrypted} recipients={recipients} />;
   } else {
@@ -203,7 +272,7 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
             recipients={recipients}
             provider={share}
             providerState={providers[share]}
-            onClose={onClose}
+            onClose={closeAndResetState}
           />
         );
         break;
@@ -211,7 +280,7 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
     }
   }
 
-  return <Modal onClose={onClose}>{shareContent}</Modal>;
+  return <Modal onClose={closeAndResetState}>{shareContent}</Modal>;
 }
 
 /* TODO(dmihalcik) maybe move this to a separate store?
@@ -240,10 +309,13 @@ const mapToProps = ({ encrypted, policy, share, ...rest }) => ({
 });
 
 const actions = {
-  setShare: (state, value) => ({
-    share: value.provider,
-    ['share_' + value.provider]: value.providerState,
-  }),
+  setShare: (state, value) =>
+    value
+      ? {
+          share: value.provider,
+          ['share_' + value.provider]: value.providerState,
+        }
+      : { share: false },
 };
 
 export default connect(
