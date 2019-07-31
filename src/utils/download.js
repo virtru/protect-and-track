@@ -1,32 +1,23 @@
 import Virtru from './VirtruWrapper';
-
-const downloadFile = (buffer, fileName) => {
-  const element = document.createElement('a');
-  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(buffer));
-  element.setAttribute('download', fileName);
-
-  element.style.display = 'none';
-  document.body.appendChild(element);
-
-  element.click();
-
-  document.body.removeChild(element);
-};
+import FileSaver from 'file-saver';
 
 export const downloadHtml = encrypted => {
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
-  return downloadFile(html, encrypted.name);
+  const blob = new Blob([...html], { type: 'text/plain;charset=utf-8' });
+  return FileSaver.saveAs(blob, encrypted.name);
 };
 
 export const downloadTdf = encrypted => {
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
   const tdf = Virtru.unwrapHtml(html);
-  return downloadFile(tdf, encrypted.name.replace('.html', '.tdf'));
+  const blob = new Blob(tdf);
+  return FileSaver.saveAs(blob, encrypted.name.replace('.html', '.tdf'));
 };
 
 export const downloadDecrypted = async ({ encrypted, virtruClient }) => {
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
   const tdf = Virtru.unwrapHtml(html);
   const decrypted = await Virtru.decrypt({ virtruClient, encryptedFile: tdf });
-  return downloadFile(decrypted, encrypted.name.replace('.html', ''));
+  const blob = new Blob(decrypted);
+  return FileSaver.saveAs(blob, encrypted.name.replace('.html', ''));
 };

@@ -11,8 +11,14 @@ export default ({ onClose, encrypted, virtruClient }) => {
 
   const decryptAndDownload = async () => {
     setDecrypting(true);
-    await downloadDecrypted({ encrypted, virtruClient });
-    setDecrypting(false);
+    try {
+      await downloadDecrypted({ encrypted, virtruClient });
+    } catch (err) {
+      console.error(err);
+      alert('File could not be decrypted');
+    } finally {
+      setDecrypting(false);
+    }
   };
 
   return (
