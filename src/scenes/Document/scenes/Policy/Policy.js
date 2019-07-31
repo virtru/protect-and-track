@@ -8,7 +8,7 @@ import Button from 'components/Button/Button';
 import ENCRYPT_STATES from 'constants/encryptStates';
 import './Policy.css';
 
-function Policy({ userId, openAuthModal, encrypt, encryptState, policy, policyChange }) {
+function Policy({ file, userId, openAuthModal, encrypt, encryptState, policy, policyChange }) {
   const renderButtons = () => {
     switch (encryptState) {
       case ENCRYPT_STATES.AUTHENTICATING:
@@ -55,7 +55,7 @@ function Policy({ userId, openAuthModal, encrypt, encryptState, policy, policyCh
       <hr className="Policy-rule" />
       <Expiration policy={policy} policyChange={policyChange} />
       <Resharing policy={policy} policyChange={policyChange} />
-      <Watermarking policy={policy} policyChange={policyChange} />
+      <Watermarking file={file} policy={policy} policyChange={policyChange} />
     </div>
   );
 }

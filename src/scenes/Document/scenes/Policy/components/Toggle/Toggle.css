@@ -33,6 +33,13 @@
   transition: 0.2s;
 }
 
+.Toggle > input:disabled + label {
+  background: var(--slateLightest);
+}
+.Toggle > input:disabled + label:after {
+  background: var(--slateLighter);
+}
+
 .Toggle > input:checked + label {
   background: var(--blueDarker);
   border-color: var(--blueDarker);
