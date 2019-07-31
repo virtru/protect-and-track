@@ -26,13 +26,14 @@ export default ({ onClose, encrypted, virtruClient }) => {
         </Button>
         <span>Inspect the metadata:</span>
         <br />
-        <Button fullWidth onClick={() => downloadTdf(encrypted)}>
+        <Button disabled fullWidth onClick={() => downloadTdf(encrypted)}>
           Download TDF
         </Button>
         <span>See the original file:</span>
         <br />
         <Button
-          disabled={decrypting}
+          disabled
+          // disabled={decrypting} -- re-enable when this is working
           fullWidth
           variant="alternateButton"
           onClick={decryptAndDownload}

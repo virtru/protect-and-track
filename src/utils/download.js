@@ -19,12 +19,14 @@ export const downloadHtml = encrypted => {
 };
 
 export const downloadTdf = encrypted => {
-  const tdf = Virtru.unwrapHtml(encrypted.payload);
+  const html = new TextDecoder('utf-8').decode(encrypted.payload);
+  const tdf = Virtru.unwrapHtml(html);
   return downloadFile(tdf, encrypted.name.replace('.html', '.tdf'));
 };
 
 export const downloadDecrypted = async ({ encrypted, virtruClient }) => {
-  const tdf = Virtru.unwrapHtml(encrypted.payload);
+  const html = new TextDecoder('utf-8').decode(encrypted.payload);
+  const tdf = Virtru.unwrapHtml(html);
   const decrypted = await Virtru.decrypt({ virtruClient, encryptedFile: tdf });
   return downloadFile(decrypted, encrypted.name.replace('.html', ''));
 };
