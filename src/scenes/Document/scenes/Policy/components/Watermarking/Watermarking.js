@@ -16,7 +16,6 @@ function Watermarking({ file, policy, policyChange }) {
   ];
   const mediaType = file.file && file.file.type;
   const disabled = !SUPPORTED_MEDIA.includes(mediaType);
-  console.log(`${disabled} file.type = ${mediaType}, file = ${JSON.stringify(file)}`);
   const onChange = disabled
     ? undefined
     : policyChange((builder, e) =>
