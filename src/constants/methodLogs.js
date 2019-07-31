@@ -12,7 +12,7 @@ export const createVirtruClient = ({
   acmEndpoint,
   kasEndpoint,
   easEndpoint,
-}) => `const client = new Virtru.Client.Client({
+}) => `const client = new Virtru.Client({
   acmEndpoint: '${acmEndpoint}',
   kasEndpoint: '${kasEndpoint}',
   easEndpoint: '${easEndpoint}',
@@ -21,7 +21,7 @@ export const createVirtruClient = ({
 
 export const createMockStream = () => 'const contentStream = TDF.createMockStream(fileData);';
 
-export const buildPolicy = () => 'const policy = new Virtru.Client.PolicyBuilder().build();';
+export const buildPolicy = () => 'const policy = new Virtru.PolicyBuilder().build();';
 
 export const buildEncryptParams = filename => `const encryptParams = new Virtru.Client.EncryptParamsBuilder()
   .withStreamSource(contentStream)

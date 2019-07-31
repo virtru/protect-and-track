@@ -1,5 +1,5 @@
 import createStore from 'redux-zero';
-import Virtru from 'virtru-tdf3-js';
+import Virtru from 'virtru-sdk';
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import { base64ToArrayBuffer } from 'utils/buffer';
 
@@ -7,13 +7,17 @@ import ENCRYPT_STATES from 'constants/encryptStates';
 
 let encryptState = ENCRYPT_STATES.UNPROTECTED;
 
-const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
-const activeAuth = auths && Object.values(auths).find(auth => auth.includes(':active'));
-const userId = activeAuth && activeAuth.split(':')[0];
-const appId = activeAuth && activeAuth.split(':')[1];
+let userId = getQueryParam('virtruAuthWidgetEmail');
+let isLoggedIn = Virtru.Auth.isLoggedIn({ email: userId });
+let appId = '';
 let policy = false;
 let file = false;
 let encrypted = false;
+let virtruClient = false;
+
+if (isLoggedIn) {
+  virtruClient = new Virtru.Client({ email: userId });
+}
 
 try {
   const encryptedFileData = JSON.parse(localStorage.getItem('virtru-demo-file-encrypted'));
@@ -24,7 +28,7 @@ try {
       name: encryptedFileData.name,
       type: encryptedFileData.type,
     };
-    encryptState = userId ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
+    encryptState = isLoggedIn ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
   }
 } catch (err) {
   console.error(err);
@@ -43,7 +47,7 @@ try {
     };
     policy =
       localData.policy &&
-      new Virtru.Client.Policy(
+      new Virtru.Policy(
         localData.policy._policyId,
         localData.policy._users,
         localData.policy._authZFlags,
@@ -97,5 +101,18 @@ export default createStore({
   auditEvents: [],
 
   // Enhanced TDF client library
-  virtruClient: false,
+  virtruClient,
+
+  // Is the user logged in?
+  isLoggedIn,
 });
+
+function getQueryParam(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}

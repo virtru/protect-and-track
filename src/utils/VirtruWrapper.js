@@ -1,4 +1,4 @@
-import Virtru from 'virtru-tdf3-js';
+import Virtru from 'virtru-sdk';
 import TDF from 'tdf3-js';
 import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
@@ -58,7 +58,7 @@ function buildClient(userEmail) {
       easEndpoint,
     }),
   });
-  const client = new Virtru.Client.Client({
+  const client = new Virtru.Client({
     acmEndpoint,
     kasEndpoint,
     easEndpoint,
@@ -68,13 +68,13 @@ function buildClient(userEmail) {
 }
 
 /**
- * Wrapper for `new Virtru.Client.PolicyBuilder(opts)`.
+ * Wrapper for `new Virtru.PolicyBuilder(opts)`.
  *
  * @param {?object} opts
  */
 function policyBuilder(opts) {
-  const builder = new Virtru.Client.PolicyBuilder(opts);
-  let actions = [`const policy = new Virtru.Client.PolicyBuilder(${opts ? 'policy' : ''})`];
+  const builder = new Virtru.PolicyBuilder(opts);
+  let actions = [`const policy = new Virtru.PolicyBuilder(${opts ? 'policy' : ''})`];
   // This proxy records all calls, then logs them to the UI on `build` invocations.
   return new Proxy(builder, {
     get(target, propKey, receiver) {
@@ -111,18 +111,18 @@ function policyBuilder(opts) {
 async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }) {
   const { startUrl } = getEnvironment();
 
-  _pushAction({
-    title: 'Create Mock Stream',
-    code: logs.createMockStream(),
-  });
-  const contentStream = TDF.createMockStream(fileData);
+  // _pushAction({
+  //   title: 'Create Mock Stream',
+  //   code: logs.createMockStream(),
+  // });
+  // const contentStream = TDF.createMockStream(fileData);
 
   _pushAction({
     title: 'Build Virtru Encryption Params',
     code: logs.buildEncryptParams(filename),
   });
-  const encryptParams = new Virtru.Client.EncryptParamsBuilder()
-    .withStreamSource(contentStream)
+  const encryptParams = new Virtru.EncryptParamsBuilder()
+    .withBufferSource(fileData)
     .withPolicy(policy)
     .withDisplayFilename(filename)
     .build();
@@ -131,21 +131,12 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
     title: 'Encrypt File',
     code: logs.encryptFile(encryptParams),
   });
-  const ct = await client.encrypt(encryptParams);
-
-  // TODO - DSAT-44: Stream the file instead of storing in buffer. This will allow
-  // us to handle large files.
-  const buffer = await streamToBuffer(ct);
-
-  if (!asHtml) {
-    return buffer;
-  }
+  const encryptedFile = await client.encrypt(encryptParams);
 
   boundActions.fetchAuditLogAction();
 
-  const manifestString = ''; // TODO: Confirmed with Tyler this is not needed for now
   return {
-    encryptedFile: TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`),
+    encryptedFile,
     policyId: policy._policyId,
   };
 }

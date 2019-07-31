@@ -2,7 +2,7 @@ import React from 'react';
 import { cleanup, render, wait, fireEvent, getByTestId, act } from '@testing-library/react';
 import Document from './Document';
 import Virtru from 'utils/VirtruWrapper';
-import VirtruClient from 'virtru-tdf3-js';
+import VirtruClient from 'virtru-sdk';
 import * as services from 'services/audit';
 jest.mock('utils/VirtruWrapper');
 jest.mock('services/audit');

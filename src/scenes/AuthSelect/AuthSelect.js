@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AuthSelect.css';
 import Modal from '../../components/Modal/Modal';
 import Button from '../../components/Button/Button';
@@ -15,59 +15,14 @@ function validateEmail(email) {
 }
 
 function AuthSelect({ onClose, loginAs }) {
-  const [authStep, setAuthStep] = useState(AUTH_STEPS.ENTER_EMAIL);
-  const [email, setEmail] = useState('');
-
-  const validateAndContinue = () => {
-    if (validateEmail(email)) {
-      return setAuthStep(authStep + 1);
-    }
-
-    alert('Invalid email address');
-  };
-
-  const renderContent = () => {
-    if (authStep === AUTH_STEPS.ENTER_EMAIL) {
-      return (
-        <form onSubmit={validateAndContinue} data-testid="formAuth">
-          <h3>Enter your email address:</h3>
-          <input
-            required
-            className="Email-input"
-            type="email"
-            data-testid="emailAuthInput"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <Button type="submit">Continue</Button>
-        </form>
-      );
-    }
-
-    return (
-      <>
-        <h3>Select your auth provider:</h3>
-        <input
-          type="button"
-          id="googlebutton"
-          value=""
-          className="login-button-google"
-          data-testid="emailAuthButton"
-          onClick={() => loginAs(email)}
-        />
-        <input disabled type="button" id="office365button" className="login-button-office365" />
-        <input disabled type="button" id="outlookbutton" className="login-button-outlook" />
-      </>
-      /* <FormBoxAlternative>OR</FormBoxAlternative>
-
-      <FormBoxInstruction>Let Virtru send you a code</FormBoxInstruction>
-      <FormBoxButton id="sendcodebutton">Send Code to {userId}</FormBoxButton> */
-    );
-  };
+  useEffect(() => {
+    console.log('Mounting auth UI...');
+    window.Virtru.AuthWidget('virtru-auth-widget-mount', { afterAuth: loginAs });
+  }, [loginAs]);
 
   return (
-    <Modal onClose={onClose}>
-      <div className="Auth-container">{renderContent()}</div>
+    <Modal raw onClose={onClose}>
+      <div id="virtru-auth-widget-mount"></div>
     </Modal>
   );
 }

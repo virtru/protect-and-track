@@ -60,7 +60,7 @@ function Access({ encryptState, userId, policy, setPolicy }) {
           <Grant user={userId || 'you'} status="owner" />
         </li>
         {policy
-          .getUsers()
+          .getUsersWithAccess()
           .filter(u => u !== userId)
           .map((user, i) => {
             return (

@@ -80,3 +80,7 @@ input[type='email'] {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+.virtru-auth {
+  width: 360px !important;
+}

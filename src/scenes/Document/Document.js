@@ -38,21 +38,6 @@ function Document({
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      if (!userId || virtruClient) {
-        return;
-      }
-      const client = await Virtru.authenticate(userId);
-      setVirtruClient(client);
-      if (!encrypted) {
-        setEncryptState(ENCRYPT_STATES.UNPROTECTED);
-      } else {
-        setEncryptState(ENCRYPT_STATES.PROTECTED);
-      }
-    })();
-  }, [userId, setVirtruClient, virtruClient, setEncryptState, encrypted]);
-
   const openAuthModal = () => {
     setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
     setAuthOpen(true);
@@ -80,6 +65,7 @@ function Document({
       userEmail: userId,
       asHtml: true,
     });
+    console.log(encryptedFile, policyId);
     setEncrypted({
       payload: encryptedFile,
       name: `${file.file.name}.html`,
@@ -156,7 +142,7 @@ function Document({
         </Button>
         <Button
           onClick={() => setShareOpen(true)}
-          disabled={!encrypted || !userId || !policy || !policy.getUsers().length}
+          disabled={!encrypted || !userId || !policy || !policy.getUsersWithAccess().length}
         >
           Share
         </Button>
@@ -223,7 +209,7 @@ const actions = {
     const policyBuilder = Virtru.policyBuilder();
     // Add the current user if present
     if (userId) {
-      policyBuilder.addUsers(userId);
+      policyBuilder.addUsersWithAccess(userId);
     }
     const policy = policyBuilder.build();
 
