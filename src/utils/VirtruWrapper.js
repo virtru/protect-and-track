@@ -138,8 +138,6 @@ function policyBuilder(opts) {
  * @param {Policy} policy
  */
 async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }) {
-  const { startUrl } = getEnvironment();
-
   _pushAction({
     title: 'Create Mock Stream',
     code: logs.createMockStream(),
@@ -166,15 +164,9 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
   // us to handle large files.
   const buffer = await streamToBuffer(ct);
 
-  if (!asHtml) {
-    return buffer;
-  }
-
   boundActions.fetchAuditLogAction();
-
-  const manifestString = ''; // TODO: Confirmed with Tyler this is not needed for now
   return {
-    encryptedFile: TDF.wrapHtml(buffer, manifestString, `${startUrl}?htmlProtocol=1`),
+    encryptedFile: wrapHtml(buffer),
     policyId: policy._policyId,
   };
 }
@@ -208,4 +200,31 @@ function unwrapHtml(file) {
   return TDF.unwrapHtml(file);
 }
 
-export default { authenticate, encrypt, policyBuilder, updatePolicy, unwrapHtml };
+function wrapHtml(buffer) {
+  const { startUrl } = getEnvironment();
+  _pushAction({
+    title: 'Wrap TDF as HTML',
+    code: logs.wrapHtml(),
+  });
+  return TDF.wrapHtml(buffer, '', `${startUrl}?htmlProtocol=1`);
+}
+
+async function decrypt({ virtruClient, encryptedFile }) {
+  const decryptParams = new Virtru.Client.VirtruDecryptParamsBuilder()
+    .withBufferSource(encryptedFile)
+    .build();
+
+  const content = await virtruClient.decrypt(decryptParams);
+  const buff = await streamToBuffer(content);
+  return buff;
+}
+
+export default {
+  authenticate,
+  encrypt,
+  policyBuilder,
+  updatePolicy,
+  unwrapHtml,
+  wrapHtml,
+  decrypt,
+};

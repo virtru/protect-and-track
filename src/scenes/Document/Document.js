@@ -7,6 +7,7 @@ import Virtru from 'utils/VirtruWrapper';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy from './scenes/Policy/Policy';
+import DownloadModal from './scenes/DownloadModal/DownloadModal';
 import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
 import AuthSelect from '../AuthSelect/AuthSelect';
@@ -17,7 +18,6 @@ import ENCRYPT_STATES from 'constants/encryptStates';
 import './Document.css';
 
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
-import downloadHtml from '../../utils/downloadHtml';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 
@@ -43,6 +43,7 @@ function Document({
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [isStayUpOpen, setStayUpOpen] = useState(false);
+  const [isDownloadOpen, setDownloadOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -199,7 +200,7 @@ function Document({
         <div className="DocumentFooterButtons">
           <Button
             variant="link"
-            onClick={() => downloadHtml(encrypted)}
+            onClick={() => setDownloadOpen(true)}
             disabled={!encrypted || !userId}
           >
             Download
@@ -211,6 +212,13 @@ function Document({
             Share
           </Button>
         </div>
+        {isDownloadOpen && (
+          <DownloadModal
+            virtruClient={virtruClient}
+            onClose={() => setDownloadOpen(false)}
+            encrypted={encrypted}
+          />
+        )}
       </section>
     );
   };

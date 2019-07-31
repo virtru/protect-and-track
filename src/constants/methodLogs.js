@@ -20,3 +20,4 @@ export const buildVirtruEncryptParams = () => `const encryptParams = new Virtru.
 export const encryptFile = () => `await client.encrypt(encryptParams);`;
 
 export const unwrapHtml = () => 'TDF.unwrapHtml(file);';
+export const wrapHtml = () => 'TDF.wrapHtml(file);';

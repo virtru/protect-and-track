@@ -1,0 +1,18 @@
+.download-modal {
+  text-align: left;
+}
+
+.download-modal span {
+  font-size: 14px;
+}
+
+.download-modal .button {
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 15px;
+}
+
+.download-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
