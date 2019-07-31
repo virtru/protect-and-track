@@ -1,10 +1,11 @@
 import { Dropbox } from 'dropbox';
 const ClientOAuth2 = require('client-oauth2');
 
+// To edit: https://www.dropbox.com/developers/apps/info/ssol0phott1nv4q
 const CLIENT_ID = 'ssol0phott1nv4q';
 const AUTHORIZATION_URI = 'https://www.dropbox.com/oauth2/authorize';
 const AUTHORIZATION_TOKEN_URI = 'https://www.dropbox.com/oauth2/authorize';
-const REDIRECT_URI = `${window.location.origin}/`;
+const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 
 function init() {
   return new ClientOAuth2({
