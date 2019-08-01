@@ -48,9 +48,7 @@
 .Grant-owner,
 .Access-revokeAll,
 .Access input[type='submit'] {
-  font-family: var(--fontPrimary);
-  font-size: 13px;
-  line-height: 18px;
+  font: var(--fSizeSmall) / var(--lhSmall) var(--fontPrimary);
   min-height: 36px;
   margin: 4px;
   min-width: 94px;
@@ -66,16 +64,61 @@
   font-weight: bold;
   line-height: 18px;
   text-align: center;
+  cursor: pointer;
+}
+.Access-revokeAll:hover,
+.Access-revokeAll:focus {
+  background-color: var(--slateDarker);
+  border-color: var(--slateDarker);
+  box-shadow: 0 1px 4px 1px var(--slateShadow);
+  outline: none;
+}
+.Access-revokeAll:active {
+  background-color: var(--black);
+  border-color: var(--black);
+  box-shadow: 0 1px 4px 1px var(--slateShadow);
 }
 
 .Access input[type='submit'] {
   border: 1px solid var(--slateDarker);
   border-radius: 3px;
   background-color: #fff;
+  cursor: pointer;
+}
+.Access input[type='submit']:hover,
+.Access input[type='submit']:focus {
+  box-shadow: 0 1px 4px 1px var(--blueShadow);
+  border-color: var(--blueDarkest);
+  color: var(--blueDarkest);
+  outline: none;
+}
+.Access input[type='submit']:active {
+  box-shadow: 0 1px 4px 1px var(--slateShadow);
+  color: var(--white);
+  background-color: var(--slatePrimary);
+  border-color: var(--slatePrimary);
+}
+.Access input[type='submit']:disabled {
+  box-shadow: none;
+  background-color: var(--slateLighter);
+  border-color: var(--slateLighter);
+  color: var(--white);
+  cursor: default;
 }
 
-.Grant input[type='submit'] {
+.Grant input[type='submit'],
+.Grant input[type='submit']:hover,
+.Grant input[type='submit']:focus {
   color: var(--redDarker);
+}
+.Grant input[type='submit']:hover,
+.Grant input[type='submit']:focus {
+  border-color: var(--redDarker);
+  box-shadow: 0 1px 4px 1px var(--slateShadow);
+}
+.Grant input[type='submit']:active {
+  background-color: var(--redDarker);
+  color: var(--white);
 }
 .NewGrant input[type='submit'] {
   color: var(--blueDarker);

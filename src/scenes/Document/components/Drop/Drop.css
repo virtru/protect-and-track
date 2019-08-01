@@ -70,13 +70,13 @@
 .Drop-UploadButton:focus {
   background-color: var(--blueDarkest);
   border-color: var(--blueDarkest);
-  box-shadow: 0 2px 4px 0 rgba(var(--black), 0.29);
+  box-shadow: 0 1px 4px 1px var(--blueShadow);
 }
 
 .Drop-UploadButton:active {
   background-color: var(--slatePrimary);
   border-color: var(--slatePrimary);
-  box-shadow: 0 2px 4px 0 rgba(var(--black), 0.29);
+  box-shadow: 0 1px 4px 1px var(--slateShadow);
 }
 
 .Drop-UploadButton-label {
