@@ -56,6 +56,10 @@
   font-size: 13px;
 }
 
+.Share-container a {
+  color: var(--blueDarker);
+}
+
 .Share-recipient {
   list-style-position: inside;
   white-space: nowrap;
@@ -66,4 +70,8 @@
 
 .Share-center {
   align-self: center;
+}
+
+.Share-Fail-explain {
+  color: var(--redDarker);
 }

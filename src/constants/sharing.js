@@ -11,4 +11,12 @@ export const SHARE_STATE = {
   UPLOADING: 'uploading',
   SHARING: 'sharing',
   SHARED: 'shared',
+  FAIL: 'fail',
+};
+// Text friendly sharing provider names/titles
+export const SHARE_TITLES = {
+  box: 'box.com',
+  dropbox: 'Dropbox',
+  googledrive: 'Google Drive',
+  onedrive: 'OneDrive',
 };

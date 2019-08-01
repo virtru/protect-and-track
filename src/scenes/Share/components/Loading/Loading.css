@@ -1,17 +1,18 @@
 .Loading {
   display: inline-block;
-  width: 64px;
-  height: 64px;
+  width: 32px;
+  height: 32px;
 }
+
 .Loading:after {
   content: ' ';
   display: block;
-  width: 46px;
-  height: 46px;
+  width: 31px;
+  height: 31px;
   margin: 1px;
-  border-radius: 50%;
-  border: 5px solid rgb(17, 69, 90);
-  border-color: rgb(17, 69, 90) transparent rgb(17, 69, 90) transparent;
+  border-radius: 75%;
+  border: 2px solid #fff;
+  border-color: var(--blueDarker) var(--blueDarker) var(--blueDarker) transparent;
   animation: Loading 1.2s linear infinite;
 }
 @keyframes Loading {
