@@ -8,8 +8,9 @@ import AuditEventItem from './components/AuditEventItem/AuditEventItem';
 
 const { useEffect, useRef } = React;
 
-const AuditLogger = ({ auditLog = [] }) => {
+const AuditLogger = ({ auditLog = {} }) => {
   const scroll = useRef();
+  const { error, events = [], status } = auditLog;
   useEffect(() => {
     if (!scroll.current) return;
     const scrollHeight = scroll.current.getScrollHeight();
@@ -17,15 +18,15 @@ const AuditLogger = ({ auditLog = [] }) => {
   }, [auditLog]);
 
   const onDownload = i => {
-    const csvContent = parseCsvToJson(auditLog[i]);
+    const csvContent = parseCsvToJson(events[i]);
     const blob = new Blob([csvContent], { type: 'text/plain;charset=utf-8' });
-    FileSaver.saveAs(blob, `${auditLog[i].recordId}.csv`);
+    FileSaver.saveAs(blob, `${events[i].recordId}.csv`);
   };
 
-  return auditLog.length ? (
+  const contents = events.length ? (
     <Scrollbars ref={scroll} autoHide>
       <div className="auditEventsWrapper">
-        {auditLog.map((event, i) => (
+        {events.map((event, i) => (
           <AuditEventItem {...event} key={event.recordId} onDownload={onDownload} index={i} />
         ))}
       </div>
@@ -33,6 +34,15 @@ const AuditLogger = ({ auditLog = [] }) => {
   ) : (
     <p>Protect a file to enable tracking</p>
   );
+  if (error) {
+    return (
+      <div>
+        <h4>Error while connecting to audit service.</h4>
+        {contents}
+      </div>
+    );
+  }
+  return contents;
 };
 
 const mapToProps = ({ auditEvents }) => ({ auditLog: auditEvents });

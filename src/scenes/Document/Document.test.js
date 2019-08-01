@@ -64,7 +64,6 @@ describe('Document', () => {
     const { container, rerender } = render(
       <Document
         setPolicyId={() => {}}
-        auditEvents={[]}
         encryptState={ENCRYPT_STATES.UNPROTECTED}
         file={file}
         policy={policy}
@@ -100,7 +99,6 @@ describe('Document', () => {
     rerender(
       <Document
         setPolicyId={() => {}}
-        auditEvents={[]}
         encrypted={expectedEncrypted}
         encryptState={ENCRYPT_STATES.PROTECTED}
         file={file}
@@ -122,7 +120,6 @@ describe('Document', () => {
     rerender(
       <Document
         setPolicyId={() => {}}
-        auditEvents={[]}
         encryptState={ENCRYPT_STATES.UNPROTECTED}
         file={file}
         policy={policy}

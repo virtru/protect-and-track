@@ -20,7 +20,7 @@ describe('AuditLogger', () => {
       timestamp: '2019-07-15T14:48:22+00:00',
       recordId: 0,
     };
-    const { getByText } = render(<AuditLogger auditLog={[event]} />);
+    const { getByText } = render(<AuditLogger auditLog={{ events: [event] }} />);
     const formattedDate = moment(event.timestamp).format('hh:mm:ss');
 
     expect(getByText(auditEvents[event.auditDataType])).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe('AuditLogger', () => {
     const saveAs = jest.fn();
     FileSaver.saveAs.mockImplementation(saveAs);
 
-    const { container } = render(<AuditLogger auditLog={[event]} />);
+    const { container } = render(<AuditLogger auditLog={{ events: [event] }} />);
 
     fireEvent.click(getByTestId(container, 'auditEventDownload'));
     expect(saveAs).toHaveBeenCalledTimes(1);

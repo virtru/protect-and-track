@@ -117,7 +117,7 @@ export default createStore({
   appId,
 
   // Audit events associated with the current policy
-  auditEvents: [],
+  auditEvents: false,
 
   // Enhanced TDF client library
   virtruClient,
