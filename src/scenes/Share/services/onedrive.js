@@ -1,16 +1,22 @@
 import awaitify from 'services/core/awaitify';
 
-// OneDrive apps can only redirect to a single host, so we need separate client ids for
-// both local(host) and demos.developers.virtru.com
-// To edit: https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade
-const CLIENT_ID = window.location.host.includes('local')
-  ? 'a6419f7b-80cb-4d9a-abe1-4573cfd3709f'
-  : '2ecdc44f-18de-4170-ad27-bbfb61a27bf3';
+// NOTE(deployment)
+// To connect to OneDrive, you must have an MS Azure dev account and register
+// an app via https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade
+// Under 'Branding', configure your application brand (make sure the name does not include invalid path characters)
+// Under 'Authentication', enable an implicit access flow; the redirect will be the SPA's url.
+// Under API Permissions, add Microsoft.Graph > Files.ReadWrite.AppFolder
+// Then, when building or deploying this, make sure to set this variabls
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID_ONEDRIVE;
 const AUTHORIZATION_URI = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize';
 const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 
 async function init() {
-  // Nothing to initialize, since this is a pure rest api.
+  if (!CLIENT_ID) {
+    console.log('Onedrive integration not enabled');
+    return false;
+  }
+  return true;
 }
 
 // Starts oauth flow. Note that this will reload the current page.

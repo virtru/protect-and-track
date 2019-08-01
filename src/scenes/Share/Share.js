@@ -22,14 +22,18 @@ function ShareContainer({ children }) {
 }
 
 function ShareButton({ children, init, onClick, type }) {
-  const [state, setState] = useState('start');
+  const [buttonState, setButtonState] = useState('start');
   const handleClick = e => {
     e.preventDefault();
     onClick && onClick(e);
   };
 
   const button = (
-    <button className="ShareSelect-button" onClick={handleClick} disabled={state !== 'enabled'}>
+    <button
+      className="ShareSelect-button"
+      onClick={handleClick}
+      disabled={buttonState !== 'enabled'}
+    >
       <Ico type={type} />
       <div className="ShareSelect-button-text">{children}</div>
     </button>
@@ -40,8 +44,10 @@ function ShareButton({ children, init, onClick, type }) {
       return;
     }
     async function initializeButtonBackend() {
-      await init();
-      setState(onClick ? 'enabled' : 'misconfigured');
+      const success = await init();
+      if (success) {
+        setButtonState(onClick ? 'enabled' : 'misconfigured');
+      }
     }
     initializeButtonBackend();
   }, [init, onClick]);
@@ -263,7 +269,7 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
         shareContent = <Uploading file={encrypted} />;
         break;
       case SHARE_STATE.SHARING:
-        shareContent = <Sharing file={encrypted} recipients={recipients} />;
+        shareContent = <Sharing file={encrypted} provider={share} recipients={recipients} />;
         break;
       case SHARE_STATE.SHARED:
         shareContent = (

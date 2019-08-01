@@ -1,13 +1,23 @@
 import { Dropbox } from 'dropbox';
 const ClientOAuth2 = require('client-oauth2');
 
-// To edit: https://www.dropbox.com/developers/apps/info/ssol0phott1nv4q
-const CLIENT_ID = 'ssol0phott1nv4q';
+// NOTE(deployment) You must set this environment variable to support sharing.
+// Pulled in as an app from the dropbox devlopers console. To create one,
+// go to https://www.dropbox.com/developers/apps and click 'create app'
+// Choose the Dropbox API
+// If you want 'sharing' to work, you must select Full Dropbox access :-(
+// You'll need t o enable t for development, set your redirect URI to your deployment
+// location, and allow implicit grants.
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID_DROPBOX;
 const AUTHORIZATION_URI = 'https://www.dropbox.com/oauth2/authorize';
 const AUTHORIZATION_TOKEN_URI = 'https://www.dropbox.com/oauth2/authorize';
 const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 
 function init() {
+  if (!CLIENT_ID) {
+    console.log('Dropbox integration not enabled');
+    return false;
+  }
   return new ClientOAuth2({
     clientId: CLIENT_ID,
     authorizationUri: AUTHORIZATION_URI,
