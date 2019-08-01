@@ -6,6 +6,7 @@ import ENCRYPT_STATES from 'constants/encryptStates';
 import { NOPE } from '../../services/policyChanger';
 import './Access.css';
 import VirtruWrapper from 'utils/VirtruWrapper';
+import Button from 'components/Button/Button';
 
 function Access({ encryptState, userId, virtruClient, policy, policyId, policyChange }) {
   const Grant = ({ user, status }) => {
@@ -28,6 +29,20 @@ function Access({ encryptState, userId, virtruClient, policy, policyId, policyCh
 
   const NewGrant = () => {
     const [input, setInput] = useState({ text: '', valid: false });
+    let hasUsers = policy.getUsersWithAccess().length > 0;
+
+    let action;
+    if (hasUsers) {
+      action = (
+        <input type="submit" className="Grant-grant" disabled={!input.valid} value="Grant" />
+      );
+    } else {
+      action = (
+        <Button type="submit" disabled={!input.valid}>
+          Grant
+        </Button>
+      );
+    }
 
     return (
       <form
@@ -40,7 +55,7 @@ function Access({ encryptState, userId, virtruClient, policy, policyId, policyCh
           onChange={e => setInput({ text: e.target.value, valid: e.target.validity.valid })}
           value={input.text}
         />
-        <input type="submit" className="Grant-grant" disabled={!input.valid} value="Grant" />
+        {action}
       </form>
     );
   };
