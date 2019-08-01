@@ -47,7 +47,6 @@ function Policy({
           );
         }
 
-        return <div></div>;
     }
   };
   if (encryptState !== ENCRYPT_STATES.PROTECTED) {
