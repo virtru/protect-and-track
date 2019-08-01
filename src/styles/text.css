@@ -1,5 +1,5 @@
 :root {
-  --fontPrimary: open-sans-regular, Helvetica, Arial, sans-serif;
+  --fontPrimary: 'Open Sans', Helvetica, Arial, sans-serif;
   --fontSecondary: raleway, Helvetica, Arial, sans-serif;
   --fontCode: source-code-pro, Menlo, Monaco, Consolas, monospace;
 }
