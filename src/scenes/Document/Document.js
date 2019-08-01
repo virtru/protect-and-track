@@ -27,7 +27,6 @@ function Document({
   policyId,
   appId,
   encrypted,
-  auditEvents,
   file,
   policy,
   userId,
@@ -94,12 +93,10 @@ function Document({
         // The policy changed while waiting for the audit log, so don't update it.
         return;
       }
-      if (
-        auditData.data &&
-        auditData.data.length >= 0 &&
-        auditData.data.length !== auditEvents.length
-      ) {
-        setAuditEvents(auditData.data || []);
+      if (!auditRes.ok) {
+        setAuditEvents({ status: auditRes.status, error: auditData });
+      } else {
+        setAuditEvents({ events: auditData.data, error: false });
       }
       auditTimerId = setTimeout(updateAuditEvents, 2000);
     }
@@ -112,7 +109,7 @@ function Document({
       return;
     }
     auditTimerId = setTimeout(updateAuditEvents, 2000);
-  }, [appId, encryptState, policy, policyId, setAuditEvents, userId, auditEvents]);
+  }, [appId, encryptState, policy, policyId, setAuditEvents, userId]);
 
   const renderDrop = () => {
     if (!file) {
@@ -221,24 +218,12 @@ function Document({
   );
 }
 
-const mapToProps = ({
-  policyId,
-  file,
-  appId,
-  encrypted,
-  auditEvents,
-  encryptState,
-  policy,
-  userId,
-  virtruClient,
-}) => ({
-  policyId,
+const mapToProps = ({policyId, file, appId, encrypted, encryptState, policy, userId, virtruClient }) => ({policyId,
   file,
   policy,
   userId,
   appId,
   virtruClient,
-  auditEvents,
   encrypted,
   encryptState,
 });
@@ -277,7 +262,13 @@ const actions = {
       window.clearTimeout(auditTimerId);
     }
     if (!fileHandle) {
-      return { file: false, policy: false, encrypted: false, encryptState: false, auditEvents: [] };
+      return {
+        file: false,
+        policy: false,
+        encrypted: false,
+        encryptState: false,
+        auditEvents: false,
+      };
     }
     const { userId } = state;
     const { name: fileName, type: fileType } = fileHandle;
@@ -317,14 +308,14 @@ const actions = {
       policy,
       encrypted,
       encryptState,
-      auditEvents: [],
+      auditEvents: false,
     };
   },
   setEncrypted: ({ policy }, value) => {
     const { payload, name, type } = value;
     saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
     savePolicyToLocalStorage({ policy });
-    return { encrypted: value, auditEvents: [] };
+    return { encrypted: value, auditEvents: false };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),
   setPolicy: (state, policy) => {
@@ -335,7 +326,21 @@ const actions = {
     savePolicyToLocalStorage({ policy });
     return { policy };
   },
-  setAuditEvents: (state, value) => ({ auditEvents: value }),
+  setAuditEvents: ({ auditEvents: oldAuditEvents }, value) => {
+    if (!value) {
+      if (value === oldAuditEvents) {
+        return {};
+      }
+    } else if (value.error) {
+      // if we currently have an error, update the error state only.
+      value = { ...value, events: oldAuditEvents.events };
+    } else if (value.events) {
+      if (value.events.length === oldAuditEvents) {
+        return {};
+      }
+    }
+    return { auditEvents: value };
+  },
   setPolicyId: (state, value) => {
     localStorage.setItem('virtru-demo-policyId', value);
     return { policyId: value };

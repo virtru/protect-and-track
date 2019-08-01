@@ -1,3 +1,7 @@
 .auditEventsWrapper {
   overflow-y: auto;
 }
+
+.AuditLogger-error {
+  color: var(--redDarker);
+}
