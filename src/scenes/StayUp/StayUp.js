@@ -17,7 +17,7 @@ function StayUp({ onClose, userId }) {
 
   useLayoutEffect(() => {
     scriptWrapper.current.appendChild(script);
-  }, [script]);
+  }, []);
 
   return (
     <Modal onClose={onClose}>
