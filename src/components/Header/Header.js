@@ -13,7 +13,7 @@ import Button from '../Button/Button';
 const Header = ({ userId }) => {
   function signOut() {
     localStorage.clear();
-    window.location.reload();
+    window.location = window.location.href.split(/[?#]/)[0];
   }
   function renderAuth() {
     if (userId) {
