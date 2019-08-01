@@ -8,7 +8,10 @@ import App from './scenes/App/App';
 import * as serviceWorker from 'serviceWorker';
 import store from './store';
 
-console.log(`AppInfo: ${process.env.REACT_APP_NAME}:${process.env.REACT_APP_VERSION}`);
+console.log(
+  `AppInfo: ${process.env.REACT_APP_NAME}:${process.env.REACT_APP_VERSION}-${process.env
+    .REACT_APP_BUILD_NUMBER || '0'}`,
+);
 if (dispatchAuth()) {
   // TODO consider rendering 'loading' or something. Also handle errors?
   // 'close' or 'app' <- close closes window, home reloads app

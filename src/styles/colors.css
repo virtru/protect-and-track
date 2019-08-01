@@ -53,6 +53,10 @@
   --black: #000;
   --white: #fff;
 
+  /* Shadows */
+  --blueShadow: rgba(23, 78, 182, 0.3);
+  --slateShadow: rgba(0, 0, 0, 0.3);
+
   /* Legacy palette */
   --globalMenuSelected: #fafbfb;
 

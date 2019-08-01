@@ -5,7 +5,7 @@ import dropboxsuite from './services/dropboxsuite';
 import gsuite from './services/gsuite';
 import onedrive from './services/onedrive';
 import './Share.css';
-import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
+import { SHARE_STATE, SHARE_PROVIDERS, SHARE_TITLES } from 'constants/sharing';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
 
@@ -80,41 +80,60 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       });
     } catch (e) {
       console.log(e);
+      // TODO(DSAT-67) enhance error messages
+      setShare({
+        provider: SHARE_PROVIDERS.DROPBOX,
+        providerState: { state: SHARE_STATE.FAIL },
+      });
     }
   };
   const shareToDrive = async () => {
+    let link, id, state, errorMessage;
+    const upstate = () =>
+      setShare({
+        provider: SHARE_PROVIDERS.GOOGLEDRIVE,
+        providerState: {
+          state,
+          recipients,
+          ...(id && { id }),
+          ...(link && { link }),
+          ...(errorMessage && { error: errorMessage }),
+        },
+      });
     try {
-      const state = s =>
-        setShare({
-          provider: SHARE_PROVIDERS.GOOGLEDRIVE,
-          providerState: { state: s, recipients },
-        });
-      state(SHARE_STATE.AUTHORIZING);
+      state = SHARE_STATE.AUTHORIZING;
+      upstate();
       // NOTE(DSAT-1) In Safari, this call must occur in a direct user action handler.
       // Safari's policy is that popups must be in response to a direct user action,
       // so no `await` calls can preceded this. To work around this, we load the API
       // before enabling the share button so this is the first gapi call.
-      await gsuite.signIn();
+      const user = await gsuite.signIn();
+      if (user !== recipients[0]) {
+        console.log('Sharing as a different user');
+      }
 
-      state(SHARE_STATE.UPLOADING);
+      state = SHARE_STATE.UPLOADING;
+      upstate();
       const uploadResponse = await gsuite.upload(file.name, file.payload);
-      state(SHARE_STATE.SHARING);
-      await gsuite.share(uploadResponse.result.id, recipients);
-      // TODO(DSAT-67) Validate response
+      state = SHARE_STATE.SHARING;
+      id = uploadResponse.result.id;
+      link = `https://drive.google.com/open?id=${id}`;
+      upstate();
+      await gsuite.share(id, recipients);
+      // TODO(DSAT-67) Validate responses
       // TODO(DSAT-14) Store permissions and don't sign out.
+      state = SHARE_STATE.SHARED;
       gsuite.signOut();
-      setShare({
-        provider: SHARE_PROVIDERS.GOOGLEDRIVE,
-        providerState: {
-          state: SHARE_STATE.SHARED,
-          id: uploadResponse.result.id,
-          link: 'https://drive.google.com/open?id=' + uploadResponse.result.id,
-          recipients,
-        },
-      });
+      upstate();
     } catch (e) {
-      console.log(JSON.stringify(e));
-      throw e;
+      const { error } = e;
+      if (error === 'popup_closed_by_user') {
+        errorMessage = 'Authorization popup window closed or disabled';
+      } else {
+        console.log(JSON.stringify(e));
+      }
+      state = SHARE_STATE.FAIL;
+      upstate();
     }
   };
   const shareToOnedrive = async () => {
@@ -146,6 +165,11 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
         },
       });
     } catch (e) {
+      // TODO(DSAT-67) enhance error messages
+      setShare({
+        provider: SHARE_PROVIDERS.ONEDRIVE,
+        providerState: { state: SHARE_STATE.FAIL },
+      });
       console.log('1drive error: ' + JSON.stringify(e));
       throw e;
     }
@@ -184,35 +208,59 @@ function RecipientList({ recipients }) {
 function Connecting({ provider }) {
   return (
     <ShareContainer>
-      <Title>Connecting{(provider && ' to  ' + provider) || ''}...</Title>
+      <Title>{'Connecting to ' + SHARE_TITLES[provider]}...</Title>
       <div className="Share-center">
-        <Loading />
+        <Ico type={provider} /> <Loading />
       </div>
-      <p>We're connecting to the service provider</p>
+      <p>Connecting to {SHARE_TITLES[provider]} on your behalf</p>
     </ShareContainer>
   );
 }
 
-function Uploading({ file }) {
+function Fail({ provider, providerState, setShare }) {
+  const tryAgain = e => {
+    e.preventDefault();
+    setShare(false);
+  };
+  return (
+    <ShareContainer>
+      <Title>Couldn't share to {'  ' + SHARE_TITLES[provider]}</Title>
+      <div className="Share-center">
+        <Ico type={provider} /> <Ico type="danger" />
+      </div>
+      <p>Sorry, there was a problem sharing your file. Please try again.</p>
+      {providerState.error && (
+        <p className="Share-Fail-explain">
+          <img alt="" src="danger-small.svg" className="ShareSelect-inline" /> {providerState.error}
+        </p>
+      )}
+      <Button onClick={tryAgain} variant="alternateButton">
+        Try Again
+      </Button>
+    </ShareContainer>
+  );
+}
+
+function Uploading({ file, provider }) {
   const { file: { name } = {} } = file;
   return (
     <ShareContainer>
       <Title>Uploading{(name && ' ' + name) || ''}...</Title>
       <div className="Share-center">
-        <Loading />
+        <Ico type={provider} /> <Loading />
       </div>
-      <p>We're uploading your file to the service provider</p>
+      <p>We're uploading your file to {'  ' + SHARE_TITLES[provider]}</p>
     </ShareContainer>
   );
 }
 
-function Sharing({ file, recipients }) {
+function Sharing({ file, provider, recipients }) {
   const { file: { name } = {} } = file;
   return (
     <ShareContainer>
       <Title>Sharing{(name && ' ' + name) || ''}...</Title>
       <div className="Share-center">
-        <Loading />
+        <Ico type={provider} /> <Loading />
       </div>
       <p>We're sharing your file with the following people:</p>
       <RecipientList recipients={recipients} />
@@ -233,7 +281,7 @@ function ShareComplete({ provider, providerState, file, onClose, recipients }) {
       <Title>Shared {name || 'your file'}</Title>
       {provider && (
         <div className="Share-center">
-          <Ico type={provider} />
+          <Ico type={provider} /> <Ico type="done" />
         </div>
       )}
       <p>
@@ -244,7 +292,9 @@ function ShareComplete({ provider, providerState, file, onClose, recipients }) {
         , and you should see a <b>Track Event</b>:
       </p>
       <RecipientList recipients={recipients} />
-      <Button onClick={handleDoneClick}>Done</Button>
+      <Button onClick={handleDoneClick} variant="alternateButton">
+        Done
+      </Button>
     </ShareContainer>
   );
 }
@@ -261,12 +311,13 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
     const { state } = providers[share];
     switch (state) {
       case SHARE_STATE.UNSHARED:
+        // This should not be
         break;
       case SHARE_STATE.AUTHORIZING:
         shareContent = <Connecting provider={share} />;
         break;
       case SHARE_STATE.UPLOADING:
-        shareContent = <Uploading file={encrypted} />;
+        shareContent = <Uploading file={encrypted} provider={share} />;
         break;
       case SHARE_STATE.SHARING:
         shareContent = <Sharing file={encrypted} provider={share} recipients={recipients} />;
@@ -280,6 +331,11 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
             providerState={providers[share]}
             onClose={closeAndResetState}
           />
+        );
+        break;
+      case SHARE_STATE.FAIL:
+        shareContent = (
+          <Fail provider={share} providerState={providers[share]} setShare={setShare} />
         );
         break;
       default:

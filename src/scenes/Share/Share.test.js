@@ -50,4 +50,30 @@ describe('Share', () => {
     fireEvent.click(getByText('Done'));
     await wait(() => expect(onClose).toHaveBeenCalled());
   });
+
+  test('to gsuite fail auth', async () => {
+    const setShare = jest.fn();
+    const file = { name: 'a.tdf' };
+    const { getByText, rerender } = render(
+      <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
+    );
+    expect(getByText('Share a.tdf')).toBeInTheDocument();
+    await wait(() => expect(gsuite.init).toHaveBeenCalled());
+
+    gsuite.signIn.mockImplementation(() => {
+      throw { error: 'popup_closed_by_user' };
+    });
+    fireEvent.click(getByText('Google Drive'));
+
+    await wait(() =>
+      expect(setShare).toHaveBeenCalledWith({
+        provider: SHARE_PROVIDERS.GOOGLEDRIVE,
+        providerState: {
+          state: SHARE_STATE.FAIL,
+          error: 'Authorization popup window closed or disabled',
+          recipients: ['a', 'b'],
+        },
+      }),
+    );
+  });
 });

@@ -16,7 +16,7 @@ body {
 body {
   background: var(--white);
   margin: 0;
-  font-family: var(--fontSecondary);
+  font: normal normal 400 var(--fSizeBody) / var(--lhBody) var(--fontPrimary);
 }
 
 h3 {

@@ -55,6 +55,7 @@ async function init() {
 
 async function signIn() {
   const authResponse = await gapi.auth2.getAuthInstance().signIn();
+  console.log(JSON.stringify(authResponse));
   return authResponse.w3.U3; // Grab email from google auth
 }
 
@@ -73,8 +74,8 @@ async function share(fileId, recipients) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      value: user,
       type: 'user',
+      value: user,
       role: 'reader',
     }),
   });

@@ -28,12 +28,12 @@
 }
 
 .githubButton {
-  height: 32px;
+  height: 30px;
   width: auto;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--white);
   border-radius: 3px;
   background: none;
-  padding: 3px;
+  padding: 0 7px;
 }
 
 .githubButton svg,
