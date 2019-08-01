@@ -37,7 +37,9 @@ const AuditLogger = ({ auditLog = {} }) => {
   if (error) {
     return (
       <div>
-        <h4>Error while connecting to audit service.</h4>
+        <h4 className="AuditLogger-error">
+          <img alt="" src="call-fail.svg" /> Error while connecting to audit service.
+        </h4>
         {contents}
       </div>
     );
