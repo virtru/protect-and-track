@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   width: 300px;
-  text-align: center;
 }
 
 .hbspt-form {
@@ -35,4 +34,105 @@
 .hbspt-form select {
   height: 48px;
   line-height: 48px;
+}
+
+.StayUp-container {
+  width: 250px;
+  margin: 0 auto;
+}
+
+.StayUp-container .input input {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #515864;
+  border-radius: 3px;
+  padding: 12px;
+  font-family: 'Open Sans';
+  font-size: 16px;
+}
+
+.StayUp-container label span {
+  color: #515864;
+  font-family: 'Open Sans';
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 3px;
+  display: inline-block;
+}
+
+.StayUp-container .input input:focus {
+  background-color: #f3f5f7;
+  box-shadow: 0 1px 4px 1px rgba(23, 78, 182, 0.3);
+}
+
+.StayUp-container .input input.error {
+  text-align: left;
+  padding: 12px;
+  margin: 0;
+}
+
+.StayUp-container .hs-error-msg,
+.StayUp-container .hs-error-msgs {
+  display: none !important;
+}
+
+.StayUp-container .field {
+  margin-bottom: 12px;
+}
+
+.StayUp-container input[type='submit'] {
+  color: #fff;
+  background-color: #174eb6;
+  border-color: #174eb6;
+  padding: 13px 24px 11px 24px !important;
+  margin-top: 0 !important;
+  border-radius: 3px;
+  font-family: 'Open Sans' !important;
+  font-size: 16px !important;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  border-width: 1px;
+  border-style: solid;
+  width: 100%;
+}
+
+.StayUp-container select.hs-input {
+  padding-left: 12px;
+  position: relative;
+  background: #fff;
+  display: block;
+  width: 100%;
+  height: 48px;
+  color: #2d323b;
+  font-family: 'Open Sans';
+  font-size: 16px;
+  margin-bottom: 3px;
+  display: inline-block;
+  appearance: none;
+}
+
+.StayUp-container .hs_job_role div.input {
+  position: relative;
+}
+
+.StayUp-container .hs_job_role div.input:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  height: 13px;
+  display: block;
+  width: 18px;
+  margin-top: -7px;
+  right: 15px;
+  transform: rotate(180deg);
+  background: url(http://files.readme.io/469ef50-up-arrow.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.StayUp-container .hs-input::-ms-expand {
+  display: none; /* hide the default arrow in ie10 and ie11 */
 }

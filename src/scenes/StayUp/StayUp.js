@@ -3,8 +3,11 @@ import './StayUp.css';
 import Modal from '../../components/Modal/Modal';
 
 function StayUp({ onClose, userId }) {
-  const script = document.createElement('script');
-  script.innerHTML = `
+  const scriptWrapper = useRef();
+
+  useLayoutEffect(() => {
+    const script = document.createElement('script');
+    script.innerHTML = `
     window.hbspt.forms.create({
       portalId: "1769758",
       formId: "a033c54f-7ee6-4e4d-9324-1f52454f17dc",
@@ -13,11 +16,8 @@ function StayUp({ onClose, userId }) {
       }
     });
   `;
-  const scriptWrapper = useRef();
-
-  useLayoutEffect(() => {
     scriptWrapper.current.appendChild(script);
-  }, [script]);
+  }, [userId]);
 
   return (
     <Modal onClose={onClose}>
