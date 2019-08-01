@@ -9,6 +9,7 @@ import ENCRYPT_STATES from 'constants/encryptStates';
 import './Policy.css';
 
 function Policy({
+  file,
   userId,
   openAuthModal,
   encrypt,
@@ -72,7 +73,7 @@ function Policy({
       <hr className="Policy-rule" />
       <Expiration policy={policy} policyChange={policyChange} />
       <Resharing policy={policy} policyChange={policyChange} />
-      <Watermarking policy={policy} policyChange={policyChange} />
+      <Watermarking file={file} policy={policy} policyChange={policyChange} />
     </div>
   );
 }
