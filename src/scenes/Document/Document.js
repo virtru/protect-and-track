@@ -94,8 +94,12 @@ function Document({
         // The policy changed while waiting for the audit log, so don't update it.
         return;
       }
-      if (auditData.data.length !== auditEvents.length) {
-        setAuditEvents(auditData.data);
+      if (
+        auditData.data &&
+        auditData.data.length >= 0 &&
+        auditData.data.length !== auditEvents.length
+      ) {
+        setAuditEvents(auditData.data || []);
       }
       auditTimerId = setTimeout(updateAuditEvents, 2000);
     }
@@ -115,7 +119,7 @@ function Document({
       return <Drop userId={userId} setFile={setFile} />;
     }
 
-    const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
+    const policyChange = change => generatePolicyChanger(policy, setPolicy, change, policyId);
     return (
       <>
         <Drop

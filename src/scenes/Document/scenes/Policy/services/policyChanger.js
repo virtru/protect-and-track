@@ -7,10 +7,11 @@ export const NOPE = 'NOPE';
  * @param setPolicy the policy setter action
  * @param change function that takes a PolicyBuilder and manipulates it, which an optional `event` second argument
  */
-export function generatePolicyChanger(policy, setPolicy, change) {
+export function generatePolicyChanger(policy, setPolicy, change, policyId) {
   return e => {
     e && e.preventDefault();
     const policyBuilder = Virtru.policyBuilder(policy);
+    policyBuilder.setPolicyId(policyId);
     if (change(policyBuilder, e) === NOPE) {
       return false;
     }

@@ -11,6 +11,9 @@ const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];
 const appId = activeAuth && activeAuth.split(':')[1];
 
+const policyData = JSON.parse(localStorage.getItem('virtru-demo-policy'));
+const fileData = JSON.parse(localStorage.getItem('virtru-demo-file'));
+
 let userId = getQueryParam('virtruAuthWidgetEmail');
 let isLoggedIn = userId && Virtru.Auth.isLoggedIn({ email: userId });
 let policy = false;
@@ -25,6 +28,8 @@ if (isLoggedIn) {
 
 try {
   const encryptedFileData = JSON.parse(localStorage.getItem('virtru-demo-file-encrypted'));
+
+  // Restore existing encrypted file
   if (encryptedFileData) {
     const buffer = encryptedFileData && base64ToArrayBuffer(encryptedFileData.b64);
     encrypted = {
@@ -39,26 +44,35 @@ try {
 }
 
 try {
-  const localData = JSON.parse(localStorage.getItem('virtru-demo-file'));
-  if (localData) {
-    const buffer = localData.b64 && base64ToArrayBuffer(localData.b64);
+  // Restore existing file
+  if (fileData) {
+    const buffer = fileData.b64 && base64ToArrayBuffer(fileData.b64);
     file = {
       arrayBuffer: buffer,
       file: {
-        name: localData.fileName,
-        type: localData.fileType,
+        name: fileData.fileName,
+        type: fileData.fileType,
       },
     };
-    const policyData = JSON.parse(localStorage.getItem('virtru-demo-policy'));
-    policy =
-      policyData && policyData.policy
-        ? new Virtru.Policy(
-            policyData.policyId,
-            policyData.users,
-            policyData.authorizations,
-            policyData.expirationDeadline,
-          )
-        : new Virtru.PolicyBuilder().build();
+
+    // Rebuild existing policy or create new one
+    if (policyData) {
+      console.log(policyData);
+      const builder = new Virtru.PolicyBuilder();
+      builder.setPolicyId(policyId);
+      if (!policyData.authorizations.includes('forward')) {
+        builder.disableReshare();
+      }
+      if (policyData.expirationDeadline) {
+        builder.enableExpirationDeadline(policyData.expirationDeadline);
+      }
+      if (policyData.users.length > 0) {
+        builder.addUsersWithAccess(...policyData.users);
+      }
+      policy = builder.build();
+    } else {
+      policy = new Virtru.PolicyBuilder().build();
+    }
   }
 } catch (err) {
   console.error(err);
