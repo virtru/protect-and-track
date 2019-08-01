@@ -111,7 +111,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       const uploadResponse = await gsuite.upload(file.name, file.payload);
       state = SHARE_STATE.SHARING;
       id = uploadResponse.result.id;
-      link = 'https://drive.google.com/open?id=' + uploadResponse.result.id;
+      link = `https://drive.google.com/open?id=${id}`;
       upstate();
       await gsuite.share(id, recipients);
       // TODO(DSAT-67) Validate responses
