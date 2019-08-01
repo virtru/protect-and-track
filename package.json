@@ -23,8 +23,6 @@
   "scripts": {
     "start": "HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
     "build": "react-scripts build",
-    "precommit": "pretty-quick --staged",
-    "postcommit": "git update-index -g",
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json}\"",
     "test": "eslint src && react-scripts test --watchAll=false",
     "test-watch": "react-scripts test",
@@ -52,5 +50,11 @@
     "prettier": "1.18.2",
     "pretty-quick": "^1.11.1",
     "react-test-renderer": "^16.8.6"
+  },
+  "husky": {
+    "hooks": {
+      "post-commit": "git update-index -g",
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
