@@ -10,7 +10,7 @@ const { useEffect, useRef } = React;
 
 const AuditLogger = ({ auditLog = {} }) => {
   const scroll = useRef();
-  const { error, events = [], status } = auditLog;
+  const { error, events = [] } = auditLog;
   useEffect(() => {
     if (!scroll.current) return;
     const scrollHeight = scroll.current.getScrollHeight();
