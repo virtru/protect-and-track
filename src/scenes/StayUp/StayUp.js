@@ -17,7 +17,7 @@ function StayUp({ onClose, userId }) {
     });
   `;
     scriptWrapper.current.appendChild(script);
-  }, []);
+  }, [userId]);
 
   return (
     <Modal onClose={onClose}>
