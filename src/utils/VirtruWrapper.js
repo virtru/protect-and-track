@@ -3,40 +3,10 @@ import { TDF } from 'tdf3-js';
 import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
 
-import * as logs from 'constants/methodLogs';
 import store from '../store';
-
-async function streamToBuffer(stream) {
-  const bufs = [];
-  stream.on('data', function(d) {
-    bufs.push(d);
-  });
-  return new Promise(resolve => {
-    stream.on('end', function() {
-      resolve(Buffer.concat(bufs));
-    });
-  });
-}
 
 const actions = {
   pushLogAction: ({ tdfLog }, value) => ({ tdfLog: [...tdfLog, value] }),
-  // @todo remove hardcode, audit events should be pushed from api
-  fetchAuditLogAction: () => ({
-    auditLog: [
-      {
-        auditDataType: 'FILE.ACCESS_SUCCEEDED',
-        userId: 'foo@bar.com',
-        timestamp: '2019-07-15T14:48:22+00:00',
-        recordId: 0,
-      },
-      {
-        auditDataType: 'FILE.ACCESS_SUCCEEDED',
-        userId: 'foo@bar.com',
-        timestamp: '2019-07-15T14:48:22+00:00',
-        recordId: 1,
-      },
-    ],
-  }),
 };
 
 const boundActions = bindActions(actions, store);
@@ -89,9 +59,15 @@ function policyBuilder(opts) {
  */
 async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }) {
   const buffer = new Uint8Array(fileData);
+
   _pushAction({
     title: 'Build Virtru Encryption Params',
-    code: logs.buildEncryptParams(filename),
+    code:
+      'const encryptParams = new Virtru.EncryptParamsBuilder()\n' +
+      '  .withBufferSource(buffer)\n' +
+      '  .withPolicy(policy)\n' +
+      '  .withDisplayFilename(filename)\n' +
+      '  .build();',
   });
   const encryptParams = new Virtru.EncryptParamsBuilder()
     .withBufferSource(buffer)
@@ -100,17 +76,19 @@ async function encrypt({ client, fileData, filename, userEmail, asHtml, policy }
     .build();
 
   _pushAction({
-    title: 'Encrypt File',
-    code: logs.encryptFile(encryptParams),
+    title: 'Encrypt to Buffer',
+    code:
+      'const encryptedStream = await client.encrypt(encryptParams);\n' +
+      'const encryptedFile = await encryptedStream.toBuffer();',
   });
   const encryptedStream = await client.encrypt(encryptParams);
   const encryptedFile = await encryptedStream.toBuffer();
 
-  boundActions.fetchAuditLogAction();
+  const policyId = encryptParams.getPolicyId();
 
   return {
-    encryptedFile: encryptedFile,
-    policyId: policy._policyId,
+    encryptedFile,
+    policyId,
   };
 }
 
@@ -124,23 +102,47 @@ function updatePolicy(client, policy) {
 
 function unwrapHtml(file) {
   _pushAction({
-    title: 'Load TDF',
-    code: logs.unwrapHtml(),
+    title: 'Unwrap HTML TDF',
+    code: 'TDF.unwrapHtml(file);',
   });
   return TDF.unwrapHtml(file);
 }
 
 async function decrypt({ virtruClient, encryptedBuffer }) {
+  _pushAction({
+    title: 'Create Decrypt Params',
+    code:
+      'const decryptParams = new Virtru.DecryptParamsBuilder()\n' +
+      '  .withBufferSource(encryptedBuffer)\n' +
+      '  .build();',
+  });
   const decryptParams = new Virtru.DecryptParamsBuilder().withBufferSource(encryptedBuffer).build();
 
+  _pushAction({
+    title: 'Decrypt File',
+    code:
+      'const decryptStream = await virtruClient.decrypt(decryptParams);\n' +
+      'const decryptBuffer = await decryptStream.toBuffer();',
+  });
   const decryptStream = await virtruClient.decrypt(decryptParams);
   const decryptBuffer = await decryptStream.toBuffer();
   return decryptBuffer;
 }
 
 function createClient({ email }) {
-  // TODO logger here
+  _pushAction({
+    title: 'Create Client',
+    code: 'const Client = new Virtru.Client({ email });',
+  });
   return new Virtru.Client({ email });
+}
+
+function revoke({ virtruClient, policyId }) {
+  _pushAction({
+    title: 'Revoke Policy',
+    code: 'client.revokePolicy(policyId);',
+  });
+  return virtruClient.revokePolicy(policyId);
 }
 
 export default {
@@ -150,4 +152,5 @@ export default {
   unwrapHtml,
   decrypt,
   createClient,
+  revoke,
 };

@@ -5,7 +5,9 @@ import { ReactComponent as AccessIcon } from './access.svg';
 import ENCRYPT_STATES from 'constants/encryptStates';
 import { NOPE } from '../../services/policyChanger';
 import './Access.css';
-function Access({ encryptState, userId, policy, policyChange }) {
+import VirtruWrapper from 'utils/VirtruWrapper';
+
+function Access({ encryptState, userId, virtruClient, policy, policyId, policyChange }) {
   const Grant = ({ user, status }) => {
     if (status === 'owner') {
       return (
@@ -49,7 +51,10 @@ function Access({ encryptState, userId, policy, policyChange }) {
         <AccessIcon />
         <h4>Who should have access?</h4>
         {encryptState === ENCRYPT_STATES.PROTECTED && (
-          <button className="Access-revokeAll" onClick={policyChange(p => p.removeAllUsers())}>
+          <button
+            className="Access-revokeAll"
+            onClick={() => VirtruWrapper.revoke({ virtruClient, policyId })}
+          >
             Revoke All
           </button>
         )}

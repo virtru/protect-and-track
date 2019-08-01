@@ -7,13 +7,17 @@ import ENCRYPT_STATES from 'constants/encryptStates';
 
 let encryptState = ENCRYPT_STATES.UNPROTECTED;
 
+const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
+const activeAuth = auths && Object.values(auths)[0];
+const appId = activeAuth && activeAuth.split(':')[1];
+
 let userId = getQueryParam('virtruAuthWidgetEmail');
 let isLoggedIn = userId && Virtru.Auth.isLoggedIn({ email: userId });
-let appId = '';
 let policy = false;
 let file = false;
 let encrypted = false;
 let virtruClient = false;
+let policyId = localStorage.getItem('virtru-demo-policyId');
 
 if (isLoggedIn) {
   virtruClient = new Virtru.Client({ email: userId });
@@ -49,10 +53,10 @@ try {
     policy =
       policyData && policyData.policy
         ? new Virtru.Policy(
-            policyData.policy._policyId,
-            policyData.policy._users,
-            policyData.policy._authZFlags,
-            policyData.policy._deadline,
+            policyData.policyId,
+            policyData.users,
+            policyData.authorizations,
+            policyData.expirationDeadline,
           )
         : new Virtru.PolicyBuilder().build();
   }
@@ -107,6 +111,9 @@ export default createStore({
 
   // Is the user logged in?
   isLoggedIn,
+
+  // The policy ID
+  policyId,
 });
 
 function getQueryParam(name, url) {
