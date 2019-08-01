@@ -302,7 +302,7 @@ share_${serviceProviderName}: {
 */
 const mapToProps = ({ encrypted, policy, share, ...rest }) => ({
   encrypted,
-  recipients: policy.getUsers(),
+  recipients: policy.getUsersWithAccess(),
   share,
   providers: (() => {
     let o = {};

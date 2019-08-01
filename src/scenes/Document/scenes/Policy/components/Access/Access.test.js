@@ -1,5 +1,5 @@
 import React from 'react';
-import Virtru from 'virtru-tdf3-js';
+import Virtru from 'virtru-sdk';
 import { generatePolicyChanger } from '../../services/policyChanger';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
@@ -14,7 +14,7 @@ describe('Access', () => {
       <Access
         encryptState={ENCRYPT_STATES.UNPROTECTED}
         policyChange={() => {}}
-        policy={new Virtru.Client.VirtruPolicyBuilder().build()}
+        policy={new Virtru.PolicyBuilder().build()}
       />,
     );
     // We should have just one form to grant a new user access
@@ -29,7 +29,7 @@ describe('Access', () => {
     const { getByRole, getByText, queryAllByText } = render(
       <Access
         encryptState={ENCRYPT_STATES.UNPROTECTED}
-        policy={new Virtru.Client.VirtruPolicyBuilder().build()}
+        policy={new Virtru.PolicyBuilder().build()}
         policyChange={() => {}}
         userId="user@example.com"
       />,
@@ -44,7 +44,7 @@ describe('Access', () => {
     const { getByText } = render(
       <Access
         encryptState={ENCRYPT_STATES.PROTECTED}
-        policy={new Virtru.Client.VirtruPolicyBuilder().addUsers('a@abc.xyz', 'b@abc.xyz').build()}
+        policy={new Virtru.PolicyBuilder().addUsersWithAccess('a@abc.xyz', 'b@abc.xyz').build()}
         policyChange={() => {}}
         userId="a@abc.xyz"
       />,
@@ -59,7 +59,7 @@ describe('Access', () => {
 
   test('Adds a new user', () => {
     const setPolicy = jest.fn();
-    const policy = new Virtru.Client.VirtruPolicyBuilder().build();
+    const policy = new Virtru.PolicyBuilder().build();
     const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
     const { getByRole } = render(<Access policy={policy} policyChange={policyChange} />);
 
