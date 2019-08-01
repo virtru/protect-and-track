@@ -8,7 +8,17 @@ import Button from 'components/Button/Button';
 import ENCRYPT_STATES from 'constants/encryptStates';
 import './Policy.css';
 
-function Policy({ file, userId, openAuthModal, encrypt, encryptState, policy, policyChange }) {
+function Policy({
+  file,
+  userId,
+  openAuthModal,
+  encrypt,
+  encryptState,
+  policy,
+  policyChange,
+  virtruClient,
+  policyId,
+}) {
   const renderButtons = () => {
     switch (encryptState) {
       case ENCRYPT_STATES.AUTHENTICATING:
@@ -39,7 +49,13 @@ function Policy({ file, userId, openAuthModal, encrypt, encryptState, policy, po
   if (encryptState !== ENCRYPT_STATES.PROTECTED) {
     return (
       <div className="Policy" id="policy">
-        <Access policy={policy} policyChange={policyChange} userId={userId} />
+        <Access
+          virtruClient={virtruClient}
+          policy={policy}
+          policyId={policyId}
+          policyChange={policyChange}
+          userId={userId}
+        />
         <span className="Policy-buttons">{renderButtons()}</span>
       </div>
     );
@@ -47,6 +63,8 @@ function Policy({ file, userId, openAuthModal, encrypt, encryptState, policy, po
   return (
     <div className="Policy" id="policy">
       <Access
+        virtruClient={virtruClient}
+        policyId={policyId}
         policy={policy}
         encryptState={encryptState}
         policyChange={policyChange}

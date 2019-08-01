@@ -5,7 +5,9 @@ import { ReactComponent as AccessIcon } from './access.svg';
 import ENCRYPT_STATES from 'constants/encryptStates';
 import { NOPE } from '../../services/policyChanger';
 import './Access.css';
-function Access({ encryptState, userId, policy, policyChange }) {
+import VirtruWrapper from 'utils/VirtruWrapper';
+
+function Access({ encryptState, userId, virtruClient, policy, policyId, policyChange }) {
   const Grant = ({ user, status }) => {
     if (status === 'owner') {
       return (
@@ -17,7 +19,7 @@ function Access({ encryptState, userId, policy, policyChange }) {
     }
 
     return (
-      <form className="Grant" onSubmit={policyChange(p => p.removeUsers(user))}>
+      <form className="Grant" onSubmit={policyChange(p => p.removeUsersWithAccess(user))}>
         <span className="Grant-user">{user}</span>
         <input type="submit" className="Grant-revoke" value="Revoke" />
       </form>
@@ -30,7 +32,7 @@ function Access({ encryptState, userId, policy, policyChange }) {
     return (
       <form
         className="NewGrant"
-        onSubmit={policyChange(p => (input.valid ? p.addUsers(input.text) : NOPE))}
+        onSubmit={policyChange(p => (input.valid ? p.addUsersWithAccess(input.text) : NOPE))}
       >
         <input
           type="email"
@@ -49,7 +51,10 @@ function Access({ encryptState, userId, policy, policyChange }) {
         <AccessIcon />
         <h4>Who should have access?</h4>
         {encryptState === ENCRYPT_STATES.PROTECTED && (
-          <button className="Access-revokeAll" onClick={policyChange(p => p.removeAllUsers())}>
+          <button
+            className="Access-revokeAll"
+            onClick={() => VirtruWrapper.revoke({ virtruClient, policyId })}
+          >
             Revoke All
           </button>
         )}
@@ -59,7 +64,7 @@ function Access({ encryptState, userId, policy, policyChange }) {
           <Grant user={userId || 'you'} status="owner" />
         </li>
         {policy
-          .getUsers()
+          .getUsersWithAccess()
           .filter(u => u !== userId)
           .map((user, i) => {
             return (

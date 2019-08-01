@@ -1,5 +1,5 @@
 import createStore from 'redux-zero';
-import Virtru from 'virtru-tdf3-js';
+import Virtru from 'virtru-sdk';
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import { base64ToArrayBuffer } from 'utils/buffer';
 
@@ -9,11 +9,19 @@ let encryptState = ENCRYPT_STATES.UNPROTECTED;
 
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];
-const userId = activeAuth && activeAuth.split(':')[0];
 const appId = activeAuth && activeAuth.split(':')[1];
+
+let userId = getQueryParam('virtruAuthWidgetEmail');
+let isLoggedIn = userId && Virtru.Auth.isLoggedIn({ email: userId });
 let policy = false;
 let file = false;
 let encrypted = false;
+let virtruClient = false;
+let policyId = localStorage.getItem('virtru-demo-policyId');
+
+if (isLoggedIn) {
+  virtruClient = new Virtru.Client({ email: userId });
+}
 
 try {
   const encryptedFileData = JSON.parse(localStorage.getItem('virtru-demo-file-encrypted'));
@@ -24,7 +32,7 @@ try {
       name: encryptedFileData.name,
       type: encryptedFileData.type,
     };
-    encryptState = userId ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
+    encryptState = isLoggedIn ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
   }
 } catch (err) {
   console.error(err);
@@ -44,13 +52,13 @@ try {
     const policyData = JSON.parse(localStorage.getItem('virtru-demo-policy'));
     policy =
       policyData && policyData.policy
-        ? new Virtru.Client.VirtruPolicy(
-            policyData.policy._policyId,
-            policyData.policy._users,
-            policyData.policy._authZFlags,
-            policyData.policy._deadline,
+        ? new Virtru.Policy(
+            policyData.policyId,
+            policyData.users,
+            policyData.authorizations,
+            policyData.expirationDeadline,
           )
-        : new Virtru.Client.VirtruPolicyBuilder().build();
+        : new Virtru.PolicyBuilder().build();
   }
 } catch (err) {
   console.error(err);
@@ -99,5 +107,21 @@ export default createStore({
   auditEvents: [],
 
   // Enhanced TDF client library
-  virtruClient: false,
+  virtruClient,
+
+  // Is the user logged in?
+  isLoggedIn,
+
+  // The policy ID
+  policyId,
 });
+
+function getQueryParam(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, '\\$&'); // eslint-disable-line no-useless-escape
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
