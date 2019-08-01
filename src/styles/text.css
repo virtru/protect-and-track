@@ -2,4 +2,22 @@
   --fontPrimary: 'Open Sans', Helvetica, Arial, sans-serif;
   --fontSecondary: raleway, Helvetica, Arial, sans-serif;
   --fontCode: source-code-pro, Menlo, Monaco, Consolas, monospace;
+
+  --fSize-heading-l: 39px;
+  --lh-heading-l: 48px;
+
+  --fSize-heading-m: 31px;
+  --lh-heading-m: 36px;
+
+  --fSize-heading-s: 25px;
+  --lh-heading-s: 30px;
+
+  --fSize-heading-xs: 20px;
+  --lh-heading-xs: 24px;
+
+  --fSizeBody: 16px;
+  --lhBody: 24px;
+
+  --fSizeSmall: 13px;
+  --lhSmall: 18px;
 }
