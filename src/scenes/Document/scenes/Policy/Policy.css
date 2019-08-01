@@ -17,5 +17,9 @@
 }
 
 .Policy-buttons {
-  text-align: right;
+  margin-left: 34px;
+  text-align: left;
+}
+.Policy-buttons button {
+  margin-left: 0;
 }

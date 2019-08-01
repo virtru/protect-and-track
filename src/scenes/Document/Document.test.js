@@ -40,7 +40,7 @@ describe('Document', () => {
     const { getByText } = render(
       <Document file={file} policy={policy} setEncryptState={() => {}} />,
     );
-    fireEvent.click(getByText('Sign in to continue'));
+    fireEvent.click(getByText('Sign in to Protect'));
     expect(getByText('Enter your email address:')).toBeInTheDocument();
   });
 
