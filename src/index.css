@@ -83,6 +83,7 @@ input[type='email'] {
   border-radius: 4px;
 }
 
+/* Make the auth modal a little wider so that buttons don't take up 2 lines */
 .virtru-auth {
   width: 360px !important;
 }
