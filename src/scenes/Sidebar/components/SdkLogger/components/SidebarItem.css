@@ -51,6 +51,7 @@
 .codeWrapper {
   overflow: auto;
   margin: 15px 0;
+  line-height: 1rem;
 }
 
 .SidebarItemWrapper .showPayload {
