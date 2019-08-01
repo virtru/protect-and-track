@@ -57,7 +57,6 @@ try {
 
     // Rebuild existing policy or create new one
     if (policyData) {
-      console.log(policyData);
       const builder = new Virtru.PolicyBuilder();
       builder.setPolicyId(policyId);
       if (!policyData.authorizations.includes('forward')) {
