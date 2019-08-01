@@ -12,6 +12,7 @@ describe('Share', () => {
   test('to gsuite', async () => {
     const setShare = jest.fn();
     const file = { name: 'a.tdf' };
+    gsuite.init.mockReturnValue(true);
     const { getByText, rerender } = render(
       <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
     );

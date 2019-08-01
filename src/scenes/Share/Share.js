@@ -22,14 +22,18 @@ function ShareContainer({ children }) {
 }
 
 function ShareButton({ children, init, onClick, type }) {
-  const [state, setState] = useState('start');
+  const [buttonState, setButtonState] = useState('start');
   const handleClick = e => {
     e.preventDefault();
     onClick && onClick(e);
   };
 
   const button = (
-    <button className="ShareSelect-button" onClick={handleClick} disabled={state !== 'enabled'}>
+    <button
+      className="ShareSelect-button"
+      onClick={handleClick}
+      disabled={buttonState !== 'enabled'}
+    >
       <Ico type={type} />
       <div className="ShareSelect-button-text">{children}</div>
     </button>
@@ -40,8 +44,8 @@ function ShareButton({ children, init, onClick, type }) {
       return;
     }
     async function initializeButtonBackend() {
-      await init();
-      setState(onClick ? 'enabled' : 'misconfigured');
+      const backendSuccess = onClick && (await init());
+      setButtonState(backendSuccess ? 'enabled' : 'misconfigured');
     }
     initializeButtonBackend();
   }, [init, onClick]);

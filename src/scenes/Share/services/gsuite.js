@@ -4,9 +4,17 @@ import { loadGapi } from 'services/core/remoteLoad';
 import awaitify from 'services/core/awaitify';
 
 // API connectors.
+// First, create a project at https://console.developers.google.com/
+// For that project enable the google drive API
+// Next, configure credentials to include drive.appdata in the scope
+// Under creditials, create an OAuth client ID for a web application.
+// Make sure to restrict it to your domain and use your deployment location
+// as the redirect URI.
+// Next, create an API key and restrict it to the deployment web domain
+// and to use just the google drive API.
 // To edit: https://console.developers.google.com/apis/api/drive.googleapis.com/overview
-const CLIENT_ID = '685840918809-jtvptmpgsvdkuqqbtjuvqi4ijujviivd.apps.googleusercontent.com';
-const API_KEY = 'AIzaSyDCMZYdYYNTdYy_qC1V1a-JcuiouQBLi4A';
+const CLIENT_ID = process.env.REACT_APP_CLIENT_ID_GSUITE;
+const API_KEY = process.env.REACT_APP_API_KEY_GSUITE;
 
 // Array of API discovery doc URLs for APIs used by the quickstart
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];
@@ -34,6 +42,10 @@ async function initClient() {
 }
 
 async function init() {
+  if (!API_KEY || !CLIENT_ID) {
+    console.log('Google Drive integration not enabled');
+    return false;
+  }
   await loadGapi();
   const load = awaitify(gapi.load);
   await load('client:auth2');
