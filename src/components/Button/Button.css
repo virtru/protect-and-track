@@ -13,7 +13,7 @@
   font-family: var(--fontPrimary);
   font-weight: bold;
   margin: 12px;
-  padding: 12px 23px;
+  padding: 13px 24px 11px 24px;
 
   cursor: pointer;
   white-space: nowrap;
@@ -29,7 +29,6 @@
 
 .mainButton {
   cursor: pointer;
-  padding: 12px 23px;
   color: var(--white);
   background-color: var(--blueDarker);
   border-color: var(--blueDarker);
