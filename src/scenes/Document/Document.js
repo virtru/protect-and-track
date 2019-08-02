@@ -9,7 +9,6 @@ import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy from './scenes/Policy/Policy';
 import DownloadModal from './scenes/DownloadModal/DownloadModal';
-import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
 import AuthSelect from '../AuthSelect/AuthSelect';
 import StayUp from '../StayUp/StayUp';
