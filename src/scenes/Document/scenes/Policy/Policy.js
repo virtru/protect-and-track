@@ -38,12 +38,16 @@ function Policy({
           );
         }
 
-        return (
-          <>
-            <Button onClick={openAuthModal}>Sign in to Protect</Button>
-            <Button disabled>Protect File</Button>
-          </>
-        );
+        let hasUsers = policy.getUsersWithAccess().length > 0;
+        if (hasUsers) {
+          return (
+            <>
+              <Button onClick={openAuthModal}>Sign in to Protect</Button>
+              <Button disabled>Protect File</Button>
+            </>
+          );
+        }
+
     }
   };
   if (encryptState !== ENCRYPT_STATES.PROTECTED) {
