@@ -1,5 +1,4 @@
 import Virtru from './VirtruWrapper';
-import FileSaver from 'file-saver';
 
 function click(node) {
   try {
@@ -27,7 +26,7 @@ function click(node) {
   }
 }
 
-function saver(blob, name) {
+export function saver(blob, name) {
   const a = document.createElement('a');
   a.download = name;
   a.rel = 'noopener';
