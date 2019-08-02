@@ -32,7 +32,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
         </Button>
         <span>Inspect the metadata:</span>
         <br />
-        <Button disabled fullWidth onClick={() => downloadTdf(encrypted)}>
+        <Button fullWidth onClick={() => downloadTdf(encrypted)}>
           Download TDF
         </Button>
         <span>See the original file:</span>

@@ -10,7 +10,7 @@ export const downloadHtml = encrypted => {
 export const downloadTdf = encrypted => {
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
   const tdf = Virtru.unwrapHtml(html);
-  const blob = new Blob(tdf);
+  const blob = new Blob([tdf]);
   return FileSaver.saveAs(blob, encrypted.name.replace('.html', '.tdf'));
 };
 
