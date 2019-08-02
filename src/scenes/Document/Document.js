@@ -44,6 +44,7 @@ function Document({
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [isStayUpOpen, setStayUpOpen] = useState(false);
   const [isDownloadOpen, setDownloadOpen] = useState(false);
+  const [isPolicyRevoked, setPolicyRevoked] = useState(false);
 
   const openAuthModal = () => {
     setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
@@ -91,6 +92,12 @@ function Document({
     }
   };
 
+  const revokePolicy = () => {
+    setPolicyRevoked(true);
+    // TODO: handle error case?
+    Virtru.revoke({ virtruClient, policyId });
+  };
+
   useEffect(() => {
     async function updateAuditEvents() {
       const currentTimerId = auditTimerId;
@@ -136,12 +143,19 @@ function Document({
           setFile={setFile}
         >
           <div className="DocumentDetails">
-            <Filename file={file} isTdf={!!encrypted} setFile={setFile} />
+            <Filename
+              file={file}
+              isTdf={!!encrypted}
+              setFile={setFile}
+              isPolicyRevoked={isPolicyRevoked}
+              revokePolicy={revokePolicy}
+            />
             <Policy
               virtruClient={virtruClient}
               file={file}
               policy={policy}
               policyId={policyId}
+              isPolicyRevoked={isPolicyRevoked}
               userId={userId}
               openAuthModal={openAuthModal}
               encrypt={encrypt}
@@ -202,7 +216,13 @@ function Document({
           </Button>
           <Button
             onClick={() => setShareOpen(true)}
-            disabled={!encrypted || !userId || !policy || !policy.getUsersWithAccess().length}
+            disabled={
+              !encrypted ||
+              !userId ||
+              !policy ||
+              isPolicyRevoked ||
+              !policy.getUsersWithAccess().length
+            }
           >
             Share
           </Button>

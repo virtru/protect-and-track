@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 
 import SectionHeader from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
-import ENCRYPT_STATES from 'constants/encryptStates';
 import { NOPE } from '../../services/policyChanger';
 import './Access.css';
-import VirtruWrapper from 'utils/VirtruWrapper';
 import Button from 'components/Button/Button';
 
-function Access({ encryptState, userId, virtruClient, policy, policyId, policyChange }) {
+function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked }) {
   const Grant = ({ user, status }) => {
     if (status === 'owner') {
       return (
@@ -22,7 +20,7 @@ function Access({ encryptState, userId, virtruClient, policy, policyId, policyCh
     return (
       <form className="Grant" onSubmit={policyChange(p => p.removeUsersWithAccess(user))}>
         <span className="Grant-user">{user}</span>
-        <input type="submit" className="Grant-revoke" value="Revoke" />
+        <input type="submit" className="Grant-revoke" value="Revoke" disabled={isPolicyRevoked} />
       </form>
     );
   };
@@ -65,31 +63,24 @@ function Access({ encryptState, userId, virtruClient, policy, policyId, policyCh
       <SectionHeader>
         <AccessIcon />
         <h4>Who should have access?</h4>
-        {encryptState === ENCRYPT_STATES.PROTECTED && (
-          <button
-            className="Access-revokeAll"
-            onClick={() => VirtruWrapper.revoke({ virtruClient, policyId })}
-          >
-            Revoke All
-          </button>
-        )}
       </SectionHeader>
       <ol start="0">
         <li key={'you'}>
           <Grant user={userId || 'you'} status="owner" />
         </li>
-        {policy
-          .getUsersWithAccess()
-          .filter(u => u !== userId)
-          .map((user, i) => {
-            return (
-              <li key={user}>
-                <Grant user={user} status="reader" />
-              </li>
-            );
-          })}
+        {!isPolicyRevoked &&
+          policy
+            .getUsersWithAccess()
+            .filter(u => u !== userId)
+            .map((user, i) => {
+              return (
+                <li key={user}>
+                  <Grant user={user} status="reader" />
+                </li>
+              );
+            })}
       </ol>
-      <NewGrant />
+      {!isPolicyRevoked && <NewGrant />}
     </div>
   );
 }

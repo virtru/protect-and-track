@@ -1,9 +1,11 @@
 import React from 'react';
 
+import RevokeAll from '../RevokeAll/RevokeAll';
+
 import Button from 'components/Button/Button';
 import './Filename.css';
 
-function Filename({ file, isTdf, setFile }) {
+function Filename({ file, isTdf, setFile, isPolicyRevoked, revokePolicy }) {
   return (
     <h2 className="Filename">
       {file.file.name}
@@ -11,6 +13,7 @@ function Filename({ file, isTdf, setFile }) {
       <Button variant="link" onClick={e => setFile({})} small>
         Start over
       </Button>
+      {isTdf && <RevokeAll isPolicyRevoked={isPolicyRevoked} revokePolicy={revokePolicy} />}
     </h2>
   );
 }

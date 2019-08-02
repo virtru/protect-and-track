@@ -4,10 +4,11 @@ import SectionHeader from '../SectionHeader/SectionHeader';
 import Toggle from '../Toggle/Toggle';
 import { NOPE } from '../../services/policyChanger';
 import { ReactComponent as HourglassIcon } from './hourglass.svg';
+import classNames from 'classnames';
 import './Expiration.css';
 
 // now - exposed for testing
-function Expiration({ policy, policyChange, now = new Date() }) {
+function Expiration({ policy, policyChange, isPolicyRevoked, now = new Date() }) {
   // NOTE(DSAT-59) Chrome `datetime-local` expects ISO dates with no trailing `Z`
   // But the Virtru policy requires them. So use the right one to convert from a JS Date to
   // the appropriate field value.
@@ -58,14 +59,17 @@ function Expiration({ policy, policyChange, now = new Date() }) {
   const isWeek = currentDeadlineTime === oneWeekFromNow.getTime();
   const isCustom = !(isNone || isDay || isWeek);
 
+  const disabled = isPolicyRevoked;
+  const isToggled = !disabled && !isNone;
+
   return (
-    <div className="Expiration">
+    <div className={classNames('Expiration', { 'Section-disabled': disabled })}>
       <SectionHeader>
         <HourglassIcon />
         <h4>Expiration</h4>
-        <Toggle id="expiration" checked={!isNone} onChange={onToggleChange} />
+        <Toggle id="expiration" checked={isToggled} disabled={disabled} onChange={onToggleChange} />
       </SectionHeader>
-      {policy.getExpirationDeadline() && (
+      {isToggled && (
         <>
           <div className="Expiration-form">
             <RadioButton
@@ -73,6 +77,7 @@ function Expiration({ policy, policyChange, now = new Date() }) {
               name="expiry"
               value="day"
               checked={isDay}
+              disabled={disabled}
               onChange={onRadioChange(oneDayFromNow)}
             >
               In 1 day
@@ -84,6 +89,7 @@ function Expiration({ policy, policyChange, now = new Date() }) {
               name="expiry"
               value="week"
               checked={isWeek}
+              disabled={disabled}
               onChange={onRadioChange(oneWeekFromNow)}
             >
               In 1 week
@@ -95,6 +101,7 @@ function Expiration({ policy, policyChange, now = new Date() }) {
               name="expiry"
               value="custom"
               checked={isCustom}
+              disabled={disabled}
               onChange={onRadioChange(fiveMinutesFromNow)}
             >
               Custom
@@ -109,6 +116,7 @@ function Expiration({ policy, policyChange, now = new Date() }) {
                     value={d2s(currentDeadline)}
                     min={d2s(today)}
                     max={d2s(oneWeekFromNow)}
+                    disabled={disabled}
                     onChange={onInputChange}
                   />
                 </>
