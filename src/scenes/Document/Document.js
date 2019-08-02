@@ -288,7 +288,7 @@ const actions = {
           .withArrayBufferSource(fileBuffer)
           .build();
         // TODO find a more elegant way to do this
-        const client = virtruClient || Virtru.createClient();
+        const client = virtruClient || Virtru.createClient({ email: userId || 'a@b.invalid' });
         const uuid = decParams && (await client.getPolicyId(decParams));
         if (uuid) {
           return { alert: 'TDF support not yet implemented' };
