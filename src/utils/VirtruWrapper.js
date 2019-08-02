@@ -154,6 +154,10 @@ function newVirtruDecryptParamsBuilder(opts) {
   return new Virtru.DecryptParamsBuilder(opts);
 }
 
+function newVirtruEncryptParamsBuilder(opts) {
+  return new Virtru.EncryptParamsBuilder(opts);
+}
+
 function fetchAuditEvents({ virtruClient, policyId }) {
   // Not logging this since it happens so often
   return virtruClient.fetchEventsForPolicyId(policyId);
@@ -168,5 +172,6 @@ export default {
   createClient,
   revoke,
   newVirtruDecryptParamsBuilder,
+  newVirtruEncryptParamsBuilder,
   fetchAuditEvents,
 };
