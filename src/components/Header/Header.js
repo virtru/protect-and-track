@@ -6,31 +6,19 @@ import './Header.css';
 import GithubLogo from './github-logo.png';
 import { ReactComponent as GithubIcon } from './github-icon.svg';
 import Button from '../Button/Button';
+import Virtru from 'utils/VirtruWrapper';
 
 /**
  * Header Component that displays content at the top of the page.
  */
 const Header = ({ userId }) => {
-  function signOut() {
-    localStorage.clear();
-    window.location = window.location.href.split(/[?#]/)[0];
-  }
   function renderAuth() {
     if (userId) {
       return (
         <span className="currentUser">
           <span className="userID">{userId}</span>{' '}
-          <Button variant="link" onClick={signOut} verySmall light>
+          <Button variant="link" onClick={Virtru.signOut} verySmall light>
             Sign out
-          </Button>
-        </span>
-      );
-    }
-    if (localStorage.length) {
-      return (
-        <span>
-          <Button variant="link" onClick={signOut} verySmall light>
-            Reset
           </Button>
         </span>
       );

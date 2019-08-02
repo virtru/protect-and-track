@@ -21,9 +21,20 @@ function _pushAction(action) {
  *
  * @param {?object} opts
  */
-function policyBuilder(opts) {
-  const builder = new Virtru.PolicyBuilder(opts);
-  let actions = [`const policy = new Virtru.PolicyBuilder(${opts ? 'policy' : ''})`];
+function policyBuilder(existingPolicy) {
+  if (existingPolicy) {
+    _pushAction({
+      title: 'Get Policy Builder',
+      code: 'const builder = existingPolicy.builder();',
+    });
+  } else {
+    _pushAction({
+      title: 'Create Policy Builder',
+      code: 'const builder = new Virtru.PolicyBuilder();',
+    });
+  }
+  const builder = existingPolicy ? existingPolicy.builder() : new Virtru.PolicyBuilder();
+  let actions = ['const policy = builder'];
   // This proxy records all calls, then logs them to the UI on `build` invocations.
   return new Proxy(builder, {
     get(target, propKey, receiver) {
@@ -154,6 +165,16 @@ function newVirtruDecryptParamsBuilder(opts) {
   return new Virtru.DecryptParamsBuilder(opts);
 }
 
+function signOut() {
+  localStorage.clear();
+  window.location = window.location.href.split(/[?#]/)[0];
+}
+
+function fetchAuditEvents({ virtruClient, policyId }) {
+  // Not logging this since it happens so often
+  return virtruClient.fetchEventsForPolicyId(policyId);
+}
+
 export default {
   encrypt,
   policyBuilder,
@@ -163,4 +184,6 @@ export default {
   createClient,
   revoke,
   newVirtruDecryptParamsBuilder,
+  signOut,
+  fetchAuditEvents,
 };
