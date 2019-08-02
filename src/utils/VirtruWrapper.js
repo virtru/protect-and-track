@@ -166,7 +166,9 @@ function newVirtruDecryptParamsBuilder(opts) {
 }
 
 function signOut(userId) {
-  Virtru.Auth.logout({ email: userId });
+  if (userId) {
+    Virtru.Auth.logout({ email: userId });
+  }
   localStorage.clear();
   window.location = window.location.href.split(/[?#]/)[0];
 }
