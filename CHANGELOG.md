@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
 
-## [v1.0.0](https://github.com/virtru/protect-and-track/compare/v1.0.0...v1.0.1) - 2019-08-02
-
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/80): _patch_
   - Fix being able to attempt encrypting without actually being logged in
+
+## [v1.0.1](https://github.com/virtru/protect-and-track/compare/v1.0.0...v1.0.1) - 2019-08-02
+
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/77): _patch_
   - Fix policy building by using `policy.builder()`
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/75): _patch_
