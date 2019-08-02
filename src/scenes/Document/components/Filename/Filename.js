@@ -1,10 +1,12 @@
 import React from 'react';
 
+import RevokeAll from '../RevokeAll/RevokeAll';
+
 import Button from 'components/Button/Button';
 import Virtru from 'utils/VirtruWrapper';
 import './Filename.css';
 
-function Filename({ file, isTdf }) {
+function Filename({ file, isTdf, isPolicyRevoked, revokePolicy }) {
   return (
     <h2 className="Filename">
       {file.file.name}
@@ -12,6 +14,7 @@ function Filename({ file, isTdf }) {
       <Button variant="link" onClick={Virtru.signOut} small>
         Start over
       </Button>
+      {isTdf && <RevokeAll isPolicyRevoked={isPolicyRevoked} revokePolicy={revokePolicy} />}
     </h2>
   );
 }
