@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
+import Button from '../../../../components/Button/Button';
 import Modal from '../../../../components/Modal/Modal';
+
 import './RevokeAll.css';
 
 function RevokeAll({ isPolicyRevoked, revokePolicy }) {
@@ -17,7 +19,7 @@ function RevokeAll({ isPolicyRevoked, revokePolicy }) {
 
   return (
     <>
-      <button
+      <Button
         className="RevokeAll"
         disabled={isPolicyRevoked}
         onClick={() => {
@@ -25,7 +27,7 @@ function RevokeAll({ isPolicyRevoked, revokePolicy }) {
         }}
       >
         {isPolicyRevoked ? 'Revoked' : 'Revoke File'}
-      </button>
+      </Button>
       {isShowWarning && (
         <Modal onClose={doClose}>
           <div className="RevokeAll-container">
@@ -34,9 +36,9 @@ function RevokeAll({ isPolicyRevoked, revokePolicy }) {
               <p>If you revoke this file, only you will be able to access it.</p>
               <p>The SDK does not currently support undoing this action.</p>
             </div>
-            <button className="RevokeAll-confirm" onClick={doRevoke}>
+            <Button className="RevokeAll-confirm" onClick={doRevoke}>
               Yes, Revoke This File
-            </button>
+            </Button>
           </div>
         </Modal>
       )}
