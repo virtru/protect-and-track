@@ -152,6 +152,7 @@ function Document({
               isTdf={!!encrypted}
               isPolicyRevoked={isPolicyRevoked}
               revokePolicy={revokePolicy}
+              userId={userId}
             />
             <Policy
               virtruClient={virtruClient}
