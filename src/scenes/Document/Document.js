@@ -146,7 +146,6 @@ function Document({
             <Filename
               file={file}
               isTdf={!!encrypted}
-              setFile={setFile}
               isPolicyRevoked={isPolicyRevoked}
               revokePolicy={revokePolicy}
             />
