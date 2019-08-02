@@ -3,7 +3,7 @@ import { render, getByTestId, fireEvent } from '@testing-library/react';
 import AuditLogger from './AuditLogger';
 import moment from 'moment';
 import auditEvents from 'constants/auditEvents';
-import { saver } from 'utils/download';
+import * as Download from 'utils/download';
 
 jest.mock('file-saver');
 
@@ -35,12 +35,11 @@ describe('AuditLogger', () => {
       timestamp: '2019-07-15T14:48:22+00:00',
       recordId: 0,
     };
-    const saveAs = jest.fn();
-    saver.mockImplementation(saveAs);
+    Download.saver = jest.fn();
 
     const { container } = render(<AuditLogger auditLog={{ events: [event] }} />);
 
     fireEvent.click(getByTestId(container, 'auditEventDownload'));
-    expect(saveAs).toHaveBeenCalledTimes(1);
+    expect(Download.saver).toHaveBeenCalledTimes(1);
   });
 });
