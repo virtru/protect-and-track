@@ -137,7 +137,7 @@ function Document({
           setFile={setFile}
         >
           <div className="DocumentDetails">
-            <Filename file={file} isTdf={!!encrypted} setFile={setFile} />
+            <Filename file={file} isTdf={!!encrypted} />
             <Policy
               virtruClient={virtruClient}
               file={file}

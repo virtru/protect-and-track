@@ -152,6 +152,11 @@ function newVirtruDecryptParamsBuilder(opts) {
   return new Virtru.DecryptParamsBuilder(opts);
 }
 
+function signOut() {
+  localStorage.clear();
+  window.location = window.location.href.split(/[?#]/)[0];
+}
+
 export default {
   encrypt,
   policyBuilder,
@@ -161,4 +166,5 @@ export default {
   createClient,
   revoke,
   newVirtruDecryptParamsBuilder,
+  signOut,
 };
