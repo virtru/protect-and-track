@@ -8,7 +8,6 @@ export const downloadHtml = encrypted => {
 };
 
 export const downloadTdf = encrypted => {
-  debugger;
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
   const tdf = Virtru.unwrapHtml(html);
   const blob = new Blob([tdf]);
