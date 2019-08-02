@@ -12,9 +12,8 @@
   border-radius: 12px;
   font-size: 14px;
   text-align: center;
-  border: 4px dashed #707070;
   background-repeat: no-repeat;
-  border-radius: 25px;
+  border-radius: 12px;
   background-color: white;
   margin: 0 auto;
 
@@ -31,10 +30,12 @@
 .Drop-encrypted {
   background-color: var(--slateLightest);
   border-style: solid;
+  border-color: var(--slatePrimary);
 }
 
 .Drop-plain {
   border-style: solid;
+  border-color: var(--slateLighter);
 }
 
 .Drop-icon {
