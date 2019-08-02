@@ -48,7 +48,7 @@ const Header = ({ userId }) => {
       <div className="delimiter" />
       <button className="githubButton">
         <a
-          href="https://github.com/virtru/virtru-tdf3-js"
+          href="https://github.com/virtru/protect-and-track"
           target="_blank"
           rel="noopener noreferrer"
         >
