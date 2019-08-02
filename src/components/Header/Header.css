@@ -1,12 +1,18 @@
 @import '../../styles/colors.css';
 
+.headerWrapper {
+  background: var(--blueDarkest);
+}
+
 .headerContainer {
   display: flex;
   flex-shrink: 0;
   align-items: center;
   height: 55px;
+  min-width: 1024px;
+  max-width: 1280px;
+  margin: 0 auto;
   padding: 0 36px 0 24px;
-  background: var(--blueDarkest);
 }
 
 .headerLogo {
@@ -22,7 +28,7 @@
 
 .delimiter {
   height: 28px;
-  margin: 0 11px;
+  margin: 0 12px;
   width: 1px;
   background: var(--white);
 }
