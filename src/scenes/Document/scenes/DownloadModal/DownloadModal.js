@@ -38,8 +38,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
         <span>See the original file:</span>
         <br />
         <Button
-          disabled
-          // disabled={decrypting} -- re-enable when this is working
+          disabled={decrypting}
           fullWidth
           variant="alternateButton"
           onClick={decryptAndDownload}
