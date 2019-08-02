@@ -116,7 +116,9 @@ async function decrypt({ virtruClient, encryptedBuffer }) {
       '  .withBufferSource(encryptedBuffer)\n' +
       '  .build();',
   });
-  const decryptParams = new Virtru.DecryptParamsBuilder().withBufferSource(encryptedBuffer).build();
+  const decryptParams = new Virtru.DecryptParamsBuilder()
+    .withArrayBufferSource(encryptedBuffer)
+    .build();
 
   _pushAction({
     title: 'Decrypt File',
