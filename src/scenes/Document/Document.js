@@ -9,7 +9,6 @@ import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy from './scenes/Policy/Policy';
 import DownloadModal from './scenes/DownloadModal/DownloadModal';
-import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
 import AuthSelect from '../AuthSelect/AuthSelect';
 import StayUp from '../StayUp/StayUp';
@@ -99,16 +98,16 @@ function Document({
       if (encryptState !== ENCRYPT_STATES.PROTECTED) {
         return;
       }
-      const auditRes = await getAuditEvents({ userId, appId, policyId });
-      const auditData = await auditRes.json();
+      try {
+        const auditData = await Virtru.fetchAuditEvents({ virtruClient, policyId });
+        setAuditEvents({ events: auditData, error: false });
+      } catch (err) {
+        console.error(err);
+        setAuditEvents({ error: err });
+      }
       if (currentTimerId !== auditTimerId) {
         // The policy changed while waiting for the audit log, so don't update it.
         return;
-      }
-      if (!auditRes.ok) {
-        setAuditEvents({ status: auditRes.status, error: auditData });
-      } else {
-        setAuditEvents({ events: auditData.data, error: false });
       }
       auditTimerId = setTimeout(updateAuditEvents, 2000);
     }
@@ -121,7 +120,7 @@ function Document({
       return;
     }
     auditTimerId = setTimeout(updateAuditEvents, 2000);
-  }, [appId, encryptState, policy, policyId, setAuditEvents, userId]);
+  }, [appId, encryptState, policy, policyId, setAuditEvents, userId, virtruClient]);
 
   const renderDrop = () => {
     if (!file) {
