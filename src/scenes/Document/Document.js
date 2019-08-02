@@ -39,6 +39,7 @@ function Document({
   setEncryptState,
   setPolicy,
   setPolicyId,
+  isLoggedIn,
 }) {
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
@@ -147,6 +148,7 @@ function Document({
               encrypt={encrypt}
               encryptState={encryptState}
               policyChange={policyChange}
+              isLoggedIn={isLoggedIn}
             />
           </div>
         </Drop>
@@ -239,7 +241,18 @@ const mapToProps = ({
   policy,
   userId,
   virtruClient,
-}) => ({ policyId, file, policy, userId, appId, virtruClient, encrypted, encryptState });
+  isLoggedIn,
+}) => ({
+  policyId,
+  file,
+  policy,
+  userId,
+  appId,
+  virtruClient,
+  encrypted,
+  encryptState,
+  isLoggedIn,
+});
 
 const saveFileToLocalStorage = ({ fileBuffer, fileName, fileType }) => {
   const b64 = arrayBufferToBase64(fileBuffer);
