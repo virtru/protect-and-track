@@ -154,6 +154,11 @@ function newVirtruDecryptParamsBuilder(opts) {
   return new Virtru.DecryptParamsBuilder(opts);
 }
 
+function signOut() {
+  localStorage.clear();
+  window.location = window.location.href.split(/[?#]/)[0];
+}
+
 function fetchAuditEvents({ virtruClient, policyId }) {
   // Not logging this since it happens so often
   return virtruClient.fetchEventsForPolicyId(policyId);
@@ -168,5 +173,6 @@ export default {
   createClient,
   revoke,
   newVirtruDecryptParamsBuilder,
+  signOut,
   fetchAuditEvents,
 };
