@@ -99,16 +99,16 @@ function Document({
       if (encryptState !== ENCRYPT_STATES.PROTECTED) {
         return;
       }
-      const auditRes = await getAuditEvents({ userId, appId, policyId });
-      const auditData = await auditRes.json();
+      try {
+        const auditData = await Virtru.fetchAuditEvents({ virtruClient, policyId });
+        setAuditEvents({ events: auditData, error: false });
+      } catch (err) {
+        console.error(err);
+        setAuditEvents({ error: err });
+      }
       if (currentTimerId !== auditTimerId) {
         // The policy changed while waiting for the audit log, so don't update it.
         return;
-      }
-      if (!auditRes.ok) {
-        setAuditEvents({ status: auditRes.status, error: auditData });
-      } else {
-        setAuditEvents({ events: auditData.data, error: false });
       }
       auditTimerId = setTimeout(updateAuditEvents, 2000);
     }
