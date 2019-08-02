@@ -6,13 +6,14 @@ import { downloadHtml, downloadTdf, downloadDecrypted } from 'utils/download';
 
 import './DownloadModal.css';
 import '../PolicyErrorModal/PolicyErrorModal.css';
+import '../LoadingModal/LoadingModal.css';
 
 import PolicyUtils from 'utils/policy';
 
 export default ({ onClose, encrypted, virtruClient }) => {
   const [decrypting, setDecrypting] = useState(false);
 
-  function showPolicyErrorModal() {
+  const showPolicyErrorModal = () => {
     return (
       <div className="policy-error-modal">
         <Modal onClose={onClose}>
@@ -33,9 +34,9 @@ export default ({ onClose, encrypted, virtruClient }) => {
         </Modal>
       </div>
     );
-  }
+  };
 
-  function showDecryptAndDownloadModal() {
+  const showDecryptAndDownloadModal = () => {
     const decryptAndDownload = async () => {
       setDecrypting(true);
       try {
@@ -75,20 +76,38 @@ export default ({ onClose, encrypted, virtruClient }) => {
         </Modal>
       </div>
     );
-  }
+  };
+
+  const showLoadingModal = () => {
+    return (
+      <div className="loading-modal">
+        <Modal>
+          <h4 className="loading-modal-title">Loading Policy</h4>
+          <span>Loading the policy associated to this file...</span>
+          <br />
+        </Modal>
+      </div>
+    );
+  };
 
   const DetermineModal = () => {
     const [whichModal, setWhichModal] = useState(null);
 
     useEffect(() => {
       PolicyUtils.policyFlagCheck({ encrypted, virtruClient }).then(res => {
-        const selectedModal = res ? showPolicyErrorModal() : showDecryptAndDownloadModal();
-        setWhichModal(selectedModal);
+        setWhichModal(res);
       });
     });
 
-    return null;
+    switch (whichModal) {
+      case null:
+        return showLoadingModal();
+      case true:
+        return showPolicyErrorModal();
+      case false:
+        return showDecryptAndDownloadModal();
+    }
   };
 
-  DetermineModal();
+  return DetermineModal();
 };

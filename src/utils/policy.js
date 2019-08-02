@@ -12,7 +12,7 @@ export const getPolicy = async ({ encrypted, virtruClient }) => {
 export const policyFlagCheck = async ({ encrypted, virtruClient }) => {
   const thePolicy = await getPolicy({ encrypted, virtruClient });
   const policyFlags = thePolicy._authZFlags;
-  return policyFlags.watermark || policyFlags.pfp;
+  return policyFlags.watermark === true || policyFlags.pfp === true;
 };
 
 export default {
