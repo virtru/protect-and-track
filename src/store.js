@@ -127,6 +127,9 @@ export default createStore({
 
   // The policy ID
   policyId,
+
+  // Any current alerts that should be displayed atop the app
+  alert: false,
 });
 
 function getQueryParam(name, url) {

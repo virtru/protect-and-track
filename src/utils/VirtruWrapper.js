@@ -132,8 +132,11 @@ async function decrypt({ virtruClient, encryptedBuffer }) {
 function createClient({ email }) {
   _pushAction({
     title: 'Create Client',
-    code: 'const Client = new Virtru.Client({ email });',
+    code: `const Client = new Virtru.Client(${email ? '{ email }' : ''});`,
   });
+  if (!email) {
+    return new Virtru.Client();
+  }
   return new Virtru.Client({ email });
 }
 
@@ -145,6 +148,10 @@ function revoke({ virtruClient, policyId }) {
   return virtruClient.revokePolicy(policyId);
 }
 
+function newVirtruDecryptParamsBuilder(opts) {
+  return new Virtru.DecryptParamsBuilder(opts);
+}
+
 export default {
   encrypt,
   policyBuilder,
@@ -153,4 +160,5 @@ export default {
   decrypt,
   createClient,
   revoke,
+  newVirtruDecryptParamsBuilder,
 };

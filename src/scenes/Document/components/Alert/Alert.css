@@ -1,0 +1,11 @@
+.Alert {
+  color: var(--redDarker);
+  width: calc(100% - 48px);
+  border: 1px solid var(--redPrimary);
+  background-color: var(--redLightest);
+  box-shadow: 0 1px 4px 1px rgba(81, 88, 100, 0.3);
+  position: absolute;
+  left: 24px;
+  top: 24px;
+  padding: 10px;
+}
