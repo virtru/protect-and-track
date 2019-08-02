@@ -39,11 +39,15 @@ function Document({
   setEncryptState,
   setPolicy,
   setPolicyId,
+  isLoggedIn,
 }) {
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [isStayUpOpen, setStayUpOpen] = useState(false);
   const [isDownloadOpen, setDownloadOpen] = useState(false);
+  const [isPolicyRevoked, setPolicyRevoked] = useState(
+    !!localStorage.getItem('virtru-demo-policyRevoked'),
+  );
 
   const openAuthModal = () => {
     setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
@@ -91,6 +95,13 @@ function Document({
     }
   };
 
+  const revokePolicy = () => {
+    localStorage.setItem('virtru-demo-policyRevoked', true);
+    setPolicyRevoked(true);
+    // TODO: handle error case?
+    Virtru.revoke({ virtruClient, policyId });
+  };
+
   useEffect(() => {
     async function updateAuditEvents() {
       const currentTimerId = auditTimerId;
@@ -136,17 +147,25 @@ function Document({
           setFile={setFile}
         >
           <div className="DocumentDetails">
-            <Filename file={file} isTdf={!!encrypted} setFile={setFile} />
+            <Filename
+              file={file}
+              isTdf={!!encrypted}
+              isPolicyRevoked={isPolicyRevoked}
+              revokePolicy={revokePolicy}
+              userId={userId}
+            />
             <Policy
               virtruClient={virtruClient}
               file={file}
               policy={policy}
               policyId={policyId}
+              isPolicyRevoked={isPolicyRevoked}
               userId={userId}
               openAuthModal={openAuthModal}
               encrypt={encrypt}
               encryptState={encryptState}
               policyChange={policyChange}
+              isLoggedIn={isLoggedIn}
             />
           </div>
         </Drop>
@@ -202,7 +221,13 @@ function Document({
           </Button>
           <Button
             onClick={() => setShareOpen(true)}
-            disabled={!encrypted || !userId || !policy || !policy.getUsersWithAccess().length}
+            disabled={
+              !encrypted ||
+              !userId ||
+              !policy ||
+              isPolicyRevoked ||
+              !policy.getUsersWithAccess().length
+            }
           >
             Share
           </Button>
@@ -239,7 +264,18 @@ const mapToProps = ({
   policy,
   userId,
   virtruClient,
-}) => ({ policyId, file, policy, userId, appId, virtruClient, encrypted, encryptState });
+  isLoggedIn,
+}) => ({
+  policyId,
+  file,
+  policy,
+  userId,
+  appId,
+  virtruClient,
+  encrypted,
+  encryptState,
+  isLoggedIn,
+});
 
 const saveFileToLocalStorage = ({ fileBuffer, fileName, fileType }) => {
   const b64 = arrayBufferToBase64(fileBuffer);
@@ -304,6 +340,7 @@ const actions = {
     localStorage.removeItem('virtru-demo-policy');
     localStorage.removeItem('virtru-demo-file-encrypted');
     localStorage.removeItem('virtru-demo-policyId');
+    localStorage.removeItem('virtru-demo-policyRevoked');
     if (!fileHandle) {
       return {
         file: false,

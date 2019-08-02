@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'redux-zero/react';
-import FileSaver from 'file-saver';
 import { parse as parseCsvToJson } from 'json2csv';
 import './AuditLogger.css';
 import { Scrollbars } from 'react-custom-scrollbars';
 import AuditEventItem from './components/AuditEventItem/AuditEventItem';
+import { saver } from 'utils/download';
 
 const { useEffect, useRef } = React;
 
@@ -20,7 +20,7 @@ const AuditLogger = ({ auditLog = {} }) => {
   const onDownload = i => {
     const csvContent = parseCsvToJson(events[i]);
     const blob = new Blob([csvContent], { type: 'text/plain;charset=utf-8' });
-    FileSaver.saveAs(blob, `${events[i].recordId}.csv`);
+    saver(blob, `${events[i].recordId}.csv`);
   };
 
   const contents = events.length ? (

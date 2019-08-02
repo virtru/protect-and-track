@@ -5,7 +5,7 @@ import { ReactComponent as WatermarkIcon } from './watermark.svg';
 import classNames from 'classnames';
 import './Watermarking.css';
 
-function Watermarking({ file, policy, policyChange }) {
+function Watermarking({ file, policy, policyChange, isPolicyRevoked }) {
   const SUPPORTED_MEDIA = [
     'application/vnd.openxmlformats-officedocument.presentationml.presentation',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -15,7 +15,7 @@ function Watermarking({ file, policy, policyChange }) {
     'application/pdf',
   ];
   const mediaType = file.file && file.file.type;
-  const disabled = !SUPPORTED_MEDIA.includes(mediaType);
+  const disabled = isPolicyRevoked || !SUPPORTED_MEDIA.includes(mediaType);
   const onChange = disabled
     ? undefined
     : policyChange((builder, e) =>
@@ -23,7 +23,7 @@ function Watermarking({ file, policy, policyChange }) {
       );
   const checked = disabled ? undefined : policy && policy.hasWatermarking();
   return (
-    <div className={classNames('Watermarking', { 'Watermarking-disabled': disabled })}>
+    <div className={classNames('Watermarking', { 'Section-disabled': disabled })}>
       <SectionHeader>
         <WatermarkIcon />
         <h4>Watermarking</h4>

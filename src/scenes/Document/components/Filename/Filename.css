@@ -31,3 +31,8 @@
 .Filename-Replace input[type='file'] {
   display: none;
 }
+
+.Filename .RevokeAll {
+  position: absolute;
+  right: 20px;
+}

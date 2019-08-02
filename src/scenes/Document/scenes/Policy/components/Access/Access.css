@@ -46,37 +46,11 @@
 }
 
 .Grant-owner,
-.Access-revokeAll,
 .Access input[type='submit'] {
   font: var(--fSizeSmall) / var(--lhSmall) var(--fontPrimary);
   min-height: 36px;
   margin: 4px;
   min-width: 94px;
-}
-
-.Access-revokeAll {
-  background: var(--redDarker);
-  border: 1px solid var(--redDarker);
-  border-radius: 3px;
-  color: #fff;
-  font-family: var(--fontPrimary);
-  font-size: 13px;
-  font-weight: bold;
-  line-height: 18px;
-  text-align: center;
-  cursor: pointer;
-}
-.Access-revokeAll:hover,
-.Access-revokeAll:focus {
-  background-color: var(--slateDarker);
-  border-color: var(--slateDarker);
-  box-shadow: 0 1px 4px 1px var(--slateShadow);
-  outline: none;
-}
-.Access-revokeAll:active {
-  background-color: var(--black);
-  border-color: var(--black);
-  box-shadow: 0 1px 4px 1px var(--slateShadow);
 }
 
 .Access input[type='submit'] {
