@@ -44,7 +44,9 @@ function Document({
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [isStayUpOpen, setStayUpOpen] = useState(false);
   const [isDownloadOpen, setDownloadOpen] = useState(false);
-  const [isPolicyRevoked, setPolicyRevoked] = useState(false);
+  const [isPolicyRevoked, setPolicyRevoked] = useState(
+    !!localStorage.getItem('virtru-demo-policyRevoked'),
+  );
 
   const openAuthModal = () => {
     setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
@@ -93,6 +95,7 @@ function Document({
   };
 
   const revokePolicy = () => {
+    localStorage.setItem('virtru-demo-policyRevoked', true);
     setPolicyRevoked(true);
     // TODO: handle error case?
     Virtru.revoke({ virtruClient, policyId });
@@ -323,6 +326,7 @@ const actions = {
     localStorage.removeItem('virtru-demo-policy');
     localStorage.removeItem('virtru-demo-file-encrypted');
     localStorage.removeItem('virtru-demo-policyId');
+    localStorage.removeItem('virtru-demo-policyRevoked');
     if (!fileHandle) {
       return {
         file: false,

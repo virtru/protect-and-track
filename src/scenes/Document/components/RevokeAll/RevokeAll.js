@@ -31,9 +31,8 @@ function RevokeAll({ isPolicyRevoked, revokePolicy }) {
           <div className="RevokeAll-container">
             <div className="RevokeAll-title">Revoke File</div>
             <div className="RevokeAll-text">
-              If you revoke this file, only you will be able to access it.
-              <p />
-              The SDK does not currently support undoing this action.
+              <p>If you revoke this file, only you will be able to access it.</p>
+              <p>The SDK does not currently support undoing this action.</p>
             </div>
             <button className="RevokeAll-confirm" onClick={doRevoke}>
               Yes, Revoke This File
