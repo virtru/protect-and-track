@@ -106,6 +106,8 @@ export default ({ onClose, encrypted, virtruClient }) => {
         return showPolicyErrorModal();
       case false:
         return showDecryptAndDownloadModal();
+      default:
+        return showLoadingModal();
     }
   };
 
