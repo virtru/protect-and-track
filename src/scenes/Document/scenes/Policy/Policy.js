@@ -29,7 +29,7 @@ function Policy({
       case ENCRYPT_STATES.PROTECTED:
         return null;
       case ENCRYPT_STATES.PROTECTED_NO_AUTH:
-        return <Button onClick={openAuthModal}>Sign in to Protect</Button>;
+        return <Button onClick={openAuthModal}>Sign In to Protect</Button>;
       default:
         if (isLoggedIn) {
           return (
@@ -43,7 +43,7 @@ function Policy({
         if (hasUsers) {
           return (
             <>
-              <Button onClick={openAuthModal}>Sign in to Protect</Button>
+              <Button onClick={openAuthModal}>Sign In to Protect</Button>
               <Button disabled>Protect File</Button>
             </>
           );
