@@ -4,6 +4,7 @@ import { connect } from 'redux-zero/react/index';
 import Sidebar from '../Sidebar/Sidebar';
 
 import Virtru from 'utils/VirtruWrapper';
+import Alert from './components/Alert/Alert';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy from './scenes/Policy/Policy';
@@ -32,6 +33,7 @@ function Document({
   userId,
   virtruClient,
   encryptState,
+  setAlert,
   setFile,
   setEncrypted,
   setAuditEvents,
@@ -60,14 +62,24 @@ function Document({
 
   const encrypt = async () => {
     setEncryptState(ENCRYPT_STATES.PROTECTING);
-    const { encryptedFile, policyId } = await Virtru.encrypt({
-      client: virtruClient,
-      fileData: file.arrayBuffer,
-      filename: file.file.name,
-      policy: policy,
-      userEmail: userId,
-      asHtml: true,
-    });
+    let encryptResult;
+    try {
+      encryptResult = await Virtru.encrypt({
+        client: virtruClient,
+        fileData: file.arrayBuffer,
+        filename: file.file.name,
+        policy: policy,
+        userEmail: userId,
+        asHtml: true,
+      });
+    } catch (e) {
+      // Encryption failed!!!!
+      console.log(`encrypt failure: ${JSON.stringify(e, null, 2)}`);
+      setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+      setAlert('Encrypt service error; try refreshing credentials or starting over.');
+      return;
+    }
+    const { encryptedFile, policyId } = encryptResult;
     setPolicyId(policyId);
     setEncrypted({
       payload: encryptedFile,
@@ -211,6 +223,7 @@ function Document({
     <>
       <div className="DocumentWrapper">
         {renderDrop()}
+        <Alert />
         {renderButtons()}
       </div>
       <Sidebar />
@@ -218,15 +231,16 @@ function Document({
   );
 }
 
-const mapToProps = ({policyId, file, appId, encrypted, encryptState, policy, userId, virtruClient }) => ({policyId,
+const mapToProps = ({
+  policyId,
   file,
-  policy,
-  userId,
   appId,
-  virtruClient,
   encrypted,
   encryptState,
-});
+  policy,
+  userId,
+  virtruClient,
+}) => ({ policyId, file, policy, userId, appId, virtruClient, encrypted, encryptState });
 
 const saveFileToLocalStorage = ({ fileBuffer, fileName, fileType }) => {
   const b64 = arrayBufferToBase64(fileBuffer);
@@ -254,13 +268,43 @@ const saveEncryptedToLocalStorage = ({ encryptedPayload, fileName, fileType }) =
 
 const actions = {
   setFile: async (state, { fileHandle, fileBuffer }) => {
+    const { userId, virtruClient } = state;
+    const { name: fileName, type: fileType } = fileHandle || {};
+    if (!fileBuffer && fileHandle) {
+      fileBuffer = await fileToArrayBuffer(fileHandle);
+    }
+
+    // If the file is invalid, don't bother clearing anything.
+    // TODO() Here is a good place to test for size?
+
+    // Attempt to parse as TDF. If successful, load as encrypted data.
+    if (fileName && fileName.endsWith('.tdf')) {
+      // TODO handle TDF files
+      return { alert: 'TDF support not yet implemented' };
+    } else if (fileName && fileName.endsWith('.html')) {
+      // maybe a TDF?
+      try {
+        const decParams = Virtru.newVirtruDecryptParamsBuilder()
+          .withArrayBufferSource(fileBuffer)
+          .build();
+        // TODO find a more elegant way to do this
+        const client = virtruClient || Virtru.createClient();
+        const uuid = decParams && (await client.getPolicyId(decParams));
+        if (uuid) {
+          return { alert: 'TDF support not yet implemented' };
+        }
+      } catch (e) {
+        console.log(`Unable to decrypt html file; probably not a TDF: ${JSON.stringify(e)}`);
+      }
+    }
+
+    if (auditTimerId) {
+      window.clearTimeout(auditTimerId);
+    }
     localStorage.removeItem('virtru-demo-file');
     localStorage.removeItem('virtru-demo-policy');
     localStorage.removeItem('virtru-demo-file-encrypted');
     localStorage.removeItem('virtru-demo-policyId');
-    if (auditTimerId) {
-      window.clearTimeout(auditTimerId);
-    }
     if (!fileHandle) {
       return {
         file: false,
@@ -270,9 +314,6 @@ const actions = {
         auditEvents: false,
       };
     }
-    const { userId } = state;
-    const { name: fileName, type: fileType } = fileHandle;
-    fileBuffer = fileBuffer || (await fileToArrayBuffer(fileHandle));
     let encryptState = ENCRYPT_STATES.UNPROTECTED;
     let encrypted = false;
 
@@ -282,24 +323,6 @@ const actions = {
       policyBuilder.addUsersWithAccess(userId);
     }
     const policy = policyBuilder.build();
-
-    // Attempt to parse as TDF. If successful, load as encrypted data.
-    if (fileName.endsWith('.html')) {
-      const htmlText = new TextDecoder('utf-8').decode(fileBuffer);
-      if (Virtru.unwrapHtml(htmlText)) {
-        encrypted = {
-          payload: fileBuffer,
-          name: fileName,
-          type: fileType,
-        };
-        if (state.userId) {
-          encryptState = ENCRYPT_STATES.PROTECTED;
-        } else {
-          encryptState = ENCRYPT_STATES.PROTECTED_NO_AUTH;
-        }
-        saveEncryptedToLocalStorage({ encryptedPayload: fileBuffer, fileName, fileType });
-      }
-    }
 
     saveFileToLocalStorage({ fileName, fileType, fileBuffer });
     savePolicyToLocalStorage({ policy });
@@ -340,6 +363,9 @@ const actions = {
       }
     }
     return { auditEvents: value };
+  },
+  setAlert: (state, value) => {
+    return { alert: value };
   },
   setPolicyId: (state, value) => {
     localStorage.setItem('virtru-demo-policyId', value);
