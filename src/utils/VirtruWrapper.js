@@ -159,6 +159,15 @@ function fetchAuditEvents({ virtruClient, policyId }) {
   return virtruClient.fetchEventsForPolicyId(policyId);
 }
 
+async function encryptedToPolicy({ virtruClient, buffer }) {
+  if (!virtruClient || !buffer) {
+    return;
+  }
+  const decParams = new Virtru.DecryptParamsBuilder().withArrayBufferSource(buffer).build();
+  const uuid = await virtruClient.getPolicyId(decParams);
+  return uuid && (await virtruClient.fetchPolicy(uuid));
+}
+
 export default {
   encrypt,
   policyBuilder,
@@ -169,4 +178,5 @@ export default {
   revoke,
   newVirtruDecryptParamsBuilder,
   fetchAuditEvents,
+  encryptedToPolicy,
 };

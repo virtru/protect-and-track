@@ -123,11 +123,12 @@ function Document({
   }, [appId, encryptState, policy, policyId, setAuditEvents, userId, virtruClient]);
 
   const renderDrop = () => {
-    if (!file) {
+    if (!file && !encrypted) {
       return <Drop userId={userId} setFile={setFile} />;
     }
 
     const policyChange = change => generatePolicyChanger(policy, setPolicy, change, policyId);
+    console.log('userId ' + userId);
     return (
       <>
         <Drop
@@ -136,18 +137,25 @@ function Document({
           setFile={setFile}
         >
           <div className="DocumentDetails">
-            <Filename file={file} isTdf={!!encrypted} setFile={setFile} />
-            <Policy
-              virtruClient={virtruClient}
-              file={file}
-              policy={policy}
-              policyId={policyId}
-              userId={userId}
-              openAuthModal={openAuthModal}
-              encrypt={encrypt}
-              encryptState={encryptState}
-              policyChange={policyChange}
-            />
+            <Filename file={file && file.file} encrypted={encrypted} setFile={setFile} />
+            {policy && (
+              <Policy
+                virtruClient={virtruClient}
+                file={file}
+                policy={policy}
+                policyId={policyId}
+                userId={userId}
+                openAuthModal={openAuthModal}
+                encrypt={encrypt}
+                encryptState={encryptState}
+                policyChange={policyChange}
+              />
+            )}
+            {!userId && !policy && (
+              <div>
+                <Button onClick={openAuthModal}>Sign in to Decrypt</Button>
+              </div>
+            )}
           </div>
         </Drop>
         {isShareOpen && <Share onClose={() => setShareOpen(false)} />}
@@ -277,9 +285,17 @@ const actions = {
     // TODO() Here is a good place to test for size?
 
     // Attempt to parse as TDF. If successful, load as encrypted data.
+    let encryptState = ENCRYPT_STATES.UNPROTECTED;
+    let encrypted = false;
+    let policy = false;
     if (fileName && fileName.endsWith('.tdf')) {
       // TODO handle TDF files
-      return { alert: 'TDF support not yet implemented' };
+      encrypted = {
+        payload: fileBuffer,
+        name: fileName,
+        type: fileType,
+      };
+      encryptState = ENCRYPT_STATES.PROTECTED_NO_AUTH;
     } else if (fileName && fileName.endsWith('.html')) {
       // maybe a TDF?
       try {
@@ -290,10 +306,26 @@ const actions = {
         const client = virtruClient || Virtru.createClient({ email: userId || 'a@b.invalid' });
         const uuid = decParams && (await client.getPolicyId(decParams));
         if (uuid) {
-          return { alert: 'TDF support not yet implemented' };
+          encrypted = {
+            payload: fileBuffer,
+            name: fileName,
+            type: fileType,
+          };
+          encryptState = ENCRYPT_STATES.PROTECTED_NO_AUTH;
         }
       } catch (e) {
         console.log(`Unable to decrypt html file; probably not a TDF: ${JSON.stringify(e)}`);
+      }
+    }
+
+    if (encrypted && virtruClient) {
+      policy = Virtru.encryptedToPolicy({ virtruClient, encrypted });
+      if (policy) {
+        // TODO validate user is on the policy
+        encryptState = ENCRYPT_STATES.PROTECTED;
+        if (policy.getPolicyId()) {
+          localStorage.setItem('virtru-demo-policyId', policy.getPolicyId());
+        }
       }
     }
 
@@ -305,6 +337,7 @@ const actions = {
     localStorage.removeItem('virtru-demo-file-encrypted');
     localStorage.removeItem('virtru-demo-policyId');
     if (!fileHandle) {
+      console.log('tdf doc clear');
       return {
         file: false,
         policy: false,
@@ -313,20 +346,30 @@ const actions = {
         auditEvents: false,
       };
     }
-    let encryptState = ENCRYPT_STATES.UNPROTECTED;
-    let encrypted = false;
 
-    const policyBuilder = Virtru.policyBuilder();
-    // Add the current user if present
-    if (userId) {
-      policyBuilder.addUsersWithAccess(userId);
+    if (!policy && !encrypted) {
+      const policyBuilder = Virtru.policyBuilder();
+      // Add the current user if present
+      if (userId) {
+        policyBuilder.addUsersWithAccess(userId);
+      }
+      policy = policyBuilder.build();
     }
-    const policy = policyBuilder.build();
 
-    saveFileToLocalStorage({ fileName, fileType, fileBuffer });
-    savePolicyToLocalStorage({ policy });
+    if (encrypted) {
+      saveEncryptedToLocalStorage({
+        encryptedPayload: encrypted.payload,
+        fileName: encrypted.name,
+        fileType: encrypted.type,
+      });
+    } else {
+      saveFileToLocalStorage({ fileName, fileType, fileBuffer });
+    }
+    if (policy) {
+      savePolicyToLocalStorage({ policy });
+    }
     return {
-      file: { file: fileHandle, arrayBuffer: fileBuffer },
+      file: !encrypted && { file: fileHandle, arrayBuffer: fileBuffer },
       policy,
       encrypted,
       encryptState,

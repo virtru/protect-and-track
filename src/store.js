@@ -1,5 +1,6 @@
 import createStore from 'redux-zero';
 import Virtru from 'virtru-sdk';
+import VirtruWrapper from 'utils/VirtruWrapper';
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import { base64ToArrayBuffer } from 'utils/buffer';
 
@@ -44,8 +45,8 @@ try {
 }
 
 try {
-  // Restore existing file
   if (fileData) {
+    // Restore existing file
     const buffer = fileData.b64 && base64ToArrayBuffer(fileData.b64);
     file = {
       arrayBuffer: buffer,
@@ -58,7 +59,7 @@ try {
     // Rebuild existing policy or create new one
     if (policyData) {
       const builder = new Virtru.PolicyBuilder();
-      builder.setPolicyId(policyId);
+      policyId && builder.setPolicyId(policyId);
       if (!policyData.authorizations.includes('forward')) {
         builder.disableReshare();
       }
@@ -69,9 +70,11 @@ try {
         builder.addUsersWithAccess(...policyData.users);
       }
       policy = builder.build();
-    } else {
+    } else if (file) {
       policy = new Virtru.PolicyBuilder().build();
     }
+  } else if (encrypted && virtruClient) {
+    policy = VirtruWrapper.encryptedToPolicy({ virtruClient, encrypted });
   }
 } catch (err) {
   console.error(err);
