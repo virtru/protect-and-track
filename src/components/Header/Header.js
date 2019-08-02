@@ -18,8 +18,8 @@ const Header = ({ userId }) => {
   function renderAuth() {
     if (userId) {
       return (
-        <span>
-          {userId}{' '}
+        <span className="currentUser">
+          <span className="userID">{userId}</span>{' '}
           <Button variant="link" onClick={signOut} verySmall light>
             Sign out
           </Button>

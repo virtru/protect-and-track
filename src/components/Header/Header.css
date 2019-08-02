@@ -64,3 +64,16 @@
   text-align: right;
   flex-grow: 1;
 }
+
+.currentUser {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+.userID {
+  text-overflow: ellipsis;
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+}
