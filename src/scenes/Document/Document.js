@@ -120,7 +120,7 @@ function Document({
       return;
     }
     auditTimerId = setTimeout(updateAuditEvents, 2000);
-  }, [appId, encryptState, policy, policyId, setAuditEvents, userId]);
+  }, [appId, encryptState, policy, policyId, setAuditEvents, userId, virtruClient]);
 
   const renderDrop = () => {
     if (!file) {
