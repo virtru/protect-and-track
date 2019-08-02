@@ -17,7 +17,7 @@ const Header = ({ userId }) => {
       return (
         <span>
           {userId}{' '}
-          <Button variant="link" onClick={Virtru.signOut} verySmall light>
+          <Button variant="link" onClick={() => Virtru.signOut(userId)} verySmall light>
             Sign out
           </Button>
         </span>
