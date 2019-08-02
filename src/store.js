@@ -2,6 +2,8 @@ import createStore from 'redux-zero';
 import Virtru from 'virtru-sdk';
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import { base64ToArrayBuffer } from 'utils/buffer';
+import checkIsMobile from 'utils/checkIsMobile';
+import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
 
 import ENCRYPT_STATES from 'constants/encryptStates';
 
@@ -79,6 +81,10 @@ try {
 
 export default createStore({
   appIdBundle: false,
+
+  isMobile: checkIsMobile(),
+
+  isSupportedBrowser: checkIsSupportedBrowser(),
 
   // File content that the user has attached. May be encrypted or not...
   file,
