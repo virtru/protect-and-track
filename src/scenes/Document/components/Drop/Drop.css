@@ -12,9 +12,8 @@
   border-radius: 12px;
   font-size: 14px;
   text-align: center;
-  border: 4px dashed #707070;
   background-repeat: no-repeat;
-  border-radius: 25px;
+  border-radius: 12px;
   background-color: white;
   margin: 0 auto;
 
@@ -31,10 +30,12 @@
 .Drop-encrypted {
   background-color: var(--slateLightest);
   border-style: solid;
+  border-color: var(--slatePrimary);
 }
 
 .Drop-plain {
   border-style: solid;
+  border-color: var(--slateLighter);
 }
 
 .Drop-icon {
@@ -42,21 +43,40 @@
 }
 
 .Drop-text {
-  color: black;
-  font-size: x-large;
+  color: var(--slateDarkest);
+  font: var(--fSizeBody) / var(--lhBody) var(--fontPrimary);
+}
+.Drop-text p {
+  margin: var(--lhBody) auto;
+  width: 66%;
+}
+.Drop-text .secondary {
+  font: var(--fSizeSmall) / var(--lhSmall) var(--fontPrimary);
+  display: block;
+}
+.Drop-text .dragging-instructions {
+  display: none;
+  color: var(--blueDarker);
+  font: 700 var(--fSize-heading-l) / var(--lh-heading-l) var(--fontSecondary);
 }
 
 .Drop-hover {
   border: 3px dashed var(--blueDarker);
 }
+.Drop-hover .Drop-text .default-instructions {
+  display: none;
+}
+.Drop-hover .Drop-text .dragging-instructions {
+  display: block;
+}
 
 .Drop-UploadButton {
+  display: inline-block;
   border: 1px solid;
   border-radius: 3px;
   font-size: 1rem;
   font-family: var(--fontPrimary);
   font-weight: bold;
-  margin: 0.5rem;
   white-space: nowrap;
   outline: none;
   cursor: pointer;

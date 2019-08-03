@@ -196,10 +196,10 @@ function Document({
       return (
         <section className="DocumentFooter center">
           <span>or drag this... </span>
-          <h3 draggable="true">
+          <div draggable="true">
             <FileIcon className="file-icon" />
             demo-example.txt
-          </h3>
+          </div>
         </section>
       );
     }
