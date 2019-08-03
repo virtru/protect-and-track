@@ -12,7 +12,7 @@ function Filename({ userId, file, isTdf, isPolicyRevoked, revokePolicy }) {
       {file.file.name}
       {isTdf && <span className="Filename-tdf">.tdf</span>}
       <Button variant="link" onClick={() => Virtru.signOut(userId)} small>
-        Start over
+        Reset
       </Button>
       {isTdf && <RevokeAll isPolicyRevoked={isPolicyRevoked} revokePolicy={revokePolicy} />}
     </h2>
