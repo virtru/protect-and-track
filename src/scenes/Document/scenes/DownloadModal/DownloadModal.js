@@ -13,24 +13,21 @@ import PolicyUtils from 'utils/policy';
 export default ({ onClose, encrypted, virtruClient }) => {
   const [decrypting, setDecrypting] = useState(false);
 
-  const showPolicyErrorModal = () => {
+  const showDecryptModal = () => {
     return (
-      <div className="policy-error-modal">
+      <div className="download-modal">
         <Modal onClose={onClose}>
-          <h4 className="policy-error-modal-title">Restricted Policy</h4>
-          <span>Files with 'Watermarking' must be opened in Virtru Secure Reader.</span>
+          <h4 className="download-title">Download File</h4>
+          <span>Share with others:</span>
           <br />
-          <br />
-          <Button
-            fullWidth
-            onClick={() => window.open('https://secure.virtru.com/secure-reader', '_blank')}
-          >
-            Go There
+          <Button fullWidth onClick={() => downloadHtml(encrypted)}>
+            Download HTML
           </Button>
-          <Button fullWidth variant="alternateButton" onClick={onClose}>
-            Not Now
-          </Button>
+          <span>Inspect the metadata:</span>
           <br />
+          <Button fullWidth onClick={() => downloadTdf(encrypted)}>
+            Download TDF
+          </Button>
         </Modal>
       </div>
     );
@@ -103,7 +100,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
       case null:
         return showLoadingModal();
       case true:
-        return showPolicyErrorModal();
+        return showDecryptModal();
       case false:
         return showDecryptAndDownloadModal();
       default:
