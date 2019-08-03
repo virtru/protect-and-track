@@ -44,11 +44,11 @@ function App({
   }
   return (
     <div className="unsupportedWrapper">
-      <h3>Please view this demo on a desktop computer or tablet in either Chrome or Firefox.</h3>
-      <a className="mainButton button" href="https://developer.virtru.com/">
+      <h3>Please view this demo on a desktop computer or tablet in Chrome.</h3>
+      <a className="button mainButton" href="https://developer.virtru.com/">
         Back to Developer Hub
       </a>
-      <button type="button" className="button" onClick={() => setContinueAnyway()}>
+      <button type="button" className="button alternateButton" onClick={() => setContinueAnyway()}>
         Continue anyway
       </button>
     </div>
