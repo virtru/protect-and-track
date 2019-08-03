@@ -5,7 +5,6 @@ import Button from 'components/Button/Button';
 import { downloadHtml, downloadTdf, downloadDecrypted } from 'utils/download';
 
 import './DownloadModal.css';
-import '../PolicyErrorModal/PolicyErrorModal.css';
 import '../LoadingModal/LoadingModal.css';
 
 import PolicyUtils from 'utils/policy';
@@ -18,6 +17,12 @@ export default ({ onClose, encrypted, virtruClient }) => {
       <div className="download-modal">
         <Modal onClose={onClose}>
           <h4 className="download-title">Download File</h4>
+          <h2 className="download-subtitle">
+            Download this file and open in{' '}
+            <a href="https://secure.virtru.com/secure-reader" target="_blank">
+              Secure Reader{' '}
+            </a>
+          </h2>
           <span>Share with others:</span>
           <br />
           <Button fullWidth onClick={() => downloadHtml(encrypted)}>
