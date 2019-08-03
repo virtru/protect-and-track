@@ -23,6 +23,11 @@ const Header = ({ userId }) => {
         </span>
       );
     }
+    return (
+      <Button variant="link" onClick={() => Virtru.signOut()} verySmall light>
+        Reset
+      </Button>
+    );
   }
   return (
     <div className="headerWrapper">
