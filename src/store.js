@@ -86,6 +86,8 @@ export default createStore({
 
   isSupportedBrowser: checkIsSupportedBrowser(),
 
+  continueAnyway: !!localStorage.getItem('continueAnyway'),
+
   // File content that the user has attached. May be encrypted or not...
   file,
 
