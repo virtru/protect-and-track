@@ -65,16 +65,17 @@ function Document({
 
   const encrypt = async () => {
     setEncryptState(ENCRYPT_STATES.PROTECTING);
+    const cleanPolicy = policy
+      .builder()
+      .withPolicyId(null)
+      .build();
     let encryptResult;
     try {
       encryptResult = await Virtru.encrypt({
         client: virtruClient,
         fileData: file.arrayBuffer,
         filename: file.file.name,
-        policy: policy
-          .builder()
-          .setPolicyId(null)
-          .build(),
+        policy: cleanPolicy,
         userEmail: userId,
         asHtml: true,
       });
