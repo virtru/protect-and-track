@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   width: 380px;
+  min-width: 308px;
+  max-width: 475px;
   height: 100%;
   font-family: var(--fontPrimary);
 }
@@ -13,12 +15,14 @@
 
 .auditEvents {
   height: 30%;
+  min-height: 288px;
   display: flex;
   flex-direction: column;
 }
 
 .sdkEvents {
   height: 70%;
+  min-height: 389px;
   display: flex;
   flex-direction: column;
 }
