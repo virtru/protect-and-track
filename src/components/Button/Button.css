@@ -51,6 +51,28 @@
   border-color: var(--slatePrimary);
 }
 
+.destructiveButton {
+  background: var(--redDarker);
+  border-color: var(--redDarker);
+  color: var(--white);
+}
+.destructiveButton:disabled {
+  background: var(--slateLighter);
+  border-color: var(--slateLighter);
+  box-shadow: none;
+}
+.destructiveButton:hover,
+.destructiveButton:focus {
+  background: var(--slateDarker);
+  border-color: var(--slateDarker);
+  box-shadow: 0 1px 4px 1px var(--slateShadow);
+}
+.destructiveButton:active {
+  background-color: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
 .alternateButton {
   color: var(--blueDarker);
   background-color: var(--white);

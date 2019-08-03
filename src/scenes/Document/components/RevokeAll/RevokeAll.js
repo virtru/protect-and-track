@@ -20,7 +20,8 @@ function RevokeAll({ isPolicyRevoked, revokePolicy }) {
   return (
     <>
       <Button
-        className="RevokeAll"
+        small
+        variant="link"
         disabled={isPolicyRevoked}
         onClick={() => {
           setShowWarning(true);
@@ -30,16 +31,14 @@ function RevokeAll({ isPolicyRevoked, revokePolicy }) {
       </Button>
       {isShowWarning && (
         <Modal onClose={doClose}>
-          <div className="RevokeAll-container">
-            <div className="RevokeAll-title">Revoke Policy</div>
-            <div className="RevokeAll-text">
-              <p>If you revoke this file, only you will be able to access it.</p>
-              <p>The SDK does not currently support undoing this action.</p>
-            </div>
-            <Button className="RevokeAll-confirm" onClick={doRevoke}>
-              Yes, Revoke This File
-            </Button>
-          </div>
+          <h1>Revoke Policy</h1>
+          <p>If you revoke this file, only you will be able to access it.</p>
+          <p>
+            <strong>The SDK does not currently support undoing this action.</strong>
+          </p>
+          <Button className="button destructiveButton" onClick={doRevoke}>
+            Yes, Revoke This File
+          </Button>
         </Modal>
       )}
     </>
