@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
-import {fireEvent} from "@testing-library/react";
+import { fireEvent } from '@testing-library/react';
 
 describe('App', () => {
   test('renders loader if isLoading set as true', () => {

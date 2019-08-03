@@ -1,0 +1,18 @@
+.loading-modal {
+  text-align: left;
+}
+
+.loading-modal span {
+  font-size: 17px;
+}
+
+.loading-modal .button {
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 15px;
+}
+
+.loading-modal-title {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
