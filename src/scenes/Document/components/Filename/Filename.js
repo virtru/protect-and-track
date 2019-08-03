@@ -1,9 +1,6 @@
 import React from 'react';
 
 import RevokeAll from '../RevokeAll/RevokeAll';
-
-import Button from 'components/Button/Button';
-import Virtru from 'utils/VirtruWrapper';
 import './Filename.css';
 
 function Filename({ userId, file, isTdf, isPolicyRevoked, revokePolicy }) {
