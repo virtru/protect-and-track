@@ -32,7 +32,8 @@ h3 {
 
 main {
   display: flex;
-  align-items: center;
+  align-items: top;
+  justify-content: center;
   height: calc(100vh - 55px);
   background: #fff;
   max-width: 1280px;

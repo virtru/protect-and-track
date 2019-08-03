@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Fix downloads by not using `FileSaver`
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/80): _patch_
   - Fix being able to attempt encrypting without actually being logged in
+- [NO-REF](https://github.com/virtru/protect-and-track/pull/79): _patch_
+  - Better layout support: scales down to 1024x768, up to 1280x960, and does sensible centering at larger resolutions.
 
 ## [v1.0.1](https://github.com/virtru/protect-and-track/compare/v1.0.0...v1.0.1) - 2019-08-02
 
