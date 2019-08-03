@@ -77,9 +77,17 @@ function Document({
       });
     } catch (e) {
       // Encryption failed!!!!
-      console.log(`encrypt failure: ${JSON.stringify(e, null, 2)}`);
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
-      setAlert('Encrypt service error; try refreshing credentials or starting over.');
+      if (e && e.message) {
+        if (e.message === 'Encrypting as a CKS-enabled user is currently not supported') {
+          setAlert('Please use a non-corporate account. CKS key server support coming soon');
+        } else {
+          setAlert(`Encrypt service error: ${e.message}`);
+        }
+      } else {
+        console.log(`encrypt failure: ${JSON.stringify(e.message || e, null, 2)}`);
+        setAlert('Encrypt service error; try refreshing credentials or starting over.');
+      }
       return;
     }
     const { encryptedFile, policyId } = encryptResult;
