@@ -19,7 +19,11 @@ export default ({ onClose, encrypted, virtruClient }) => {
           <h4 className="download-title">Download File</h4>
           <h2 className="download-subtitle">
             Download this file and open in{' '}
-            <a href="https://secure.virtru.com/secure-reader" target="_blank">
+            <a
+              href="https://secure.virtru.com/secure-reader"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Secure Reader{' '}
             </a>
           </h2>
