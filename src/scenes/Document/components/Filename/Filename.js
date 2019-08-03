@@ -9,7 +9,9 @@ import './Filename.css';
 function Filename({ userId, file, isTdf, isPolicyRevoked, revokePolicy }) {
   return (
     <h2 className="Filename">
-      {file.file.name}
+      <span class="Filename-original" title={file.file.name}>
+        {file.file.name}
+      </span>
       {isTdf && <span className="Filename-tdf">.tdf</span>}
       {isTdf && <RevokeAll isPolicyRevoked={isPolicyRevoked} revokePolicy={revokePolicy} />}
     </h2>

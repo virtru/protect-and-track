@@ -1,3 +1,9 @@
+.button.revokePolicy {
+  /* push this to the end of the flexbox */
+  /* https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container#Using_auto_margins_for_main_axis_alignment */
+  margin-left: auto;
+}
+
 .button.destructiveButton {
   width: 100%;
 }
