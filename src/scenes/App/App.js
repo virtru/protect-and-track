@@ -17,29 +17,60 @@ import Document from 'scenes/Document/Document';
  *  - Additional helper text and overlays
  *  - share panel?
  */
-function App({ appIdBundle, setAppIdBundle, isLoading, setIsLoading, userId }) {
+function App({
+  appIdBundle,
+  setAppIdBundle,
+  isLoading,
+  setIsLoading,
+  userId,
+  isMobile,
+  isSupportedBrowser,
+  continueAnyway,
+  setContinueAnyway,
+}) {
+  const isSupported = !isMobile && isSupportedBrowser;
+  if (isSupported ||  continueAnyway) {
+    return (
+      <>
+        <Header isLoggedIn={false} userId={userId} />
+        <main className="main">
+          <Router>
+            <Route path="/" component={Document} />
+            {/* TODO(dmihalcik): <Route 404 /> */}
+          </Router>
+        </main>
+      </>
+    );
+  }
   return (
-    <>
-      <Header isLoggedIn={false} userId={userId} />
-      <main className="main">
-        <Router>
-          <Route path="/" component={Document} />
-          {/* TODO(dmihalcik): <Route 404 /> */}
-        </Router>
-      </main>
-    </>
+    <div className="unsupportedWrapper">
+      <h3>Please view this demo on a desktop computer or tablet in either Chrome or Firefox.</h3>
+        <a className="mainButton button" href="https://developer.virtru.com/">
+          Back to Developer Hub
+        </a>
+        <button type="button" className="button" onClick={() => setContinueAnyway()}>
+          Continue anyway
+        </button>
+    </div>
   );
 }
 
-const mapToProps = ({ appIdBundle, file, isLoading, userId }) => ({
+const mapToProps = ({ appIdBundle, file, isLoading, userId, isMobile, isSupportedBrowser, continueAnyway }) => ({
   appIdBundle,
   file,
   isLoading,
   userId,
+  isMobile,
+  isSupportedBrowser,
+  continueAnyway,
 });
 const actions = {
   setAppIdBundle: (state, value) => ({ appIdBundle: value }),
   setIsLoading: (state, value) => ({ isLoading: value }),
+  setContinueAnyway: () => {
+    localStorage.setItem('continueAnyway', 'true');
+    return { continueAnyway: true };
+  }
 };
 
 export default connect(

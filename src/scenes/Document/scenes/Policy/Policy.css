@@ -23,3 +23,7 @@
 .Policy-buttons button {
   margin-left: 0;
 }
+
+.Section-disabled {
+  opacity: 0.5;
+}

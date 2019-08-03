@@ -4,3 +4,16 @@
   justify-content: center;
   align-items: center;
 }
+
+.unsupportedWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.unsupportedWrapper h3 {
+  text-align: center;
+}

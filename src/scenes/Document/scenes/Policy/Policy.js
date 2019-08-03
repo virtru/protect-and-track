@@ -18,6 +18,7 @@ function Policy({
   policyChange,
   virtruClient,
   policyId,
+  isPolicyRevoked,
   isLoggedIn,
 }) {
   const renderButtons = () => {
@@ -29,7 +30,7 @@ function Policy({
       case ENCRYPT_STATES.PROTECTED:
         return null;
       case ENCRYPT_STATES.PROTECTED_NO_AUTH:
-        return <Button onClick={openAuthModal}>Sign in to Protect</Button>;
+        return <Button onClick={openAuthModal}>Sign In to Protect</Button>;
       default:
         if (isLoggedIn) {
           return (
@@ -43,13 +44,14 @@ function Policy({
         if (hasUsers) {
           return (
             <>
-              <Button onClick={openAuthModal}>Sign in to Protect</Button>
+              <Button onClick={openAuthModal}>Sign In to Protect</Button>
               <Button disabled>Protect File</Button>
             </>
           );
         }
     }
   };
+
   if (encryptState !== ENCRYPT_STATES.PROTECTED) {
     return (
       <div className="Policy" id="policy">
@@ -58,6 +60,7 @@ function Policy({
           policy={policy}
           policyId={policyId}
           policyChange={policyChange}
+          isPolicyRevoked={isPolicyRevoked}
           userId={userId}
         />
         <span className="Policy-buttons">{renderButtons()}</span>
@@ -67,17 +70,21 @@ function Policy({
   return (
     <div className="Policy" id="policy">
       <Access
-        virtruClient={virtruClient}
-        policyId={policyId}
         policy={policy}
         encryptState={encryptState}
         policyChange={policyChange}
+        isPolicyRevoked={isPolicyRevoked}
         userId={userId}
       />
       <hr className="Policy-rule" />
-      <Expiration policy={policy} policyChange={policyChange} />
-      <Resharing policy={policy} policyChange={policyChange} />
-      <Watermarking file={file} policy={policy} policyChange={policyChange} />
+      <Expiration policy={policy} policyChange={policyChange} isPolicyRevoked={isPolicyRevoked} />
+      <Resharing policy={policy} policyChange={policyChange} isPolicyRevoked={isPolicyRevoked} />
+      <Watermarking
+        file={file}
+        policy={policy}
+        policyChange={policyChange}
+        isPolicyRevoked={isPolicyRevoked}
+      />
     </div>
   );
 }

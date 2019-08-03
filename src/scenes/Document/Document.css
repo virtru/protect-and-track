@@ -28,12 +28,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 1.1rem;
   margin-top: 24px;
+  font-size: 1rem;
 }
 
 .DocumentFooter.center {
   justify-content: center;
+}
+.DocumentFooter [draggable] {
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  color: var(--slateDarker);
+  font: 700 var(--fSize-heading-s) / var(--lh-heading-s) var(--fontSecondary);
 }
 
 .DocumentFooterButtons {
