@@ -13,7 +13,7 @@
 }
 
 .StayUp-title {
-  color: #2d323b;
+  color: var(--slateDarkest);
   font-family: var(--fontSecondary);
   font-size: 16px;
   line-height: 24px;
@@ -22,12 +22,9 @@
 }
 
 .StayUp-text {
-  color: #2d323b;
-  font-size: 13px;
-  line-height: 18px;
-  text-align: left;
+  color: var(--slateDarkest);
+  font: var(--fSizeSmall) / var(--lhSmall) var(--fontPrimary);
   margin: 15px 0 20px;
-  font-family: var(--fontSecondary);
 }
 
 .hbspt-form .hs-input,
@@ -105,7 +102,7 @@
   display: block;
   width: 100%;
   height: 48px;
-  color: #2d323b;
+  color: var(--slateDarkest);
   font-family: 'Open Sans';
   font-size: 16px;
   margin-bottom: 3px;

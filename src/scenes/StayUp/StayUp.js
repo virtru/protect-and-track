@@ -22,10 +22,10 @@ function StayUp({ onClose, userId }) {
   return (
     <Modal onClose={onClose}>
       <div className="StayUp-container" ref={scriptWrapper}>
-        <div className="StayUp-title">Stay Up to Date</div>
-        <div className="StayUp-text">
+        <h1>Stay Up to Date</h1>
+        <p>
           Connect with us to get updates about the latest developer tools and resources from Virtru.
-        </div>
+        </p>
       </div>
     </Modal>
   );
