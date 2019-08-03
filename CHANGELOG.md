@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/86): _patch_
   - Clarify default and dragging UI states
+- [DSAT-106](https://github.com/virtru/protect-and-track/pull/78): _patch_
+  - Update UI to better support "Revoke File" workflow
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/81): _patch_
   - Fix downloads by not using `FileSaver`
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/80): _patch_
