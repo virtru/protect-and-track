@@ -28,6 +28,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Fix dragging demo file in Firefox
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/79): _patch_
   - Better layout support: scales down to 1024x768, up to 1280x960, and does sensible centering at larger resolutions.
+- [DSAT-123](https://github.com/virtru/protect-and-track/pull/91): _patch_
+  - Use a fake policyId for workaround with current SDK
+  - Track policyId better and fix some state/localstorage issues with it
+- DSAT-130: _patch_
+  - (Change to buildkite configuration)
+  - Replaced gsuite codes to avoid 'unverified app' screen
 
 ## [v1.0.1](https://github.com/virtru/protect-and-track/compare/v1.0.0...v1.0.1) - 2019-08-02
 
