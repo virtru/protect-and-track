@@ -196,13 +196,13 @@ function Document({
       return (
         <section className="DocumentFooter center">
           <span>or drag this... </span>
-          <h3
+          <div
             draggable="true"
             onDragStart={ev => ev.dataTransfer.setData("text", 'demo-example.txt')}
           >
             <FileIcon className="file-icon" />
             demo-example.txt
-          </h3>
+          </div>
         </section>
       );
     }
