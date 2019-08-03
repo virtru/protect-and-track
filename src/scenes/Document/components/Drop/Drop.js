@@ -83,7 +83,7 @@ function Drop({ children, setFile, policyState }) {
   function EmptyTarget() {
     return (
       <div className="Drop-text">
-        <div className="default">
+        <div className="default-instructions">
           <div className="Drop-box">
             <DropIcon className="Drop-icon" />
           </div>
@@ -91,7 +91,7 @@ function Drop({ children, setFile, policyState }) {
           <UploadButton />
           <p className="secondary">Or you can drag in a protected file to track and share it</p>
         </div>
-        <div className="dragging">drop here</div>
+        <div className="dragging-instructions">drop here</div>
       </div>
     );
   }
