@@ -11,7 +11,7 @@ export function generatePolicyChanger(policy, setPolicy, change, policyId) {
   return e => {
     e && e.preventDefault();
     const policyBuilder = Virtru.policyBuilder(policy);
-    policyBuilder.setPolicyId(policyId);
+    policyId && policyBuilder.setPolicyId(policyId);
     if (change(policyBuilder, e) === NOPE) {
       return false;
     }

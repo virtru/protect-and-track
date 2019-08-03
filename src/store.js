@@ -60,7 +60,7 @@ try {
     // Rebuild existing policy or create new one
     if (policyData) {
       const builder = new Virtru.PolicyBuilder();
-      builder.setPolicyId(policyId);
+      builder.setPolicyId(policyId || 'FAKE_ID');
       if (!policyData.authorizations.includes('forward')) {
         builder.disableReshare();
       }
@@ -72,7 +72,7 @@ try {
       }
       policy = builder.build();
     } else {
-      policy = new Virtru.PolicyBuilder().build();
+      policy = new Virtru.PolicyBuilder().setPolicyId('virtru-client-auth').build();
     }
   }
 } catch (err) {

@@ -22,18 +22,22 @@ function _pushAction(action) {
  * @param {?object} opts
  */
 function policyBuilder(existingPolicy) {
+  const FAKE_ID = 'FAKE_ID';
+  let builder;
   if (existingPolicy) {
     _pushAction({
       title: 'Get Policy Builder',
       code: 'const builder = existingPolicy.builder();',
     });
+    builder = existingPolicy.builder();
   } else {
     _pushAction({
       title: 'Create Policy Builder',
       code: 'const builder = new Virtru.PolicyBuilder();',
     });
+    builder = new Virtru.PolicyBuilder();
+    builder.setPolicyId(FAKE_ID);
   }
-  const builder = existingPolicy ? existingPolicy.builder() : new Virtru.PolicyBuilder();
   let actions = ['const policy = builder'];
   // This proxy records all calls, then logs them to the UI on `build` invocations.
   return new Proxy(builder, {

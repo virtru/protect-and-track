@@ -71,7 +71,10 @@ function Document({
         client: virtruClient,
         fileData: file.arrayBuffer,
         filename: file.file.name,
-        policy: policy,
+        policy: policy
+          .builder()
+          .setPolicyId(null)
+          .build(),
         userEmail: userId,
         asHtml: true,
       });
@@ -90,6 +93,7 @@ function Document({
       }
       return;
     }
+    // TODO fetch policy instead of updating the exisitng copy here
     const { encryptedFile, policyId } = encryptResult;
     setPolicyId(policyId);
     setEncrypted({
@@ -134,7 +138,7 @@ function Document({
       // Clear the existing timer
       window.clearTimeout(auditTimerId);
     }
-    if (!policyId || encryptState !== ENCRYPT_STATES.PROTECTED) {
+    if (!policyId || policyId === 'FAKE_ID' || encryptState !== ENCRYPT_STATES.PROTECTED) {
       // We aren't connected to a document with a policy on the ACM service
       return;
     }
@@ -381,10 +385,9 @@ const actions = {
       auditEvents: false,
     };
   },
-  setEncrypted: ({ policy }, value) => {
+  setEncrypted: (state, value) => {
     const { payload, name, type } = value;
     saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
-    savePolicyToLocalStorage({ policy });
     return { encrypted: value, auditEvents: false };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),
@@ -415,8 +418,23 @@ const actions = {
     return { alert: value };
   },
   setPolicyId: (state, value) => {
-    localStorage.setItem('virtru-demo-policyId', value);
-    return { policyId: value };
+    let { policy, policyId } = state;
+    if (policyId === value) {
+      return {};
+    }
+    value = value || 'FAKE_ID';
+    if (value === 'FAKE_ID') {
+      localStorage.removeItem('virtru-demo-policyId');
+      if (policy && value !== policy.getPolicyId()) {
+        policy = policy
+          .builder()
+          .setPolicyId(value)
+          .build();
+      }
+    } else {
+      localStorage.setItem('virtru-demo-policyId', value);
+    }
+    return { policy, policyId: value };
   },
 };
 
