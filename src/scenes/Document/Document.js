@@ -60,7 +60,8 @@ function Document({
 
   const login = async email => {
     // Just refresh with the email query param
-    window.location = `${window.location}?virtruAuthWidgetEmail=${email}`;
+    const appPath = window.location.href.split(/[?#]/)[0];
+    window.location = `${appPath}?virtruAuthWidgetEmail=${email}`;
   };
 
   const encrypt = async () => {
