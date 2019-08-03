@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
 
+- [DSAT-122](https://github.com/virtru/protect-and-track/pull/85): _patch_
+  - Added restricting of downloads when policies have watermark and pfp
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/86): _patch_
   - Clarify default and dragging UI states
 - [DSAT-106](https://github.com/virtru/protect-and-track/pull/78): _patch_

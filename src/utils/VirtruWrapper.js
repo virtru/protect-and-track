@@ -170,7 +170,9 @@ function signOut(userId) {
     Virtru.Auth.logout({ email: userId });
   }
   localStorage.clear();
-  window.location = window.location.href.split(/[?#]/)[0];
+  setTimeout(function() {
+    window.location = window.location.href.split(/[?#]/)[0];
+  }, 1000);
 }
 
 function fetchAuditEvents({ virtruClient, policyId }) {

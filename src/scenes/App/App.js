@@ -49,7 +49,7 @@ function App({
         Back to Developer Hub
       </a>
       <button type="button" className="button alternateButton" onClick={() => setContinueAnyway()}>
-        Continue anyway
+        Continue Anyway
       </button>
     </div>
   );
