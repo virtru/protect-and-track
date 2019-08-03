@@ -26,12 +26,12 @@ function RevokeAll({ isPolicyRevoked, revokePolicy }) {
           setShowWarning(true);
         }}
       >
-        {isPolicyRevoked ? 'Revoked' : 'Revoke File'}
+        {isPolicyRevoked ? 'Revoked' : 'Revoke Policy'}
       </Button>
       {isShowWarning && (
         <Modal onClose={doClose}>
           <div className="RevokeAll-container">
-            <div className="RevokeAll-title">Revoke File</div>
+            <div className="RevokeAll-title">Revoke Policy</div>
             <div className="RevokeAll-text">
               <p>If you revoke this file, only you will be able to access it.</p>
               <p>The SDK does not currently support undoing this action.</p>
