@@ -15,8 +15,8 @@ const Header = ({ userId }) => {
   function renderAuth() {
     if (userId) {
       return (
-        <span>
-          {userId}{' '}
+        <span className="currentUser">
+          <span className="userID">{userId}</span>{' '}
           <Button variant="link" onClick={() => Virtru.signOut(userId)} verySmall light>
             Sign out
           </Button>
@@ -25,26 +25,28 @@ const Header = ({ userId }) => {
     }
   }
   return (
-    <div className="headerContainer">
-      <div className="headerLogo">
-        <LogoText />
+    <div className="headerWrapper">
+      <div className="headerContainer">
+        <div className="headerLogo">
+          <LogoText />
+        </div>
+        <div className="delimiter" />
+        <span className="headerText">
+          <span className="headerTitle">Protect & Track Demo</span>
+        </span>
+        <div className="delimiter" />
+        <button className="githubButton">
+          <a
+            href="https://github.com/virtru/protect-and-track"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <GithubIcon />
+            <img alt="Virtru SDK Github" src={GithubLogo} />
+          </a>
+        </button>
+        <span className="headerAuth">{renderAuth()}</span>
       </div>
-      <div className="delimiter" />
-      <span className="headerText">
-        <span className="headerTitle">Protect & Track Demo</span>
-      </span>
-      <div className="delimiter" />
-      <button className="githubButton">
-        <a
-          href="https://github.com/virtru/protect-and-track"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <GithubIcon />
-          <img alt="Virtru SDK Github" src={GithubLogo} />
-        </a>
-      </button>
-      <span className="headerAuth">{renderAuth()}</span>
     </div>
   );
 };
