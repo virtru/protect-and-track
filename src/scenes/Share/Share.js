@@ -53,7 +53,7 @@ function ShareButton({ children, init, onClick, type }) {
   return button;
 }
 
-function ShareSelect({ setShare, file, recipients, onClose }) {
+function ShareSelect({ setShare, file, recipients, fileName }) {
   const shareToDropBox = async () => {
     try {
       const state = s =>
@@ -79,9 +79,10 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
     } catch (e) {
       console.log(e);
       // TODO(DSAT-67) enhance error messages
+      const error = e.status === 409 ? `${fileName} already exists in your Dropbox.` : null;
       setShare({
         provider: SHARE_PROVIDERS.DROPBOX,
-        providerState: { state: SHARE_STATE.FAIL },
+        providerState: { state: SHARE_STATE.FAIL, error },
       });
     }
   };
@@ -304,7 +305,14 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
     setShare(false);
   };
   if (!share) {
-    shareContent = <ShareSelect setShare={setShare} file={encrypted} recipients={recipients} />;
+    shareContent = (
+      <ShareSelect
+        setShare={setShare}
+        file={encrypted}
+        recipients={recipients}
+        fileName={encrypted.name}
+      />
+    );
   } else {
     const { state } = providers[share];
     switch (state) {
@@ -333,7 +341,12 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
         break;
       case SHARE_STATE.FAIL:
         shareContent = (
-          <Fail provider={share} providerState={providers[share]} setShare={setShare} />
+          <Fail
+            provider={share}
+            providerState={providers[share]}
+            setShare={setShare}
+            fileName={encrypted.name}
+          />
         );
         break;
       default:
