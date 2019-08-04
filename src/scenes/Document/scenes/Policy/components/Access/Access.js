@@ -58,6 +58,9 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
           <div className="field-description">
             <InfoIcon className="icon info-icon" /> Enter an email address
           </div>
+          <div className="field-error">
+            <InfoIcon className="icon info-icon" /> Invalid email address
+          </div>
         </div>
         {action}
       </form>

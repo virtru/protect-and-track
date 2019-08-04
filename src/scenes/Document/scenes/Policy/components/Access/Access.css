@@ -111,11 +111,29 @@
   flex-grow: 1;
 }
 
+.field-with-description input:valid + .field-description {
+  display: block;
+}
+.field-with-description input:valid ~ .field-error {
+  display: none;
+}
+.field-with-description input:invalid + .field-description {
+  display: none;
+}
+.field-with-description input:invalid ~ .field-error {
+  display: block;
+}
+
 .field-with-description .field-description {
   color: var(--slateDarker);
 }
-
-.field-with-description .field-description .icon {
+.field-with-description .icon {
   margin-top: 6px;
   margin-right: 3px;
+}
+.field-with-description .field-error {
+  color: var(--redDarker);
+}
+.field-with-description .field-error .icon path {
+  fill: var(--redDarker);
 }
