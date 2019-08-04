@@ -6,8 +6,8 @@ function AuthSelect({ onClose, login }) {
   useEffect(() => {
     console.log('Mounting auth UI...');
     window.Virtru.AuthWidget('virtru-auth-widget-mount', {
-      afterAuth: email => {
-        console.log('in here...............');
+      afterAuth: async email => {
+        console.log('in here');
       },
     });
   }, [login]);

@@ -22,7 +22,7 @@ const defaultProperties = {
 };
 
 const options = {
-  key: '3e6592f019223965c6f403818496b6e6',
+  key: '',
   frontEnd: true,
   defaultProperties,
 };
