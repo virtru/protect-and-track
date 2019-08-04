@@ -172,8 +172,9 @@ function signOut(userId) {
   if (userId) {
     Virtru.Auth.logout({ email: userId });
   }
-  localStorage.clear();
   setTimeout(function() {
+    localStorage.removeItem('virtru-demo-file');
+    localStorage.removeItem('virtru-demo-policy');
     window.location = window.location.href.split(/[?#]/)[0];
   }, 1000);
 }
