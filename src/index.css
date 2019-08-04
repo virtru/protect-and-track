@@ -96,6 +96,12 @@ input[type='email']:focus {
   box-shadow: 0 1px 4px 1px var(--blueShadow);
   color: var(--slateDarkest);
 }
+input:invalid {
+  border: 1px solid var(--redPrimary) !important;
+}
+input:invalid:focus {
+  background-color: var(--redLightest) !important;
+}
 
 /* Make the auth modal a little wider so that buttons don't take up 2 lines */
 .virtru-auth {
