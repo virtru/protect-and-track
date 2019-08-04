@@ -79,7 +79,9 @@ function Document({
       // Encryption failed!!!!
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
       if (e && e.message) {
-        if (e.message === 'Encrypting as a CKS-enabled user is currently not supported') {
+        if (
+          e.message === 'Please use a non-corporate account. CKS key server support coming soon.'
+        ) {
           setAlert('Please use a non-corporate account. CKS key server support coming soon');
         } else {
           setAlert(`Encrypt service error: ${e.message}`);
@@ -206,7 +208,7 @@ function Document({
           <span>or drag this... </span>
           <div
             draggable="true"
-            onDragStart={ev => ev.dataTransfer.setData("text", 'demo-example.txt')}
+            onDragStart={ev => ev.dataTransfer.setData('text', 'demo-example.txt')}
           >
             <FileIcon className="file-icon" />
             demo-example.txt
