@@ -71,7 +71,7 @@ function Document({
         client: virtruClient,
         fileData: file.arrayBuffer,
         filename: file.file.name,
-        policy: policy,
+        policy,
         userEmail: userId,
         asHtml: true,
       });
@@ -90,6 +90,7 @@ function Document({
       }
       return;
     }
+    // TODO fetch policy instead of updating the exisitng copy here
     const { encryptedFile, policyId } = encryptResult;
     setPolicyId(policyId);
     setEncrypted({
@@ -381,10 +382,9 @@ const actions = {
       auditEvents: false,
     };
   },
-  setEncrypted: ({ policy }, value) => {
+  setEncrypted: (state, value) => {
     const { payload, name, type } = value;
     saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
-    savePolicyToLocalStorage({ policy });
     return { encrypted: value, auditEvents: false };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),
@@ -415,8 +415,22 @@ const actions = {
     return { alert: value };
   },
   setPolicyId: (state, value) => {
-    localStorage.setItem('virtru-demo-policyId', value);
-    return { policyId: value };
+    let { policy, policyId } = state;
+    if (policyId === value) {
+      return {};
+    }
+    if (!value) {
+      localStorage.removeItem('virtru-demo-policyId');
+      if (policy && value !== policy.getPolicyId()) {
+        policy = policy
+          .builder()
+          .withPolicyId(value)
+          .build();
+      }
+    } else {
+      localStorage.setItem('virtru-demo-policyId', value);
+    }
+    return { policy, policyId: value };
   },
 };
 

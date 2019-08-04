@@ -1,5 +1,6 @@
 import Virtru from 'virtru-sdk';
 import { TDF } from 'tdf3-js';
+import uuid from 'uuid';
 import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
 
@@ -22,18 +23,20 @@ function _pushAction(action) {
  * @param {?object} opts
  */
 function policyBuilder(existingPolicy) {
+  let builder;
   if (existingPolicy) {
     _pushAction({
       title: 'Get Policy Builder',
       code: 'const builder = existingPolicy.builder();',
     });
+    builder = existingPolicy.builder();
   } else {
     _pushAction({
       title: 'Create Policy Builder',
       code: 'const builder = new Virtru.PolicyBuilder();',
     });
+    builder = new Virtru.PolicyBuilder().withPolicyId(uuid.v4());
   }
-  const builder = existingPolicy ? existingPolicy.builder() : new Virtru.PolicyBuilder();
   let actions = ['const policy = builder'];
   // This proxy records all calls, then logs them to the UI on `build` invocations.
   return new Proxy(builder, {

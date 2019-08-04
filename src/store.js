@@ -1,5 +1,6 @@
 import createStore from 'redux-zero';
 import Virtru from 'virtru-sdk';
+import uuid from 'uuid';
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import { base64ToArrayBuffer } from 'utils/buffer';
 import checkIsMobile from 'utils/checkIsMobile';
@@ -60,7 +61,7 @@ try {
     // Rebuild existing policy or create new one
     if (policyData) {
       const builder = new Virtru.PolicyBuilder();
-      builder.setPolicyId(policyId);
+      builder.setPolicyId(policyId || uuid.v4());
       if (!policyData.authorizations.includes('forward')) {
         builder.disableReshare();
       }
@@ -72,7 +73,7 @@ try {
       }
       policy = builder.build();
     } else {
-      policy = new Virtru.PolicyBuilder().build();
+      policy = new Virtru.PolicyBuilder().withPolicyId(uuid.v4()).build();
     }
   }
 } catch (err) {
