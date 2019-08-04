@@ -1,5 +1,12 @@
 .Access > ol {
   margin: 0;
+  max-height: 126px;
+  overflow-y: auto;
+}
+
+.Grant,
+.NewGrant {
+  margin-bottom: 12px;
 }
 
 .Grant {
@@ -12,24 +19,22 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-left: 6px;
 }
 
 .Grant-owner {
   line-height: 36px;
-  margin: 4px;
   min-width: 64px;
 }
 .Grant-reader {
   background: #fff;
   border: 1px solid var(--redDarker);
   border-radius: 3px;
-  margin: 4px;
-  min-height: 36px;
   min-width: 64px;
 }
 
 .NewGrant {
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   justify-content: space-between;
   margin-left: 32px;
@@ -40,17 +45,20 @@
   border: 1px solid var(--slateDarker);
   border-radius: 3px;
   background-color: #fff;
-  min-height: 36px;
-  margin: 4px;
+  width: 100%;
   min-width: 256px;
 }
 
+.NewGrant input[type='email'],
+.Access input[type='submit'] {
+  min-height: 36px;
+}
 .Grant-owner,
+.NewGrant .button,
 .Access input[type='submit'] {
   font: var(--fSizeSmall) / var(--lhSmall) var(--fontPrimary);
-  min-height: 36px;
-  margin: 4px;
   min-width: 94px;
+  margin-left: 24px;
 }
 
 .Access input[type='submit'] {
@@ -97,4 +105,17 @@
 .NewGrant input[type='submit'] {
   color: var(--blueDarker);
   font-weight: bold;
+}
+
+.field-with-description {
+  flex-grow: 1;
+}
+
+.field-with-description .field-description {
+  color: var(--slateDarker);
+}
+
+.field-with-description .field-description .icon {
+  margin-top: 6px;
+  margin-right: 3px;
 }
