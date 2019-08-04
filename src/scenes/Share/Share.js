@@ -226,7 +226,7 @@ function Fail({ provider, providerState, setShare }) {
       <div className="Share-center">
         <Ico type={provider} /> <Ico type="danger" />
       </div>
-      <p>Sorry, there was a problem sharing your file. Please try again.</p>
+      <p>Try 'Download' on the demo page to share via email or other means.</p>
       {providerState.error && (
         <p className="Share-Fail-explain">
           <img alt="" src="danger-small.svg" className="ShareSelect-inline" /> {providerState.error}
