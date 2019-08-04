@@ -5,13 +5,14 @@ import { ReactComponent as AccessIcon } from './access.svg';
 import { NOPE } from '../../services/policyChanger';
 import './Access.css';
 import Button from 'components/Button/Button';
+import { ReactComponent as InfoIcon } from './info-icon.svg';
 
 function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked }) {
   const Grant = ({ user, status }) => {
     if (status === 'owner') {
       return (
         <div className="Grant">
-          <span className="Grant-user">{user}</span>
+          <div className="Grant-user">{user}</div>
           <div className="Grant-owner">Owner</div>
         </div>
       );
@@ -19,7 +20,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
 
     return (
       <form className="Grant" onSubmit={policyChange(p => p.removeUsersWithAccess(user))}>
-        <span className="Grant-user">{user}</span>
+        <div className="Grant-user">{user}</div>
         <input type="submit" className="Grant-revoke" value="Revoke" disabled={isPolicyRevoked} />
       </form>
     );
@@ -36,7 +37,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
       );
     } else {
       action = (
-        <Button type="submit" disabled={!input.valid}>
+        <Button disabled={!input.valid} type="submit" small>
           Grant
         </Button>
       );
@@ -47,12 +48,17 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
         className="NewGrant"
         onSubmit={policyChange(p => (input.valid ? p.addUsersWithAccess(input.text) : NOPE))}
       >
-        <input
-          type="email"
-          name="newUser"
-          onChange={e => setInput({ text: e.target.value, valid: e.target.validity.valid })}
-          value={input.text}
-        />
+        <div className="field-with-description">
+          <input
+            type="email"
+            name="newUser"
+            onChange={e => setInput({ text: e.target.value, valid: e.target.validity.valid })}
+            value={input.text}
+          />
+          <div className="field-description">
+            <InfoIcon className="icon info-icon" /> Enter an email address
+          </div>
+        </div>
         {action}
       </form>
     );
