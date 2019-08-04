@@ -72,7 +72,7 @@ try {
       }
       policy = builder.build();
     } else {
-      policy = new Virtru.PolicyBuilder().setPolicyId('virtru-client-auth').build();
+      policy = new Virtru.PolicyBuilder().setPolicyId('FAKE_ID').build();
     }
   }
 } catch (err) {
