@@ -21,7 +21,7 @@ function RevokeAll({ isPolicyRevoked, revokePolicy }) {
     <>
       <Button
         small
-        variant="link revokePolicy"
+        variant="link"
         disabled={isPolicyRevoked}
         onClick={() => {
           setShowWarning(true);
