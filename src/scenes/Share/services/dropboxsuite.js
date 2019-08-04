@@ -52,8 +52,14 @@ async function share(accessToken, fileId, recipients) {
 
 async function upload(accessToken, file) {
   const dropBox = new Dropbox(accessToken);
-  const fname = file.name + (file.name.endsWith('.html') ? '' : '.html');
-  return await dropBox.filesUpload({ path: '/' + fname, contents: file.payload });
+  let fname = file.name + (file.name.endsWith('.html') ? '' : '.html');
+
+  // Construct a new filename with a random number to avoid conflict errors
+  const nameSplit = fname.split('.');
+  const random = `${nameSplit[0]}-${Math.floor(Math.random() * 1000)}`;
+  const newName = `${random}.${nameSplit[1]}.${nameSplit[2]}`;
+
+  return await dropBox.filesUpload({ path: '/' + newName, contents: file.payload });
 }
 
 /**

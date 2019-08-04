@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
 
-- [DSAT-144](https://github.com/virtru/protect-and-track/pull/): _patch_
+- [DSAT-144](https://github.com/virtru/protect-and-track/pull/104): _patch_
   - Update Dropbox error message to recognize conflicting file name error
+  - Also add random numbers to Dropbox-shared file names to try avoiding conflict errors in the first place
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/94): _patch_
   - Clean up "Start over":
     - copy: "Start over" => "Reset"
