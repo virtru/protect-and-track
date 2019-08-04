@@ -55,7 +55,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
             onChange={e =>
               setInput({
                 text: e.target.value,
-                valid: e.target.value === '' ? false : e.target.validity.valid,
+                valid: e.target.value && target.validity.valid,
               })
             }
             value={input.text}
