@@ -31,9 +31,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [DSAT-123](https://github.com/virtru/protect-and-track/pull/91): _patch_
   - Use a fake policyId for workaround with current SDK
   - Track policyId better and fix some state/localstorage issues with it
-- DSAT-130: _patch_
-  - (Change to buildkite configuration)
-  - Replaced gsuite codes to avoid 'unverified app' screen
+- [DSAT-130](https://github.com/virtru/protect-and-track/pull/99): _patch_
+  - Removed unused metadata scope which is not used.
 
 ## [v1.0.1](https://github.com/virtru/protect-and-track/compare/v1.0.0...v1.0.1) - 2019-08-02
 
