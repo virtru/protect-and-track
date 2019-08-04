@@ -1,18 +1,13 @@
 import React, { useEffect } from 'react';
 import './AuthSelect.css';
 import Modal from '../../components/Modal/Modal';
-import anaylytics from '../../utils/analytics';
 
 function AuthSelect({ onClose, login }) {
   useEffect(() => {
     console.log('Mounting auth UI...');
     window.Virtru.AuthWidget('virtru-auth-widget-mount', {
-      afterAuth: () => {
-        console.log('tracking');
-        anaylytics.track({
-          event: 'LoggedIn',
-        });
-        // login();
+      afterAuth: email => {
+        console.log('in here...............');
       },
     });
   }, [login]);

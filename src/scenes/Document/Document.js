@@ -21,6 +21,7 @@ import './Document.css';
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
+import { analytics, EVENT_NAMES } from '../../utils/analytics';
 
 let auditTimerId;
 
@@ -56,8 +57,23 @@ function Document({
   };
 
   const login = async email => {
+    console.log('Tracking login......');
+    /** Track LOGIN_COMPLETED event */
+    analytics.updateProperties({
+      'user.email': email,
+      'user.domain': email.split('@')[1],
+    });
+    analytics.identify({ userId: email });
+    analytics.track({
+      event: EVENT_NAMES.LOGIN_COMPLETED,
+      properties: {
+        fileType: file.file.type,
+        fileSize: `${file.arrayBuffer.byteLength / 1000}KB`,
+      },
+    });
+
     // Just refresh with the email query param
-    window.location = `${window.location}?virtruAuthWidgetEmail=${email}`;
+    // window.location = `${window.location}?virtruAuthWidgetEmail=${email}`;
   };
 
   const encrypt = async () => {
