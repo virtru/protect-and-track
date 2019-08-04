@@ -168,15 +168,18 @@ function newVirtruDecryptParamsBuilder(opts) {
   return new Virtru.DecryptParamsBuilder(opts);
 }
 
-function signOut(userId) {
-  if (userId) {
-    Virtru.Auth.logout({ email: userId });
-  }
-  setTimeout(function() {
+async function signOut(userId) {
+  const resetApp = () => {
     localStorage.removeItem('virtru-demo-file');
     localStorage.removeItem('virtru-demo-policy');
     window.location = window.location.href.split(/[?#]/)[0];
-  }, 1000);
+  };
+  if (userId) {
+    await Virtru.Auth.logout({ email: userId });
+    resetApp();
+  } else {
+    resetApp();
+  }
 }
 
 function fetchAuditEvents({ virtruClient, policyId }) {
