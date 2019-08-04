@@ -65,17 +65,13 @@ function Document({
 
   const encrypt = async () => {
     setEncryptState(ENCRYPT_STATES.PROTECTING);
-    const cleanPolicy = policy
-      .builder()
-      .withPolicyId(null)
-      .build();
     let encryptResult;
     try {
       encryptResult = await Virtru.encrypt({
         client: virtruClient,
         fileData: file.arrayBuffer,
         filename: file.file.name,
-        policy: cleanPolicy,
+        policy,
         userEmail: userId,
         asHtml: true,
       });
@@ -139,7 +135,7 @@ function Document({
       // Clear the existing timer
       window.clearTimeout(auditTimerId);
     }
-    if (!policyId || policyId === 'FAKE_ID' || encryptState !== ENCRYPT_STATES.PROTECTED) {
+    if (!policyId || encryptState !== ENCRYPT_STATES.PROTECTED) {
       // We aren't connected to a document with a policy on the ACM service
       return;
     }
@@ -423,13 +419,12 @@ const actions = {
     if (policyId === value) {
       return {};
     }
-    value = value || 'FAKE_ID';
-    if (value === 'FAKE_ID') {
+    if (!value) {
       localStorage.removeItem('virtru-demo-policyId');
       if (policy && value !== policy.getPolicyId()) {
         policy = policy
           .builder()
-          .setPolicyId(value)
+          .withPolicyId(value)
           .build();
       }
     } else {
