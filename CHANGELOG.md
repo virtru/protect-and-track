@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Fix downloads by not using `FileSaver`
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/80): _patch_
   - Fix being able to attempt encrypting without actually being logged in
+- [DSAT-92](https://github.com/virtru/protect-and-track/pull/88): _patch_
+  - Fix dragging demo file in Firefox
 
 ## [v1.0.1](https://github.com/virtru/protect-and-track/compare/v1.0.0...v1.0.1) - 2019-08-02
 
