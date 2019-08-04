@@ -89,7 +89,6 @@ function Drop({ children, setFile, policyState }) {
           </div>
           <p>Drag in any regular file to protect it</p>
           <UploadButton />
-          <p className="secondary">Or you can drag in a protected file to track and share it</p>
         </div>
         <div className="dragging-instructions">drop here</div>
       </div>
