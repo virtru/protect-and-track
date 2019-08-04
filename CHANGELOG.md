@@ -7,12 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
 
+- [NO-REF](https://github.com/virtru/protect-and-track/pull/94): _patch_
+  - Clean up "Start over":
+    - copy: "Start over" => "Reset"
+    - move "Reset" (fka "Start over") to header to appear before signing in
+    - copy: "Sign out" => "Reset & Sign Out"
+  - Clarify revoking a policy: - copy: "Revoke File" => "Revoke Policy" - ui: give "Revoke Policy" the subtle link treatment - fix: long file names ellipsize, show in tooltip, and don't conflict with policy revoke
+    fix: ellipsize file names that are too long (but keep .tdf extension and leave room for "Revoke Policy")
 - [DSAT-122](https://github.com/virtru/protect-and-track/pull/85): _patch_
   - Added restricting of downloads when policies have watermark and pfp
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/86): _patch_
   - Clarify default and dragging UI states
 - [DSAT-106](https://github.com/virtru/protect-and-track/pull/78): _patch_
-  - Update UI to better support "Revoke File" workflow
+  - Update UI to better support "Revoke Policy" workflow
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/81): _patch_
   - Fix downloads by not using `FileSaver`
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/80): _patch_

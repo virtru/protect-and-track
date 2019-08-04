@@ -1,93 +1,9 @@
-.RevokeAll {
-  font: var(--fSizeSmall) / var(--lhSmall) var(--fontPrimary);
-  min-height: 36px;
-  margin: 4px;
-  min-width: 94px;
+.button.revokePolicy {
+  /* push this to the end of the flexbox */
+  /* https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container#Using_auto_margins_for_main_axis_alignment */
+  margin-left: auto;
 }
 
-.RevokeAll {
-  background: var(--redDarker);
-  border: 1px solid var(--redDarker);
-  border-radius: 3px;
-  color: #fff;
-  font-family: var(--fontPrimary);
-  font-size: 13px;
-  font-weight: bold;
-  line-height: 18px;
-  text-align: center;
-  cursor: pointer;
-}
-.RevokeAll:hover,
-.RevokeAll:focus {
-  background-color: var(--slateDarker);
-  border-color: var(--slateDarker);
-  box-shadow: 0 1px 4px 1px var(--slateShadow);
-  outline: none;
-}
-.RevokeAll:active {
-  background-color: var(--black);
-  border-color: var(--black);
-  box-shadow: 0 1px 4px 1px var(--slateShadow);
-}
-.RevokeAll:disabled {
-  box-shadow: none;
-  background-color: var(--slateLighter);
-  border-color: var(--slateLighter);
-  color: var(--white);
-  cursor: default;
-}
-
-.RevokeAll-container {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-}
-.RevokeAll-title {
-  color: #2d323b;
-  font-family: var(--fontSecondary);
-  font-size: 16px;
-  line-height: 24px;
-  text-align: left;
-  font-weight: bold;
-}
-.RevokeAll-text {
-  color: #2d323b;
-  font-size: 15px;
-  line-height: 18px;
-  text-align: left;
-  margin: 15px 0 20px;
-  font-family: var(--fontSecondary);
-}
-
-.RevokeAll-confirm {
-  font: var(--fSizeSmall) / var(--lhSmall) var(--fontPrimary);
-  min-height: 36px;
-  margin: 4px;
-  min-width: 94px;
-  border: 1px solid var(--slateDarker);
-  border-radius: 3px;
-  background-color: #fff;
-  cursor: pointer;
-  color: var(--redDarker);
-  font-weight: bold;
-}
-.RevokeAll-confirm:hover,
-.RevokeAll-confirm:focus {
-  box-shadow: 0 1px 4px 1px var(--slateShadow);
-  border-color: var(--redDarker);
-  color: var(--redDarker);
-  outline: none;
-}
-.RevokeAll-confirm:active {
-  box-shadow: 0 1px 4px 1px var(--slateShadow);
-  color: var(--white);
-  border-color: var(--slatePrimary);
-  background-color: var(--redDarker);
-}
-.RevokeAll-confirm:disabled {
-  box-shadow: none;
-  background-color: var(--slateLighter);
-  border-color: var(--slateLighter);
-  color: var(--white);
-  cursor: default;
+.button.destructiveButton {
+  width: 100%;
 }

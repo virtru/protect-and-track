@@ -16,7 +16,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
     return (
       <div className="download-modal">
         <Modal onClose={onClose}>
-          <h4 className="download-title">Download File</h4>
+          <h1>Download File</h1>
           <h2 className="download-subtitle">
             Download this file and open in{' '}
             <a
@@ -58,7 +58,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
     return (
       <div className="download-modal">
         <Modal onClose={onClose}>
-          <h4 className="download-title">Download File</h4>
+          <h1>Download File</h1>
           <span>Share with others:</span>
           <br />
           <Button fullWidth onClick={() => downloadHtml(encrypted)}>
@@ -88,7 +88,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
     return (
       <div className="loading-modal">
         <Modal>
-          <h4 className="loading-modal-title">Loading Policy</h4>
+          <h1>Loading Policy</h1>
           <span>Loading the policy associated to this file...</span>
           <br />
         </Modal>

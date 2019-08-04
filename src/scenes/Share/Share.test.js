@@ -16,7 +16,7 @@ describe('Share', () => {
     const { getByText, rerender } = render(
       <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
     );
-    expect(getByText('Share a.tdf')).toBeInTheDocument();
+    expect(getByText('Share protected file')).toBeInTheDocument();
     await wait(() => expect(gsuite.init).toHaveBeenCalled());
 
     gsuite.upload.mockReturnValue({ result: { id: 'fake-id' } });
@@ -57,7 +57,7 @@ describe('Share', () => {
     const { getByText, rerender } = render(
       <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
     );
-    expect(getByText('Share a.tdf')).toBeInTheDocument();
+    expect(getByText('Share protected file')).toBeInTheDocument();
     await wait(() => expect(gsuite.init).toHaveBeenCalled());
 
     gsuite.signIn.mockImplementation(() => {

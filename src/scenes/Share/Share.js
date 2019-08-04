@@ -14,7 +14,7 @@ function Ico({ type }) {
 }
 
 function Title({ children }) {
-  return <h3 className="Share-title">{children}</h3>;
+  return <h1>{children}</h1>;
 }
 
 function ShareContainer({ children }) {
@@ -174,7 +174,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
   };
   return (
     <ShareContainer>
-      <Title>Share {(file && file.name) || 'protected file'}</Title>
+      <Title>Share protected file</Title>
       <ShareButton type="googledrive" onClick={shareToDrive} init={gsuite.init}>
         Google Drive
       </ShareButton>

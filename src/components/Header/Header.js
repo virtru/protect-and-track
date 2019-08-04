@@ -18,11 +18,16 @@ const Header = ({ userId }) => {
         <span className="currentUser">
           <span className="userID">{userId}</span>{' '}
           <Button variant="link" onClick={() => Virtru.signOut(userId)} verySmall light>
-            Sign out
+            Reset & Sign Out
           </Button>
         </span>
       );
     }
+    return (
+      <Button variant="link" onClick={() => Virtru.signOut()} verySmall light>
+        Reset
+      </Button>
+    );
   }
   return (
     <div className="headerWrapper">

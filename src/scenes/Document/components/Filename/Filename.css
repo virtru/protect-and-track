@@ -4,8 +4,18 @@
   font-size: 25px;
   line-height: 30px;
   font-weight: lighter;
-  padding-left: 48px;
   text-align: left;
+  display: flex;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.Filename-original {
+  text-overflow: ellipsis;
+  max-width: 370px;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
 }
 
 .Filename-tdf {
