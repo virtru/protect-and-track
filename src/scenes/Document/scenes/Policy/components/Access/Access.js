@@ -52,7 +52,12 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
           <input
             type="email"
             name="newUser"
-            onChange={e => setInput({ text: e.target.value, valid: e.target.validity.valid })}
+            onChange={e =>
+              setInput({
+                text: e.target.value,
+                valid: e.target.value === '' ? false : e.target.validity.valid,
+              })
+            }
             value={input.text}
           />
           <div className="field-description">
