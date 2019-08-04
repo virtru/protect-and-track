@@ -8,7 +8,7 @@ import App from './scenes/App/App';
 import * as serviceWorker from 'serviceWorker';
 import store from './store';
 
-console.log(
+console.info(
   `AppInfo: ${process.env.REACT_APP_NAME}:${process.env.REACT_APP_VERSION}-${process.env
     .REACT_APP_BUILD_NUMBER || '0'}`,
 );

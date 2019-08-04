@@ -77,7 +77,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
         },
       });
     } catch (e) {
-      console.log(e);
+      console.warn({ type: 'Drive share failure', cause: e });
       // TODO(DSAT-67) enhance error messages
       setShare({
         provider: SHARE_PROVIDERS.DROPBOX,
@@ -128,7 +128,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       if (error === 'popup_closed_by_user') {
         errorMessage = 'Authorization popup window closed or disabled';
       } else {
-        console.log(JSON.stringify(e));
+        console.warn({ type: 'Drive share failure', cause: e });
       }
       state = SHARE_STATE.FAIL;
       upstate();
@@ -168,7 +168,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
         provider: SHARE_PROVIDERS.ONEDRIVE,
         providerState: { state: SHARE_STATE.FAIL },
       });
-      console.log('1drive error: ' + JSON.stringify(e));
+      console.info({ type: '1drive error', cause: e });
       throw e;
     }
   };
@@ -267,7 +267,6 @@ function Sharing({ file, provider, recipients }) {
 }
 
 function ShareComplete({ provider, providerState, file, onClose, recipients }) {
-  // console.log(`<ShareComplete provider=${JSON.stringify(provider)} providerState=${JSON.stringify(providerState)} file=${JSON.stringify(file)} onClose=${JSON.stringify(onclose)} recipients=${JSON.stringify(recipients)} />`);
   const { link } = providerState;
   const { file: { name } = {} } = file;
   const handleDoneClick = e => {
