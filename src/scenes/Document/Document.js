@@ -79,10 +79,8 @@ function Document({
       // Encryption failed!!!!
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
       if (e && e.message) {
-        if (
-          e.message === 'Please use a non-corporate account. CKS key server support coming soon.'
-        ) {
-          setAlert('Please use a non-corporate account. CKS key server support coming soon');
+        if (e.message === 'Encrypting as a CKS-enabled user is currently not supported.') {
+          setAlert(' Please use a non-corporate account. CKS key server support coming soon.');
         } else {
           setAlert(`Encrypt service error: ${e.message}`);
         }
