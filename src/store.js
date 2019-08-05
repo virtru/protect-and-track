@@ -55,6 +55,7 @@ if (isLoggedIn) {
 } else {
   // remove the email from localstorage
   localStorage.removeItem('virtru-demo-email');
+  userId = false;
 }
 
 try {
