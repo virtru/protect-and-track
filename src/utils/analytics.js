@@ -7,6 +7,7 @@ let AnalyticsService = class {
   updateProperties() {}
 };
 try {
+  // Using `require` here instead of `import` since imports must be top-level calls
   AnalyticsService = require('analytics-service').AnalyticsService;
 } catch (err) {
   // Analytics are optional
