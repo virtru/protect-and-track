@@ -28,7 +28,7 @@ describe('App', () => {
         setContinueAnyway={spy}
       />,
     );
-    fireEvent.click(getByText('Continue anyway'));
+    fireEvent.click(getByText('Continue Anyway'));
     expect(spy).toHaveBeenCalledTimes(1);
   });
 });
