@@ -29,7 +29,6 @@ function App({
   setContinueAnyway,
 }) {
   const isSupported = !isMobile && isSupportedBrowser;
-  debugger;
   if (isSupported || continueAnyway) {
     return (
       <>
