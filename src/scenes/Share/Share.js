@@ -95,7 +95,8 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       if (e.status === 409) {
         error.message = `${fileName} already exists in your Dropbox.`;
       } else if (e.status === 403) {
-        error.message = 'Dropbox is rate limiting access to this application or user';
+        error.message =
+          'Dropbox is rate limiting access to this application or user; please build the app locally and add your own app token';
       }
       state = SHARE_STATE.FAIL;
       upstate();
@@ -146,8 +147,17 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       error = {
         during: state,
       };
-      if (e.error === 'popup_closed_by_user') {
+      if (e.errors) {
+        // error during batch
+        if (e.errors.code === 403) {
+          error.message =
+            'Google Drive is rate limiting access to this application, resource, or user; please build the app locally and add your own app token';
+        }
+      } else if (e.error === 'popup_closed_by_user') {
         error.message = 'Authorization popup window closed or disabled';
+      } else if (e.code === 403) {
+        error.message =
+          'Google Drive is rate limiting access to this application or user; please build the app locally and add your own app token';
       } else {
         console.warn({ type: 'Drive share failure', cause: e });
       }
@@ -197,11 +207,6 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       error = {
         during: state,
       };
-      if (e.error === 'popup_closed_by_user') {
-        error.message = 'Authorization popup window closed or disabled';
-      } else {
-        console.warn({ type: 'Drive share failure', cause: e });
-      }
       state = SHARE_STATE.FAIL;
       upstate();
     }
