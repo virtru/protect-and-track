@@ -7,7 +7,11 @@ import moment from 'moment';
 import store from '../store';
 
 const actions = {
-  pushLogAction: ({ tdfLog }, value) => ({ tdfLog: [...tdfLog, value] }),
+  pushLogAction: ({ tdfLog }, value) => {
+    const newLog = [...tdfLog, value];
+    localStorage.setItem('virtru-demo-sdk-log', JSON.stringify(newLog));
+    return { tdfLog: newLog };
+  },
 };
 
 const boundActions = bindActions(actions, store);
@@ -172,6 +176,7 @@ async function signOut(userId) {
   const resetApp = () => {
     localStorage.removeItem('virtru-demo-file');
     localStorage.removeItem('virtru-demo-policy');
+    localStorage.removeItem('virtru-demo-sdk-log');
     window.location = window.location.href.split(/[?#]/)[0];
   };
   if (userId) {
