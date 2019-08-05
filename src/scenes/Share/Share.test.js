@@ -83,8 +83,20 @@ describe('Share', () => {
       expect(setShare).toHaveBeenCalledWith({
         provider: SHARE_PROVIDERS.GOOGLEDRIVE,
         providerState: {
+          state: SHARE_STATE.AUTHORIZING,
+          recipients: ['a', 'b'],
+        },
+      }),
+    );
+    await wait(() =>
+      expect(setShare).toHaveBeenCalledWith({
+        provider: SHARE_PROVIDERS.GOOGLEDRIVE,
+        providerState: {
           state: SHARE_STATE.FAIL,
-          error: 'Authorization popup window closed or disabled',
+          error: {
+            during: SHARE_STATE.AUTHORIZING,
+            message: 'Authorization popup window closed or disabled',
+          },
           recipients: ['a', 'b'],
         },
       }),
