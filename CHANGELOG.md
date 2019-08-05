@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [DSAT-135](https://github.com/virtru/protect-and-track/pull/113)
   - Remove the virtru email from query string
   - Store email in localStorage
+- [DSAT-162](https://github.com/virtru/protect-and-track/pull/115)
+  - Improve error handling and viewing for share wizard
 
 ## [v1.0.3](https://github.com/virtru/protect-and-track/compare/v1.0.2...v1.0.3) - 2019-08-05
 
