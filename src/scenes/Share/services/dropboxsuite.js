@@ -56,8 +56,10 @@ async function upload(accessToken, file) {
 
   // Construct a new filename with a random number to avoid conflict errors
   const nameSplit = fname.split('.');
-  const random = `${nameSplit[0]}-${Math.floor(Math.random() * 1000)}`;
-  const newName = `${random}.${nameSplit[1]}.${nameSplit[2]}`;
+  const random = Math.floor(Math.random() * 1000);
+  const insertionPoint = nameSplit.length - (nameSplit.length < 3 ? 1 : 2);
+  nameSplit.splice(insertionPoint, 0, random);
+  const newName = nameSplit.join('.');
 
   return await dropBox.filesUpload({ path: '/' + newName, contents: file.payload });
 }
