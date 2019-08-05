@@ -21,7 +21,7 @@ import './Document.css';
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
-import { analytics, EVENT_NAMES } from '../../utils/analytics';
+import { analytics, EVENT_NAMES } from 'utils/analytics';
 
 let auditTimerId;
 
