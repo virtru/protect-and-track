@@ -20,6 +20,7 @@ import './Document.css';
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
+import { trackShareAttempt } from 'utils/analytics';
 
 let auditTimerId;
 
@@ -233,7 +234,10 @@ function Document({
             Download
           </Button>
           <Button
-            onClick={() => setShareOpen(true)}
+            onClick={() => {
+              trackShareAttempt({ policy, file: encrypted });
+              setShareOpen(true);
+            }}
             disabled={
               !encrypted ||
               !userId ||
@@ -250,6 +254,7 @@ function Document({
             virtruClient={virtruClient}
             onClose={() => setDownloadOpen(false)}
             encrypted={encrypted}
+            policy={policy}
           />
         )}
       </section>
@@ -376,6 +381,7 @@ const actions = {
 
     saveFileToLocalStorage({ fileName, fileType, fileBuffer });
     savePolicyToLocalStorage({ policy });
+
     return {
       file: { file: fileHandle, arrayBuffer: fileBuffer },
       policy,

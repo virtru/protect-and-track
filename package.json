@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "analytics-service": "git+ssh://git@github.com/virtru/analytics-service#v5.2.3",
     "classnames": "^2.2.6",
     "client-oauth2": "^4.2.5",
     "clipboard": "^2.0.4",
