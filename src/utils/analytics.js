@@ -58,13 +58,19 @@ const trackShareEvent = ({ policy, file, destination, event, error }) => {
       isSecure: true,
       'policy.Id': policy.getPolicyId(),
       'policy.type': 'file',
-      'policy.recipientsCount': policy.getUsersWithAccess().length,
-      'policy.activeEnd': policy.getExpirationDeadline(),
-      name: error && error.name,
-      message: error && error.message,
-      stack: error && error.stack,
+      'policy.usersWithAccessCount': policy.getUsersWithAccess().length,
+      'policy.expirationDeadline': policy.getExpirationDeadline(),
+      'policy.hasWatermarking': policy.hasWatermarking(),
+      'policy.hasReshare': policy.hasReshare(),
+      'error.name': error && error.name,
+      'error.message': error && error.message,
+      'error.stack': error && error.stack,
     },
   });
+};
+
+const trackShareAttempt = ({ policy, file }) => {
+  trackShareEvent({ policy, file, event: EVENT_NAMES.FILE_SHARE_ATTEMPT });
 };
 
 const trackShareSelect = ({ policy, file, destination }) => {
@@ -79,19 +85,31 @@ const trackShareError = ({ policy, file, destination, error }) => {
   trackShareEvent({ policy, file, destination, event: EVENT_NAMES.FILE_SHARE_ERROR, error });
 };
 
-const trackDownload = ({ encrypted, event, extension = 'file', isSecure = false, error }) => {
+const trackDownload = ({
+  encrypted,
+  event,
+  extension = 'file',
+  isSecure = false,
+  error,
+  policy,
+}) => {
   console.log(`Tracking ${event}`);
   analytics.track({
     event,
     properties: {
       fileType: encrypted.type,
       fileSize: `${encrypted.payload.byteLength / 1000}KB`,
-      'policy.type': 'file',
       extension,
       isSecure,
-      name: error && error.name,
-      message: error && error.message,
-      stack: error && error.stack,
+      'policy.Id': policy.getPolicyId(),
+      'policy.type': 'file',
+      'policy.usersWithAccessCount': policy.getUsersWithAccess().length,
+      'policy.expirationDeadline': policy.getExpirationDeadline(),
+      'policy.hasWatermarking': policy.hasWatermarking(),
+      'policy.hasReshare': policy.hasReshare(),
+      'error.name': error && error.name,
+      'error.message': error && error.message,
+      'error.stack': error && error.stack,
     },
   });
 };
@@ -100,6 +118,7 @@ export {
   analytics as default,
   EVENT_NAMES,
   trackLogin,
+  trackShareAttempt,
   trackShareSelect,
   trackShareComplete,
   trackShareError,

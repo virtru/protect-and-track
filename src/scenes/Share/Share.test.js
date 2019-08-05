@@ -16,6 +16,8 @@ describe('Share', () => {
       getPolicyId: () => {},
       getUsersWithAccess: () => [],
       getExpirationDeadline: () => '',
+      hasReshare: () => '',
+      hasWatermarking: () => '',
     };
     gsuite.init.mockReturnValue(true);
     const { getByText, rerender } = render(
@@ -63,6 +65,8 @@ describe('Share', () => {
       getPolicyId: () => {},
       getUsersWithAccess: () => [],
       getExpirationDeadline: () => '',
+      hasReshare: () => '',
+      hasWatermarking: () => '',
     };
     const { getByText, rerender } = render(
       <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} policy={policy} />,

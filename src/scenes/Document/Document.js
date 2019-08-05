@@ -20,7 +20,7 @@ import './Document.css';
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
-import analytics, { EVENT_NAMES } from 'utils/analytics';
+import { trackShareAttempt } from 'utils/analytics';
 
 let auditTimerId;
 
@@ -234,13 +234,7 @@ function Document({
           </Button>
           <Button
             onClick={() => {
-              analytics.track({
-                event: EVENT_NAMES.FILE_SHARE_ATTEMPT,
-                properties: {
-                  fileType: file.file.type,
-                  fileSize: `${file.arrayBuffer.byteLength / 1000}KB`,
-                },
-              });
+              trackShareAttempt({ policy, file: encrypted });
               setShareOpen(true);
             }}
             disabled={
@@ -259,6 +253,7 @@ function Document({
             virtruClient={virtruClient}
             onClose={() => setDownloadOpen(false)}
             encrypted={encrypted}
+            policy={policy}
           />
         )}
       </section>

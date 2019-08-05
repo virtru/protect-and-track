@@ -16,7 +16,7 @@ const DOWNLOAD_TYPES = {
   TDF_HTML: 'tdf.html',
 };
 
-export default ({ onClose, encrypted, virtruClient }) => {
+export default ({ onClose, encrypted, virtruClient, policy }) => {
   const [decrypting, setDecrypting] = useState(false);
 
   /** Track Download Metrics for Amplitude */
@@ -26,6 +26,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
       extension: DOWNLOAD_TYPES.TDF_HTML,
       isSecure: true,
       encrypted,
+      policy,
     });
     try {
       downloadHtml(encrypted);
@@ -34,6 +35,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
         extension: DOWNLOAD_TYPES.TDF_HTML,
         isSecure: true,
         encrypted,
+        policy,
       });
     } catch (error) {
       trackDownload({
@@ -42,6 +44,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
         message: error.message,
         stack: error.stack,
         encrypted,
+        policy,
       });
     }
   };
@@ -52,6 +55,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
       extension: DOWNLOAD_TYPES.TDF,
       isSecure: true,
       encrypted,
+      policy,
     });
     try {
       downloadTdf(encrypted);
@@ -60,6 +64,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
         extension: DOWNLOAD_TYPES.TDF,
         isSecure: true,
         encrypted,
+        policy,
       });
     } catch (error) {
       trackDownload({
@@ -68,6 +73,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
         message: error.message,
         stack: error.stack,
         encrypted,
+        policy,
       });
     }
   };
@@ -105,10 +111,10 @@ export default ({ onClose, encrypted, virtruClient }) => {
   const showDecryptAndDownloadModal = () => {
     const decryptAndDownload = async () => {
       setDecrypting(true);
-      trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_ATTEMPT, encrypted });
+      trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_ATTEMPT, encrypted, policy });
       try {
         await downloadDecrypted({ encrypted, virtruClient });
-        trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_COMPLETE, encrypted });
+        trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_COMPLETE, encrypted, policy });
       } catch (error) {
         console.error(error);
         alert('File could not be decrypted');
@@ -118,6 +124,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
           message: error.message,
           stack: error.stack,
           encrypted,
+          policy,
         });
       } finally {
         setDecrypting(false);
