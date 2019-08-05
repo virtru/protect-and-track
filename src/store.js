@@ -35,7 +35,9 @@ if (userId) {
   email = userId;
   localStorage.setItem('virtru-demo-email', userId);
   const pathname = window.location.pathname;
-  const search = window.location.search.replace(/([?&])virtruAuthWidgetEmail(=[^&#]+&?)/, '$1');
+  const search = window.location.search
+    .replace(/([?&])virtruAuthWidgetEmail(=[^&#]+&?)/, '$1')
+    .replace(/[?&]$/, '');
   const hash = window.location.hash;
   window.history.replaceState({}, document.title, pathname + search + hash);
 }
