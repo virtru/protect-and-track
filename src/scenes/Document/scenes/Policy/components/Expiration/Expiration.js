@@ -29,7 +29,7 @@ function Expiration({ policy, policyChange, isPolicyRevoked, now = new Date() })
   };
   const today = withHours(now, 0, 0, 0, 0);
   const fiveMinutesFromNow = withMinutes(now, now.getMinutes() + 5, 0, 0);
-  const oneDayFromNow = withDate(today, today.getDate(), 2);
+  const oneDayFromNow = withDate(today, today.getDate() + 2);
   const oneWeekFromNow = withDate(today, today.getDate() + 7);
   const oneMonthFromNow = withDate(today, today.getDate() + 30);
   const onToggleChange = policyChange((builder, e) => {

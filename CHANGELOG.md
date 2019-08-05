@@ -11,8 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - [DSAT-161](https://github.com/virtru/protect-and-track/pull/116): _patch_
   - README updates, cleanup and test fixes
+- [DSAT-151](https://github.com/virtru/protect-and-track/pull/107): _minor_
+  - Add Amplitude metrics
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/111): _patch_
   - Remove scrolling constraints on access list
+- [NO-REF](https://github.com/virtru/protect-and-track/pull/114): _patch_
+  - Strengthen client-side email validation on grant form to match auth widget
 - [DSAT-135](https://github.com/virtru/protect-and-track/pull/113)
   - Remove the virtru email from query string
   - Store email in localStorage

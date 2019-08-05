@@ -177,6 +177,7 @@ async function signOut(userId) {
     localStorage.removeItem('virtru-demo-file');
     localStorage.removeItem('virtru-demo-policy');
     localStorage.removeItem('virtru-demo-sdk-log');
+    localStorage.removeItem('virtru-demo-login-tracked');
     window.location = window.location.href.split(/[?#]/)[0];
   };
   if (userId) {
