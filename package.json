@@ -20,7 +20,7 @@
     "virtru-sdk": "beta"
   },
   "optionalDependencies": {
-    "analytics-service": "git+ssh://git@github.com/virtru/analytics-service#semver:^5.2.3"
+    "analytics-service": "git+ssh://git@github.com/virtru/analytics-service#v5.2.3"
   },
   "scripts": {
     "start": "HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
