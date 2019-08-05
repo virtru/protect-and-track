@@ -193,7 +193,7 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       upstate();
       recipients.map(async user => {
         try {
-          await onedrive.share(token, uploadResponse.id, recipients.slice(0, 1));
+          await onedrive.share(token, uploadResponse.id, [user]);
         } catch (e) {
           if (e.error && e.error.message === 'Owner cannot be added as a member') {
             // NOTE onedrive doesn't like sharing with yourself, so break this into two bits
