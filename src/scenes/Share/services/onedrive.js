@@ -135,12 +135,12 @@ async function share(token, fileId, recipients) {
   if (!response.ok) {
     // TODO handle not ok responses
     if (response.status === 400) {
-      throw response.json();
+      throw await response.json();
     }
     console.warn(`share status: [${response.status}]`);
     throw response;
   }
-  return response.json();
+  return await response.json();
 }
 
 async function upload(token, file) {
