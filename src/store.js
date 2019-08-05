@@ -1,13 +1,13 @@
 import createStore from 'redux-zero';
 import Virtru from 'virtru-sdk';
 import uuid from 'uuid';
+import moment from 'moment';
+
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import { base64ToArrayBuffer } from 'utils/buffer';
 import checkIsMobile from 'utils/checkIsMobile';
 import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
-
 import ENCRYPT_STATES from 'constants/encryptStates';
-import moment from 'moment';
 
 let encryptState = ENCRYPT_STATES.UNPROTECTED;
 
