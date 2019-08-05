@@ -79,6 +79,23 @@ const trackShareError = ({ policy, file, destination, error }) => {
   trackShareEvent({ policy, file, destination, event: EVENT_NAMES.FILE_SHARE_ERROR, error });
 };
 
+const trackDownload = ({ encrypted, event, extension = 'file', isSecure = false, error }) => {
+  console.log(`Tracking ${event}`);
+  analytics.track({
+    event,
+    properties: {
+      fileType: encrypted.type,
+      fileSize: `${encrypted.payload.byteLength / 1000}KB`,
+      'policy.type': 'file',
+      extension,
+      isSecure,
+      name: error && error.name,
+      message: error && error.message,
+      stack: error && error.stack,
+    },
+  });
+};
+
 export {
   analytics as default,
   EVENT_NAMES,
@@ -86,4 +103,5 @@ export {
   trackShareSelect,
   trackShareComplete,
   trackShareError,
+  trackDownload,
 };

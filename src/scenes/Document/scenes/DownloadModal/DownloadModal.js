@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'components/Modal/Modal';
 import Button from 'components/Button/Button';
 import { downloadHtml, downloadTdf, downloadDecrypted } from 'utils/download';
-import analytics, { EVENT_NAMES } from 'utils/analytics';
+import { EVENT_NAMES, trackDownload } from 'utils/analytics';
 
 import './DownloadModal.css';
 import '../LoadingModal/LoadingModal.css';
@@ -19,29 +19,13 @@ const DOWNLOAD_TYPES = {
 export default ({ onClose, encrypted, virtruClient }) => {
   const [decrypting, setDecrypting] = useState(false);
 
-  const trackDownload = ({ event, extension = DOWNLOAD_TYPES.FILE, isSecure = false, error }) => {
-    console.log(`Tracking ${event}`);
-    analytics.track({
-      event,
-      properties: {
-        fileType: encrypted.type,
-        fileSize: `${encrypted.payload.byteLength / 1000}KB`,
-        'policy.type': 'file',
-        extension,
-        isSecure,
-        name: error && error.name,
-        message: error && error.message,
-        stack: error && error.stack,
-      },
-    });
-  };
-
   /** Track Download Metrics for Amplitude */
   const downloadAsHtml = () => {
     trackDownload({
       event: EVENT_NAMES.FILE_DOWNLOAD_ATTEMPT,
       extension: DOWNLOAD_TYPES.TDF_HTML,
       isSecure: true,
+      encrypted,
     });
     try {
       downloadHtml(encrypted);
@@ -49,9 +33,16 @@ export default ({ onClose, encrypted, virtruClient }) => {
         event: EVENT_NAMES.FILE_DOWNLOAD_COMPLETE,
         extension: DOWNLOAD_TYPES.TDF_HTML,
         isSecure: true,
+        encrypted,
       });
     } catch (error) {
-      trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_ERROR, error });
+      trackDownload({
+        event: EVENT_NAMES.FILE_DOWNLOAD_ERROR,
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        encrypted,
+      });
     }
   };
 
@@ -60,6 +51,7 @@ export default ({ onClose, encrypted, virtruClient }) => {
       event: EVENT_NAMES.FILE_DOWNLOAD_ATTEMPT,
       extension: DOWNLOAD_TYPES.TDF,
       isSecure: true,
+      encrypted,
     });
     try {
       downloadTdf(encrypted);
@@ -67,9 +59,16 @@ export default ({ onClose, encrypted, virtruClient }) => {
         event: EVENT_NAMES.FILE_DOWNLOAD_COMPLETE,
         extension: DOWNLOAD_TYPES.TDF,
         isSecure: true,
+        encrypted,
       });
     } catch (error) {
-      trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_ERROR, error });
+      trackDownload({
+        event: EVENT_NAMES.FILE_DOWNLOAD_ERROR,
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        encrypted,
+      });
     }
   };
 
@@ -106,14 +105,20 @@ export default ({ onClose, encrypted, virtruClient }) => {
   const showDecryptAndDownloadModal = () => {
     const decryptAndDownload = async () => {
       setDecrypting(true);
-      trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_ATTEMPT });
+      trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_ATTEMPT, encrypted });
       try {
         await downloadDecrypted({ encrypted, virtruClient });
-        trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_COMPLETE });
+        trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_COMPLETE, encrypted });
       } catch (error) {
         console.error(error);
         alert('File could not be decrypted');
-        trackDownload({ event: EVENT_NAMES.FILE_DOWNLOAD_ERROR, error });
+        trackDownload({
+          event: EVENT_NAMES.FILE_DOWNLOAD_ERROR,
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+          encrypted,
+        });
       } finally {
         setDecrypting(false);
       }
