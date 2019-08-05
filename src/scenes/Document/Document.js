@@ -78,6 +78,7 @@ function Document({
     } catch (e) {
       // Encryption failed!!!!
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+      console.warn({ type: 'encrypt failure', cause: e });
       if (e && e.message) {
         if (e.message === 'Encrypting as a CKS-enabled user is currently not supported.') {
           setAlert(' Please use a non-corporate account. CKS key server support coming soon.');
@@ -85,7 +86,6 @@ function Document({
           setAlert(`Encrypt service error: ${e.message}`);
         }
       } else {
-        console.log(`encrypt failure: ${JSON.stringify(e.message || e, null, 2)}`);
         setAlert('Encrypt service error; try refreshing credentials or starting over.');
       }
       return;
@@ -341,7 +341,8 @@ const actions = {
           return { alert: 'TDF support not yet implemented' };
         }
       } catch (e) {
-        console.log(`Unable to decrypt html file; probably not a TDF: ${JSON.stringify(e)}`);
+        // TODO use a real API for this instead.
+        console.info({ type: 'This HTML file probably does not contain a TDF', cause: e });
       }
     }
 

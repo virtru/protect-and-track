@@ -15,7 +15,7 @@ const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 
 function init() {
   if (!CLIENT_ID) {
-    console.log('Dropbox integration not enabled');
+    console.info('Dropbox integration not enabled');
     return false;
   }
   return new ClientOAuth2({

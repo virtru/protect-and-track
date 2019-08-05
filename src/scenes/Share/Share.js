@@ -77,7 +77,7 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
         },
       });
     } catch (e) {
-      console.log(e);
+      console.warn({ type: 'Drive share failure', cause: e });
       // TODO(DSAT-67) enhance error messages
       const error = e.status === 409 ? `${fileName} already exists in your Dropbox.` : null;
       setShare({
@@ -129,7 +129,7 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       if (error === 'popup_closed_by_user') {
         errorMessage = 'Authorization popup window closed or disabled';
       } else {
-        console.log(JSON.stringify(e));
+        console.warn({ type: 'Drive share failure', cause: e });
       }
       state = SHARE_STATE.FAIL;
       upstate();
@@ -169,7 +169,7 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
         provider: SHARE_PROVIDERS.ONEDRIVE,
         providerState: { state: SHARE_STATE.FAIL },
       });
-      console.log('1drive error: ' + JSON.stringify(e));
+      console.info({ type: '1drive error', cause: e });
       throw e;
     }
   };
@@ -268,7 +268,6 @@ function Sharing({ file, provider, recipients }) {
 }
 
 function ShareComplete({ provider, providerState, file, onClose, recipients }) {
-  // console.log(`<ShareComplete provider=${JSON.stringify(provider)} providerState=${JSON.stringify(providerState)} file=${JSON.stringify(file)} onClose=${JSON.stringify(onclose)} recipients=${JSON.stringify(recipients)} />`);
   const { link } = providerState;
   const { file: { name } = {} } = file;
   const handleDoneClick = e => {

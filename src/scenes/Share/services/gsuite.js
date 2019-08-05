@@ -40,7 +40,7 @@ async function initClient() {
 
 async function init() {
   if (!API_KEY || !CLIENT_ID) {
-    console.log('Google Drive integration not enabled');
+    console.warn('Google Drive integration not enabled');
     return false;
   }
   await loadGapi();
@@ -52,7 +52,6 @@ async function init() {
 
 async function signIn() {
   const authResponse = await gapi.auth2.getAuthInstance().signIn();
-  console.log(JSON.stringify(authResponse));
   return authResponse.w3.U3; // Grab email from google auth
 }
 
