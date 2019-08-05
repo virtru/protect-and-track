@@ -1,7 +1,5 @@
 .Access > ol {
   margin: 0;
-  max-height: 126px;
-  overflow-y: auto;
 }
 
 .Grant,
@@ -86,27 +84,6 @@
   border-color: var(--slateLighter);
   color: var(--white);
   cursor: default;
-}
-
-.Access > ol {
-  padding-right: 10px;
-  margin-bottom: 10px;
-  /* Not currently supported https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Scrollbars */
-  /* scrollbar-color: #e2e8f0 #cbd5e0;
-  scrollbar-width: thin; */
-}
-.Access > ol::-webkit-scrollbar {
-  width: 0.5rem !important;
-  height: 0.5rem !important;
-}
-.Access > ol::-webkit-scrollbar-track {
-  background-color: #e2e8f0 !important;
-}
-.Access > ol::-webkit-scrollbar-thumb {
-  background-color: #cbd5e0 !important;
-}
-.Access > ol::-webkit-scrollbar-thumb {
-  border-radius: 0.25rem !important;
 }
 
 .Grant input[type='submit'],
