@@ -1,5 +1,4 @@
 import Virtru from 'virtru-sdk';
-import { TDF } from 'tdf3-js';
 import uuid from 'uuid';
 import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
@@ -123,7 +122,7 @@ function unwrapHtml(file) {
     title: 'Unwrap HTML TDF',
     code: 'TDF.unwrapHtml(file);',
   });
-  return TDF.unwrapHtml(file);
+  return window.TDF.unwrapHtml(file);
 }
 
 async function decrypt({ virtruClient, encryptedBuffer }) {

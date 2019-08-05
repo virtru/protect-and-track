@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
 
+## [v1.0.4](https://github.com/virtru/protect-and-track/compare/v1.0.3...v1.0.4) - 2019-08-05
+
+- [DSAT-161](https://github.com/virtru/protect-and-track/pull/116): _patch_
+  - README updates, cleanup and test fixes
 - [DSAT-151](https://github.com/virtru/protect-and-track/pull/107): _minor_
   - Add Amplitude metrics
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/111): _patch_

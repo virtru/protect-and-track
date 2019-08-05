@@ -1,4 +1,3 @@
-
 // Mock analytics if not in use
 let AnalyticsService = class {
   track() {}

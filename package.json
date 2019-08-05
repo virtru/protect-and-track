@@ -1,6 +1,6 @@
 {
   "name": "sdk-share",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "homepage": ".",
   "dependencies": {
@@ -17,7 +17,6 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "redux-zero": "^5.0.4",
-    "tdf3-js": "git+ssh://git@github.com/virtru/tdf3-js.git#semver:^2",
     "virtru-sdk": "beta"
   },
   "scripts": {

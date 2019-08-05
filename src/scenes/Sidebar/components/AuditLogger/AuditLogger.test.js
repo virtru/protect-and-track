@@ -5,8 +5,6 @@ import moment from 'moment';
 import auditEvents from 'constants/auditEvents';
 import * as Download from 'utils/download';
 
-jest.mock('file-saver');
-
 describe('AuditLogger', () => {
   test('renders "Protect a file..." text if events array is empty', () => {
     const { getByText } = render(<AuditLogger auditLog={[]} />);
