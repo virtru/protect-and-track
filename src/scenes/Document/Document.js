@@ -60,7 +60,8 @@ function Document({
 
   const login = async email => {
     // Just refresh with the email query param
-    window.location = `${window.location.origin}${window.location.pathname}?virtruAuthWidgetEmail=${email}`;
+    localStorage.setItem('virtru-demo-email', email);
+    window.location.reload();
   };
 
   const encrypt = async () => {
