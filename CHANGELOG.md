@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/111): _patch_
   - Remove scrolling constraints on access list
-- [NO-REF](https://github.com/virtru/protect-and-track/pull/111): _patch_
+- [NO-REF](https://github.com/virtru/protect-and-track/pull/114): _patch_
   - Strengthen client-side email validation on grant form to match auth widget
 
 ## [v1.0.3](https://github.com/virtru/protect-and-track/compare/v1.0.2...v1.0.3) - 2019-08-05
