@@ -31,7 +31,7 @@ const EVENT_NAMES = {
 
 const defaultProperties = {
   'user.platform': PLATFORM,
-  'user.platform.version': version,
+  'user.platform.version': process.env.REACT_APP_VERSION,
 };
 
 const options = {
