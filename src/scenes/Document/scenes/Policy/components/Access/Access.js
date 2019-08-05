@@ -52,6 +52,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
           <input
             type="email"
             name="newUser"
+            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
             onChange={e =>
               setInput({
                 text: e.target.value,
