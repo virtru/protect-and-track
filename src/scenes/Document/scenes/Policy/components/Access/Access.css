@@ -1,7 +1,5 @@
 .Access > ol {
   margin: 0;
-  max-height: 126px;
-  overflow-y: auto;
 }
 
 .Grant,
