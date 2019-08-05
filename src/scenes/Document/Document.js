@@ -20,7 +20,7 @@ import './Document.css';
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import Button from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
-import { analytics, EVENT_NAMES } from 'utils/analytics';
+import analytics, { EVENT_NAMES } from 'utils/analytics';
 
 let auditTimerId;
 
@@ -60,20 +60,6 @@ function Document({
   };
 
   const login = async email => {
-    // Emit login analytics
-    analytics.updateProperties({
-      'user.email': email,
-      'user.domain': email.split('@')[1],
-    });
-    analytics.identify({ userId: email });
-    analytics.track({
-      event: EVENT_NAMES.LOGIN_COMPLETED,
-      properties: {
-        fileType: file.file.type,
-        fileSize: `${file.arrayBuffer.byteLength / 1000}KB`,
-      },
-    });
-
     // Just refresh with the email query param
     window.location = `${window.location.origin}${window.location.pathname}?virtruAuthWidgetEmail=${email}`;
   };
@@ -247,7 +233,16 @@ function Document({
             Download
           </Button>
           <Button
-            onClick={() => setShareOpen(true)}
+            onClick={() => {
+              analytics.track({
+                event: EVENT_NAMES.FILE_SHARE_ATTEMPT,
+                properties: {
+                  fileType: file.file.type,
+                  fileSize: `${file.arrayBuffer.byteLength / 1000}KB`,
+                },
+              });
+              setShareOpen(true);
+            }}
             disabled={
               !encrypted ||
               !userId ||

@@ -8,6 +8,7 @@ import './Share.css';
 import { SHARE_STATE, SHARE_PROVIDERS, SHARE_TITLES } from 'constants/sharing';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
+import { trackShareSelect, trackShareComplete, trackShareError } from 'utils/analytics';
 
 function Ico({ type }) {
   return <img alt="" src={`${type}.svg`} className="ShareSelect-ico" />;
@@ -53,8 +54,10 @@ function ShareButton({ children, init, onClick, type }) {
   return button;
 }
 
-function ShareSelect({ setShare, file, recipients, fileName }) {
+function ShareSelect({ setShare, file, recipients, fileName, policy }) {
+  /*** Dropbox Sharing ***/
   const shareToDropBox = async () => {
+    trackShareSelect({ policy, file, destination: 'dropbox' });
     try {
       const state = s =>
         setShare({
@@ -76,6 +79,7 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
           recipients,
         },
       });
+      trackShareComplete({ policy, file, destination: 'dropbox' });
     } catch (e) {
       console.warn({ type: 'Drive share failure', cause: e });
       // TODO(DSAT-67) enhance error messages
@@ -84,10 +88,14 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
         provider: SHARE_PROVIDERS.DROPBOX,
         providerState: { state: SHARE_STATE.FAIL, error },
       });
+      trackShareError({ policy, file, destination: 'dropbox', error: e });
     }
   };
+
+  /*** Google Drive Sharing ***/
   const shareToDrive = async () => {
     let link, id, state, errorMessage;
+    trackShareSelect({ policy, file, destination: 'gDrive' });
     const upstate = () =>
       setShare({
         provider: SHARE_PROVIDERS.GOOGLEDRIVE,
@@ -124,6 +132,7 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       state = SHARE_STATE.SHARED;
       gsuite.signOut();
       upstate();
+      trackShareComplete({ policy, file, destination: 'gDrive' });
     } catch (e) {
       const { error } = e;
       if (error === 'popup_closed_by_user') {
@@ -133,8 +142,11 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       }
       state = SHARE_STATE.FAIL;
       upstate();
+      trackShareError({ policy, file, destination: 'gDrive', error: e });
     }
   };
+
+  /*** OneDrive Sharing ***/
   const shareToOnedrive = async () => {
     try {
       const state = s =>
@@ -297,7 +309,7 @@ function ShareComplete({ provider, providerState, file, onClose, recipients }) {
   );
 }
 
-function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
+function Share({ encrypted, onClose, providers, recipients, share, setShare, policy }) {
   let shareContent;
   const closeAndResetState = (...args) => {
     onClose(...args);
@@ -310,6 +322,7 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
         file={encrypted}
         recipients={recipients}
         fileName={encrypted.name}
+        policy={policy}
       />
     );
   } else {
@@ -369,6 +382,7 @@ share_${serviceProviderName}: {
 const mapToProps = ({ encrypted, policy, share, ...rest }) => ({
   encrypted,
   recipients: policy.getUsersWithAccess(),
+  policy,
   share,
   providers: (() => {
     let o = {};

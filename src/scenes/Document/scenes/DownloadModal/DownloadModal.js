@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'components/Modal/Modal';
 import Button from 'components/Button/Button';
 import { downloadHtml, downloadTdf, downloadDecrypted } from 'utils/download';
-import { analytics, EVENT_NAMES } from '../../../../utils/analytics';
+import analytics, { EVENT_NAMES } from 'utils/analytics';
 
 import './DownloadModal.css';
 import '../LoadingModal/LoadingModal.css';
@@ -29,9 +29,9 @@ export default ({ onClose, encrypted, virtruClient }) => {
         'policy.type': 'file',
         extension,
         isSecure,
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
+        name: error && error.name,
+        message: error && error.message,
+        stack: error && error.stack,
       },
     });
   };
