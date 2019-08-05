@@ -39,3 +39,9 @@ There are many ways to get our attention:
 
 - You can [join](https://docs.google.com/forms/d/e/1FAIpQLSfCx5tSl9hGQSZ-H-ZIzNw6uWIPN3_HSpMtYssKQ9jytj9yQQ/viewform) Virtru's Developer Hub Community Slack channel to get your questions answered.
 - You can open a support ticket [here](https://support.virtru.com/hc/en-us/requests/new?ticket_form_id=360001419954).
+
+### License
+
+Copyright © 2019 Virtru Corporation
+
+This repo is released under the MIT license for all artifacts in this repo.
