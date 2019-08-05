@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
 
+- [DSAT-151](https://github.com/virtru/protect-and-track/pull/107): _minor_
+  - Add Amplitude metrics
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/111): _patch_
   - Remove scrolling constraints on access list
-- [DSAT-135](https://github.com/virtru/protect-and-track/pull/113)
+- [DSAT-135](https://github.com/virtru/protect-and-track/pull/113): _patch_
   - Remove the virtru email from query string
   - Store email in localStorage
 
