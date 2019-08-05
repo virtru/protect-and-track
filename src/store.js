@@ -35,7 +35,19 @@ try {
 }
 
 let userId = getQueryParam('virtruAuthWidgetEmail');
-let isLoggedIn = userId && Virtru.Auth.isLoggedIn({ email: userId });
+let email = localStorage.getItem('virtru-demo-email');
+if (userId) {
+  email = userId;
+  localStorage.setItem('virtru-demo-email', userId);
+  const pathname = window.location.pathname;
+  const search = window.location.search
+    .replace(/([?&])virtruAuthWidgetEmail(=[^&#]+&?)/, '$1')
+    .replace(/[?&]$/, '');
+  const hash = window.location.hash;
+  window.history.replaceState({}, document.title, pathname + search + hash);
+}
+
+let isLoggedIn = email && Virtru.Auth.isLoggedIn({ email });
 let policy = false;
 let file = false;
 let encrypted = false;
@@ -94,8 +106,13 @@ try {
 }
 
 if (isLoggedIn) {
+  userId = email;
   virtruClient = new Virtru.Client({ email: userId });
   trackLogin({ userId, file });
+} else {
+  // remove the email from localstorage
+  localStorage.removeItem('virtru-demo-email');
+  userId = false;
 }
 
 export default createStore({
