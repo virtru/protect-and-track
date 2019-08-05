@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
 
+- [NO-REF](https://github.com/virtru/protect-and-track/pull/111): _patch_
+  - Remove scrolling constraints on access list
+
 ## [v1.0.3](https://github.com/virtru/protect-and-track/compare/v1.0.2...v1.0.3) - 2019-08-05
 
 - [DSAT-142](https://github.com/virtru/protect-and-track/pull/109): _patch_
