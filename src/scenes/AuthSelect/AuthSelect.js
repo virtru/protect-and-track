@@ -9,7 +9,7 @@ function AuthSelect({ onClose, login }) {
   }, [login]);
 
   return (
-    <Modal raw onClose={onClose}>
+    <Modal onClose={onClose}>
       <div id="virtru-auth-widget-mount"></div>
     </Modal>
   );
