@@ -191,13 +191,19 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       id = uploadResponse.id;
       link = 'https://onedrive.live.com/?id=' + uploadResponse.id;
       upstate();
-      // NOTE onedrive doesn't like sharing with yourself, so break this into two bits
-      // The owner may sign into onedrive with another account, and they may share with
-      // the onedrive owner explicitly, so maybe we should break this into one request per recipient.
-      if (recipients.length > 1) {
-        await onedrive.share(token, uploadResponse.id, recipients.slice(1));
-      }
-      await onedrive.share(token, uploadResponse.id, recipients.slice(0, 1));
+      recipients.map(async user => {
+        try {
+          await onedrive.share(token, uploadResponse.id, recipients.slice(0, 1));
+        } catch (e) {
+          if (e.error && e.error.message === 'Owner cannot be added as a member') {
+            // NOTE onedrive doesn't like sharing with yourself, so break this into two bits
+            // The owner may sign into onedrive with another account, and they may share with
+            // the onedrive owner explicitly, so maybe we should break this into one request per recipient.
+          } else {
+            throw e;
+          }
+        }
+      });
 
       state = SHARE_STATE.SHARED;
       upstate();
