@@ -1,11 +1,12 @@
 import createStore from 'redux-zero';
 import Virtru from 'virtru-sdk';
 import uuid from 'uuid';
+import moment from 'moment';
+
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import { base64ToArrayBuffer } from 'utils/buffer';
 import checkIsMobile from 'utils/checkIsMobile';
 import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
-
 import ENCRYPT_STATES from 'constants/encryptStates';
 
 let encryptState = ENCRYPT_STATES.UNPROTECTED;
@@ -16,6 +17,17 @@ const appId = activeAuth && activeAuth.split(':')[1];
 
 const policyData = JSON.parse(localStorage.getItem('virtru-demo-policy'));
 const fileData = JSON.parse(localStorage.getItem('virtru-demo-file'));
+
+let tdfLog;
+try {
+  tdfLog = JSON.parse(localStorage.getItem('virtru-demo-sdk-log')) || [];
+  tdfLog.forEach(log => {
+    log.timestamp = moment(log.timestamp);
+  });
+} catch (err) {
+  console.error(err);
+  tdfLog = [];
+}
 
 let userId = getQueryParam('virtruAuthWidgetEmail');
 let isLoggedIn = userId && Virtru.Auth.isLoggedIn({ email: userId });
@@ -102,7 +114,7 @@ export default createStore({
   policy,
 
   // TDF Event Logger Contents
-  tdfLog: [],
+  tdfLog,
 
   // Application loading status
   isLoading: true,

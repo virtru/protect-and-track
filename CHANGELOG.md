@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/111): _patch_
   - Remove scrolling constraints on access list
 
+## [v1.0.3](https://github.com/virtru/protect-and-track/compare/v1.0.2...v1.0.3) - 2019-08-05
+
+- [DSAT-142](https://github.com/virtru/protect-and-track/pull/109): _patch_
+  - Save SDK logs in `localStorage` so they are retained after auth. Only cleared on reset
+- [DSAT-143](https://github.com/virtru/protect-and-track/pull/110): _patch_
+  - Show close button for auth modal
+
 ## [v1.0.2](https://github.com/virtru/protect-and-track/compare/v1.0.1...v1.0.2) - 2019-08-04
 
 - [DSAT-144](https://github.com/virtru/protect-and-track/pull/104): _patch_
