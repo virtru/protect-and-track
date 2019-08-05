@@ -1,4 +1,3 @@
-import { version } from '../../package.json';
 
 // Mock analytics if not in use
 let AnalyticsService = class {
