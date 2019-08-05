@@ -1,5 +1,17 @@
-import { AnalyticsService } from 'analytics-service';
 import { version } from '../../package.json';
+
+// Mock analytics if not in use
+let AnalyticsService = class {
+  track() {}
+  identify() {}
+  updateProperties() {}
+};
+try {
+  AnalyticsService = require('analytics-service').AnalyticsService;
+} catch (err) {
+  // Analytics are optional
+  console.warn('No analytics-service found! Amplitude events will not be emitted.');
+}
 
 const PLATFORM = 'protect-and-track';
 
@@ -93,7 +105,6 @@ const trackDownload = ({
   error,
   policy,
 }) => {
-  console.log(`Tracking ${event}`);
   analytics.track({
     event,
     properties: {
