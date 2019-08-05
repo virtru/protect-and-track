@@ -13,7 +13,7 @@ const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 
 async function init() {
   if (!CLIENT_ID) {
-    console.log('Onedrive integration not enabled');
+    console.warn('Onedrive integration not enabled');
     return false;
   }
   return true;
@@ -63,7 +63,7 @@ function processOneDrive(authResponse) {
   const authResponseFragment = authResponse.split(/[?#]/)[1];
   const authResponseDecoded = authResponseFragment && decodeURI(authResponseFragment);
   if (!authResponseDecoded) {
-    console.log('No auth fragment for onedrive found');
+    console.info(`No auth fragment for onedrive found in [${authResponseFragment}]`);
     return;
   }
   // Convert CGI-encoded params into a JSON object literal notation.
@@ -112,7 +112,7 @@ async function signOut() {
 
 async function share(token, fileId, recipients) {
   if (!(fileId && token && recipients && recipients.length)) {
-    console.log('invalid share request: ' + JSON.stringify(arguments));
+    console.warn({ type: 'invalid share request', arguments: arguments });
     return;
   }
   const root = 'https://graph.microsoft.com/v1.0/me';
@@ -137,7 +137,7 @@ async function share(token, fileId, recipients) {
     if (response.status === 400) {
       throw response.json();
     }
-    console.log(`share status: [${response.status}]`);
+    console.warn(`share status: [${response.status}]`);
     throw response;
   }
   return response.json();
@@ -146,7 +146,7 @@ async function share(token, fileId, recipients) {
 async function upload(token, file) {
   // https://docs.microsoft.com/en-us/onedrive/developer/rest-api/api/driveitem_put_content?view=odsp-graph-online
   if (!(token && file && file.name && file.payload)) {
-    console.log('invalid upload request: ' + JSON.stringify(arguments));
+    console.warn({ type: 'invalid upload request', arguments: arguments });
     return;
   }
   const root = 'https://graph.microsoft.com/v1.0/me';
@@ -163,7 +163,7 @@ async function upload(token, file) {
     if (response.status === 400) {
       throw response.json();
     }
-    console.log(`upload status: [${response.status}]`);
+    console.warn(`upload status: [${response.status}]`);
     throw response;
   }
   return response.json();

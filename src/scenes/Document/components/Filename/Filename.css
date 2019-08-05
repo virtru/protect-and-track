@@ -4,8 +4,18 @@
   font-size: 25px;
   line-height: 30px;
   font-weight: lighter;
-  padding-left: 48px;
   text-align: left;
+  display: flex;
+  margin-bottom: 12px;
+  margin-top: 0;
+}
+
+.Filename-original {
+  text-overflow: ellipsis;
+  max-width: 370px;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
 }
 
 .Filename-tdf {
@@ -30,4 +40,10 @@
 
 .Filename-Replace input[type='file'] {
   display: none;
+}
+
+.Filename .button {
+  /* push this to the end of the flexbox */
+  /* https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Aligning_Items_in_a_Flex_Container#Using_auto_margins_for_main_axis_alignment */
+  margin-left: auto;
 }

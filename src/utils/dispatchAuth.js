@@ -14,7 +14,6 @@ export default function() {
   const hasAccessToken = window.location.hash && window.location.hash.includes('access');
 
   if (!hasAccessToken) {
-    console.log('no access token, so not an auth redirect');
     return false;
   }
 
@@ -28,6 +27,6 @@ export default function() {
       window.close();
     }
   });
-  console.log('Auth redirect...');
+  console.log('Auth redirect for share dialog...');
   return true;
 }

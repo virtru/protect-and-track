@@ -1,6 +1,6 @@
 {
   "name": "sdk-share",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "private": true,
   "homepage": ".",
   "dependencies": {
@@ -9,7 +9,6 @@
     "client-oauth2": "^4.2.5",
     "clipboard": "^2.0.4",
     "dropbox": "^4.0.28",
-    "file-saver": "^2.0.2",
     "json2csv": "^4.5.2",
     "moment": "^2.24.0",
     "react": "^16.8.6",

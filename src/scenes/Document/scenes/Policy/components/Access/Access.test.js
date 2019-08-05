@@ -50,7 +50,6 @@ describe('Access', () => {
       />,
     );
     // We should just get the grant button
-    expect(getByText('Revoke All')).toBeTruthy();
     expect(getByText('Revoke')).toBeTruthy();
     expect(getByText('Grant')).toBeTruthy();
     expect(getByText('a@abc.xyz')).toBeTruthy();

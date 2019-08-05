@@ -4,9 +4,7 @@ import Document from './Document';
 import ENCRYPT_STATES from 'constants/encryptStates';
 import Virtru from 'virtru-sdk';
 import VirtruWrapper from 'utils/VirtruWrapper';
-import * as services from 'services/audit';
 jest.mock('utils/VirtruWrapper');
-jest.mock('services/audit');
 
 afterEach(cleanup);
 
@@ -40,7 +38,7 @@ describe('Document', () => {
     const { getByText } = render(
       <Document file={file} policy={policy} setEncryptState={() => {}} />,
     );
-    fireEvent.click(getByText('Sign in to Protect'));
+    fireEvent.click(getByText('Sign In to Protect'));
     expect(getByText('Enter your email address:')).toBeInTheDocument();
   });
 
@@ -57,9 +55,6 @@ describe('Document', () => {
     const setEncrypted = jest.fn();
     const setAuditEvents = jest.fn();
     VirtruWrapper.encrypt.mockImplementation(spy);
-    services.getAuditEvents.mockImplementation(() =>
-      Promise.resolve({ json: () => Promise.resolve({ data: 'someData' }) }),
-    );
 
     const { container, rerender } = render(
       <Document

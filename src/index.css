@@ -32,7 +32,8 @@ h3 {
 
 main {
   display: flex;
-  align-items: center;
+  align-items: top;
+  justify-content: center;
   height: calc(100vh - 55px);
   background: #fff;
   max-width: 1280px;
@@ -75,12 +76,31 @@ input:focus {
 
 input[type='text'],
 input[type='email'] {
-  height: 50px;
-  padding-left: 10px;
-  font-size: 15px;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  height: 36px;
+  padding: 9px 13px;
+  color: var(--slateDarkest);
+  font: var(--fSizeSmall) / var(--lhSmall) var(--fontPrimary);
+  background-color: var(--white);
+  border: 1px solid var(--slateDarker);
+  border-radius: 3px;
+}
+input[type='text']:hover,
+input[type='email']:hover {
+  border-color: var(--blueDarkest);
+  box-shadow: 0 1px 4px 1px var(--blueShadow);
+}
+input[type='text']:focus,
+input[type='email']:focus {
+  background-color: var(--white) !important;
+  border-color: var(--blueDarkest);
+  box-shadow: 0 1px 4px 1px var(--blueShadow);
+  color: var(--slateDarkest);
+}
+input:invalid {
+  border: 1px solid var(--redPrimary) !important;
+}
+input:invalid:focus {
+  background-color: var(--redLightest) !important;
 }
 
 /* Make the auth modal a little wider so that buttons don't take up 2 lines */

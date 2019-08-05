@@ -1,16 +1,16 @@
 import React from 'react';
 
-import Button from 'components/Button/Button';
+import RevokeAll from '../RevokeAll/RevokeAll';
 import './Filename.css';
 
-function Filename({ file, isTdf, setFile }) {
+function Filename({ userId, file, isTdf, isPolicyRevoked, revokePolicy }) {
   return (
     <h2 className="Filename">
-      {file.file.name}
+      <span className="Filename-original" title={file.file.name}>
+        {file.file.name}
+      </span>
       {isTdf && <span className="Filename-tdf">.tdf</span>}
-      <Button variant="link" onClick={e => setFile({})} small>
-        Start over
-      </Button>
+      {isTdf && <RevokeAll isPolicyRevoked={isPolicyRevoked} revokePolicy={revokePolicy} />}
     </h2>
   );
 }

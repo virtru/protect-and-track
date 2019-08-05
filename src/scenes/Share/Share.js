@@ -14,7 +14,7 @@ function Ico({ type }) {
 }
 
 function Title({ children }) {
-  return <h3 className="Share-title">{children}</h3>;
+  return <h1>{children}</h1>;
 }
 
 function ShareContainer({ children }) {
@@ -53,7 +53,7 @@ function ShareButton({ children, init, onClick, type }) {
   return button;
 }
 
-function ShareSelect({ setShare, file, recipients, onClose }) {
+function ShareSelect({ setShare, file, recipients, fileName }) {
   const shareToDropBox = async () => {
     try {
       const state = s =>
@@ -77,11 +77,12 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
         },
       });
     } catch (e) {
-      console.log(e);
+      console.warn({ type: 'Drive share failure', cause: e });
       // TODO(DSAT-67) enhance error messages
+      const error = e.status === 409 ? `${fileName} already exists in your Dropbox.` : null;
       setShare({
         provider: SHARE_PROVIDERS.DROPBOX,
-        providerState: { state: SHARE_STATE.FAIL },
+        providerState: { state: SHARE_STATE.FAIL, error },
       });
     }
   };
@@ -128,7 +129,7 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
       if (error === 'popup_closed_by_user') {
         errorMessage = 'Authorization popup window closed or disabled';
       } else {
-        console.log(JSON.stringify(e));
+        console.warn({ type: 'Drive share failure', cause: e });
       }
       state = SHARE_STATE.FAIL;
       upstate();
@@ -168,13 +169,13 @@ function ShareSelect({ setShare, file, recipients, onClose }) {
         provider: SHARE_PROVIDERS.ONEDRIVE,
         providerState: { state: SHARE_STATE.FAIL },
       });
-      console.log('1drive error: ' + JSON.stringify(e));
+      console.info({ type: '1drive error', cause: e });
       throw e;
     }
   };
   return (
     <ShareContainer>
-      <Title>Share {(file && file.name) || 'protected file'}</Title>
+      <Title>Share protected file</Title>
       <ShareButton type="googledrive" onClick={shareToDrive} init={gsuite.init}>
         Google Drive
       </ShareButton>
@@ -226,7 +227,7 @@ function Fail({ provider, providerState, setShare }) {
       <div className="Share-center">
         <Ico type={provider} /> <Ico type="danger" />
       </div>
-      <p>Sorry, there was a problem sharing your file. Please try again.</p>
+      <p>Try 'Download' on the demo page to share via email or other means.</p>
       {providerState.error && (
         <p className="Share-Fail-explain">
           <img alt="" src="danger-small.svg" className="ShareSelect-inline" /> {providerState.error}
@@ -267,7 +268,6 @@ function Sharing({ file, provider, recipients }) {
 }
 
 function ShareComplete({ provider, providerState, file, onClose, recipients }) {
-  // console.log(`<ShareComplete provider=${JSON.stringify(provider)} providerState=${JSON.stringify(providerState)} file=${JSON.stringify(file)} onClose=${JSON.stringify(onclose)} recipients=${JSON.stringify(recipients)} />`);
   const { link } = providerState;
   const { file: { name } = {} } = file;
   const handleDoneClick = e => {
@@ -304,7 +304,14 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
     setShare(false);
   };
   if (!share) {
-    shareContent = <ShareSelect setShare={setShare} file={encrypted} recipients={recipients} />;
+    shareContent = (
+      <ShareSelect
+        setShare={setShare}
+        file={encrypted}
+        recipients={recipients}
+        fileName={encrypted.name}
+      />
+    );
   } else {
     const { state } = providers[share];
     switch (state) {
@@ -333,7 +340,12 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
         break;
       case SHARE_STATE.FAIL:
         shareContent = (
-          <Fail provider={share} providerState={providers[share]} setShare={setShare} />
+          <Fail
+            provider={share}
+            providerState={providers[share]}
+            setShare={setShare}
+            fileName={encrypted.name}
+          />
         );
         break;
       default:

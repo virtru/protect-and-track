@@ -22,7 +22,7 @@ const defaultProperties = {
 };
 
 const options = {
-  key: '',
+  key: process.env.REACT_APP_AMPLITUDE_KEY,
   frontEnd: true,
   defaultProperties,
 };

@@ -10,15 +10,25 @@
 
 .Modal-content {
   background: white;
-  border: 1px solid --var(white);
-  border-radius: 8px;
+  border: 1px solid var(--white);
+  border-radius: 9px;
   padding: 24px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  font: normal normal 400 var(--fSizeSmall) / var(--lhSmall) var(--fontPrimary);
+}
+.Modal-content h1 {
+  background-color: transparent;
+  color: var(--slateDarkest);
+  font: 700 var(--fSize-heading-s) / var(--lh-heading-s) var(--fontSecondary);
+  margin-bottom: calc(var(--lh-heading-s) / 2);
+  margin-top: 0;
+  text-align: left;
+}
+.Modal-content button {
+  margin-left: 0;
+  margin-right: 0;
 }
 
+.Modal-content,
 .Modal-content-raw {
   position: absolute;
   top: 50%;
@@ -28,9 +38,12 @@
 
 .Modal-close {
   position: absolute;
-  right: 25px;
-  top: 15px;
+  right: 0;
+  top: 0;
   border: none;
+  border-radius: 9px;
+  padding-right: 24px;
+  padding-top: 24px;
   font-size: 1.5rem;
   cursor: pointer;
 }

@@ -73,7 +73,7 @@ function Drop({ children, setFile, policyState }) {
 
   function UploadButton() {
     return (
-      <label className="Drop-UploadButton">
+      <label className="Drop-UploadButton" htmlFor="upload">
         Choose File
         <input type="file" id="upload" name="upload[]" onChange={handleFileInput} />
       </label>
@@ -82,14 +82,16 @@ function Drop({ children, setFile, policyState }) {
 
   function EmptyTarget() {
     return (
-      <>
-        <div className="Drop-box">
-          <DropIcon className="Drop-icon" />
+      <div className="Drop-text">
+        <div className="default-instructions">
+          <div className="Drop-box">
+            <DropIcon className="Drop-icon" />
+          </div>
+          <p>Drag in any regular file to protect it</p>
+          <UploadButton />
         </div>
-        <h2 className="Drop-text">Drag in any regular file to protect it</h2>
-        <UploadButton />
-        <h3>Or you can drag in a protected file to track and share it</h3>
-      </>
+        <div className="dragging-instructions">drop here</div>
+      </div>
     );
   }
 

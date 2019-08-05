@@ -9,7 +9,6 @@ import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy from './scenes/Policy/Policy';
 import DownloadModal from './scenes/DownloadModal/DownloadModal';
-import { getAuditEvents } from 'services/audit';
 import Share from '../Share/Share';
 import AuthSelect from '../AuthSelect/AuthSelect';
 import StayUp from '../StayUp/StayUp';
@@ -41,11 +40,15 @@ function Document({
   setEncryptState,
   setPolicy,
   setPolicyId,
+  isLoggedIn,
 }) {
   const [isShareOpen, setShareOpen] = useState(false);
   const [isAuthOpen, setAuthOpen] = useState(false);
   const [isStayUpOpen, setStayUpOpen] = useState(false);
   const [isDownloadOpen, setDownloadOpen] = useState(false);
+  const [isPolicyRevoked, setPolicyRevoked] = useState(
+    !!localStorage.getItem('virtru-demo-policyRevoked'),
+  );
 
   const openAuthModal = () => {
     setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
@@ -57,8 +60,7 @@ function Document({
   };
 
   const login = async email => {
-    console.log('Tracking login......');
-    /** Track LOGIN_COMPLETED event */
+    // Emit login analytics
     analytics.updateProperties({
       'user.email': email,
       'user.domain': email.split('@')[1],
@@ -73,7 +75,7 @@ function Document({
     });
 
     // Just refresh with the email query param
-    // window.location = `${window.location}?virtruAuthWidgetEmail=${email}`;
+    window.location = `${window.location.origin}${window.location.pathname}?virtruAuthWidgetEmail=${email}`;
   };
 
   const encrypt = async () => {
@@ -84,17 +86,26 @@ function Document({
         client: virtruClient,
         fileData: file.arrayBuffer,
         filename: file.file.name,
-        policy: policy,
+        policy,
         userEmail: userId,
         asHtml: true,
       });
     } catch (e) {
       // Encryption failed!!!!
-      console.log(`encrypt failure: ${JSON.stringify(e, null, 2)}`);
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
-      setAlert('Encrypt service error; try refreshing credentials or starting over.');
+      console.warn({ type: 'encrypt failure', cause: e });
+      if (e && e.message) {
+        if (e.message === 'Encrypting as a CKS-enabled user is currently not supported.') {
+          setAlert(' Please use a non-corporate account. CKS key server support coming soon.');
+        } else {
+          setAlert(`Encrypt service error: ${e.message}`);
+        }
+      } else {
+        setAlert('Encrypt service error; try refreshing credentials or starting over.');
+      }
       return;
     }
+    // TODO fetch policy instead of updating the exisitng copy here
     const { encryptedFile, policyId } = encryptResult;
     setPolicyId(policyId);
     setEncrypted({
@@ -108,6 +119,13 @@ function Document({
     }
   };
 
+  const revokePolicy = () => {
+    localStorage.setItem('virtru-demo-policyRevoked', true);
+    setPolicyRevoked(true);
+    // TODO: handle error case?
+    Virtru.revoke({ virtruClient, policyId });
+  };
+
   useEffect(() => {
     async function updateAuditEvents() {
       const currentTimerId = auditTimerId;
@@ -115,16 +133,16 @@ function Document({
       if (encryptState !== ENCRYPT_STATES.PROTECTED) {
         return;
       }
-      const auditRes = await getAuditEvents({ userId, appId, policyId });
-      const auditData = await auditRes.json();
+      try {
+        const auditData = await Virtru.fetchAuditEvents({ virtruClient, policyId });
+        setAuditEvents({ events: auditData, error: false });
+      } catch (err) {
+        console.error(err);
+        setAuditEvents({ error: err });
+      }
       if (currentTimerId !== auditTimerId) {
         // The policy changed while waiting for the audit log, so don't update it.
         return;
-      }
-      if (!auditRes.ok) {
-        setAuditEvents({ status: auditRes.status, error: auditData });
-      } else {
-        setAuditEvents({ events: auditData.data, error: false });
       }
       auditTimerId = setTimeout(updateAuditEvents, 2000);
     }
@@ -137,7 +155,7 @@ function Document({
       return;
     }
     auditTimerId = setTimeout(updateAuditEvents, 2000);
-  }, [appId, encryptState, policy, policyId, setAuditEvents, userId]);
+  }, [appId, encryptState, policy, policyId, setAuditEvents, userId, virtruClient]);
 
   const renderDrop = () => {
     if (!file) {
@@ -153,17 +171,25 @@ function Document({
           setFile={setFile}
         >
           <div className="DocumentDetails">
-            <Filename file={file} isTdf={!!encrypted} setFile={setFile} />
+            <Filename
+              file={file}
+              isTdf={!!encrypted}
+              isPolicyRevoked={isPolicyRevoked}
+              revokePolicy={revokePolicy}
+              userId={userId}
+            />
             <Policy
               virtruClient={virtruClient}
               file={file}
               policy={policy}
               policyId={policyId}
+              isPolicyRevoked={isPolicyRevoked}
               userId={userId}
               openAuthModal={openAuthModal}
               encrypt={encrypt}
               encryptState={encryptState}
               policyChange={policyChange}
+              isLoggedIn={isLoggedIn}
             />
           </div>
         </Drop>
@@ -194,10 +220,13 @@ function Document({
       return (
         <section className="DocumentFooter center">
           <span>or drag this... </span>
-          <h3 draggable="true">
+          <div
+            draggable="true"
+            onDragStart={ev => ev.dataTransfer.setData('text', 'demo-example.txt')}
+          >
             <FileIcon className="file-icon" />
             demo-example.txt
-          </h3>
+          </div>
         </section>
       );
     }
@@ -219,7 +248,13 @@ function Document({
           </Button>
           <Button
             onClick={() => setShareOpen(true)}
-            disabled={!encrypted || !userId || !policy || !policy.getUsersWithAccess().length}
+            disabled={
+              !encrypted ||
+              !userId ||
+              !policy ||
+              isPolicyRevoked ||
+              !policy.getUsersWithAccess().length
+            }
           >
             Share
           </Button>
@@ -256,7 +291,18 @@ const mapToProps = ({
   policy,
   userId,
   virtruClient,
-}) => ({ policyId, file, policy, userId, appId, virtruClient, encrypted, encryptState });
+  isLoggedIn,
+}) => ({
+  policyId,
+  file,
+  policy,
+  userId,
+  appId,
+  virtruClient,
+  encrypted,
+  encryptState,
+  isLoggedIn,
+});
 
 const saveFileToLocalStorage = ({ fileBuffer, fileName, fileType }) => {
   const b64 = arrayBufferToBase64(fileBuffer);
@@ -310,7 +356,8 @@ const actions = {
           return { alert: 'TDF support not yet implemented' };
         }
       } catch (e) {
-        console.log(`Unable to decrypt html file; probably not a TDF: ${JSON.stringify(e)}`);
+        // TODO use a real API for this instead.
+        console.info({ type: 'This HTML file probably does not contain a TDF', cause: e });
       }
     }
 
@@ -321,6 +368,7 @@ const actions = {
     localStorage.removeItem('virtru-demo-policy');
     localStorage.removeItem('virtru-demo-file-encrypted');
     localStorage.removeItem('virtru-demo-policyId');
+    localStorage.removeItem('virtru-demo-policyRevoked');
     if (!fileHandle) {
       return {
         file: false,
@@ -342,6 +390,7 @@ const actions = {
 
     saveFileToLocalStorage({ fileName, fileType, fileBuffer });
     savePolicyToLocalStorage({ policy });
+
     return {
       file: { file: fileHandle, arrayBuffer: fileBuffer },
       policy,
@@ -350,10 +399,9 @@ const actions = {
       auditEvents: false,
     };
   },
-  setEncrypted: ({ policy }, value) => {
+  setEncrypted: (state, value) => {
     const { payload, name, type } = value;
     saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
-    savePolicyToLocalStorage({ policy });
     return { encrypted: value, auditEvents: false };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),
@@ -384,8 +432,22 @@ const actions = {
     return { alert: value };
   },
   setPolicyId: (state, value) => {
-    localStorage.setItem('virtru-demo-policyId', value);
-    return { policyId: value };
+    let { policy, policyId } = state;
+    if (policyId === value) {
+      return {};
+    }
+    if (!value) {
+      localStorage.removeItem('virtru-demo-policyId');
+      if (policy && value !== policy.getPolicyId()) {
+        policy = policy
+          .builder()
+          .withPolicyId(value)
+          .build();
+      }
+    } else {
+      localStorage.setItem('virtru-demo-policyId', value);
+    }
+    return { policy, policyId: value };
   },
 };
 

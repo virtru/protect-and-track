@@ -1,12 +1,17 @@
 import Virtru from 'virtru-sdk';
 import { TDF } from 'tdf3-js';
+import uuid from 'uuid';
 import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
 
 import store from '../store';
 
 const actions = {
-  pushLogAction: ({ tdfLog }, value) => ({ tdfLog: [...tdfLog, value] }),
+  pushLogAction: ({ tdfLog }, value) => {
+    const newLog = [...tdfLog, value];
+    localStorage.setItem('virtru-demo-sdk-log', JSON.stringify(newLog));
+    return { tdfLog: newLog };
+  },
 };
 
 const boundActions = bindActions(actions, store);
@@ -21,9 +26,22 @@ function _pushAction(action) {
  *
  * @param {?object} opts
  */
-function policyBuilder(opts) {
-  const builder = new Virtru.PolicyBuilder(opts);
-  let actions = [`const policy = new Virtru.PolicyBuilder(${opts ? 'policy' : ''})`];
+function policyBuilder(existingPolicy) {
+  let builder;
+  if (existingPolicy) {
+    _pushAction({
+      title: 'Get Policy Builder',
+      code: 'const builder = existingPolicy.builder();',
+    });
+    builder = existingPolicy.builder();
+  } else {
+    _pushAction({
+      title: 'Create Policy Builder',
+      code: 'const builder = new Virtru.PolicyBuilder();',
+    });
+    builder = new Virtru.PolicyBuilder().withPolicyId(uuid.v4());
+  }
+  let actions = ['const policy = builder'];
   // This proxy records all calls, then logs them to the UI on `build` invocations.
   return new Proxy(builder, {
     get(target, propKey, receiver) {
@@ -116,7 +134,9 @@ async function decrypt({ virtruClient, encryptedBuffer }) {
       '  .withBufferSource(encryptedBuffer)\n' +
       '  .build();',
   });
-  const decryptParams = new Virtru.DecryptParamsBuilder().withBufferSource(encryptedBuffer).build();
+  const decryptParams = new Virtru.DecryptParamsBuilder()
+    .withArrayBufferSource(encryptedBuffer)
+    .build();
 
   _pushAction({
     title: 'Decrypt File',
@@ -152,6 +172,26 @@ function newVirtruDecryptParamsBuilder(opts) {
   return new Virtru.DecryptParamsBuilder(opts);
 }
 
+async function signOut(userId) {
+  const resetApp = () => {
+    localStorage.removeItem('virtru-demo-file');
+    localStorage.removeItem('virtru-demo-policy');
+    localStorage.removeItem('virtru-demo-sdk-log');
+    window.location = window.location.href.split(/[?#]/)[0];
+  };
+  if (userId) {
+    await Virtru.Auth.logout({ email: userId });
+    resetApp();
+  } else {
+    resetApp();
+  }
+}
+
+function fetchAuditEvents({ virtruClient, policyId }) {
+  // Not logging this since it happens so often
+  return virtruClient.fetchEventsForPolicyId(policyId);
+}
+
 export default {
   encrypt,
   policyBuilder,
@@ -161,4 +201,6 @@ export default {
   createClient,
   revoke,
   newVirtruDecryptParamsBuilder,
+  signOut,
+  fetchAuditEvents,
 };
