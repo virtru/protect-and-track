@@ -19,9 +19,15 @@
     "redux-zero": "^5.0.4",
     "virtru-sdk": "beta"
   },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/virtru/protect-and-track.git"
+  },
   "scripts": {
     "start": "HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
     "build": "react-scripts build",
+    "license": "./license-update",
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json}\"",
     "test": "eslint src && react-scripts test --watchAll=false",
     "test-watch": "react-scripts test",
@@ -53,7 +59,7 @@
   "husky": {
     "hooks": {
       "post-commit": "git update-index -g",
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "pretty-quick --staged && ./license-update --staged"
     }
   }
 }
