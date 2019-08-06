@@ -20,7 +20,7 @@ If you want to run this demo locally, ensure that you have met the following pre
 
 - Node/NPM - Node and NPM are both requirements to build and run the example
 - If you are running this example locally from a Windows machine, please ensure you use a POSIX-compatible environment such as Cygwin.
-- Ensure that your `/etc/hosts` file includes the following line: `127.0.0.1 local.virtru.com` to avoid running into CORs errors
+- Ensure that your `/etc/hosts` file includes the following line: `127.0.0.1 local.virtru.com` to avoid running into CORS errors
 
 Now get it running:
 
