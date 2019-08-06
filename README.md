@@ -16,20 +16,54 @@ This demo showcases features such as:
 
 ## Run it Locally
 
-If you want to run this demo locally, ensure that you have met the following pre-reqs:
+This demo can run on your local environment. Please ensure you meet the prerequisites and follow the steps.
 
-- Node/NPM - Node and NPM are both requirements to build and run the example
-- If you are running this example locally from a Windows machine, please ensure you use a POSIX-compatible environment such as Cygwin.
-- Ensure that your `/etc/hosts` file includes the following line: `127.0.0.1 local.virtru.com` to avoid running into CORS errors
+### Prerequisites
 
-Now get it running:
+To be able to use Federated OAuth we suggest you to modify your `/etc/hosts`. This is an optional step, but note the fallback authentication will be email code only.
+
+#### Windows
+
+- Install a POSIX-compatible environment such as [Cygwin](https://www.cygwin.com/) or [Cmder](https://cmder.net/)
+- Install [NVM](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows)
+- Edit `c:\Windows\System32\Drivers\etc\hosts` to include `127.0.0.1 local.virtru.com`
+
+Alternatively you could install [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) and use the instructions below for Linux
+
+#### Linux / MacOS
+
+- Install [NVM](https://github.com/nvm-sh/nvm#installation-and-update)
+- Edit `/etc/hosts` to include `127.0.0.1 local.virtru.com`
+
+### Getting Started
 
 ```console
-foo@bar:~$ git clone git@github.com:virtru/protect-and-track.git # Clone this repository
-foo@bar:~$ npm ci; sudo npm start # Install and run locally
+# Clone the repository
+$ git clone git@github.com:virtru/protect-and-track.git
+
+# Change directory
+$ cd protect-and-track
+
+# Install node via NVM
+$ nvm use
+
+# Install node modules
+$ npm ci
+
+# Start the node server
+$ sudo npm start
 ```
 
-If running successfully, visit `https://local.virtru.com` and use the demo running from your computer.
+If running successfully, your default browser may automatically open. If not visit `https://local.virtru.com`.
+
+---
+
+You may be presented with a warning screen with a message similar to "Your connection is not private." This is due to the self-signed SSL certificate when running in development mode. To access the demo:
+
+- Chrome: Click `Advanced` then `Proceed to local.virtru.com (unsafe)`
+- Firefox: Click `Advanced` then `Accept the Risk and Continue`
+- Safari: Click `Show Details` then `visit this website`
+- Opera: Click `Help me understand` then `Proceed to local.virtru.com (unsafe)`
 
 ## Getting Help
 
