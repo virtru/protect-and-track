@@ -2,7 +2,7 @@
 
 ![Protect and Track](https://files.readme.io/b99c6e4-protect-share-5.png)
 
-The Protect and Track Demo leverages the [Virtru JavaScript SDK](https://docs.developer.virtru.com/js/latest/index.html) as well as the [TDF Architecture](https://developer.virtru.com/docs/tdf-overview) in order to secure files and share them with others, while maintaining visibility and control of your data.
+The Protect and Track Demo leverages the [Virtru SDK for JavaScript](https://docs.developer.virtru.com/js/latest/index.html) as well as the [TDF Architecture](https://developer.virtru.com/docs/tdf-overview) in order to secure files and share them with others, while maintaining visibility and control of your data.
 
 This demo showcases features such as:
 
