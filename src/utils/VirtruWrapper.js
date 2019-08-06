@@ -197,7 +197,10 @@ async function signOut(userId) {
   const resetApp = () => {
     localStorage.removeItem('virtru-demo-email');
     localStorage.removeItem('virtru-demo-file');
+    localStorage.removeItem('virtru-demo-file-encrypted');
     localStorage.removeItem('virtru-demo-policy');
+    localStorage.removeItem('virtru-demo-policyId');
+    localStorage.removeItem('virtru-demo-policyRevoked');
     localStorage.removeItem('virtru-demo-sdk-log');
     localStorage.removeItem('virtru-demo-login-tracked');
     window.location = window.location.href.split(/[?#]/)[0];
