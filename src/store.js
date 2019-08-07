@@ -30,11 +30,6 @@ import { base64ToArrayBuffer } from 'utils/buffer';
 import checkIsMobile from 'utils/checkIsMobile';
 import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
 import ENCRYPT_STATES from 'constants/encryptStates';
-import analytics, { trackLogin, EVENT_NAMES } from 'utils/analytics';
-
-analytics.track({
-  event: EVENT_NAMES.DEMO_LAND,
-});
 
 let encryptState = ENCRYPT_STATES.UNPROTECTED;
 
@@ -75,6 +70,15 @@ let file = false;
 let encrypted = false;
 let virtruClient = false;
 let policyId = localStorage.getItem('virtru-demo-policyId');
+
+if (isLoggedIn) {
+  virtruClient = new Virtru.Client({ email });
+  userId = email;
+} else {
+  // remove the email from localstorage
+  localStorage.removeItem('virtru-demo-email');
+  userId = false;
+}
 
 try {
   const encryptedFileData = JSON.parse(localStorage.getItem('virtru-demo-file-encrypted'));
@@ -125,16 +129,6 @@ try {
   }
 } catch (err) {
   console.error(err);
-}
-
-if (isLoggedIn) {
-  userId = email;
-  virtruClient = new Virtru.Client({ email: userId });
-  trackLogin({ userId, file });
-} else {
-  // remove the email from localstorage
-  localStorage.removeItem('virtru-demo-email');
-  userId = false;
 }
 
 export default createStore({
