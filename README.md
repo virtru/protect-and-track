@@ -76,4 +76,8 @@ There are many ways to get our attention:
 
 Copyright © 2019 Virtru Corporation
 
-This repo is released under the MIT license for all artifacts in this repo.
+Copyright © 2019 Virtru Corporation
+
+This repo is released under the MIT license for all artifacts in this repo with the following exceptions which are subject to our [Virtru Data Protection Subscription Agreement](https://www.virtru.com/terms-of-service/).
+
+* virtru-sdk
