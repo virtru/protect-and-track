@@ -33,17 +33,10 @@ afterEach(cleanup);
 describe('Share', () => {
   test('to gsuite', async () => {
     const setShare = jest.fn();
-    const file = { name: 'a.tdf', payload: {} };
-    const policy = {
-      getPolicyId: () => {},
-      getUsersWithAccess: () => [],
-      getExpirationDeadline: () => '',
-      hasReshare: () => '',
-      hasWatermarking: () => '',
-    };
+    const file = { name: 'a.tdf' };
     gsuite.init.mockReturnValue(true);
     const { getByText, rerender } = render(
-      <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} policy={policy} />,
+      <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
     );
     expect(getByText('Share protected file')).toBeInTheDocument();
     await wait(() => expect(gsuite.init).toHaveBeenCalled());
@@ -82,16 +75,9 @@ describe('Share', () => {
 
   test('to gsuite fail auth', async () => {
     const setShare = jest.fn();
-    const file = { name: 'a.tdf', payload: {} };
-    const policy = {
-      getPolicyId: () => {},
-      getUsersWithAccess: () => [],
-      getExpirationDeadline: () => '',
-      hasReshare: () => '',
-      hasWatermarking: () => '',
-    };
+    const file = { name: 'a.tdf' };
     const { getByText, rerender } = render(
-      <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} policy={policy} />,
+      <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
     );
     expect(getByText('Share protected file')).toBeInTheDocument();
     await wait(() => expect(gsuite.init).toHaveBeenCalled());
