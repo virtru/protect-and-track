@@ -30,6 +30,24 @@ import './Expiration.css';
 
 // now - exposed for testing
 function Expiration({ policy, policyChange, isPolicyRevoked, now = new Date() }) {
+  /**** Virtru Block ****
+   *
+   * The following code shows how to enable and disable deadlines
+   * https://developer.virtru.com/docs/how-to-add-virtru-controls
+   *
+   *****/
+
+  // Virtru: Get the policy's current expiration deadline
+  const currentDeadlineString = (policy && policy.getExpirationDeadline()) || '';
+
+  // Virtru: Change policy to enable expiration deadline
+  const enableDeadline = (policy, date) => policy.enableExpirationDeadline(d2sZ(date));
+
+  // Virtru: Change policy to disable expiration deadline
+  const disableDeadline = policy => policy.disableExpirationDeadline();
+
+  /**** END Virtru Block ****/
+
   // NOTE(DSAT-59) Chrome `datetime-local` expects ISO dates with no trailing `Z`
   // But the Virtru policy requires them. So use the right one to convert from a JS Date to
   // the appropriate field value.
@@ -54,17 +72,17 @@ function Expiration({ policy, policyChange, isPolicyRevoked, now = new Date() })
   const oneDayFromNow = withDate(today, today.getDate() + 2);
   const oneWeekFromNow = withDate(today, today.getDate() + 7);
   const oneMonthFromNow = withDate(today, today.getDate() + 30);
+
   const onToggleChange = policyChange((builder, e) => {
     return e.target.checked
-      ? builder.enableExpirationDeadline(d2sZ(fiveMinutesFromNow))
-      : builder.disableExpirationDeadline();
+      ? // Virtru: Change policy to enable expiration deadline
+        enableDeadline(builder, fiveMinutesFromNow)
+      : // Virtru: Change policy to disable expiration deadline
+        disableDeadline(builder);
   });
   const onRadioChange = newDate =>
-    policyChange(
-      (builder, e) => e.target.checked && builder.enableExpirationDeadline(d2sZ(newDate)),
-    );
+    policyChange((builder, e) => e.target.checked && enableDeadline(builder, newDate));
 
-  const currentDeadlineString = policy.getExpirationDeadline() || '';
   const currentDeadline = isNaN(new Date(currentDeadlineString))
     ? false
     : new Date(currentDeadlineString);

@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import React from 'react';
-import { cleanup, render, wait, fireEvent, getByTestId, act } from '@testing-library/react';
+import { cleanup, render, wait, fireEvent } from '@testing-library/react';
 import Share from './Share';
 import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
 import gsuite from './services/gsuite';
@@ -90,7 +90,7 @@ describe('Share', () => {
       hasReshare: () => '',
       hasWatermarking: () => '',
     };
-    const { getByText, rerender } = render(
+    const { getByText } = render(
       <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} policy={policy} />,
     );
     expect(getByText('Share protected file')).toBeInTheDocument();

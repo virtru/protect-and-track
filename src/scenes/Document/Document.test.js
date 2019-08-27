@@ -25,8 +25,6 @@ import { cleanup, render, wait, fireEvent, getByTestId, act } from '@testing-lib
 import Document from './Document';
 import ENCRYPT_STATES from 'constants/encryptStates';
 import Virtru from 'virtru-sdk';
-import VirtruWrapper from 'utils/VirtruWrapper';
-jest.mock('utils/VirtruWrapper');
 
 afterEach(cleanup);
 
@@ -66,8 +64,6 @@ describe('Document', () => {
 
   test.skip('should encrypt file, trigger setEncrypted and set 2sec interval audit update', async () => {
     jest.useFakeTimers();
-    const timeout = 2000;
-    const triggerTimes = 5;
     const file = { file: { name: 'foo.txt' }, arrayBuffer: 'arrayBuffer' };
     const policy = new Virtru.PolicyBuilder().build();
     const client = 'clientVirttu';
@@ -76,7 +72,7 @@ describe('Document', () => {
     );
     const setEncrypted = jest.fn();
     const setAuditEvents = jest.fn();
-    VirtruWrapper.encrypt.mockImplementation(spy);
+    Virtru.encrypt.mockImplementation(spy);
 
     const { container, rerender } = render(
       <Document

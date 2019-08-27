@@ -1,4 +1,4 @@
-# Protect and Track Demo
+//# Protect and Track Demo
 
 ![Protect and Track](https://files.readme.io/b99c6e4-protect-share-5.png)
 
@@ -13,6 +13,47 @@ This demo showcases features such as:
 ## See it Live
 
 [Go here](https://demos.developer.virtru.com/protect/) to test drive the live demo. Afterwards, check the out Virtru's [Developer Hub](https://developer.virtru.com/docs/protect) for a step-by-step guide on how it all works.
+
+## See How it Works
+
+To see how the Virtru SDK works within this demo look for comments with `Virtru:`. Specifically, you can look at:
+
+_Authorizations_
+
+- [AuthSelect.js](https://github.com/virtru/protect-and-track/blob/master/src/scenes/AuthSelect/AuthSelect.js)
+  - use of the Auth Widget
+- [Header.js](https://github.com/virtru/protect-and-track/blob/master/src/components/Header/Header.js)
+  - sign out
+
+_Encrypt & Decrypt_
+
+- [Document.js](https://github.com/virtru/protect-and-track/blob/master/src/scenes/Document/Document.js) to see how we
+  - create client
+  - encrypt a file
+  - build a policy
+  - revoke a policy
+  - build a policy from an id
+- [download.js](https://github.com/virtru/protect-and-track/blob/master/src/utils/download.js)
+  - unwrap a TDF html file
+  - decrypt an encrypted file
+
+_Policy Changes_
+
+- [policyChanger.js](https://github.com/virtru/protect-and-track/blob/master/src/scenes/Document/scenes/Policy/services/policyChanger.js)
+  - create policy builder
+  - set the policy id
+- [Access.js](https://github.com/virtru/protect-and-track/blob/master/src/scenes/Document/scenes/Policy/components/Access/Access.js)
+  - enable access
+  - disable access
+- [Expiration.js](https://github.com/virtru/protect-and-track/blob/master/src/scenes/Document/scenes/Policy/components/Expiration/Expiration.js)
+  - enable a deadline
+  - disable a deadline
+- [Resharing.js](https://github.com/virtru/protect-and-track/tree/master/src/scenes/Document/scenes/Policy/components/Resharing/Resharing.js)
+  - enable resharing
+  - disable resharing
+- [Watermarking.js](https://github.com/virtru/protect-and-track/blob/master/src/scenes/Document/scenes/Policy/components/Watermarking/Watermarking.js)
+  - enable watermarking
+  - disable watermarking
 
 ## Run it Locally
 

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Virtru from 'utils/VirtruWrapper';
+import logAction, { builderLogger } from 'utils/virtruActionLogger';
 
 export const NOPE = 'NOPE';
 
@@ -32,12 +32,34 @@ export const NOPE = 'NOPE';
 export function generatePolicyChanger(policy, setPolicy, change, policyId) {
   return e => {
     e && e.preventDefault();
-    const policyBuilder = Virtru.policyBuilder(policy);
+
+    /**** Virtru Block ****
+     *
+     * The following code shows how to create a new policy and set an id
+     * https://docs.developer.virtru.com/js/latest/PolicyBuilder.html
+     *
+     */
+
+    // Virtru: Get the existing policy builder
+    logAction('existingPolicyBuilder');
+    let policyBuilder = policy.builder();
+
+    // NOTICE: this is only necessary for this demo
+    policyBuilder = builderLogger(policyBuilder);
+
+    // Virtru: Set the policy Id
     policyId && policyBuilder.setPolicyId(policyId);
+
     if (change(policyBuilder, e) === NOPE) {
       return false;
     }
-    setPolicy(policyBuilder.build());
+
+    // Virtru: Build the new policy
+    const newPolicy = policyBuilder.build();
+    /**** END Virtru Block ****/
+
+    setPolicy(newPolicy);
+
     return false;
   };
 }
