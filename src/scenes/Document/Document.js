@@ -24,8 +24,10 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
+import Virtru from 'virtru-sdk';
+import uuid from 'uuid';
 
-import Virtru from 'utils/VirtruWrapper';
+import logAction from 'utils/virtruActionLogger';
 import Alert from './components/Alert/Alert';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
@@ -91,14 +93,39 @@ function Document({
     setEncryptState(ENCRYPT_STATES.PROTECTING);
     let encryptResult;
     try {
-      encryptResult = await Virtru.encrypt({
-        client: virtruClient,
-        fileData: file.arrayBuffer,
-        filename: file.file.name,
-        policy,
-        userEmail: userId,
-        asHtml: true,
-      });
+      const buffer = new Uint8Array(file.arrayBuffer);
+      const filename = file.file.name;
+
+      /**** Virtru Block ****
+       *
+       * The following code shows how to encrypt a file. More details can be found here:
+       * https://developer.virtru.com/docs/how-to-encrypt-a-file
+       *
+       *****/
+
+      // Create a new encrypt parameters object which will be used to drive the encryption method
+      logAction('buildVirtruEncryptionParams');
+      const encryptParams = new Virtru.EncryptParamsBuilder()
+        .withBufferSource(buffer) // Specify the source, which will be encrypted, from buffer
+        .withPolicy(policy) // Specify the policy which will be used for encryption
+        .withDisplayFilename(filename) // Specify the filename which is displayed (since we're using a buffer)
+        .build(); // Build the params
+
+      // Run the encryption and return a stream
+      logAction('encryptToBuffer');
+      const encryptedStream = await virtruClient.encrypt(encryptParams);
+
+      // Convert the encryption stream to a buffer
+      const encryptedFile = await encryptedStream.toBuffer();
+
+      // Get the policy id from the built policy
+      const policyId = encryptParams.getPolicyId();
+      /**** END Virtru Block *****/
+
+      encryptResult = {
+        encryptedFile,
+        policyId,
+      };
     } catch (e) {
       // Encryption failed!!!!
       setEncryptState(ENCRYPT_STATES.UNPROTECTED);
@@ -131,8 +158,18 @@ function Document({
   const revokePolicy = () => {
     localStorage.setItem('virtru-demo-policyRevoked', true);
     setPolicyRevoked(true);
-    // TODO: handle error case?
-    Virtru.revoke({ virtruClient, policyId });
+
+    /**** Virtru Block ****
+     *
+     * The following code shows how to revoke a policy
+     * https://developer.virtru.com/docs/how-to-add-virtru-controls#section--revoke-icon0-revoke
+     *
+     *****/
+
+    logAction('revokePolicy');
+    virtruClient.revokePolicy(policyId);
+
+    /**** END Virtru Block ****/
   };
 
   useEffect(() => {
@@ -143,7 +180,17 @@ function Document({
         return;
       }
       try {
-        const auditData = await Virtru.fetchAuditEvents({ virtruClient, policyId });
+        /**** Virtru Block ****
+         *
+         * The following code shows how to fetch events for a policy id=
+         *
+         *****/
+
+        // Virtru: Fetch events for policy id
+        const auditData = await virtruClient.fetchEventsForPolicyId(policyId);
+
+        /**** END Virtru Block ****/
+
         setAuditEvents({ events: auditData, error: false });
       } catch (err) {
         console.error(err);
@@ -326,9 +373,21 @@ const saveFileToLocalStorage = ({ fileBuffer, fileName, fileType }) => {
 
 const savePolicyToLocalStorage = ({ policy }) => {
   const policyData = {
+    /**** Virtru Block ****
+     *
+     * The following code shows how to get policy data
+     * https://developer.virtru.com/docs/how-to-add-virtru-controls
+     *
+     *****/
+
+    // Virtru: Get the policy authorizations
     authorizations: policy.getAuthorizations(),
+    // Virtru: Get the policy expiration deadline
     expirationDeadline: policy.getExpirationDeadline(),
+    // Virtru: Get the policy users who have access
     users: policy.getUsersWithAccess(),
+
+    /**** END Virtru Block ****/
   };
   localStorage.setItem('virtru-demo-policy', JSON.stringify(policyData));
 };
@@ -359,15 +418,33 @@ const actions = {
     } else if (fileName && fileName.endsWith('.html')) {
       // maybe a TDF?
       try {
-        const decParams = Virtru.newVirtruDecryptParamsBuilder()
+        /**** Virtru Block ****
+         *
+         * The following code shows how extract a policy id from an encrypted file
+         * https://developer.virtru.com/docs/how-to-add-virtru-controls
+         *
+         *****/
+
+        // Virtru: Create a decrypt params
+        const decParams = new Virtru.DecryptParamsBuilder()
+          // Set the buffer source for the encrypted data
           .withArrayBufferSource(fileBuffer)
+          // Build the params
           .build();
-        // TODO find a more elegant way to do this
-        const client = virtruClient || Virtru.createClient({ email: userId || 'a@b.invalid' });
-        const uuid = decParams && (await client.getPolicyId(decParams));
-        if (uuid) {
+
+        let client = virtruClient;
+        if (!virtruClient) {
+          logAction('createClientWithEmail');
+          // Virtru: Create the virtru client
+          client = new Virtru.Client({ email: userId || 'a@b.invalid' });
+        }
+
+        // Virtru: Get the policy id from the decrypt params
+        const id = decParams && (await client.getPolicyId(decParams));
+        if (id) {
           return { alert: 'TDF support not yet implemented' };
         }
+        /**** END Virtru Block ****/
       } catch (e) {
         // TODO use a real API for this instead.
         console.info({ type: 'This HTML file probably does not contain a TDF', cause: e });
@@ -394,12 +471,16 @@ const actions = {
     let encryptState = ENCRYPT_STATES.UNPROTECTED;
     let encrypted = false;
 
-    const policyBuilder = Virtru.policyBuilder();
-    // Add the current user if present
-    if (userId) {
-      policyBuilder.addUsersWithAccess(userId);
-    }
-    const policy = policyBuilder.build();
+    /**** Virtru Block ****
+     *
+     * The following code shows how to create a new policy, add the current user to access
+     * https://docs.developer.virtru.com/js/latest/PolicyBuilder.html
+     *
+     */
+    logAction('createPolicyBuilder');
+    // Virtru: Create a new policy builder
+    const policy = new Virtru.PolicyBuilder().withPolicyId(uuid.v4()).build();
+    /**** END Virtru Block ****/
 
     saveFileToLocalStorage({ fileName, fileType, fileBuffer });
     savePolicyToLocalStorage({ policy });
@@ -421,7 +502,16 @@ const actions = {
   setPolicy: (state, policy) => {
     const { encrypted, virtruClient } = state;
     if (encrypted && virtruClient && policy) {
-      Virtru.updatePolicy(virtruClient, policy);
+      /**** Virtru Block ****
+       *
+       * The following code shows how to update a policy
+       * https://docs.developer.virtru.com/js/latest/Client.html#updatePolicy
+       *
+       */
+      logAction('updatePolicy');
+      // Virtru: Update the policy
+      virtruClient.updatePolicy(policy);
+      /**** END Virtru Block ****/
     }
     savePolicyToLocalStorage({ policy });
     return { policy };
@@ -451,12 +541,21 @@ const actions = {
     }
     if (!value) {
       localStorage.removeItem('virtru-demo-policyId');
+
+      /**** Virtru Block ****
+       *
+       * The following code shows how to create a policy with an id
+       * https://docs.developer.virtru.com/js/latest/PolicyBuilder.html
+       *
+       */
       if (policy && value !== policy.getPolicyId()) {
+        // Virtru: Build a policy with an id
         policy = policy
           .builder()
           .withPolicyId(value)
           .build();
       }
+      /**** END Virtru Block ****/
     } else {
       localStorage.setItem('virtru-demo-policyId', value);
     }

@@ -30,6 +30,29 @@ import Button from 'components/Button/Button';
 import { ReactComponent as InfoIcon } from './info-icon.svg';
 
 function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked }) {
+  /**** Virtru Block ****
+   *
+   * The following code shows how to get users who have access to a policy
+   * and how to add users to a policy.
+   * https://developer.virtru.com/docs/how-to-add-virtru-controls
+   *
+   *****/
+
+  // Get policy users with access
+  const policyUsersWithAccess = policy.getUsersWithAccess();
+
+  // Add users with access to the policy by email address
+  const addUsersToPolicy = ({ valid, text: email }) =>
+    policyChange(policy => {
+      if (valid) {
+        // Virtru: Add users with access to the policy by email address
+        return policy.addUsersWithAccess(email);
+      }
+      return NOPE;
+    });
+
+  /**** END Virtru Block ****/
+
   const Grant = ({ user, status }) => {
     if (status === 'owner') {
       return (
@@ -66,10 +89,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
     }
 
     return (
-      <form
-        className="NewGrant"
-        onSubmit={policyChange(p => (input.valid ? p.addUsersWithAccess(input.text) : NOPE))}
-      >
+      <form className="NewGrant" onSubmit={addUsersToPolicy(input)}>
         <div className="field-with-description">
           <input
             type="email"
@@ -106,8 +126,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
           <Grant user={userId || 'you'} status="owner" />
         </li>
         {!isPolicyRevoked &&
-          policy
-            .getUsersWithAccess()
+          policyUsersWithAccess
             .filter(u => u !== userId)
             .map((user, i) => {
               return (
