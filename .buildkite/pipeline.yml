@@ -25,6 +25,13 @@ steps:
 
   - wait
 
+  - label: ':npm: :lock: NPM Audit'
+    command: '.buildkite/scripts/npm-audit.sh'
+    agents:
+      queue: build
+
+  - wait
+
   # TODO(DSAT-40): commenting out for now but this cannot move forward until this
   #       passes successfully
   # - label: ':key: License Checker'
