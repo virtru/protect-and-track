@@ -22,28 +22,20 @@
 
 import createStore from 'redux-zero';
 import Virtru from 'virtru-sdk';
-import uuid from 'uuid';
 import moment from 'moment';
 
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
-import { base64ToArrayBuffer } from 'utils/buffer';
 import checkIsMobile from 'utils/checkIsMobile';
 import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
-import ENCRYPT_STATES from 'constants/encryptStates';
 import analytics, { trackLogin, EVENT_NAMES } from 'utils/analytics';
 
 analytics.track({
   event: EVENT_NAMES.DEMO_LAND,
 });
 
-let encryptState = ENCRYPT_STATES.UNPROTECTED;
-
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];
 const appId = activeAuth && activeAuth.split(':')[1];
-
-const policyData = JSON.parse(localStorage.getItem('virtru-demo-policy'));
-const fileData = JSON.parse(localStorage.getItem('virtru-demo-file'));
 
 let tdfLog;
 try {
@@ -58,6 +50,7 @@ try {
 
 let userId = getQueryParam('virtruAuthWidgetEmail');
 let email = localStorage.getItem('virtru-demo-email');
+
 if (userId) {
   email = userId;
   localStorage.setItem('virtru-demo-email', userId);
@@ -70,67 +63,12 @@ if (userId) {
 }
 
 let isLoggedIn = email && Virtru.Auth.isLoggedIn({ email });
-let policy = false;
-let file = false;
-let encrypted = false;
 let virtruClient = false;
-let policyId = localStorage.getItem('virtru-demo-policyId');
-
-try {
-  const encryptedFileData = JSON.parse(localStorage.getItem('virtru-demo-file-encrypted'));
-
-  // Restore existing encrypted file
-  if (encryptedFileData) {
-    const buffer = encryptedFileData && base64ToArrayBuffer(encryptedFileData.b64);
-    encrypted = {
-      payload: buffer,
-      name: encryptedFileData.name,
-      type: encryptedFileData.type,
-    };
-    encryptState = isLoggedIn ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
-  }
-} catch (err) {
-  console.error(err);
-}
-
-try {
-  // Restore existing file
-  if (fileData) {
-    const buffer = fileData.b64 && base64ToArrayBuffer(fileData.b64);
-    file = {
-      arrayBuffer: buffer,
-      file: {
-        name: fileData.fileName,
-        type: fileData.fileType,
-      },
-    };
-
-    // Rebuild existing policy or create new one
-    if (policyData) {
-      const builder = new Virtru.PolicyBuilder();
-      builder.setPolicyId(policyId || uuid.v4());
-      if (!policyData.authorizations.includes('forward')) {
-        builder.disableReshare();
-      }
-      if (policyData.expirationDeadline) {
-        builder.enableExpirationDeadline(policyData.expirationDeadline);
-      }
-      if (policyData.users.length > 0) {
-        builder.addUsersWithAccess(...policyData.users);
-      }
-      policy = builder.build();
-    } else {
-      policy = new Virtru.PolicyBuilder().withPolicyId(uuid.v4()).build();
-    }
-  }
-} catch (err) {
-  console.error(err);
-}
 
 if (isLoggedIn) {
   userId = email;
   virtruClient = new Virtru.Client({ email: userId });
-  trackLogin({ userId, file });
+  trackLogin({ userId });
 } else {
   // remove the email from localstorage
   localStorage.removeItem('virtru-demo-email');
@@ -147,16 +85,16 @@ export default createStore({
   continueAnyway: !!localStorage.getItem('continueAnyway'),
 
   // File content that the user has attached. May be encrypted or not...
-  file,
+  //file,
 
   // Stage of the encryption process
-  encryptState,
+  //encryptState,
 
   // The encrypted payload of the current TDF
-  encrypted,
+  //encrypted,
 
   // The policy associated with the current document, if any
-  policy,
+  //policy,
 
   // TDF Event Logger Contents
   tdfLog,
@@ -192,7 +130,7 @@ export default createStore({
   isLoggedIn,
 
   // The policy ID
-  policyId,
+  //policyId,
 
   // Any current alerts that should be displayed atop the app
   alert: false,

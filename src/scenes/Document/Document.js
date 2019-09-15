@@ -36,6 +36,7 @@ import AuthSelect from '../AuthSelect/AuthSelect';
 import StayUp from '../StayUp/StayUp';
 import { generatePolicyChanger } from './scenes/Policy/services/policyChanger';
 import ENCRYPT_STATES from 'constants/encryptStates';
+import localForage from 'localforage';
 
 import './Document.css';
 
@@ -317,11 +318,11 @@ const mapToProps = ({
   isLoggedIn,
 });
 
-const saveFileToLocalStorage = ({ fileBuffer, fileName, fileType }) => {
+const saveFileToLocalStorage = async ({ fileBuffer, fileName, fileType }) => {
   const b64 = arrayBufferToBase64(fileBuffer);
 
   // TODO migrate localStorage update to a subscription to track both policy and file changes centrally
-  localStorage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType }));
+  await localForage.setItem('virtru-demo-file', JSON.stringify({ b64, fileName, fileType }));
 };
 
 const savePolicyToLocalStorage = ({ policy }) => {
@@ -333,9 +334,9 @@ const savePolicyToLocalStorage = ({ policy }) => {
   localStorage.setItem('virtru-demo-policy', JSON.stringify(policyData));
 };
 
-const saveEncryptedToLocalStorage = ({ encryptedPayload, fileName, fileType }) => {
+const saveEncryptedToLocalStorage = async ({ encryptedPayload, fileName, fileType }) => {
   const b64 = arrayBufferToBase64(encryptedPayload);
-  localStorage.setItem(
+  await localForage.setItem(
     'virtru-demo-file-encrypted',
     JSON.stringify({ b64, name: fileName, type: fileType }),
   );
@@ -401,7 +402,7 @@ const actions = {
     }
     const policy = policyBuilder.build();
 
-    saveFileToLocalStorage({ fileName, fileType, fileBuffer });
+    await saveFileToLocalStorage({ fileName, fileType, fileBuffer });
     savePolicyToLocalStorage({ policy });
 
     return {
@@ -412,9 +413,13 @@ const actions = {
       auditEvents: false,
     };
   },
-  setEncrypted: (state, value) => {
+  setEncrypted: async (state, value) => {
     const { payload, name, type } = value;
-    saveEncryptedToLocalStorage({ encryptedPayload: payload, fileName: name, fileType: type });
+    await saveEncryptedToLocalStorage({
+      encryptedPayload: payload,
+      fileName: name,
+      fileType: type,
+    });
     return { encrypted: value, auditEvents: false };
   },
   setEncryptState: (state, value) => ({ encryptState: value }),

@@ -24,6 +24,7 @@ import Virtru from 'virtru-sdk';
 import uuid from 'uuid';
 import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
+import localForage from 'localforage';
 
 import store from '../store';
 
@@ -194,10 +195,10 @@ function newVirtruDecryptParamsBuilder(opts) {
 }
 
 async function signOut(userId) {
-  const resetApp = () => {
+  const resetApp = async () => {
     localStorage.removeItem('virtru-demo-email');
-    localStorage.removeItem('virtru-demo-file');
-    localStorage.removeItem('virtru-demo-file-encrypted');
+    await localForage.removeItem('virtru-demo-file');
+    await localForage.removeItem('virtru-demo-file-encrypted');
     localStorage.removeItem('virtru-demo-policy');
     localStorage.removeItem('virtru-demo-policyId');
     localStorage.removeItem('virtru-demo-policyRevoked');
