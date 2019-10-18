@@ -97,7 +97,7 @@ steps:
     branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
 
   # Build and Deploy (Develop)
-  - label: ':s3: Deploy to S3 Staging'
+  - label: ':s3: Deploy to S3 Develop'
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
     branches: ' !master !develop'
     env:
