@@ -96,12 +96,12 @@ steps:
       - *agent_queue
 
   - label: ':npm: NPM Build (Develop)'
-      command: 'buildkite-scripts/scripts/npm-build.sh'
-      branches: '!master !develop'
-      env:
-        REACT_APP_VIRTRU_ENV: 'develop'
-      agents:
-        - *agent_queue
+    command: 'buildkite-scripts/scripts/npm-build.sh'
+    branches: '!master !develop'
+    env:
+      REACT_APP_VIRTRU_ENV: 'develop'
+    agents:
+      - *agent_queue
 
   - wait
   # Build and Deploy (Staging)
