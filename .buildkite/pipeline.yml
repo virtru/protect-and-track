@@ -103,10 +103,27 @@ steps:
     prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
     branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
 
+  # Build and Deploy (Develop)
+  - label: ':s3: Deploy to S3 Staging'
+    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+    branches: ' !master !develop'
+    env:
+      S3_PATH: 'protect-develop'
+    agents:
+      - *agent_queue
+  - wait
+  - label: ':s3: Invalidate CloudFront Cache Develop'
+    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+    branches: '!master !develop'
+    env:
+      S3_PATH: 'protect-develop'
+    agents:
+      - *agent_queue
+
   # Build and Deploy (Staging)
   - label: ':s3: Deploy to S3 Staging'
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
-    branches: '!master'
+    branches: 'develop'
     env:
       S3_PATH: 'protect-staging'
     agents:
@@ -114,7 +131,7 @@ steps:
   - wait
   - label: ':s3: Invalidate CloudFront Cache Staging'
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
-    branches: '!master'
+    branches: 'develop'
     env:
       S3_PATH: 'protect-staging'
     agents:
