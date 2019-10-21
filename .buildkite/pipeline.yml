@@ -145,23 +145,6 @@ steps:
     agents:
       - *agent_queue
 
-  # Build and Deploy (Staging)
-  - label: ':s3: Deploy to S3 Staging'
-    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
-    branches: 'develop'
-    env:
-      S3_PATH: 'protect-staging'
-    agents:
-      - *agent_queue
-  - wait
-  - label: ':s3: Invalidate CloudFront Cache Staging'
-    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
-    branches: 'develop'
-    env:
-      S3_PATH: 'protect-staging'
-    agents:
-      - *agent_queue
-
   # Build and Deploy (Production)
   - label: ':s3: Deploy to S3'
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
