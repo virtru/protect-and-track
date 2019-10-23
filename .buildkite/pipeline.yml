@@ -39,13 +39,6 @@ steps:
   #   agents:
   #     - *agent_queue
 
-  - label: ':npm: :lock: NPM Audit'
-    command: 'buildkite-scripts/mars/wrap/npm-audit.sh'
-    env:
-      FORCE_AUDIT_TO_SUCCEED: true # Temporary
-    agents:
-      - *agent_queue
-
   - label: ':npm: Tests'
     command: 'buildkite-scripts/scripts/npm-test.sh'
     artifact_paths:
@@ -79,6 +72,10 @@ steps:
 
   - wait
 
+  ####
+  # BUILD
+  ####
+
   - label: ':npm: NPM Build (Production)'
     command: 'buildkite-scripts/scripts/npm-build.sh'
     branches: 'master'
@@ -89,13 +86,51 @@ steps:
 
   - label: ':npm: NPM Build (Staging)'
     command: 'buildkite-scripts/scripts/npm-build.sh'
-    branches: '!master'
+    branches: 'develop'
     env:
       REACT_APP_VIRTRU_ENV: 'staging'
     agents:
       - *agent_queue
 
+  - label: ':npm: NPM Build (Develop)'
+    command: 'buildkite-scripts/scripts/npm-build.sh'
+    branches: '!master !develop'
+    env:
+      REACT_APP_VIRTRU_ENV: 'develop'
+    agents:
+      - *agent_queue
+
   - wait
+
+  ####
+  # UNBLOCKED DEPLOYMENTS
+  ####
+
+  ####
+  # STAGING
+  # Deploy and Clear Cache
+  ####
+  - label: ':s3: Deploy to S3 Staging'
+    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+    branches: 'develop'
+    env:
+      S3_PATH: 'protect-staging'
+    agents:
+      - *agent_queue
+
+  - wait
+
+  - label: ':s3: Invalidate CloudFront Cache Staging'
+    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+    branches: 'develop'
+    env:
+      S3_PATH: 'protect-staging'
+    agents:
+      - *agent_queue
+
+  ####
+  # BLOCKED DEPLOYMENTS
+  ####
 
   - block: 'Unblock Deploy'
 
@@ -103,33 +138,43 @@ steps:
     prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
     branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
 
-  # Build and Deploy (Staging)
-  - label: ':s3: Deploy to S3 Staging'
+  ####
+  # DEVELOP
+  # Deploy and Clear Cache
+  ####
+  - label: ':s3: Deploy to S3 (DEVELOP)'
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
-    branches: '!master'
+    branches: '!master !develop'
     env:
-      S3_PATH: 'protect-staging'
-    agents:
-      - *agent_queue
-  - wait
-  - label: ':s3: Invalidate CloudFront Cache Staging'
-    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
-    branches: '!master'
-    env:
-      S3_PATH: 'protect-staging'
+      S3_PATH: 'protect-develop'
     agents:
       - *agent_queue
 
-  # Build and Deploy (Production)
-  - label: ':s3: Deploy to S3'
+  - wait
+
+  - label: ':s3: Invalidate CloudFront Cache (DEVELOP)'
+    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+    branches: '!master !develop'
+    env:
+      S3_PATH: 'protect-develop'
+    agents:
+      - *agent_queue
+
+  ####
+  # PRODUCTION
+  # Deploy and Clear Cache
+  ####
+  - label: ':s3: Deploy to S3 (PRODUCTION)'
     command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
     branches: 'master'
     env:
       S3_PATH: 'protect'
     agents:
       - *agent_queue
+
   - wait
-  - label: ':s3: Invalidate CloudFront Cache'
+
+  - label: ':s3: Invalidate CloudFront Cache (PRODUCTION)'
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
     branches: 'master'
     env:
