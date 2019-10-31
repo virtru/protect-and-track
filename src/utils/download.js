@@ -62,7 +62,7 @@ export function saver(blob, name) {
 
 export const downloadHtml = async encrypted => {
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
-  const blob = new Blob([...html], { type: 'text/plain;charset=utf-8' });
+  const blob = new Blob([html], { type: 'text/plain;charset=utf-8' });
   return saver(blob, encrypted.name);
 };
 

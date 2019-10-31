@@ -20,10 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+import localForage from 'localforage';
+
 export default async function resetApp() {
   localStorage.removeItem('virtru-demo-email');
-  localStorage.removeItem('virtru-demo-file');
-  localStorage.removeItem('virtru-demo-file-encrypted');
+  await localForage.removeItem('virtru-demo-file');
+  await localForage.removeItem('virtru-demo-file-encrypted');
   localStorage.removeItem('virtru-demo-policy');
   localStorage.removeItem('virtru-demo-policyId');
   localStorage.removeItem('virtru-demo-policyRevoked');

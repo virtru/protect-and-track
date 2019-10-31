@@ -187,23 +187,29 @@ async function getFileData() {
         },
       };
 
-      // Rebuild existing policy or create new one
-      if (policyData) {
-        const builder = new Virtru.PolicyBuilder();
-        builder.setPolicyId(policyId || uuid.v4());
+      // Virtru: create a new policy builder
+      const builder = new Virtru.PolicyBuilder();
+      builder.setPolicyId(uuid.v4());
+      if (policyData !== null && typeof policyData === 'object') {
+        if (policyId) {
+          // Virtru: restore policy id from localstorage
+          builder.setPolicyId(policyId);
+        }
         if (!policyData.authorizations.includes('forward')) {
+          // Virtru: disable resharing
           builder.disableReshare();
         }
         if (policyData.expirationDeadline) {
+          // Virtru: enable expiration deadline
           builder.enableExpirationDeadline(policyData.expirationDeadline);
         }
         if (policyData.users.length > 0) {
+          // Virtru: add users with access to policy
           builder.addUsersWithAccess(...policyData.users);
         }
-        policy = builder.build();
-      } else {
-        policy = new Virtru.PolicyBuilder().withPolicyId(uuid.v4()).build();
       }
+      // Virtru: build the policy
+      policy = builder.build();
     }
   } catch (err) {
     console.error(err);
