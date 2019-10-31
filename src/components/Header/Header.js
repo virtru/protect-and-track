@@ -24,11 +24,17 @@ import React from 'react';
 
 import { ReactComponent as LogoText } from 'assets/logo-text.svg';
 
+import Virtru from 'virtru-sdk';
 import './Header.css';
 import GithubLogo from './github-logo.png';
 import { ReactComponent as GithubIcon } from './github-icon.svg';
 import Button from '../Button/Button';
-import Virtru from 'utils/VirtruWrapper';
+import resetApp from 'utils/resetApp';
+
+const signOut = email => {
+  Virtru.Auth.logout(email && { email });
+  resetApp();
+};
 
 /**
  * Header Component that displays content at the top of the page.
@@ -39,14 +45,14 @@ const Header = ({ userId }) => {
       return (
         <span className="currentUser">
           <span className="userID">{userId}</span>{' '}
-          <Button variant="link" onClick={() => Virtru.signOut(userId)} verySmall light>
-            Reset & Sign Out
+          <Button variant="link" onClick={signOut} verySmall light>
+            Reset &amp; Sign Out
           </Button>
         </span>
       );
     }
     return (
-      <Button variant="link" onClick={() => Virtru.signOut()} verySmall light>
+      <Button variant="link" onClick={signOut} verySmall light>
         Reset
       </Button>
     );
@@ -59,7 +65,7 @@ const Header = ({ userId }) => {
         </div>
         <div className="delimiter" />
         <span className="headerText">
-          <span className="headerTitle">Protect & Track Demo</span>
+          <span className="headerTitle">Protect &amp; Track Demo</span>
         </span>
         <div className="delimiter" />
         <button className="githubButton">

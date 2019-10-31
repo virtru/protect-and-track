@@ -23,6 +23,7 @@
 import createStore from 'redux-zero';
 import Virtru from 'virtru-sdk';
 import moment from 'moment';
+import uuid from 'uuid';
 
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import checkIsMobile from 'utils/checkIsMobile';
@@ -64,10 +65,72 @@ if (userId) {
 
 let isLoggedIn = email && Virtru.Auth.isLoggedIn({ email });
 let virtruClient = false;
+let policyId = localStorage.getItem('virtru-demo-policyId');
+let encryptedFileData;
 
+// Restore encrypted file
+try {
+  encryptedFileData = JSON.parse(localStorage.getItem('virtru-demo-file-encrypted'));
+
+  // Restore existing encrypted file
+  if (encryptedFileData) {
+    const buffer = encryptedFileData && base64ToArrayBuffer(encryptedFileData.b64);
+    encrypted = {
+      payload: buffer,
+      name: encryptedFileData.name,
+      type: encryptedFileData.type,
+    };
+    encryptState = isLoggedIn ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
+  }
+} catch (err) {
+  console.error(err);
+}
+
+// Restore unencrypted file
+try {
+  if (fileData) {
+    const buffer = fileData.b64 && base64ToArrayBuffer(fileData.b64);
+    file = {
+      arrayBuffer: buffer,
+      file: {
+        name: fileData.fileName,
+        type: fileData.fileType,
+      },
+    };
+
+    // Virtru: create a new policy builder
+    const builder = new Virtru.PolicyBuilder();
+    builder.setPolicyId(uuid.v4());
+    if (policyData !== null && typeof policyData === 'object') {
+      if (policyId) {
+        // Virtru: restore policy id from localstorage
+        builder.setPolicyId(policyId);
+      }
+      if (!policyData.authorizations.includes('forward')) {
+        // Virtru: disable resharing
+        builder.disableReshare();
+      }
+      if (policyData.expirationDeadline) {
+        // Virtru: enable expiration deadline
+        builder.enableExpirationDeadline(policyData.expirationDeadline);
+      }
+      if (policyData.users.length > 0) {
+        // Virtru: add users with access to policy
+        builder.addUsersWithAccess(...policyData.users);
+      }
+    }
+    // Virtru: build the policy
+    policy = builder.build();
+  }
+} catch (err) {
+  console.error(err);
+}
+
+// Restore the logged in user
 if (isLoggedIn) {
   userId = email;
-  virtruClient = new Virtru.Client({ email: userId });
+  // Virtru: Create a new client with the logged in user
+  virtruClient = new Virtru.Client({ email });
   trackLogin({ userId });
 } else {
   // remove the email from localstorage
