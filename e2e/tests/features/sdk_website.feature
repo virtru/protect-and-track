@@ -24,7 +24,7 @@ Feature: SDK Demo Site
     And email body is message1
     And email is sent securely
 
-  Scenario: Test with Ken
+  Scenario: Test with Ken1
     When I start to run testrail 12345
     And qavirtrumd11@cmk-test-org.com logged in gmail using a new browser with BP activated
     And an email to qavirtrumd12@cmk-test-org.com is being composed
