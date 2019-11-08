@@ -98,3 +98,5 @@ yarn-error.log*
 # Manuallly imported libraries
 src/*.min.js
 src/tdf3*
+
+.idea
