@@ -90,7 +90,7 @@ steps:
 
   - wait
 
-  - command: 'pytest -v -s -n2 e2e --cucumberjson=reports/cucumber_report.json --cucumber-json-expanded --html=reports/general_report.html --self-contained-html'
+  - command: /virtru/e2e/scripts/e2e.sh
     label: ":chrome: E2E Tests: $TEST_ENVIRONMENT_NAME"
     branches: "master staging develop *feature/PLATFORM102*"
     # these environment vars are added after checkout, needs to be specified here to be available in Docker
@@ -100,7 +100,6 @@ steps:
     plugins:
       - docker#v3.3.0:
           image: "virtru/automated-test:latest"
-          always-pull: true
           propagate-environment: true
           mount-checkout: false
           workdir: "/virtru"
@@ -111,8 +110,6 @@ steps:
     artifact_paths: "e2e/reports/*.html"
     concurrency: 3
     concurrency_group: "desktop-chrome-sdk"
-    agents:
-      - *agent_queue
 
   - wait
 

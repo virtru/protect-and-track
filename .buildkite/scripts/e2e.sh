@@ -2,6 +2,9 @@
 
 set -eu
 
+ls -la
+ls -la e2e
+
 pytest -v -s -n2 e2e --cucumberjson=reports/cucumber_report.json --cucumber-json-expanded --html=reports/general_report.html --self-contained-html
 
 FILE=reports/cucumber_report.json
