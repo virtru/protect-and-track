@@ -18,6 +18,23 @@ This demo showcases features such as:
 
 This demo can run on your local environment. Please ensure you meet the prerequisites and follow the steps.
 
+## Run Tests
+
+* E2E tests: 
+    * Make sure SAUCE_USER, SAUCE_PASS, you can find them in 1Password
+    * `TEST_ENVIRONMENT_NAME=staging TEST_MARKER=regression npm run test-e2e`, you can use these TEST_ENVIRONMENT_NAME(production, staging, or develop01), and any valid marker.
+
+    * [automated-test-scripts-v3](https://github.com/virtru/automated-test-scripts-v3) is trying to provide BDD-based tests to make it simpler to be understood across team.
+    * Benefits of using [automated-test-scripts-v3](https://github.com/virtru/automated-test-scripts-v3):
+        * Separation of concerns. tests(including the feature files and the skeleton test_xxx.py files) can now reside inside of the product repo, without the need to switch context to different repos
+        * Common BDD step implementations and 3rd party integrations will be provided by automated-test-scripts-v3
+        * It is possible to provide a `conftest.py` file in the same `e2e` test folder to override or define new test step implementations
+        * No need to use triggered steps, test steps and test reports will be available directly in the product build pipeline.
+    * TEST_ENVIRONMENT_NAME determines which URL the e2e test will run against, in BuildKite CI/CD pipelines:
+        * For master/staging/develop branches, TEST_ENVIRONMENT_NAME will be set based on BUILDKITE_BRANCH accordingly
+        * for other branches, TEST_ENVIRONMENT_NAME will be based on DEPLOY_ENVIRONMENT_NAME, currently only develop01 is supported, because it needs BP CRX with that environment in chrome store to be able to run the tests
+    * For detailed use cases and explanations, please refer [use cases section](https://github.com/virtru/automated-test-scripts-v3#use-cases) 
+
 ### Prerequisites
 
 To be able to use Federated OAuth we suggest you to modify your `/etc/hosts`. This is an optional step, but note the fallback authentication will be email code only.

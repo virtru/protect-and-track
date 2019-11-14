@@ -12,23 +12,18 @@ Feature: SDK Demo Site
   # Talk to QA Leads before you create Test Cases in TestRail
 
   Background:
-    Given Project is secure-reader
+    Given Project is protect-and-track-demo
 
   @smoke
-  Scenario: Decrypt TDF3 file in SR
-    When I start to run testrail 12345
-    And qavirtrumd11@cmk-test-org.com logged in gmail using a new browser with BP activated
-    And an email to qavirtrumd12@cmk-test-org.com is being composed
-    And secure toggle is turned on
-    And email subject is any string
-    And email body is message1
-    And email is sent securely
+  Scenario Outline: Decrypt TDF3 file in SR
+    Given a TDF3 file: <filename>
+    When I start to run testrail <case_id>
+    And qavirtru31@cmk-test-org.com logged in secure-reader page using a new browser
+    And the user drag and drop the file in secure-reader page
+    And the file automatically decrypt in secure-reader page
+    Then screen comparison shall have similarity(0.0-1.0) greater than 0.999
 
-  Scenario: Test with Ken1
-    When I start to run testrail 12345
-    And qavirtrumd11@cmk-test-org.com logged in gmail using a new browser with BP activated
-    And an email to qavirtrumd12@cmk-test-org.com is being composed
-    And secure toggle is turned on
-    And email subject is any string
-    And email body is message1
-    And email is sent securely
+    Examples:
+      | filename      | case_id |
+      | tdf3.pdf.html | 247842  |
+      | tdf3.pdf.tdf  | 247849  |

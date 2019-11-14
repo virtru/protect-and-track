@@ -30,6 +30,7 @@
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json}\"",
     "test": "eslint src && react-scripts test --watchAll=false",
     "test-watch": "react-scripts test",
+    "test-e2e": "docker run --rm -it $(env | cut -f1 -d= | sed 's/^/-e /') -e TEST_ENVIRONMENT_NAME -e TEST_MARKER -v ${PWD}/e2e:/virtru/e2e -v ${PWD}/reports:/virtru/reports virtru/automated-test:latest pytest -v -s -n2 e2e -m $TEST_MARKER --use-bp=chrome_store --cucumberjson=reports/cucumber_report.json --cucumber-json-expanded --html=reports/general_report.html --self-contained-html",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

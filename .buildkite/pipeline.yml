@@ -90,6 +90,19 @@ steps:
 
   - wait
 
+  - command: /virtru/e2e/scripts/e2e.sh
+    label: ":chrome: E2E Tests: $TEST_ENVIRONMENT_NAME"
+    branches: "master staging develop"
+    # these environment vars are added after checkout, needs to be specified here to be available in Docker
+    env:
+      TEST_ENVIRONMENT_NAME: "$TEST_ENVIRONMENT_NAME"
+      APP_VERSION: "$APP_VERSION"
+    plugins:
+      - docker#v3.3.0:
+          image: "virtru/automated-test:latest"
+
+  - wait
+
   - block: 'Unblock Deploy'
 
   - block: 'Check your branch name'
