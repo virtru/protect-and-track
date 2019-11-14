@@ -104,9 +104,9 @@ steps:
           mount-checkout: false
           workdir: '/virtru'
           volumes:
-            - '${HOME_DIR}/e2e:/virtru/e2e'
-            - '${HOME_DIR}/e2e/reports:/virtru/reports'
-            - '${HOME_DIR}/.buildkite/scripts:/virtru/e2e/scripts'
+            - '$$HOME_DIR/e2e:/virtru/e2e'
+            - '$$HOME_DIR/e2e/reports:/virtru/reports'
+            - '$$HOME_DIR/.buildkite/scripts:/virtru/e2e/scripts'
     artifact_paths: 'e2e/reports/*.html'
     concurrency: 3
     concurrency_group: 'desktop-chrome-sdk'
