@@ -2,19 +2,8 @@
 
 set -eu
 
-pytest -v -s -n2 e2e --cucumberjson=reports/cucumber_report.json --cucumber-json-expanded --html=reports/general_report.html --self-contained-html
+echo "+++ PWD: $PWD"
 
-FILE=reports/cucumber_report.json
-# generate html report if there are test report json available
-if test -f "$FILE"; then
-    cd tools/cucumber-html-reporter/
-    npm i
-    node index.js
-    cd -
+docker run --rm -it $(env | cut -f1 -d= | sed 's/^/-e /') -v ${PWD}/e2e:/virtru/e2e -v ${PWD}/reports:/virtru/reports -v ${PWD}/.buildkite/scripts:/virtru/e2e/scripts  virtru/automated-test:latest pytest -v -s -n2 e2e --cucumberjson=reports/cucumber_report.json --cucumber-json-expanded --html=reports/general_report.html --self-contained-html
 
-    # slack integration
-    PYTHONPATH=. python3 tools/send_slack_notification.py
-
-    # pagerduty integration
-    PYTHONPATH=. python3 tools/send_pagerduty_notification.py
-fi
+docker run -w /virtru/tools/cucumber-html-reporter --rm -it $(env | cut -f1 -d= | sed 's/^/-e /') -v ${PWD}/reports:/virtru/reports virtru/automated-test:latest /bin/bash -c "npm i && node index.js"
