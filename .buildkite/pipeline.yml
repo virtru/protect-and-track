@@ -90,7 +90,7 @@ steps:
 
   - wait
 
-  - command: 'echo ${PWD} && ls -la && ls -la e2e'
+  - command: '/workdir/e2e/scripts/e2e.sh'
     label: ':chrome: E2E Tests: $TEST_ENVIRONMENT_NAME'
     branches: 'master staging develop *feature/PLATFORM102*'
     # these environment vars are added after checkout, needs to be specified here to be available in Docker
@@ -101,13 +101,8 @@ steps:
       - docker#v3.3.0:
           image: 'virtru/automated-test:latest'
           propagate-environment: true
-          mount-checkout: false
-          workdir: '/virtru'
-          volumes:
-            - '${PWD}/e2e:/virtru/e2e'
-            - '${PWD}/e2e/reports:/virtru/reports'
-            - '${PWD}/.buildkite/scripts:/virtru/e2e/scripts'
-    artifact_paths: 'e2e/reports/*.html'
+          mount-checkout: true
+    artifact_paths: '/virtru/e2e/reports/*.html'
     concurrency: 3
     concurrency_group: 'desktop-chrome-sdk'
 
