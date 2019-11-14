@@ -111,6 +111,8 @@ steps:
     artifact_paths: "e2e/reports/*.html"
     concurrency: 3
     concurrency_group: "desktop-chrome-sdk"
+    agents:
+      - *agent_queue
 
   - wait
 
