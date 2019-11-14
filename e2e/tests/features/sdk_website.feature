@@ -14,7 +14,7 @@ Feature: SDK Demo Site
   Background:
     Given Project is protect-and-track-demo
 
-  @smoke
+  @regression
   Scenario Outline: Decrypt TDF3 file in SR
     Given a TDF3 file: <filename>
     When I start to run testrail <case_id>

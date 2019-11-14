@@ -22,7 +22,7 @@ This demo can run on your local environment. Please ensure you meet the prerequi
 
 * E2E tests: 
     * Make sure SAUCE_USER, SAUCE_PASS, you can find them in 1Password
-    * `TEST_ENVIRONMENT_NAME=staging TEST_MARKER=regression npm run test-e2e`, you can use these TEST_ENVIRONMENT_NAME(production, staging, or develop01), and any valid marker.
+    * `TEST_ENVIRONMENT_NAME=production TEST_MARKER=regression npm run test-e2e`, you can use these TEST_ENVIRONMENT_NAME(production, staging, or develop01), and any valid marker.
 
     * [automated-test-scripts-v3](https://github.com/virtru/automated-test-scripts-v3) is trying to provide BDD-based tests to make it simpler to be understood across team.
     * Benefits of using [automated-test-scripts-v3](https://github.com/virtru/automated-test-scripts-v3):
