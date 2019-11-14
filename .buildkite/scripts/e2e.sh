@@ -2,12 +2,6 @@
 
 set -eu
 
-# move data from work dir to automated test dir
-mv -v /workdir/e2e/ /virtru/e2e/
-mv -v /workdir/.buildkite/scripts/ /virtru/e2e/scripts/
-
-cd /virtru
-
 ls -la
 ls -la e2e
 

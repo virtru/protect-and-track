@@ -1,96 +1,96 @@
-env:
-  AWS_ACCOUNT_ALIAS: common
-  ENVIRONMENT_NAME: common
-  DEPLOY_ENVIRONMENT_NAME: production
-  S3_HOSTNAME: demos.developer.virtru.com
-  USE_NODE_10: true
+#env:
+#  AWS_ACCOUNT_ALIAS: common
+#  ENVIRONMENT_NAME: common
+#  DEPLOY_ENVIRONMENT_NAME: production
+#  S3_HOSTNAME: demos.developer.virtru.com
+#  USE_NODE_10: true
 
-agents:
-  queue: '${BUILDKITE_QUEUE:-default}'
-agent_queue: &agent_queue 'queue=${BUILDKITE_QUEUE:-default}'
+#agents:
+#  queue: '${BUILDKITE_QUEUE:-default}'
+#agent_queue: &agent_queue 'queue=${BUILDKITE_QUEUE:-default}'
+#
+#steps:
+#  - label: 'Tag Release'
+#    command: 'buildkite-scripts/scripts/tag-release.sh'
+#    branches: 'master'
+#    agents:
+#      - *agent_queue
+#
+#  - wait
+#
+#  - label: ':npm: Install Dependencies'
+#    command: 'buildkite-scripts/mars/wrap/npm-ci.sh'
+#    agents:
+#      - *agent_queue
+#
+#  - wait
+#
+#  # TODO(DSAT-40): commenting out for now but this cannot move forward until this
+#  #       passes successfully
+#  # - label: ':key: License Checker'
+#  #   command: 'buildkite-scripts/scripts/run-license-checker.sh'
+#  #   agents:
+#  #     - *agent_queue
+#
+#  - label: ':npm: :lock: NPM Audit'
+#    command: 'buildkite-scripts/mars/wrap/npm-audit.sh'
+#    env:
+#      FORCE_AUDIT_TO_SUCCEED: true # Temporary
+#    agents:
+#      - *agent_queue
+#
+#  - label: ':npm: Tests'
+#    command: 'buildkite-scripts/scripts/npm-test.sh'
+#    artifact_paths:
+#      - 'coverage/lcov.info'
+#    agents:
+#      - *agent_queue
+#  #
+#  #
+#  #  - wait
+#  #
+#  #  - label: ':cloud: SonarCloud Scan'
+#  #    command: '.buildkite/scripts/run-sonar-scanner.sh'
+#  #    agents:
+#  #      - *agent_queue
+#
+#  - wait
+#
+#  - label: ':house_with_garden: Create block for deploy environment selection'
+#    branches: '*feature/* *hotfix/* *bug/*'
+#    command: 'buildkite-scripts/mars/pipeline-steps/get-and-select-develop-environments.sh | buildkite-agent pipeline upload'
+#    agents:
+#      - *agent_queue
+#
+#  - wait
+#
+#  - label: ':house_with_garden: Set Environment'
+#    command: 'buildkite-scripts/mars/scripts/set-deploy-environment.sh'
+#    branches: 'master develop *release/* *feature/* *hotfix/* *bug/*'
+#    agents:
+#      - *agent_queue
+#
+#  - wait
+#
+#  - label: ':npm: NPM Build (Production)'
+#    command: 'buildkite-scripts/scripts/npm-build.sh'
+#    branches: 'master'
+#    env:
+#      REACT_APP_VIRTRU_ENV: 'production'
+#    agents:
+#      - *agent_queue
+#
+#  - label: ':npm: NPM Build (Staging)'
+#    command: 'buildkite-scripts/scripts/npm-build.sh'
+#    branches: '!master'
+#    env:
+#      REACT_APP_VIRTRU_ENV: 'staging'
+#    agents:
+#      - *agent_queue
+#
+#  - wait
 
-steps:
-  - label: 'Tag Release'
-    command: 'buildkite-scripts/scripts/tag-release.sh'
-    branches: 'master'
-    agents:
-      - *agent_queue
-
-  - wait
-
-  - label: ':npm: Install Dependencies'
-    command: 'buildkite-scripts/mars/wrap/npm-ci.sh'
-    agents:
-      - *agent_queue
-
-  - wait
-
-  # TODO(DSAT-40): commenting out for now but this cannot move forward until this
-  #       passes successfully
-  # - label: ':key: License Checker'
-  #   command: 'buildkite-scripts/scripts/run-license-checker.sh'
-  #   agents:
-  #     - *agent_queue
-
-  - label: ':npm: :lock: NPM Audit'
-    command: 'buildkite-scripts/mars/wrap/npm-audit.sh'
-    env:
-      FORCE_AUDIT_TO_SUCCEED: true # Temporary
-    agents:
-      - *agent_queue
-
-  - label: ':npm: Tests'
-    command: 'buildkite-scripts/scripts/npm-test.sh'
-    artifact_paths:
-      - 'coverage/lcov.info'
-    agents:
-      - *agent_queue
-  #
-  #
-  #  - wait
-  #
-  #  - label: ':cloud: SonarCloud Scan'
-  #    command: '.buildkite/scripts/run-sonar-scanner.sh'
-  #    agents:
-  #      - *agent_queue
-
-  - wait
-
-  - label: ':house_with_garden: Create block for deploy environment selection'
-    branches: '*feature/* *hotfix/* *bug/*'
-    command: 'buildkite-scripts/mars/pipeline-steps/get-and-select-develop-environments.sh | buildkite-agent pipeline upload'
-    agents:
-      - *agent_queue
-
-  - wait
-
-  - label: ':house_with_garden: Set Environment'
-    command: 'buildkite-scripts/mars/scripts/set-deploy-environment.sh'
-    branches: 'master develop *release/* *feature/* *hotfix/* *bug/*'
-    agents:
-      - *agent_queue
-
-  - wait
-
-  - label: ':npm: NPM Build (Production)'
-    command: 'buildkite-scripts/scripts/npm-build.sh'
-    branches: 'master'
-    env:
-      REACT_APP_VIRTRU_ENV: 'production'
-    agents:
-      - *agent_queue
-
-  - label: ':npm: NPM Build (Staging)'
-    command: 'buildkite-scripts/scripts/npm-build.sh'
-    branches: '!master'
-    env:
-      REACT_APP_VIRTRU_ENV: 'staging'
-    agents:
-      - *agent_queue
-
-  - wait
-
-  - command: '/workdir/e2e/scripts/e2e.sh'
+  - command: 'echo ${BUILDKITE_BUILD_CHECKOUT_PATH}'
     label: ':chrome: E2E Tests: $TEST_ENVIRONMENT_NAME'
     branches: 'master staging develop *feature/PLATFORM102*'
     # these environment vars are added after checkout, needs to be specified here to be available in Docker
@@ -106,44 +106,44 @@ steps:
     concurrency: 3
     concurrency_group: 'desktop-chrome-sdk'
 
-  - wait
-
-  - block: 'Unblock Deploy'
-
-  - block: 'Check your branch name'
-    prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
-    branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
-
-  # Build and Deploy (Staging)
-  - label: ':s3: Deploy to S3 Staging'
-    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
-    branches: '!master'
-    env:
-      S3_PATH: 'protect-staging'
-    agents:
-      - *agent_queue
-  - wait
-  - label: ':s3: Invalidate CloudFront Cache Staging'
-    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
-    branches: '!master'
-    env:
-      S3_PATH: 'protect-staging'
-    agents:
-      - *agent_queue
-
-  # Build and Deploy (Production)
-  - label: ':s3: Deploy to S3'
-    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
-    branches: 'master'
-    env:
-      S3_PATH: 'protect'
-    agents:
-      - *agent_queue
-  - wait
-  - label: ':s3: Invalidate CloudFront Cache'
-    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
-    branches: 'master'
-    env:
-      S3_PATH: 'protect'
-    agents:
-      - *agent_queue
+#  - wait
+#
+#  - block: 'Unblock Deploy'
+#
+#  - block: 'Check your branch name'
+#    prompt: 'Your branch name does not match expected options. This will not result in a successful deployment unless you have explicitly defined environment variables.'
+#    branches: '!master !develop !*release/* !*feature/* !*hotfix/* !*bug/*'
+#
+#  # Build and Deploy (Staging)
+#  - label: ':s3: Deploy to S3 Staging'
+#    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+#    branches: '!master'
+#    env:
+#      S3_PATH: 'protect-staging'
+#    agents:
+#      - *agent_queue
+#  - wait
+#  - label: ':s3: Invalidate CloudFront Cache Staging'
+#    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+#    branches: '!master'
+#    env:
+#      S3_PATH: 'protect-staging'
+#    agents:
+#      - *agent_queue
+#
+#  # Build and Deploy (Production)
+#  - label: ':s3: Deploy to S3'
+#    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+#    branches: 'master'
+#    env:
+#      S3_PATH: 'protect'
+#    agents:
+#      - *agent_queue
+#  - wait
+#  - label: ':s3: Invalidate CloudFront Cache'
+#    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+#    branches: 'master'
+#    env:
+#      S3_PATH: 'protect'
+#    agents:
+#      - *agent_queue
