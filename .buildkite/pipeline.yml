@@ -100,6 +100,16 @@ steps:
     plugins:
       - docker#v3.3.0:
           image: "virtru/automated-test:latest"
+          propagate-environment: true
+          mount-checkout: false
+          workdir: "/virtru"
+          volumes:
+            - "${PWD}/e2e:/virtru/e2e"
+            - "${PWD}/e2e/reports:/virtru/reports"
+            - "${PWD}/.buildkite/scripts:/virtru/e2e/scripts"
+    artifact_paths: "e2e/reports/*.html"
+    concurrency: 3
+    concurrency_group: "desktop-chrome-sdk"
 
   - wait
 
