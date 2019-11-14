@@ -90,7 +90,7 @@ steps:
 
   - wait
 
-  - command: 'echo ${BUILDKITE_BUILD_CHECKOUT_PATH}'
+  - command: '/virtru/e2e/scripts/e2e.sh'
     label: ':chrome: E2E Tests: $TEST_ENVIRONMENT_NAME'
     branches: 'master staging develop *feature/PLATFORM102*'
     # these environment vars are added after checkout, needs to be specified here to be available in Docker
@@ -101,8 +101,13 @@ steps:
       - docker#v3.3.0:
           image: 'virtru/automated-test:latest'
           propagate-environment: true
-          mount-checkout: true
-    artifact_paths: '/virtru/e2e/reports/*.html'
+          mount-checkout: false
+          workdir: '/virtru'
+          volumes:
+            - '${HOME_DIR}/e2e:/virtru/e2e'
+            - '${HOME_DIR}/e2e/reports:/virtru/reports'
+            - '${HOME_DIR}/.buildkite/scripts:/virtru/e2e/scripts'
+    artifact_paths: 'e2e/reports/*.html'
     concurrency: 3
     concurrency_group: 'desktop-chrome-sdk'
 
