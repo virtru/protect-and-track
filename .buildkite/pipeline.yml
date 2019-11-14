@@ -92,7 +92,7 @@ steps:
 
   - command: /virtru/e2e/scripts/e2e.sh
     label: ":chrome: E2E Tests: $TEST_ENVIRONMENT_NAME"
-    branches: "master staging develop"
+    branches: "master staging develop *feature/PLATFORM102*"
     # these environment vars are added after checkout, needs to be specified here to be available in Docker
     env:
       TEST_ENVIRONMENT_NAME: "$TEST_ENVIRONMENT_NAME"
