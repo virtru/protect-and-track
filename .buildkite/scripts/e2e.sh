@@ -2,7 +2,7 @@
 
 set -eu
 
-pytest -v -s -n2 e2e --use-bp=chrome_store --cucumberjson=reports/cucumber_report.json --cucumber-json-expanded --html=reports/general_report.html --self-contained-html
+pytest -v -s -n2 e2e --cucumberjson=reports/cucumber_report.json --cucumber-json-expanded --html=reports/general_report.html --self-contained-html
 
 FILE=reports/cucumber_report.json
 # generate html report if there are test report json available
