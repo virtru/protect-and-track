@@ -12,8 +12,8 @@ if test -f "$FILE"; then
   docker run -w /virtru/tools/cucumber-html-reporter --rm -it $(env | cut -f1 -d= | sed 's/^/-e /') -v ${PWD}/reports:/virtru/reports virtru/automated-test:latest /bin/bash -c "npm i && node index.js"
 
   # slack integration
-  docker run -w /virtru/tools/cucumber-html-reporter --rm -it $(env | cut -f1 -d= | sed 's/^/-e /') -v ${PWD}/reports:/virtru/reports virtru/automated-test:latest PYTHONPATH=. python3 tools/send_slack_notification.py
+  docker run -w /virtru/tools/cucumber-html-reporter --rm -it $(env | cut -f1 -d= | sed 's/^/-e /') -v ${PWD}/reports:/virtru/reports virtru/automated-test:latest /bin/bash -c "PYTHONPATH=. python3 tools/send_slack_notification.py"
 
   # pagerduty integration
-  docker run -w /virtru/tools/cucumber-html-reporter --rm -it $(env | cut -f1 -d= | sed 's/^/-e /') -v ${PWD}/reports:/virtru/reports virtru/automated-test:latest PYTHONPATH=. python3 tools/send_pagerduty_notification.py
+  docker run -w /virtru/tools/cucumber-html-reporter --rm -it $(env | cut -f1 -d= | sed 's/^/-e /') -v ${PWD}/reports:/virtru/reports virtru/automated-test:latest /bin/bash -c "PYTHONPATH=. python3 tools/send_pagerduty_notification.py"
 fi
