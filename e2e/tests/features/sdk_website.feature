@@ -18,7 +18,7 @@ Feature: SDK Demo Site
   Scenario Outline: Decrypt TDF3 file in SR
     Given a TDF3 file: <filename>
     When I start to run testrail <case_id>
-    And qavirtrumd11@cmk-test-org.com logged in secure-reader page using a new browser
+    And qavirtru31@cmk-test-org.com logged in secure-reader page using a new browser
     And the user drag and drop the file in secure-reader page
     And the file automatically decrypt in secure-reader page
     Then screen comparison shall have similarity(0.0-1.0) greater than 0.999
