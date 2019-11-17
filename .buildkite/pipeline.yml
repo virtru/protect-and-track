@@ -90,7 +90,7 @@ steps:
 
   - wait
 
-  - command: '.buildkite/scripts/e2e.sh'
+  - command: 'npm run test-e2e'
     label: ':chrome: E2E Tests: $TEST_ENVIRONMENT_NAME'
     branches: 'master staging develop *feature/PLATFORM102*'
     artifact_paths: 'reports/*.html'
