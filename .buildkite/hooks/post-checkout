@@ -15,12 +15,12 @@ master)
   export TEST_ENVIRONMENT_NAME=production
   ;;
 *)
-#  if buildkite-agent meta-data exists "deploy-environment-name"
-#  then
-#    export TEST_ENVIRONMENT_NAME=$(buildkite-agent meta-data get "deploy-environment-name")
-#  else
+  if buildkite-agent meta-data exists "deploy-environment-name"
+  then
+    export TEST_ENVIRONMENT_NAME=$(buildkite-agent meta-data get "deploy-environment-name")
+  else
     export TEST_ENVIRONMENT_NAME=staging
-#  fi
+  fi
   ;;
 esac
 
