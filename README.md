@@ -22,9 +22,12 @@ This demo can run on your local environment. Please ensure you meet the prerequi
 
 * E2E tests: 
     * Make sure SAUCE_USER, SAUCE_PASS, you can find them in 1Password
-    * `TEST_ENVIRONMENT_NAME=production TEST_MARKER=regression npm run test-e2e`, you can use these TEST_ENVIRONMENT_NAME(production, staging, or develop01), and any valid marker.
+    * `npm run test-e2e`, available environment vars: 
+        * any valid TEST_ENVIRONMENT_NAME, such as production, staging, or develop01 
+        * any valid TEST_MARKER, such as smoke and regression.
+    * WARNING: due to e2e tests requires BP CRX to send secure email, it could be very slow when uploading BP CRX to SauceLabs for testing, especially when BP CRX files are large
 
-    * [automated-test-scripts-v3](https://github.com/virtru/automated-test-scripts-v3) is trying to provide BDD-based tests to make it simpler to be understood across team.
+    * [automated-test-scripts-v3](https://github.com/virtru/automated-test-scripts-v3) is to provide BDD-based tests to make it simpler to be understood across team.
     * Benefits of using [automated-test-scripts-v3](https://github.com/virtru/automated-test-scripts-v3):
         * Separation of concerns. tests(including the feature files and the skeleton test_xxx.py files) can now reside inside of the product repo, without the need to switch context to different repos
         * Common BDD step implementations and 3rd party integrations will be provided by automated-test-scripts-v3

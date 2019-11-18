@@ -102,5 +102,5 @@ src/tdf3*
 .idea
 
 # test cache files and reports
-e2e/tests/step_defs/__pycache__
+__pycache__
 reports
