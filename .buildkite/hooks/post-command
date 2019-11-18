@@ -2,7 +2,7 @@
 
 set -eu
 
-FILE=reports/cucumber_report.json
+FILE=e2e/reports/cucumber_report.json
 # generate html report if there are test report json available
 if test -f "$FILE"; then
   docker run -w /virtru/tools/cucumber-html-reporter --rm -it $(env | cut -f1 -d= | sed 's/^/-e /') -v "$PWD/e2e/reports:/virtru/reports" virtru/automated-test:latest /bin/bash -c "npm i && node index.js"
