@@ -92,7 +92,7 @@ steps:
 
   - command: 'npm run test-e2e'
     label: ':chrome: E2E Tests: $TEST_ENVIRONMENT_NAME'
-    branches: 'master staging develop *feature/PLATFORM102*'
+    branches: 'master staging develop'
     artifact_paths: 'reports/*.html'
     concurrency: 3
     concurrency_group: 'desktop-chrome-sdk'
