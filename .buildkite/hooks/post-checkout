@@ -19,7 +19,7 @@ master)
   then
     export TEST_ENVIRONMENT_NAME=$(buildkite-agent meta-data get "deploy-environment-name")
   else
-    export TEST_ENVIRONMENT_NAME=staging
+    export TEST_ENVIRONMENT_NAME=unknown
   fi
   ;;
 esac
