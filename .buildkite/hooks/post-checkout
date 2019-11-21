@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export APP_VERSION=$(cat package.json | python -c 'import json,sys;obj=json.load(sys.stdin);print obj["version"];')
+export APP_VERSION=$(node -p 'require("./package.json").version')
 echo "+++ APP_VERSION: $APP_VERSION"
 
 # set TEST_ENVIRONMENT_NAME based on BUILDKITE_BRANCH
