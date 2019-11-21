@@ -30,6 +30,7 @@
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json}\"",
     "test": "eslint src && react-scripts test --watchAll=false",
     "test-watch": "react-scripts test",
+    "test-e2e": ".buildkite/scripts/e2e.sh",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
