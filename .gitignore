@@ -98,9 +98,3 @@ yarn-error.log*
 # Manuallly imported libraries
 src/*.min.js
 src/tdf3*
-
-.idea
-
-# test cache files and reports
-__pycache__
-reports
