@@ -1,8 +1,6 @@
-TODO: Replace with real scenarios.
-Feature: SDK Demo Site
+Feature: Protect and Track Demo Site
   As an end user,
-  I want to use SDK Demo site to check if TDF3 files worked,
-  So I can develop my own app using TDF3.
+  I want to use Protect and Track Demo site to encrypt various types of files
 
   # Scenarios can be highly declarative, which focuses on behavior.
   # Don't get caught up in button names and layouts at the Gherkin level.
@@ -15,16 +13,19 @@ Feature: SDK Demo Site
   Background:
     Given Project is protect-and-track-demo
 
-  @regression
-  Scenario Outline: Decrypt TDF3 file in SR
-    Given a TDF3 file: <filename>
+  @smoke
+  Scenario Outline: Encrypt file in Protect and Track demo site
+    Given an attachment file: <filename>
     When I start to run testrail <case_id>
-    And qavirtru31@cmk-test-org.com logged in secure-reader page using a new browser
-    And the user drag and drop the file in secure-reader page
-    And the file automatically decrypt in secure-reader page
-    Then screen comparison shall have similarity(0.0-1.0) greater than 0.999
+    And I opened protect-and-track page using a new browser
+    And I drag and drop the file in protect-and-track page
+    And I grant access to blackhatmanager@gmail.com in protect-and-track page
+    And I grant access to qavirtru31@cmk-test-org.com in protect-and-track page
+    And I sign in as blackhatmanager@gmail.com to protect
+    Then the file should be encrypted
+
+
 
     Examples:
-      | filename      | case_id |
-      | tdf3.pdf.html | 247842  |
-      | tdf3.pdf.tdf  | 247849  |
+      | filename   | case_id |
+      | sample.pdf | 248592  |
