@@ -27,11 +27,6 @@ import moment from 'moment';
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import checkIsMobile from 'utils/checkIsMobile';
 import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
-import analytics, { trackLogin, EVENT_NAMES } from 'utils/analytics';
-
-analytics.track({
-  event: EVENT_NAMES.DEMO_LAND,
-});
 
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];
@@ -68,7 +63,6 @@ let virtruClient = false;
 if (isLoggedIn) {
   virtruClient = new Virtru.Client({ email });
   userId = email;
-  trackLogin({ userId });
 } else {
   // remove the email from localstorage
   localStorage.removeItem('virtru-demo-email');
