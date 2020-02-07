@@ -53,7 +53,7 @@ function Drop({ children, setFile, policyState }) {
 
     const files = event.dataTransfer ? event.dataTransfer.files : event.target.files;
 
-    if (files[0].size >= 10485760) {
+    if (files[0] && files[0].size >= 10485760) {
       // 10mb
       event.target.classList.remove('Drop-hover');
       alert('This demo only supports files 10mb or less.');
