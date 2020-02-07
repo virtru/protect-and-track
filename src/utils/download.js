@@ -20,7 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Virtru from './VirtruWrapper';
+import Virtru from 'virtru-sdk';
+import logAction from 'utils/virtruActionLogger';
 
 function click(node) {
   try {
@@ -61,7 +62,7 @@ export function saver(blob, name) {
 
 export const downloadHtml = async encrypted => {
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
-  const blob = new Blob([...html], { type: 'text/plain;charset=utf-8' });
+  const blob = new Blob([html], { type: 'text/plain;charset=utf-8' });
   return saver(blob, encrypted.name);
 };
 
@@ -77,16 +78,38 @@ function getOriginalNameOf(encrypted) {
 
 export const downloadTdf = async encrypted => {
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
-  const tdf = Virtru.unwrapHtml(html);
+
+  // Virtru: Unwrap the encrypted HTML file
+  logAction('unwrapHtml');
+  const tdf = window.TDF.unwrapHtml(html); // TODO: implement using Virtru SDK
+
   const blob = new Blob([tdf]);
   const originalName = getOriginalNameOf(encrypted);
   return saver(blob, originalName + '.tdf');
 };
 
+/**** Virtru Block ****
+ *
+ * The following code shows how to decrypt a file
+ * https://developer.virtru.com/docs/how-to-decrypt-a-file
+ *
+ */
 export const downloadDecrypted = async ({ encrypted, virtruClient }) => {
-  const encryptedBuffer = encrypted.payload;
-  const decrypted = await Virtru.decrypt({ virtruClient, encryptedBuffer });
+  // Virtru: Create decrypt params builder
+  // https://docs.developer.virtru.com/js/latest/DecryptParamsBuilder.html
+  logAction('createDecryptParams');
+  const decryptParams = new Virtru.DecryptParamsBuilder()
+    .withArrayBufferSource(encrypted.payload)
+    .build();
+
+  // Virtru: Decrypt the file
+  // https://docs.developer.virtru.com/js/latest/Client.html#decrypt
+  logAction('decryptFile');
+  const decryptStream = await virtruClient.decrypt(decryptParams);
+  const decrypted = await decryptStream.toBuffer();
+
   const blob = new Blob([decrypted]);
   const originalName = getOriginalNameOf(encrypted);
   return saver(blob, originalName);
 };
+/**** END Virtru Block ****/
