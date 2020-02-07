@@ -40,7 +40,7 @@ const options = {
 
 const analytics = new AnalyticsService(options);
 
-const trackLogin = ({ userId, file }) => {
+const trackLogin = ({ userId }) => {
   const hasTrackedLogin = localStorage.getItem('virtru-demo-login-tracked');
   analytics.updateProperties({
     'user.email': userId,
@@ -50,10 +50,7 @@ const trackLogin = ({ userId, file }) => {
   if (!hasTrackedLogin) {
     analytics.track({
       event: EVENT_NAMES.LOGIN_COMPLETED,
-      properties: {
-        fileType: file.file.type,
-        fileSize: `${file.arrayBuffer.byteLength / 1000}KB`,
-      },
+      properties: {},
     });
   }
   localStorage.setItem('virtru-demo-login-tracked', true);

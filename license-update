@@ -3,6 +3,10 @@
 license=$(sed -e 's|^#*|// |' <LICENSE)
 
 function _process {
+  if [ ! -f "$FILE" ]
+  then
+    return 0
+  fi
   first_line=$(head -n1 <$1)
   if ! [[ "${first_line}" == //* ]]
   then
