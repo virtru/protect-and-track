@@ -6,12 +6,31 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
+
 ## [v1.2.1](https://github.com/virtru/protect-and-track/compare/v1.2.0...v1.2.1) - 2019-08-06
+
 - [NOREF](https://github.com/virtru/protect-and-track/pull/119): _minor_
   - modified license section of readme
+
 ## [v1.2.0](https://github.com/virtru/protect-and-track/compare/v1.1.1...v1.2.0) - 2019-08-06
+
 - [NOREF](https://github.com/virtru/protect-and-track/pull/118): _minor_
   - Removed metrics
+
+## [v1.1.1](https://github.com/virtru/protect-and-track/compare/v1.1.0...v1.1.1) - 2019-08-06
+
+- Adds License
+- [NOREF](https://github.com/virtru/protect-and-track/pull/117): _patch_
+
+## [v1.1.3](https://github.com/virtru/protect-and-track/compare/v1.1.2...v1.1.3) - 2019-09-06
+
+- [WS-9600](https://virtru.atlassian.net/browse/WS-9600): _minor_
+  - Add audit to pipeline
+
+## [v1.1.2](https://github.com/virtru/protect-and-track/compare/v1.1.1...v1.1.2) - 2019-09-06
+
+- [WS-9606](https://virtru.atlassian.net/browse/WS-9606): _minor_
+  - Ensure protect and track is using SDK properly
 
 ## [v1.1.1](https://github.com/virtru/protect-and-track/compare/v1.1.0...v1.1.1) - 2019-08-06
 

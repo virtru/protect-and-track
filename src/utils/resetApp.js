@@ -20,25 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import React from 'react';
-import { render, fireEvent, getByTestId } from '@testing-library/react';
+import localForage from 'localforage';
 
-import UserSelect from './UserSelect';
-const history = { push: jest.fn() };
-
-describe('UserSelect', () => {
-  test('Should trigger alert and console.error with specific messages if form submitted with empty text input', () => {
-    const { container } = render(<UserSelect history={{}} />);
-    const consoleSpy = jest.spyOn(console, 'error');
-    fireEvent.submit(getByTestId(container, 'formBox'));
-    expect(window.alert).toBeCalledWith('A valid email address must be included');
-    expect(consoleSpy).toBeCalledWith('Ensure an email address is provided');
-  });
-
-  test('Should push history with value stetted in email input', () => {
-    const { container } = render(<UserSelect history={history} />);
-    document.getElementById('email').value = 'fooBar';
-    fireEvent.submit(getByTestId(container, 'formBox'));
-    expect(history.push).toBeCalledWith('auth?id=fooBar');
-  });
-});
+export default async function resetApp() {
+  localStorage.removeItem('virtru-demo-email');
+  await localForage.removeItem('virtru-demo-file');
+  await localForage.removeItem('virtru-demo-file-encrypted');
+  localStorage.removeItem('virtru-demo-policy');
+  localStorage.removeItem('virtru-demo-policyId');
+  localStorage.removeItem('virtru-demo-policyRevoked');
+  localStorage.removeItem('virtru-demo-sdk-log');
+  localStorage.removeItem('virtru-demo-login-tracked');
+  window.location = window.location.href.split(/[?#]/)[0];
+}
