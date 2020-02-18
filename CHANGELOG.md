@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
 
+## [v1.2.2](https://github.com/virtru/protect-and-track/compare/v1.2.1...v1.2.2) - 2020-02-12
+
+- [NOREF](https://github.com/virtru/protect-and-track/pull/144): _minor_
+  - Fixed bug in sample file dragging
+  - Update react-scripts to 3.2.0
+
 ## [v1.2.1](https://github.com/virtru/protect-and-track/compare/v1.2.0...v1.2.1) - 2019-08-06
 
 - [NOREF](https://github.com/virtru/protect-and-track/pull/119): _minor_
