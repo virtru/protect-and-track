@@ -21,13 +21,14 @@
 // SOFTWARE.
 
 import createStore from 'redux-zero';
-import Virtru from 'virtru-sdk';
+import Virtru from 'utils/sdk';
 import moment from 'moment';
 
 import defaultConfig from 'utils/config';
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import checkIsMobile from 'utils/checkIsMobile';
 import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
+import getQueryParam from 'utils/getQueryParam';
 
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];
@@ -130,13 +131,3 @@ export default createStore({
   // Any current alerts that should be displayed atop the app
   alert: false,
 });
-
-function getQueryParam(name, url) {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, '\\$&'); // eslint-disable-line no-useless-escape
-  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}

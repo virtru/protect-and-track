@@ -24,7 +24,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
-import Virtru from 'virtru-sdk';
+import Virtru from 'utils/sdk';
 import uuid from 'uuid';
 
 import defaultConfig from 'utils/config';
