@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased](https://github.com/virtru/protect-and-track/compare/master...HEAD)
 
+## [v1.2.3](https://github.com/virtru/protect-and-track/compare/v1.2.2...v1.2.3) - 2020-02-19
+
 - PLAT-261: _patch_
 
   - [146](https://github.com/virtru/protect-and-track/pull/146): Default target backend based on host:
