@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Virtru from 'virtru-sdk';
+import Virtru from 'utils/sdk';
 import logAction from 'utils/virtruActionLogger';
 
 function click(node) {

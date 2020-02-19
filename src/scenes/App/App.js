@@ -25,7 +25,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { connect } from 'redux-zero/react';
 import ENCRYPT_STATES from 'constants/encryptStates';
 import { base64ToArrayBuffer } from 'utils/buffer';
-import Virtru from 'virtru-sdk';
+import Virtru from 'utils/sdk';
 import uuid from 'uuid';
 
 import './App.css';

@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import Virtru from 'virtru-sdk';
+import Virtru from 'utils/sdk';
 
 export const getPolicy = async ({ encrypted, virtruClient }) => {
   const decryptParams = new Virtru.DecryptParamsBuilder()
