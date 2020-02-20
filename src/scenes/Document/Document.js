@@ -27,7 +27,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import Virtru from 'utils/sdk';
 import uuid from 'uuid';
 
-import defaultConfig from 'utils/config';
+import { clientConfig } from 'utils/config';
 import logAction from 'utils/virtruActionLogger';
 import Alert from './components/Alert/Alert';
 import Drop from './components/Drop/Drop';
@@ -433,7 +433,7 @@ const actions = {
         if (!virtruClient) {
           logAction('createClientWithEmail');
           // Virtru: Create the virtru client
-          client = new Virtru.Client({ ...defaultConfig, email: userId || 'a@b.invalid' });
+          client = new Virtru.Client({ ...clientConfig, email: userId || 'a@b.invalid' });
         }
 
         // Virtru: Get the policy id from the decrypt params
