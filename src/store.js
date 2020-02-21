@@ -52,6 +52,7 @@ if (userId) {
   email = userId;
   localStorage.setItem('virtru-demo-email', userId);
   const pathname = window.location.pathname;
+  // Strip out auth widget specified virtruAuthWidgetEmail
   const search = window.location.search
     .replace(/([?&])virtruAuthWidgetEmail(=[^&#]+&?)/, '$1')
     .replace(/[?&]$/, '');
