@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 import React from 'react';
-import Virtru from 'virtru-sdk';
+import Virtru from 'utils/sdk';
 import { generatePolicyChanger } from '../../services/policyChanger';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 

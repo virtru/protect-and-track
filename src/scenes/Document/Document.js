@@ -24,9 +24,10 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
-import Virtru from 'virtru-sdk';
+import Virtru from 'utils/sdk';
 import uuid from 'uuid';
 
+import defaultConfig from 'utils/config';
 import logAction from 'utils/virtruActionLogger';
 import Alert from './components/Alert/Alert';
 import Drop from './components/Drop/Drop';
@@ -432,7 +433,7 @@ const actions = {
         if (!virtruClient) {
           logAction('createClientWithEmail');
           // Virtru: Create the virtru client
-          client = new Virtru.Client({ email: userId || 'a@b.invalid' });
+          client = new Virtru.Client({ ...defaultConfig, email: userId || 'a@b.invalid' });
         }
 
         // Virtru: Get the policy id from the decrypt params
