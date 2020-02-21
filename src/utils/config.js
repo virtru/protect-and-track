@@ -56,26 +56,40 @@ const production = {
   },
 };
 
-function backendByParam() {
-  const api = getQueryParam('zapi');
-  return api === 'develop' || api === 'develop01'
-    ? console.log('Backend forced: develop01') || develop01
-    : api === 'develop02'
-    ? console.log('Backend forced: develop02') || develop02
-    : api === 'staging'
-    ? console.log('Backend forced: staging') || staging
-    : console.log('Backend forced: production') || production;
-}
+const backendByParam = () => {
+  switch (getQueryParam('zapi')) {
+    case 'develop':
+    case 'develop01':
+      console.log('Backend forced: develop01');
+      return develop01;
+    case 'develop02':
+      console.log('Backend forced: develop02');
+      return develop02;
+    case 'staging':
+      console.log('Backend forced: staging');
+      return staging;
+    default:
+      console.log('Backend forced: production');
+      return production;
+  }
+};
 
-function backendByEnv() {
-  return process.env.REACT_APP_VIRTRU_ENV === 'production'
-    ? console.log('Backend Selector: PRODUCTION') || production
-    : process.env.REACT_APP_VIRTRU_ENV === 'staging'
-    ? console.log('Backend Selector: PRODUCTION') || staging
-    : process.env.REACT_APP_VIRTRU_ENV === 'develop02'
-    ? console.log('Backend Selector: develop02') || develop02
-    : console.log('Backend Selector: develop') || develop01;
-}
+const backendByEnv = () => {
+  switch (process.env.REACT_APP_VIRTRU_ENV) {
+    case 'production':
+      console.log('Backend Selector: production');
+      return production;
+    case 'develop02':
+      console.log('Backend Selector: develop02');
+      return develop02;
+    case 'staging':
+      console.log('Backend forced: staging');
+      return staging;
+    default:
+      console.log('Backend Selector: develop01');
+      return develop01;
+  }
+};
 
 // If in prod, only use production backend.
 // Otherwise, allow selecting sdk by `zapi` parameter.
