@@ -18,7 +18,7 @@ env:
   ENVIRONMENT_NAME: common
   DEPLOY_ENVIRONMENT_NAME: production
   S3_HOSTNAME: demos.developer.virtru.com
-  USE_NODE_10: true
+  USE_NODE_12: true
 
 steps:
   - label: ':npm: Install Dependencies'
