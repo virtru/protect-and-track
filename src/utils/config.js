@@ -1,3 +1,5 @@
+import getQueryParam from 'utils/getQueryParam';
+
 const develop01 = {
   authOptions: {
     accountsUrl: 'https://api-develop01.develop.virtru.com/accounts',
@@ -54,13 +56,32 @@ const production = {
   },
 };
 
+function backendByParam() {
+  const api = getQueryParam('zapi');
+  return api === 'develop' || api === 'develop01'
+    ? console.log('Backend forced: develop01') || develop01
+    : api === 'develop02'
+    ? console.log('Backend forced: develop02') || develop02
+    : api === 'staging'
+    ? console.log('Backend forced: staging') || staging
+    : console.log('Backend forced: production') || production;
+}
+
+function backendByEnv() {
+  return process.env.REACT_APP_VIRTRU_ENV === 'production'
+    ? console.log('Backend Selector: PRODUCTION') || production
+    : process.env.REACT_APP_VIRTRU_ENV === 'staging'
+    ? console.log('Backend Selector: PRODUCTION') || staging
+    : process.env.REACT_APP_VIRTRU_ENV === 'develop02'
+    ? console.log('Backend Selector: develop02') || develop02
+    : console.log('Backend Selector: develop') || develop01;
+}
+
+// If in prod, only use production backend.
+// Otherwise, allow selecting sdk by `zapi` parameter.
 const config =
   process.env.REACT_APP_VIRTRU_ENV === 'production'
-    ? production
-    : process.env.REACT_APP_VIRTRU_ENV === 'staging'
-    ? staging
-    : process.env.REACT_APP_VIRTRU_ENV === 'develop02'
-    ? develop02
-    : develop01;
+    ? backendByEnv()
+    : backendByParam() || backendByEnv();
 
 export const { authOptions, clientConfig } = config;
