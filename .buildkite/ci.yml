@@ -1,0 +1,46 @@
+# Build and deploy to one of develop, staging, or production.
+#
+# Variables:
+#   VIRTRU_ENV: Environment to release to
+#   S3_PATH: path upload contents to on S3
+#   BLOCK_DEPLOY: [optional, defaults to true]
+
+env:
+  AWS_ACCOUNT_ALIAS: ${AWS_ACCOUNT_ALIAS}
+  ENVIRONMENT_NAME: ${ENVIRONMENT_NAME}
+  DEPLOY_ENVIRONMENT_NAME: ${DEPLOY_ENVIRONMENT_NAME}
+  S3_HOSTNAME: ${S3_HOSTNAME}
+  TEST_ENVIRONMENT_NAME: '${VIRTRU_ENV}'
+  USE_NODE_10: ${USE_NODE_10:-}
+  USE_NODE_12: ${USE_NODE_12:-}
+
+steps:
+  - label: ':npm: NPM Build (${VIRTRU_ENV})'
+    command: 'buildkite-scripts/scripts/npm-build.sh'
+    env:
+      REACT_APP_VIRTRU_ENV: '${VIRTRU_ENV}'
+
+  - wait
+
+  - block: 'Unblock Deploy to ${VIRTRU_ENV} (https://demos.developer.virtru.com/${S3_PATH}/)'
+    if: ${BLOCK_DEPLOY:-true}
+
+  - label: ':s3: Deploy to S3 ${VIRTRU_ENV}'
+    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+    env:
+      S3_PATH: '${S3_PATH}'
+
+  - wait
+
+  - label: ':s3: Invalidate CloudFront Cache ${VIRTRU_ENV}'
+    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+    env:
+      S3_PATH: '${S3_PATH}'
+
+  - wait
+
+  - command: 'npm run test-e2e'
+    label: ':chrome: E2E Tests: $TEST_ENVIRONMENT_NAME'
+    artifact_paths: 'e2e/reports/*.html'
+    concurrency: 3
+    concurrency_group: 'desktop-chrome-sdk'
