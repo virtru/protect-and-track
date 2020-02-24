@@ -3,9 +3,9 @@
 set -eu
 
 # TEST_MARKER is the test suite that will be selected to run
-if [ -z "${TEST_MARKER:-}" ]; then
+if [[ -n "${TEST_MARKER-}" ]]; then
   echo "TEST_ENVIRONMENT_NAME: ${TEST_ENVIRONMENT_NAME}; TEST_MARKER: ${TEST_MARKER}"
-  dash_m=-m "$TEST_MARKER"
+  dash_m="-m $TEST_MARKER"
 else
   echo "TEST_ENVIRONMENT_NAME: ${TEST_ENVIRONMENT_NAME}"
   dash_m=
