@@ -22,12 +22,16 @@
 
 import React, { useEffect } from 'react';
 import './AuthSelect.css';
+import { authOptions } from 'utils/config';
 import Modal from '../../components/Modal/Modal';
 
 function AuthSelect({ onClose, login }) {
   useEffect(() => {
     console.log('Mounting auth UI...');
-    window.Virtru.AuthWidget('virtru-auth-widget-mount', { afterAuth: login });
+    window.Virtru.AuthWidget('virtru-auth-widget-mount', {
+      afterAuth: login,
+      authOptions,
+    });
   }, [login]);
 
   return (

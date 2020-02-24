@@ -24,7 +24,7 @@ import createStore from 'redux-zero';
 import Virtru from 'utils/sdk';
 import moment from 'moment';
 
-import defaultConfig from 'utils/config';
+import { clientConfig } from 'utils/config';
 import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import checkIsMobile from 'utils/checkIsMobile';
 import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
@@ -52,6 +52,7 @@ if (userId) {
   email = userId;
   localStorage.setItem('virtru-demo-email', userId);
   const pathname = window.location.pathname;
+  // Strip out auth widget specified virtruAuthWidgetEmail
   const search = window.location.search
     .replace(/([?&])virtruAuthWidgetEmail(=[^&#]+&?)/, '$1')
     .replace(/[?&]$/, '');
@@ -63,7 +64,7 @@ let isLoggedIn = email && Virtru.Auth.isLoggedIn({ email });
 let virtruClient = false;
 
 if (isLoggedIn) {
-  virtruClient = new Virtru.Client({ ...defaultConfig, email });
+  virtruClient = new Virtru.Client({ ...clientConfig, email });
   userId = email;
 } else {
   // remove the email from localstorage
