@@ -1,0 +1,59 @@
+#!/bin/bash
+# Reformat shell scripts via shfmt
+
+function _do_shfmt() {
+  docker run -v $PWD:/work -w /work --rm mvdan/shfmt:v3.0.2 \
+    -i 2 -ci \
+    "${1}"
+}
+
+function _probably_sh() {
+  if [[ "$1" =~ ^.*\.sh || "$1" =~ ^.*\.bash ]]; then
+    # found by extension
+    true
+  elif [[ $(basename "$1") =~ ^.+\..*$ ]]; then
+    # skipped unknown extension
+    false
+  elif IFS= read -r line <"${x}"; then
+    case $line in
+      "#!/bin/bash" | "#!/usr/bin/env bash")
+        # found by shebang
+        true
+        ;;
+      *)
+        # skipped shebangless file
+        false
+        ;;
+    esac
+  else
+    # skipped by content
+    false
+  fi
+}
+
+function updo() {
+  if git check-ignore -q "$1"; then
+    return
+  fi
+  if ! _probably_sh "$1"; then
+    return
+  fi
+  (_do_shfmt "$1" >"$1.tmp") || (echo "Unable to shfmt $1" && exit 1)
+  if diff -q "$1.tmp" "$1" >/dev/null; then
+    rm "$1.tmp" || (echo "Unable to remove temp file" && exit 1)
+  else
+    # Use cat to overwrite contents to maintain ownership & permissions
+    (cat "$1.tmp" >"$1" && rm "$1.tmp" && git add "$1") ||
+      (echo "Unable to copy content" && exit 1)
+  fi
+}
+
+export -f updo
+
+# All changed files in this commit, mostly
+changed=$(git diff --cached --name-only --diff-filter=ACM)
+
+# Format with Google shell style
+for x in $changed; do
+  updo "$x"
+done

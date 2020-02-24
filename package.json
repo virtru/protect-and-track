@@ -63,7 +63,7 @@
   "husky": {
     "hooks": {
       "post-commit": "git update-index -g",
-      "pre-commit": "pretty-quick --staged && ./license-update --staged"
+      "pre-commit": "pretty-quick --staged && ./license-update --staged && .buildkite/scripts/shfmt"
     }
   }
 }
