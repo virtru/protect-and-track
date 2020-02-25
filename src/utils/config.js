@@ -75,8 +75,7 @@ const backendByParam = () => {
       console.log('Backend forced: production');
       return production;
     default:
-      console.log('Backend forced: production');
-      return production;
+      return false;
   }
 };
 
