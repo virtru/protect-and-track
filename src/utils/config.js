@@ -60,14 +60,20 @@ const backendByParam = () => {
   switch (getQueryParam('zapi')) {
     case 'develop':
     case 'develop01':
+    case 'd':
       console.log('Backend forced: develop01');
       return develop01;
     case 'develop02':
       console.log('Backend forced: develop02');
       return develop02;
     case 'staging':
+    case 's':
       console.log('Backend forced: staging');
       return staging;
+    case 'production':
+    case 'p':
+      console.log('Backend forced: production');
+      return production;
     default:
       console.log('Backend forced: production');
       return production;
@@ -77,16 +83,16 @@ const backendByParam = () => {
 const backendByEnv = () => {
   switch (process.env.REACT_APP_VIRTRU_ENV) {
     case 'production':
-      console.log('Backend Selector: production');
+      console.log('Backend selected: production');
       return production;
     case 'develop02':
-      console.log('Backend Selector: develop02');
+      console.log('Backend selected: develop02');
       return develop02;
     case 'staging':
-      console.log('Backend forced: staging');
+      console.log('Backend selected: staging');
       return staging;
     default:
-      console.log('Backend Selector: develop01');
+      console.log('Backend selected: develop01');
       return develop01;
   }
 };
