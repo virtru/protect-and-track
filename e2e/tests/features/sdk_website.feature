@@ -13,7 +13,7 @@ Feature: Protect and Track Demo Site
   Background:
     Given Project is protect-and-track-demo
 
-  @smoke
+  @regression
   Scenario Outline: Encrypt file in Protect and Track demo site
     Given an attachment file: <filename>
     When I start to run testrail <case_id>
