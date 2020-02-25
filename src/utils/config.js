@@ -14,12 +14,10 @@ const develop01 = {
     readerUrl: 'https://secure-develop01.develop.virtru.com/start?htmlProtocol=1',
   },
   proxy: {
-    url: 'https://sdk.develop01.virtru.com/js/latest/proxy.html',
+    url: 'https://sdk-develop01.develop.virtru.com/js/latest/proxy.html',
     origins: [
-      'https://accounts.develop01.virtru.com',
-      'https://acm.develop01.virtru.com',
-      'https://eas.develop01.virtru.com',
-      'https://api.develop01.virtru.com',
+      'https://accounts-develop01.develop.virtru.com',
+      'https://api-develop01.develop.virtru.com',
     ],
   },
 };
@@ -37,12 +35,10 @@ const develop02 = {
     readerUrl: 'https://secure-develop02.develop.virtru.com/start?htmlProtocol=1',
   },
   proxy: {
-    url: 'https://sdk.develop02.virtru.com/js/latest/proxy.html',
+    url: 'https://sdk-develop02.develop.virtru.com/js/latest/proxy.html',
     origins: [
-      'https://accounts.develop02.virtru.com',
-      'https://acm.develop02.virtru.com',
-      'https://eas.develop02.virtru.com',
-      'https://api.develop02.virtru.com',
+      'https://accounts-develop02.develop.virtru.com',
+      'https://api-develop02.develop.virtru.com',
     ],
   },
 };
@@ -61,12 +57,7 @@ const staging = {
   },
   proxy: {
     url: 'https://sdk.staging.virtru.com/js/latest/proxy.html',
-    origins: [
-      'https://accounts.staging.virtru.com',
-      'https://acm.staging.virtru.com',
-      'https://eas.staging.virtru.com',
-      'https://api.staging.virtru.com',
-    ],
+    origins: ['https://accounts.staging.virtru.com', 'https://api.staging.virtru.com'],
   },
 };
 
@@ -133,6 +124,7 @@ const config =
     : backendByParam() || backendByEnv();
 
 if (process.env.REACT_APP_VIRTRU_ENV !== 'production' && config.proxy && Virtru.XHRProxy) {
+  console.log('Proxy via: ' + config.proxy.url);
   Virtru.XHRProxy.useProxyIfBrowser(config.proxy.url, config.proxy.origins);
 }
 
