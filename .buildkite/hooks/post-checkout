@@ -9,7 +9,7 @@ else
   # set TEST_ENVIRONMENT_NAME based on BUILDKITE_BRANCH
   case $BUILDKITE_BRANCH in
     master)
-      export TEST_ENVIRONMENT_NAME=develop
+      export TEST_ENVIRONMENT_NAME=develop01
       ;;
     release/*)
       export TEST_ENVIRONMENT_NAME=staging
