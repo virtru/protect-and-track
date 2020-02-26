@@ -124,7 +124,7 @@ const config =
     : backendByParam() || backendByEnv();
 
 if (process.env.REACT_APP_VIRTRU_ENV !== 'production' && config.proxy && Virtru.XHRProxy) {
-  console.log('Proxy via: ' + config.proxy.url);
+  console.log(`Proxy via: ${config.proxy.url}`);
   Virtru.XHRProxy.useProxyIfBrowser(config.proxy.url, config.proxy.origins);
 }
 
