@@ -2,29 +2,25 @@
 
 license=$(sed -e 's|^#*|// |' <LICENSE)
 
-function _process {
-  if [ ! -f "$FILE" ]
-  then
+function _process() {
+  if [ ! -f "$FILE" ]; then
     return 0
   fi
   first_line=$(head -n1 <$1)
-  if ! [[ "${first_line}" == //* ]]
-  then
+  if ! [[ "${first_line}" == //* ]]; then
     contents="$(<$1)"
     fixed="${license}
 
 
 ${contents}
 "
-    printf "%s" "${fixed}" > "$1"
+    printf "%s" "${fixed}" >"$1"
     git add -u "$1"
   fi
 }
 
-if [[ "$1" == --staged ]]
-then
+if [[ "$1" == --staged ]]; then
   git diff --staged --name-only | grep '.js$' | while read file; do _process "${file}"; done
 else
   find src -name '*.js' | while read file; do _process "${file}"; done
 fi
-

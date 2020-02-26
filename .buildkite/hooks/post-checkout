@@ -1,25 +1,23 @@
 #!/bin/bash
 
-export APP_VERSION=$( node -p 'require("./package.json").version' )
+export APP_VERSION=$(node -p 'require("./package.json").version')
 echo "APP_VERSION: $APP_VERSION"
 
-if buildkite-agent meta-data exists "deploy-environment-name"
-then
+if buildkite-agent meta-data exists "deploy-environment-name"; then
   export TEST_ENVIRONMENT_NAME=$(buildkite-agent meta-data get "deploy-environment-name")
 else
   # set TEST_ENVIRONMENT_NAME based on BUILDKITE_BRANCH
   case $BUILDKITE_BRANCH in
-  master)
-    export TEST_ENVIRONMENT_NAME=develop
-    ;;
-  release/*)
-    export TEST_ENVIRONMENT_NAME=staging
-    ;;
-  *)
-    export TEST_ENVIRONMENT_NAME=unknown
-    ;;
+    master)
+      export TEST_ENVIRONMENT_NAME=develop
+      ;;
+    release/*)
+      export TEST_ENVIRONMENT_NAME=staging
+      ;;
+    *)
+      export TEST_ENVIRONMENT_NAME=unknown
+      ;;
   esac
 fi
-
 
 echo "TEST_ENVIRONMENT_NAME: $TEST_ENVIRONMENT_NAME"
