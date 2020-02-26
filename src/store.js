@@ -29,7 +29,6 @@ import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
 import checkIsMobile from 'utils/checkIsMobile';
 import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
 import getQueryParam from 'utils/getQueryParam';
-import logAction from 'utils/virtruActionLogger';
 
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];
@@ -66,7 +65,6 @@ let virtruClient = false;
 
 if (isLoggedIn) {
   console.log(`Creating virtruClient in store`);
-  logAction('createClientWithEmail');
   virtruClient = new Virtru.Client({ ...clientConfig, email });
   userId = email;
 } else {
