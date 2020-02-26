@@ -1,5 +1,4 @@
 import getQueryParam from 'utils/getQueryParam';
-import Virtru from 'utils/sdk';
 
 const develop01 = {
   authOptions: {
