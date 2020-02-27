@@ -27,7 +27,6 @@ import Sidebar from '../Sidebar/Sidebar';
 import Virtru from 'utils/sdk';
 import uuid from 'uuid';
 
-import { clientConfig } from 'utils/config';
 import logAction from 'utils/virtruActionLogger';
 import Alert from './components/Alert/Alert';
 import Drop from './components/Drop/Drop';
@@ -399,7 +398,7 @@ const saveEncryptedToLocalStorage = async ({ encryptedPayload, fileName, fileTyp
 
 const actions = {
   setFile: async (state, { fileHandle, fileBuffer }) => {
-    const { userId, virtruClient } = state;
+    const { virtruClient } = state;
     const { name: fileName, type: fileType } = fileHandle || {};
     if (!fileBuffer && fileHandle) {
       fileBuffer = await fileToArrayBuffer(fileHandle);
