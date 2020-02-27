@@ -2,9 +2,10 @@ import getQueryParam from 'utils/getQueryParam';
 
 const develop01 = {
   authOptions: {
-    accountsUrl: 'https://api-develop01.develop.virtru.com/accounts',
-    acmUrl: 'https://api-develop01.develop.virtru.com/acm',
-    apiUrl: 'https://api-develop01.develop.virtru.com',
+    // TODO switch to single endpoint
+    accountsUrl: `https://accounts-develop01.develop.virtru.com`,
+    acmUrl: `https://acm-develop01.develop.virtru.com`,
+    apiUrl: `https://api-develop01.develop.virtru.com`,
   },
   clientConfig: {
     kasEndpoint: 'https://api-develop01.develop.virtru.com/kas',
