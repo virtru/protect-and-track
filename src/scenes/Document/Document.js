@@ -430,16 +430,13 @@ const actions = {
           .build();
 
         let client = virtruClient;
-        if (!virtruClient) {
-          logAction('createClientWithEmail');
-          // Virtru: Create the virtru client
-          client = new Virtru.Client({ ...clientConfig, email: userId || 'a@b.invalid' });
-        }
-
-        // Virtru: Get the policy id from the decrypt params
-        const id = decParams && (await client.getPolicyId(decParams));
-        if (id) {
-          return { alert: 'TDF support not yet implemented' };
+        // XXX Validate html files are not TDFs *after* a client is created, too.
+        if (virtruClient) {
+          // Virtru: Get the policy id from the decrypt params
+          const id = decParams && (await client.getPolicyId(decParams));
+          if (id) {
+            return { alert: 'TDF support not yet implemented' };
+          }
         }
         /**** END Virtru Block ****/
       } catch (e) {
