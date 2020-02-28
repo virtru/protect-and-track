@@ -8,6 +8,7 @@ const develop01 = {
     apiUrl: `https://api-develop01.develop.virtru.com`,
   },
   clientConfig: {
+    auditEndpoint: 'https://audit-develop01.develop.virtru.com',
     kasEndpoint: 'https://api-develop01.develop.virtru.com/kas',
     easEndpoint: 'https://api-develop01.develop.virtru.com/accounts',
     acmEndpoint: 'https://api-develop01.develop.virtru.com/acm',
@@ -29,6 +30,7 @@ const develop02 = {
     apiUrl: 'https://api-develop02.develop.virtru.com',
   },
   clientConfig: {
+    auditEndpoint: 'https://audit-develop02.develop.virtru.com',
     kasEndpoint: 'https://api-develop02.develop.virtru.com/kas',
     easEndpoint: 'https://api-develop02.develop.virtru.com/accounts',
     acmEndpoint: 'https://api-develop02.develop.virtru.com/acm',
@@ -50,6 +52,7 @@ const staging = {
     apiUrl: 'https://api.staging.virtru.com',
   },
   clientConfig: {
+    auditEndpoint: 'https://audit.staging.virtru.com',
     kasEndpoint: 'https://api.staging.virtru.com/kas',
     easEndpoint: 'https://api.staging.virtru.com/accounts',
     acmEndpoint: 'https://api.staging.virtru.com/acm',
@@ -68,6 +71,7 @@ const production = {
     apiUrl: 'https://api.virtru.com',
   },
   clientConfig: {
+    auditEndpoint: 'https://audit.virtru.com',
     kasEndpoint: 'https://api.virtru.com/kas',
     easEndpoint: 'https://api.virtru.com/accounts',
     acmEndpoint: 'https://api.virtru.com/acm',
