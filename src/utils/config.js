@@ -19,6 +19,7 @@ const develop01 = {
     origins: [
       'https://accounts-develop01.develop.virtru.com',
       'https://api-develop01.develop.virtru.com',
+      'https://audit-develop01.develop.virtru.com',
     ],
   },
 };
@@ -41,6 +42,7 @@ const develop02 = {
     origins: [
       'https://accounts-develop02.develop.virtru.com',
       'https://api-develop02.develop.virtru.com',
+      'https://audit-develop02.develop.virtru.com',
     ],
   },
 };
@@ -60,7 +62,11 @@ const staging = {
   },
   proxy: {
     url: 'https://sdk.staging.virtru.com/js/latest/proxy.html',
-    origins: ['https://accounts.staging.virtru.com', 'https://api.staging.virtru.com'],
+    origins: [
+      'https://accounts.staging.virtru.com',
+      'https://api.staging.virtru.com',
+      'https://audit.staging.virtru.com',
+    ],
   },
 };
 
