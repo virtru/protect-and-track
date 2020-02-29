@@ -55,7 +55,7 @@ steps:
       - buildkite-agent pipeline upload .buildkite/ci.yml
     env:
       BLOCK_DEPLOY: 'build.branch =~ /^feature\//'
-      VIRTRU_ENV: develop
+      VIRTRU_ENV: develop01
       S3_PATH: protect-develop
     branches: master feature/*
 
@@ -65,14 +65,14 @@ steps:
     commands:
       - buildkite-agent pipeline upload .buildkite/ci.yml
     env:
-      BLOCK_DEPLOY: 'build.branch = "master"'
+      BLOCK_DEPLOY: 'build.branch == "master"'
       VIRTRU_ENV: staging
       S3_PATH: 'protect-staging'
     branches: 'master release/*'
 
   - wait
 
-  - label: ':gear: :rocket: production'
+  - label: ':gear: :rocket: production [blocked]'
     commands:
       - buildkite-agent pipeline upload .buildkite/ci.yml
     env:
