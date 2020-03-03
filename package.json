@@ -17,7 +17,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.3.1",
     "redux-zero": "^5.0.4",
-    "virtru-sdk-current": "npm:virtru-sdk@^2.0.0",
+    "virtru-sdk-current": "npm:virtru-sdk@^2.0.1-beta.108",
     "virtru-sdk-lts": "npm:virtru-sdk@^1.6.3"
   },
   "license": "MIT",
