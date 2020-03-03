@@ -64,6 +64,7 @@ let isLoggedIn = email && Virtru.Auth.isLoggedIn({ email });
 let virtruClient = false;
 
 if (isLoggedIn) {
+  console.log(`Creating virtruClient in store`);
   virtruClient = new Virtru.Client({ ...clientConfig, email });
   userId = email;
 } else {

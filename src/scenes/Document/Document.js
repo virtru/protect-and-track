@@ -27,7 +27,6 @@ import Sidebar from '../Sidebar/Sidebar';
 import Virtru from 'utils/sdk';
 import uuid from 'uuid';
 
-import { clientConfig } from 'utils/config';
 import logAction from 'utils/virtruActionLogger';
 import Alert from './components/Alert/Alert';
 import Drop from './components/Drop/Drop';
@@ -399,7 +398,7 @@ const saveEncryptedToLocalStorage = async ({ encryptedPayload, fileName, fileTyp
 
 const actions = {
   setFile: async (state, { fileHandle, fileBuffer }) => {
-    const { userId, virtruClient } = state;
+    const { virtruClient } = state;
     const { name: fileName, type: fileType } = fileHandle || {};
     if (!fileBuffer && fileHandle) {
       fileBuffer = await fileToArrayBuffer(fileHandle);
@@ -430,16 +429,13 @@ const actions = {
           .build();
 
         let client = virtruClient;
-        if (!virtruClient) {
-          logAction('createClientWithEmail');
-          // Virtru: Create the virtru client
-          client = new Virtru.Client({ ...clientConfig, email: userId || 'a@b.invalid' });
-        }
-
-        // Virtru: Get the policy id from the decrypt params
-        const id = decParams && (await client.getPolicyId(decParams));
-        if (id) {
-          return { alert: 'TDF support not yet implemented' };
+        // XXX Validate html files are not TDFs *after* a client is created, too.
+        if (virtruClient) {
+          // Virtru: Get the policy id from the decrypt params
+          const id = decParams && (await client.getPolicyId(decParams));
+          if (id) {
+            return { alert: 'TDF support not yet implemented' };
+          }
         }
         /**** END Virtru Block ****/
       } catch (e) {

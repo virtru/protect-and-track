@@ -13,9 +13,9 @@ Feature: Protect and Track Demo Site
   Background:
     Given Project is protect-and-track-demo
 
-  @smoke
+  @regression
   Scenario Outline: Encrypt file in Protect and Track demo site
-    Given an attachment file: <filename>
+    Given an attachment file: <attachment_name>
     When I start to run testrail <case_id>
     And I opened protect-and-track page using a new browser
     And I drag and drop the file in protect-and-track page
@@ -27,5 +27,5 @@ Feature: Protect and Track Demo Site
 
 
     Examples:
-      | filename   | case_id |
-      | sample.pdf | 248592  |
+      | attachment_name | case_id |
+      | sample.pdf      | 248592  |
