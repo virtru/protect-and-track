@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
     | production  | https://demos.developer.virtru.com/protect-develop/?zapi=production | https://demos.developer.virtru.com/protect-develop/?zapi=production&zver=lts |
 
 - [NO-REF](https://github.com/virtru/protect-and-track/pull/147): _patch_
-  - Defaults SDK version to 2.0.0 (the current beta)
+  - Defaults SDK version to 2.0.1-beta.108 (the current beta)
 
 ## [v1.2.2](https://github.com/virtru/protect-and-track/compare/v1.2.1...v1.2.2) - 2020-02-12
 

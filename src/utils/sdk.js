@@ -9,11 +9,11 @@ function sdkByParam() {
   const ver = getQueryParam('zver');
 
   if (ver === 'lts') {
-    console.log('SDK Selector: LTS');
     Virtru = require('virtru-sdk-lts');
+    console.log(`SDK Selector: LTS [${Virtru.Version}]`);
   } else {
-    console.log('SDK Selector: CURRENT');
     Virtru = require('virtru-sdk-current');
+    console.log(`SDK Selector: CURRENT [${Virtru.Version}]`);
   }
 
   // Configure proxy for environment
