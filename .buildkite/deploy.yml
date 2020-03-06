@@ -1,0 +1,61 @@
+# Build and deploy to one of develop, staging, or production.
+#
+# Variables:
+#   VIRTRU_ENV: Environment to release to
+#   S3_PATH: path upload contents to on S3
+#   BLOCK_DEPLOY: [optional, defaults to true]
+
+env:
+  AWS_ACCOUNT_ALIAS: common
+  ENVIRONMENT_NAME: common
+  DEPLOY_ENVIRONMENT_NAME: production
+  S3_HOSTNAME: demos.developer.virtru.com
+  TEST_ENVIRONMENT_NAME: ${VIRTRU_ENV}
+  USE_NODE_12: true
+
+steps:
+  - label: 'annotate'
+    command: |
+      cat << EOF | buildkite-agent annotate --style "info"
+        [Triggered by ${BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG} Build #${BUILDKITE_TRIGGERED_FROM_BUILD_NUMBER}](/${BUILDKITE_ORGANIZATION_SLUG}/${BUILDKITE_TRIGGERED_FROM_BUILD_PIPELINE_SLUG}/builds/${BUILDKITE_TRIGGERED_FROM_BUILD_NUMBER}#${BUILDKITE_TRIGGERED_FROM_BUILD_ID})
+      EOF
+    if: '"${BUILDKITE_SOURCE}" == "trigger_job"'
+
+  - label: ':house_with_garden: Create block for deploy environment selection'
+    branches: 'feature/* hotfix/*'
+    command: 'buildkite-scripts/mars/pipeline-steps/get-and-select-develop-environments.sh | buildkite-agent pipeline upload'
+
+  - wait
+
+  - label: ':house_with_garden: Set Environment'
+    command: 'buildkite-scripts/mars/scripts/set-deploy-environment.sh'
+    branches: 'master release/* feature/* hotfix/*'
+
+  - wait
+
+  - label: ':npm: Install Dependencies'
+    command: 'buildkite-scripts/mars/wrap/npm-ci.sh'
+
+  - wait
+
+  - label: ':npm: NPM Build (${VIRTRU_ENV})'
+    command: 'buildkite-scripts/scripts/npm-build.sh'
+    env:
+      REACT_APP_VIRTRU_ENV: '${VIRTRU_ENV}'
+
+  - wait
+
+  - block: 'Unblock Deploy to ${VIRTRU_ENV} (https://demos.developer.virtru.com/${S3_PATH}/)'
+    if: ${BLOCK_DEPLOY:-true}
+
+  - label: ':s3: Deploy to S3 ${VIRTRU_ENV}'
+    command: 'buildkite-scripts/scripts/developer-demos/deploy-to-s3.sh'
+    env:
+      S3_PATH: '${S3_PATH}'
+
+  - wait
+
+  - label: ':s3: Invalidate CloudFront Cache ${VIRTRU_ENV}'
+    command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
+    env:
+      S3_PATH: '${S3_PATH}'
