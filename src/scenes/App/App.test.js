@@ -12,6 +12,7 @@ describe('App', () => {
         isLoading={true}
         setIsLoading={() => {}}
         continueAnyway
+        updateFileData={() => {}}
       />,
     );
     expect(getByText('Protect & Track Demo')).toBeInTheDocument();
@@ -26,6 +27,7 @@ describe('App', () => {
         isLoading={true}
         setIsLoading={() => {}}
         setContinueAnyway={spy}
+        updateFileData={() => {}}
       />,
     );
     fireEvent.click(getByText('Continue Anyway'));
