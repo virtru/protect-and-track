@@ -25,6 +25,7 @@
     "url": "git+https://github.com/virtru/protect-and-track.git"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "start": "HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
     "build": "react-scripts build",
     "license": "./license-update",
@@ -59,6 +60,9 @@
     "pretty-quick": "^1.11.1",
     "react-scripts": "^3.4.0",
     "react-test-renderer": "^16.13.0"
+  },
+  "resolutions": {
+    "acorn": "^6.4.1"
   },
   "husky": {
     "hooks": {
