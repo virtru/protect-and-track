@@ -3,16 +3,20 @@ import { render } from '@testing-library/react';
 import App from './App';
 import { fireEvent } from '@testing-library/react';
 
+const noop = () => {
+  // Ignored function.
+};
+
 describe('App', () => {
   test('renders loader if isLoading set as true', () => {
     const { getByText } = render(
       <App
         appIdBundle={false}
-        setAppIdBundle={() => {}}
+        setAppIdBundle={noop}
         isLoading={true}
-        setIsLoading={() => {}}
+        setIsLoading={noop}
         continueAnyway
-        updateFileData={() => {}}
+        updateFileData={noop}
       />,
     );
     expect(getByText('Protect & Track Demo')).toBeInTheDocument();
@@ -23,11 +27,11 @@ describe('App', () => {
     const { getByText } = render(
       <App
         appIdBundle={false}
-        setAppIdBundle={() => {}}
+        setAppIdBundle={noop}
         isLoading={true}
-        setIsLoading={() => {}}
+        setIsLoading={noop}
         setContinueAnyway={spy}
-        updateFileData={() => {}}
+        updateFileData={noop}
       />,
     );
     fireEvent.click(getByText('Continue Anyway'));
