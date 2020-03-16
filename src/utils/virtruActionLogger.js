@@ -33,6 +33,7 @@ const actionList = {
       '  .withBufferSource(buffer)',
       '  .withPolicy(policy)',
       '  .withDisplayFilename(filename)',
+      '  .withMimeType(contentType)',
       '  .build();',
     ],
   },

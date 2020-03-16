@@ -83,11 +83,14 @@ function Document({
 
       // Create a new encrypt parameters object which will be used to drive the encryption method
       logAction('buildVirtruEncryptionParams');
-      const encryptParams = new Virtru.EncryptParamsBuilder()
+      const encryptParamsBuilder = new Virtru.EncryptParamsBuilder()
         .withBufferSource(buffer) // Specify the source, which will be encrypted, from buffer
         .withPolicy(policy) // Specify the policy which will be used for encryption
-        .withDisplayFilename(filename) // Specify the filename which is displayed (since we're using a buffer)
-        .build(); // Build the params
+        .withDisplayFilename(filename); // Specify the filename which is displayed (since we're using a buffer)
+      if (encryptParamsBuilder.setMimeType && file.type) {
+        encryptParamsBuilder.setMimeType(file.type);
+      }
+      const encryptParams = encryptParamsBuilder.build(); // Build the params
 
       // Run the encryption and return a stream
       logAction('encryptToBuffer');
