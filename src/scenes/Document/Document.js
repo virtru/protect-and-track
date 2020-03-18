@@ -90,7 +90,7 @@ function Document({
       if (encryptParamsBuilder.setMimeType && file.type) {
         encryptParamsBuilder.setMimeType(file.type);
       }
-      const encryptParams = encryptParamsBuilder.build(); // Build the params
+      const encryptParams = encryptParamsBuilder.build();
 
       // Run the encryption and return a stream
       logAction('encryptToBuffer');
