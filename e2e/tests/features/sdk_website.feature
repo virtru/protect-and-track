@@ -29,3 +29,15 @@ Feature: Protect and Track Demo Site
     Examples:
       | filename   | case_id |
       | sample.pdf | 248592  |
+
+  @smoke @regression
+  Scenario: Send TDF attachment in BP
+    Given an attachment file: sample.pdf
+    When I start to run testrail 248592
+    And I logged in gmail page as qavirtrumd11@cmk-test-org.com using a new browser with BP activated
+    And I composed an email to qavirtrumd12@cmk-test-org.com
+    And I turned on secure toggle
+    And I input attachment test as email subject in gmail page
+    And I input attachment test as email body in gmail page
+    And I drag and drop the file in gmail page
+    And I clicked send securely button in gmail page and wait for complete
