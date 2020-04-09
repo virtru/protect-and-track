@@ -1,3 +1,13 @@
+# License
+
+Copyright © 2019 Virtru Corporation
+
+This repository is released under the MIT license for all artifacts in this repository, with the following exceptions which are subject to our [Virtru Data Protection Platform Subscription Agreement](https://www.virtru.com/terms-of-service/):
+
+- virtru-sdk
+
+# MIT
+
 MIT License
 
 Copyright (c) 2019 Virtru Corporation

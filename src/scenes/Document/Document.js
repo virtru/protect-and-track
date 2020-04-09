@@ -1,25 +1,3 @@
-// MIT License
-//
-// Copyright (c) 2019 Virtru Corporation
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
@@ -27,7 +5,6 @@ import Sidebar from '../Sidebar/Sidebar';
 import Virtru from 'utils/sdk';
 import uuid from 'uuid';
 
-import { clientConfig } from 'utils/config';
 import logAction from 'utils/virtruActionLogger';
 import Alert from './components/Alert/Alert';
 import Drop from './components/Drop/Drop';
@@ -106,11 +83,14 @@ function Document({
 
       // Create a new encrypt parameters object which will be used to drive the encryption method
       logAction('buildVirtruEncryptionParams');
-      const encryptParams = new Virtru.EncryptParamsBuilder()
+      const encryptParamsBuilder = new Virtru.EncryptParamsBuilder()
         .withBufferSource(buffer) // Specify the source, which will be encrypted, from buffer
         .withPolicy(policy) // Specify the policy which will be used for encryption
-        .withDisplayFilename(filename) // Specify the filename which is displayed (since we're using a buffer)
-        .build(); // Build the params
+        .withDisplayFilename(filename); // Specify the filename which is displayed (since we're using a buffer)
+      if (encryptParamsBuilder.setMimeType && file.type) {
+        encryptParamsBuilder.setMimeType(file.type);
+      }
+      const encryptParams = encryptParamsBuilder.build();
 
       // Run the encryption and return a stream
       logAction('encryptToBuffer');
@@ -399,7 +379,7 @@ const saveEncryptedToLocalStorage = async ({ encryptedPayload, fileName, fileTyp
 
 const actions = {
   setFile: async (state, { fileHandle, fileBuffer }) => {
-    const { userId, virtruClient } = state;
+    const { virtruClient } = state;
     const { name: fileName, type: fileType } = fileHandle || {};
     if (!fileBuffer && fileHandle) {
       fileBuffer = await fileToArrayBuffer(fileHandle);
@@ -430,16 +410,13 @@ const actions = {
           .build();
 
         let client = virtruClient;
-        if (!virtruClient) {
-          logAction('createClientWithEmail');
-          // Virtru: Create the virtru client
-          client = new Virtru.Client({ ...clientConfig, email: userId || 'a@b.invalid' });
-        }
-
-        // Virtru: Get the policy id from the decrypt params
-        const id = decParams && (await client.getPolicyId(decParams));
-        if (id) {
-          return { alert: 'TDF support not yet implemented' };
+        // XXX Validate html files are not TDFs *after* a client is created, too.
+        if (virtruClient) {
+          // Virtru: Get the policy id from the decrypt params
+          const id = decParams && (await client.getPolicyId(decParams));
+          if (id) {
+            return { alert: 'TDF support not yet implemented' };
+          }
         }
         /**** END Virtru Block ****/
       } catch (e) {

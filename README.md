@@ -1,4 +1,4 @@
-//# Protect and Track Demo
+# Protect and Track Demo · [![Build status](https://badge.buildkite.com/565d5622c003832beb133e0c39b6a6e20c42b88c44a622b5b0.svg)](https://buildkite.com/virtru/protect-and-track)
 
 ![Protect and Track](https://files.readme.io/b99c6e4-protect-share-5.png)
 
@@ -138,6 +138,6 @@ There are many ways to get our attention:
 
 Copyright © 2019 Virtru Corporation
 
-This repo is released under the MIT license for all artifacts in this repo with the following exceptions which are subject to our [Virtru Data Protection Subscription Agreement](https://www.virtru.com/terms-of-service/).
+This repository is released under the MIT license for all artifacts in this repository, with the following exceptions which are subject to our [Virtru Data Protection Platform Subscription Agreement](https://www.virtru.com/terms-of-service/):
 
 - virtru-sdk

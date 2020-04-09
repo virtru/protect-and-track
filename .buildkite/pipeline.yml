@@ -21,63 +21,49 @@ env:
   USE_NODE_12: true
 
 steps:
-  - label: ':npm: Install Dependencies'
-    command: 'buildkite-scripts/mars/wrap/npm-ci.sh'
-
-  - wait
-
-  - label: ':npm: :lock: NPM Audit'
-    command: '.buildkite/scripts/npm-audit.sh'
-
-  - wait
-
-  - label: ':npm: Tests'
-    command: 'buildkite-scripts/scripts/npm-test.sh'
-    artifact_paths:
-      - 'coverage/lcov.info'
-
-  - wait
-
-  - label: ':house_with_garden: Create block for deploy environment selection'
-    branches: 'feature/* hotfix/*'
-    command: 'buildkite-scripts/mars/pipeline-steps/get-and-select-develop-environments.sh | buildkite-agent pipeline upload'
-
-  - wait
-
-  - label: ':house_with_garden: Set Environment'
-    command: 'buildkite-scripts/mars/scripts/set-deploy-environment.sh'
-    branches: 'master release/* feature/* hotfix/*'
+  - label: ':gear: build & unit test'
+    commands:
+      - buildkite-agent pipeline upload .buildkite/pre.yml
 
   - wait
 
   - label: ':gear: :rocket: develop'
-    commands:
-      - buildkite-agent pipeline upload .buildkite/ci.yml
-    env:
-      BLOCK_DEPLOY: 'build.branch =~ /^feature\//'
-      VIRTRU_ENV: develop
-      S3_PATH: protect-develop
+    trigger: protect-and-track-deploy
+    build:
+      message: '[develop] ${BUILDKITE_MESSAGE}'
+      commit: '${BUILDKITE_COMMIT}'
+      branch: '${BUILDKITE_BRANCH}'
+      env:
+        BLOCK_DEPLOY: 'build.branch =~ /^feature\//'
+        VIRTRU_ENV: develop01
+        S3_PATH: protect-develop
     branches: master feature/*
 
   - wait
 
   - label: ':gear: :rocket: staging'
-    commands:
-      - buildkite-agent pipeline upload .buildkite/ci.yml
-    env:
-      BLOCK_DEPLOY: 'build.branch = "master"'
-      VIRTRU_ENV: staging
-      S3_PATH: 'protect-staging'
+    trigger: protect-and-track-deploy
+    build:
+      message: '[staging] ${BUILDKITE_MESSAGE}'
+      commit: '${BUILDKITE_COMMIT}'
+      branch: '${BUILDKITE_BRANCH}'
+      env:
+        BLOCK_DEPLOY: 'build.branch == "master"'
+        VIRTRU_ENV: staging
+        S3_PATH: 'protect-staging'
     branches: 'master release/*'
 
   - wait
 
-  - label: ':gear: :rocket: production'
-    commands:
-      - buildkite-agent pipeline upload .buildkite/ci.yml
-    env:
-      VIRTRU_ENV: production
-      S3_PATH: 'protect/'
+  - label: ':gear: :rocket: production [blocked]'
+    trigger: protect-and-track-deploy
+    build:
+      message: '[production] ${BUILDKITE_MESSAGE}'
+      commit: '${BUILDKITE_COMMIT}'
+      branch: '${BUILDKITE_BRANCH}'
+      env:
+        VIRTRU_ENV: production
+        S3_PATH: 'protect'
     branches: 'release/*'
 
   - wait
