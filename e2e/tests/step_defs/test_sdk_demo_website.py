@@ -9,6 +9,6 @@ from pytest_bdd import scenario
 def test_sdk_website_encrypt_file(current_test):
     pass
 
-@scenario('../features/sdk_website.feature', 'Send TDF attachment in BP')
+@scenario('../features/sdk_website.feature', 'Send TDF3 attachment in BP')
 def test_send_tdf_file_in_bp(current_test):
     pass
