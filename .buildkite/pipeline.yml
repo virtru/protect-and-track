@@ -17,6 +17,7 @@ env:
   AWS_ACCOUNT_ALIAS: common
   ENVIRONMENT_NAME: common
   DEPLOY_ENVIRONMENT_NAME: production
+  TEST_ENVIRONMENT_NAME: ${VIRTRU_ENV}
   S3_HOSTNAME: demos.developer.virtru.com
   USE_NODE_12: true
 
