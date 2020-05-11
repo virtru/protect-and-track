@@ -24,7 +24,7 @@ Feature: Protect and Track Demo Site
     And I input attachment test as email body in gmail page
     And I drag and drop the file in gmail page
     And I clicked send securely button in gmail page and wait for complete
-    Then Tooltip sample.tdf.html is visible for {attachment_name} in gmail page
+#    Then Tooltip sample.tdf.html is visible for tdf3.pdf.tdf in gmail page
 
   @smoke @regression
   Scenario Outline: Encrypt file in Protect and Track demo site
