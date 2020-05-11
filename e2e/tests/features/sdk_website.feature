@@ -15,7 +15,7 @@ Feature: Protect and Track Demo Site
 
   @smoke @regression
   Scenario: Send TDF3 attachment in BP
-    Given a TDF3 file: tdf3.pdf.html
+    Given a TDF3 file: tdf3.pdf.tdf
     When I start to run testrail 255257
     And I logged in gmail page as qavirtrumd11@cmk-test-org.com using a new browser with BP activated
     And I composed an email to qavirtrumd12@cmk-test-org.com
@@ -26,7 +26,7 @@ Feature: Protect and Track Demo Site
     And I clicked send securely button in gmail page and wait for complete
     Then Tooltip sample.tdf.html is visible for {attachment_name} in gmail page
 
-  @regression
+  @smoke @regression
   Scenario Outline: Encrypt file in Protect and Track demo site
     Given an attachment file: sample.pdf
     When I start to run testrail 248592
