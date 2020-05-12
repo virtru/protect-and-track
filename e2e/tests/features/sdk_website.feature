@@ -20,11 +20,13 @@ Feature: Protect and Track Demo Site
     And I logged in gmail page as qavirtrumd11@cmk-test-org.com using a new browser with BP activated
     And I composed an email to qavirtrumd12@cmk-test-org.com
     And I turned on secure toggle
-    And I input attachment test as email subject in gmail page
-    And I input attachment test as email body in gmail page
+    And I input tdf3 attachment test as email subject in gmail page
+    And I input tdf3 attachment test as email body in gmail page
     And I drag and drop the file in gmail page
     And I clicked send securely button in gmail page and wait for complete
-#    Then Tooltip sample.tdf.html is visible for tdf3.pdf.tdf in gmail page
+    And I logged in gmail page as qavirtrumd12@cmk-test-org.com using the same browser with BP activated
+    And I opened this email in gmail page
+    Then this email is decrypted in gmail and contents are correct
 
   @smoke @regression
   Scenario Outline: Encrypt file in Protect and Track demo site

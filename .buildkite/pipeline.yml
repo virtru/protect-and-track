@@ -22,7 +22,10 @@ env:
   USE_NODE_12: true
 
 steps:
-  - label: ':chrome: E2E Tests (ad hoc): $TEST_ENVIRONMENT_NAME'
+  # This step immediately runs an e2e test on branches named *e2e*
+  # The purpose is to allow test developers to quickly check test validity
+  - label: ':chrome: early E2E Tests: $TEST_ENVIRONMENT_NAME'
+    branches: '*e2e*'
     command: 'npm run test-e2e'
     artifact_paths: 'e2e/reports/*'
     concurrency: 3
