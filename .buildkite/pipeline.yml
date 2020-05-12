@@ -17,10 +17,20 @@ env:
   AWS_ACCOUNT_ALIAS: common
   ENVIRONMENT_NAME: common
   DEPLOY_ENVIRONMENT_NAME: production
+  TEST_ENVIRONMENT_NAME: production
   S3_HOSTNAME: demos.developer.virtru.com
   USE_NODE_12: true
 
 steps:
+  # This step immediately runs an e2e test on branches named *e2e*
+  # The purpose is to allow test developers to quickly check test validity
+  - label: ':chrome: early E2E Tests: $TEST_ENVIRONMENT_NAME'
+    branches: '*e2e*'
+    command: 'npm run test-e2e'
+    artifact_paths: 'e2e/reports/*'
+    concurrency: 3
+    concurrency_group: 'desktop-chrome-sdk'
+
   - label: ':gear: build & unit test'
     commands:
       - buildkite-agent pipeline upload .buildkite/pre.yml
