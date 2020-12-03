@@ -10,4 +10,4 @@ source buildkite-scripts/utils/logging.sh
 buildkite-scripts/scripts/verify-node-modules.sh
 
 log-debug "Generate code audit reports"
-buildkite-scripts/wrap/npm.sh run audit;
+buildkite-scripts/wrap/npm.sh audit

@@ -30,7 +30,6 @@
     "build": "react-scripts build",
     "license": "./license-update",
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json}\"",
-    "audit": "audit-ci --config .audit-ci.json",
     "test": "eslint src && react-scripts test --watchAll=false",
     "test-watch": "react-scripts test",
     "test-e2e": ".buildkite/scripts/e2e.sh",
@@ -54,7 +53,6 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.1.1",
     "@testing-library/react": "^8.0.9",
-    "audit-ci": "^2.5.1",
     "husky": "^2.7.0",
     "prettier": "1.18.2",
     "pretty-quick": "^1.11.1",
