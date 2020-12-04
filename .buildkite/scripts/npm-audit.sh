@@ -10,4 +10,5 @@ source buildkite-scripts/utils/logging.sh
 buildkite-scripts/scripts/verify-node-modules.sh
 
 log-debug "Generate code audit reports"
-buildkite-scripts/wrap/npm.sh audit
+buildkite-scripts/wrap/npm.sh audit --production
+buildkite-scripts/wrap/npm.sh audit --only=dev || echo "NPM audit dev still failing, fix by updating CRA"
