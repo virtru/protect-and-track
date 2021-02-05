@@ -20,14 +20,14 @@ const Header = ({ userId }) => {
       return (
         <span className="currentUser">
           <span className="userID">{userId}</span>{' '}
-          <Button variant="link" onClick={e => signOut(userId)} verySmall light>
+          <Button variant="link" onClick={() => signOut(userId)} verySmall light>
             Reset &amp; Sign Out
           </Button>
         </span>
       );
     }
     return (
-      <Button variant="link" onClick={e => signOut()} verySmall light>
+      <Button variant="link" onClick={() => signOut()} verySmall light>
         Reset
       </Button>
     );
