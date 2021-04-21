@@ -17,7 +17,7 @@ const develop01 = {
     url: 'https://sdk-develop01.develop.virtru.com/js/latest/proxy.html',
     origins: [
       'https://api-develop01.develop.virtru.com',
-      'https://audit-develop02.develop.virtru.com',
+      'https://audit-develop01.develop.virtru.com',
     ],
   },
 };
