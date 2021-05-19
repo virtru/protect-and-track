@@ -62,5 +62,5 @@ steps:
 
   - wait
 
-  - label: ':gear: build & unit test'
+  - label: ':chrome: E2E Tests: $TEST_ENVIRONMENT_NAME'
     command: buildkite-agent pipeline upload .buildkite/post.yml
