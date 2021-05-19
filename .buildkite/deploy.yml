@@ -59,3 +59,8 @@ steps:
     command: 'buildkite-scripts/scripts/developer-demos/invalidate-cloudfront-cache.sh'
     env:
       S3_PATH: '${S3_PATH}'
+
+  - wait
+
+  - label: ':gear: build & unit test'
+    command: buildkite-agent pipeline upload .buildkite/post.yml
