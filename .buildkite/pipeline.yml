@@ -17,70 +17,11 @@ env:
   AWS_ACCOUNT_ALIAS: common
   ENVIRONMENT_NAME: common
   DEPLOY_ENVIRONMENT_NAME: production
-  TEST_ENVIRONMENT_NAME: production
+  TEST_ENVIRONMENT_NAME: develop02
   S3_HOSTNAME: demos.developer.virtru.com
   USE_NODE_12: true
+  VIRTRU_ENV: develop02
 
 steps:
-  # This step immediately runs an e2e test on branches named *e2e*
-  # The purpose is to allow test developers to quickly check test validity
-  - label: ':chrome: early E2E Tests: $TEST_ENVIRONMENT_NAME'
-    branches: '*e2e*'
-    command: 'npm run test-e2e'
-    artifact_paths: 'e2e/reports/*'
-    concurrency: 3
-    concurrency_group: 'desktop-chrome-sdk'
-
-  - label: ':gear: build & unit test'
-    commands:
-      - buildkite-agent pipeline upload .buildkite/pre.yml
-
-  - wait
-
-  - label: ':gear: :rocket: develop'
-    trigger: protect-and-track-deploy
-    build:
-      message: '[develop] ${BUILDKITE_MESSAGE}'
-      commit: '${BUILDKITE_COMMIT}'
-      branch: '${BUILDKITE_BRANCH}'
-      env:
-        BLOCK_DEPLOY: 'build.branch =~ /^feature\//'
-        VIRTRU_ENV: ${VIRTRU_ENV:-develop02}
-        S3_PATH: protect-develop
-    branches: master feature/*
-
-  - wait
-
-  - label: ':gear: :rocket: staging'
-    trigger: protect-and-track-deploy
-    build:
-      message: '[staging] ${BUILDKITE_MESSAGE}'
-      commit: '${BUILDKITE_COMMIT}'
-      branch: '${BUILDKITE_BRANCH}'
-      env:
-        BLOCK_DEPLOY: 'build.branch == "master"'
-        VIRTRU_ENV: staging
-        S3_PATH: 'protect-staging'
-    branches: 'master release/*'
-
-  - wait
-
-  - label: ':gear: :rocket: production [blocked]'
-    trigger: protect-and-track-deploy
-    build:
-      message: '[production] ${BUILDKITE_MESSAGE}'
-      commit: '${BUILDKITE_COMMIT}'
-      branch: '${BUILDKITE_BRANCH}'
-      env:
-        VIRTRU_ENV: production
-        S3_PATH: 'protect'
-    branches: 'release/*'
-
-  - wait
-
-  - block: 'Tag release?'
-    branches: 'release/*'
-
-  - label: 'Tag Release'
-    command: '.buildkite/scripts/cut-release.sh'
-    branches: 'release/*'
+  - label: ':chrome: E2E Tests: $TEST_ENVIRONMENT_NAME'
+    command: buildkite-agent pipeline upload .buildkite/post.yml
