@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [v1.2.6](https://github.com/virtru/protect-and-track/pull/)
 
-- []
+- [i185]
 
   - Set current virtru-sdk to 2.3.2
 
