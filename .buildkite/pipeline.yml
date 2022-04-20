@@ -19,7 +19,7 @@ env:
   DEPLOY_ENVIRONMENT_NAME: production
   TEST_ENVIRONMENT_NAME: production
   S3_HOSTNAME: demos.developer.virtru.com
-  USE_NODE_12: true
+  USE_NODE_16: true
 
 steps:
   # This step immediately runs an e2e test on branches named *e2e*
