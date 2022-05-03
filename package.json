@@ -29,7 +29,7 @@
     "start": "HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
     "build": "react-scripts build",
     "license": "./license-update",
-    "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json}\"",
+    "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json,yml}\"",
     "test": "eslint src && react-scripts test --watchAll=false",
     "test-watch": "react-scripts test",
     "test-e2e": ".buildkite/scripts/e2e.sh",
