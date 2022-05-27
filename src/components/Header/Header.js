@@ -9,7 +9,7 @@ import { ReactComponent as GithubIcon } from './github-icon.svg';
 import Button from '../Button/Button';
 import resetApp from 'utils/resetApp';
 
-const signOut = email => Promise.all(Virtru.Auth.logout(email && { email }), resetApp());
+const signOut = (email) => Promise.all(Virtru.Auth.logout(email && { email }), resetApp());
 
 /**
  * Header Component that displays content at the top of the page.

@@ -87,7 +87,7 @@ export function builderLogger(builder) {
     get(target, propKey, receiver) {
       const origMethod = target[propKey];
       if (origMethod) {
-        return function(...args) {
+        return function (...args) {
           // Add the next action
           actions.push(`    .${propKey}(${args.length ? JSON.stringify(args) : ''})`);
 

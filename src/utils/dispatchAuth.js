@@ -6,7 +6,7 @@
  * So we open new window with url (generate by Dropbox api) and redirect url (our current page)
  * After user log in in dropbox, dropbox will redirect user to our page with params. We getting url and send it by postMessage
  */
-export default function() {
+export function dispatchAuth() {
   if (!window.opener && !window.parent) {
     return false;
   }

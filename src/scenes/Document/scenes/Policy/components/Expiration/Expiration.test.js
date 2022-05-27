@@ -19,7 +19,7 @@ describe('Expiration', () => {
   test('Custom', () => {
     const setPolicy = jest.fn();
     const policy = new Virtru.PolicyBuilder().build();
-    const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
+    const policyChange = (change) => generatePolicyChanger(policy, setPolicy, change);
     const now = new Date();
     let later = new Date(now);
     later.setMinutes(now.getMinutes() + 5, 0, 0);

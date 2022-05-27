@@ -1,7 +1,7 @@
 import React from 'react';
 import './Modal.css';
 
-export default ({ children, onClose, raw }) => {
+export const Modal = ({ children, onClose, raw }) => {
   if (raw) {
     return (
       <div className="Modal-wrapper">

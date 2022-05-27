@@ -1,8 +1,8 @@
 import React from 'react';
-import { cleanup, render, wait, fireEvent } from '@testing-library/react';
-import Share from './Share';
+import { cleanup, render, waitFor, fireEvent } from '@testing-library/react';
+import { Share } from './Share';
 import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
-import gsuite from './services/gsuite';
+import * as gsuite from './services/gsuite';
 
 jest.mock('./services/gsuite');
 
@@ -17,12 +17,12 @@ describe('Share', () => {
       <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
     );
     expect(getByText('Share protected file')).toBeInTheDocument();
-    await wait(() => expect(gsuite.init).toHaveBeenCalled());
+    await waitFor(() => expect(gsuite.init).toHaveBeenCalled());
 
     gsuite.upload.mockReturnValue({ result: { id: 'fake-id' } });
     fireEvent.click(getByText('Google Drive'));
     // Make sure we are sharing with the expected recipients
-    await wait(() => expect(gsuite.share).toHaveBeenCalledWith('fake-id', ['a', 'b']));
+    await waitFor(() => expect(gsuite.share).toHaveBeenCalledWith('fake-id', ['a', 'b']));
     // Make sure we update the share state after
     const doneState = {
       state: SHARE_STATE.SHARED,
@@ -30,7 +30,7 @@ describe('Share', () => {
       link: 'https://drive.google.com/open?id=fake-id',
       recipients: ['a', 'b'],
     };
-    await wait(() =>
+    await waitFor(() =>
       expect(setShare).toHaveBeenCalledWith({
         provider: SHARE_PROVIDERS.GOOGLEDRIVE,
         providerState: doneState,
@@ -48,7 +48,7 @@ describe('Share', () => {
       />,
     );
     fireEvent.click(getByText('Done'));
-    await wait(() => expect(onClose).toHaveBeenCalled());
+    await waitFor(() => expect(onClose).toHaveBeenCalled());
   });
 
   test('to gsuite fail auth', async () => {
@@ -65,14 +65,14 @@ describe('Share', () => {
       <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} policy={policy} />,
     );
     expect(getByText('Share protected file')).toBeInTheDocument();
-    await wait(() => expect(gsuite.init).toHaveBeenCalled());
+    await waitFor(() => expect(gsuite.init).toHaveBeenCalled());
 
     gsuite.signIn.mockImplementation(() => {
-      throw { error: 'popup_closed_by_user' };
+      throw new Error('popup_closed_by_user');
     });
     fireEvent.click(getByText('Google Drive'));
 
-    await wait(() =>
+    await waitFor(() =>
       expect(setShare).toHaveBeenCalledWith({
         provider: SHARE_PROVIDERS.GOOGLEDRIVE,
         providerState: {
@@ -81,7 +81,7 @@ describe('Share', () => {
         },
       }),
     );
-    await wait(() =>
+    await waitFor(() =>
       expect(setShare).toHaveBeenCalledWith({
         provider: SHARE_PROVIDERS.GOOGLEDRIVE,
         providerState: {

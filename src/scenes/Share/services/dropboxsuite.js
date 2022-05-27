@@ -13,7 +13,7 @@ const AUTHORIZATION_URI = 'https://www.dropbox.com/oauth2/authorize';
 const AUTHORIZATION_TOKEN_URI = 'https://www.dropbox.com/oauth2/authorize';
 const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 
-function init() {
+export function init() {
   if (!CLIENT_ID) {
     console.info('Dropbox integration not enabled');
     return false;
@@ -26,7 +26,7 @@ function init() {
   });
 }
 
-async function signIn() {
+export async function signIn() {
   const dropBoxAuth = init();
   const url = dropBoxAuth.token.getUri();
   window.open(
@@ -37,11 +37,11 @@ async function signIn() {
   return await getToken(dropBoxAuth);
 }
 
-async function signOut() {}
+export async function signOut() {}
 
-async function share(accessToken, fileId, recipients) {
+export async function share(accessToken, fileId, recipients) {
   const dropBox = new Dropbox(accessToken);
-  const members = recipients.map(email => {
+  const members = recipients.map((email) => {
     return {
       '.tag': 'email',
       email,
@@ -50,7 +50,7 @@ async function share(accessToken, fileId, recipients) {
   return await dropBox.sharingAddFileMember({ file: fileId, members });
 }
 
-async function upload(accessToken, file) {
+export async function upload(accessToken, file) {
   const dropBox = new Dropbox(accessToken);
   let fname = file.name + (file.name.endsWith('.html') ? '' : '.html');
 
@@ -71,7 +71,7 @@ async function upload(accessToken, file) {
  * @returns {Promise<any>}
  */
 function getToken(dropBoxAuth) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     async function dropboxMessageListener(e) {
       if (window.location.origin === e.origin) {
         const token = await dropBoxAuth.token.getToken(e.data);
@@ -82,5 +82,3 @@ function getToken(dropBoxAuth) {
     window.addEventListener('message', dropboxMessageListener, false);
   });
 }
-
-export default { init, share, upload, signIn, signOut };

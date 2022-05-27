@@ -1,4 +1,4 @@
-export default {
+export const ENCRYPT_STATES = {
   AUTHENTICATING: 0,
   UNPROTECTED: 1,
   PROTECTING: 2,

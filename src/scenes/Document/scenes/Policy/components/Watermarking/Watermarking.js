@@ -1,5 +1,5 @@
 import React from 'react';
-import SectionHeader from '../SectionHeader/SectionHeader';
+import { SectionHeader } from '../SectionHeader/SectionHeader';
 import Toggle from '../Toggle/Toggle';
 import { ReactComponent as WatermarkIcon } from './watermark.svg';
 import classNames from 'classnames';
@@ -17,10 +17,10 @@ function Watermarking({ file, policy, policyChange, isPolicyRevoked }) {
   const hasWatermarking = policy && policy.hasWatermarking();
 
   // Virtru: enable watermarking in policy
-  const enableWatermarking = policy => policy.enableWatermarking();
+  const enableWatermarking = (policy) => policy.enableWatermarking();
 
   // Virtru: disable watermarking in policy
-  const disableWatermarking = policy => policy.disableWatermarking();
+  const disableWatermarking = (policy) => policy.disableWatermarking();
 
   /**** END Virtru Block ****/
 

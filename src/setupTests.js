@@ -1,11 +1,10 @@
 import '@testing-library/jest-dom';
-import '@testing-library/react/cleanup-after-each';
 
 const matchMedia = {
   matches: false,
   _events: [],
   _triggerEvents() {
-    this._events.forEach(event => event());
+    this._events.forEach((event) => event());
   },
   addListener(listener) {
     this._events.push(listener);

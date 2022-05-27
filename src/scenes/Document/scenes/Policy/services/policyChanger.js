@@ -8,7 +8,7 @@ export const NOPE = 'NOPE';
  * @param change function that takes a PolicyBuilder and manipulates it, which an optional `event` second argument
  */
 export function generatePolicyChanger(policy, setPolicy, change, policyId) {
-  return e => {
+  return (e) => {
     e && e.preventDefault();
 
     /**** Virtru Block ****

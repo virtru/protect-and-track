@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'redux-zero/react';
-import ENCRYPT_STATES from 'constants/encryptStates';
+import { ENCRYPT_STATES } from 'constants/encryptStates';
 import { base64ToArrayBuffer } from 'utils/buffer';
 import Virtru from 'utils/sdk';
 import uuid from 'uuid';
@@ -65,7 +65,9 @@ function App({
         <Header isLoggedIn={false} userId={userId} />
         <main className="main">
           <Router>
-            <Route path="/" component={Document} />
+            <Routes>
+              <Route path="/" component={Document} />
+            </Routes>
             {/* TODO(dmihalcik): <Route 404 /> */}
           </Router>
         </main>
@@ -199,7 +201,4 @@ async function getFileData() {
   };
 }
 
-export default connect(
-  mapToProps,
-  actions,
-)(App);
+export default connect(mapToProps, actions)(App);

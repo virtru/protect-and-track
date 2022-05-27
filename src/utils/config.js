@@ -1,4 +1,4 @@
-import getQueryParam from 'utils/getQueryParam';
+import { getQueryParam } from 'utils/getQueryParam';
 
 const develop01 = {
   authOptions: {

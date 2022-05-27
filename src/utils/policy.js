@@ -14,8 +14,3 @@ export const policyFlagCheck = async ({ encrypted, virtruClient }) => {
   const policyFlags = thePolicy._authZFlags;
   return policyFlags.watermark === true || policyFlags.pfp === true;
 };
-
-export default {
-  getPolicy,
-  policyFlagCheck,
-};

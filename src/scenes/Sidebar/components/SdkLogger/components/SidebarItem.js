@@ -2,7 +2,7 @@ import React from 'react';
 
 import './SidebarItem.css';
 
-export default ({ title, code, timestamp }) => {
+export const SidebarItem = ({ title, code, timestamp }) => {
   return (
     <div className="SidebarItemWrapper">
       <div className="json-wrapper">

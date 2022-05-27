@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
-import dropboxsuite from './services/dropboxsuite';
-import gsuite from './services/gsuite';
-import onedrive from './services/onedrive';
+import * as dropboxsuite from './services/dropboxsuite';
+import * as gsuite from './services/gsuite';
+import * as onedrive from './services/onedrive';
 import './Share.css';
 import { SHARE_STATE, SHARE_PROVIDERS, SHARE_TITLES } from 'constants/sharing';
 import Button from 'components/Button/Button';
-import Modal from 'components/Modal/Modal';
+import { Modal } from 'components/Modal/Modal';
 
 function Ico({ type }) {
   return <img alt="" src={`${type}.svg`} className="ShareSelect-ico" />;
@@ -23,7 +23,7 @@ function ShareContainer({ children }) {
 
 function ShareButton({ children, init, onClick, type }) {
   const [buttonState, setButtonState] = useState('start');
-  const handleClick = e => {
+  const handleClick = (e) => {
     e.preventDefault();
     onClick && onClick(e);
   };
@@ -191,7 +191,7 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       id = uploadResponse.id;
       link = 'https://onedrive.live.com/?id=' + uploadResponse.id;
       upstate();
-      recipients.map(async user => {
+      recipients.map(async (user) => {
         try {
           await onedrive.share(token, uploadResponse.id, [user]);
         } catch (e) {
@@ -237,7 +237,7 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
 function RecipientList({ recipients }) {
   return (
     <ol>
-      {recipients.map(user => {
+      {recipients.map((user) => {
         return (
           <li key={user} className="Share-recipient">
             {user}
@@ -261,7 +261,7 @@ function Connecting({ provider }) {
 }
 
 function Fail({ provider, providerState, setShare }) {
-  const tryAgain = e => {
+  const tryAgain = (e) => {
     e.preventDefault();
     setShare(false);
   };
@@ -338,7 +338,7 @@ function Sharing({ file, provider, recipients }) {
 function ShareComplete({ provider, providerState, file, onClose, recipients }) {
   const { link } = providerState;
   const { file: { name } = {} } = file;
-  const handleDoneClick = e => {
+  const handleDoneClick = (e) => {
     e.preventDefault();
     onClose();
   };
@@ -365,7 +365,7 @@ function ShareComplete({ provider, providerState, file, onClose, recipients }) {
   );
 }
 
-function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
+function ShareInternal({ encrypted, onClose, providers, recipients, share, setShare }) {
   let shareContent;
   const closeAndResetState = (...args) => {
     onClose(...args);
@@ -458,7 +458,4 @@ const actions = {
       : { share: false },
 };
 
-export default connect(
-  mapToProps,
-  actions,
-)(Share);
+export const Share = connect(mapToProps, actions)(ShareInternal);

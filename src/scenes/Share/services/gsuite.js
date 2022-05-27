@@ -1,7 +1,7 @@
 /* global gapi */
 
 import { loadGapi } from 'services/core/remoteLoad';
-import awaitify from 'services/core/awaitify';
+import { awaitify } from 'services/core/awaitify';
 
 // API connectors.
 // First, create a project at https://console.developers.google.com/
@@ -38,7 +38,7 @@ async function initClient() {
   });
 }
 
-async function init() {
+export async function init() {
   if (!API_KEY || !CLIENT_ID) {
     console.warn('Google Drive integration not enabled');
     return false;
@@ -50,20 +50,20 @@ async function init() {
   return gapi;
 }
 
-async function signIn() {
+export async function signIn() {
   const authResponse = await gapi.auth2.getAuthInstance().signIn();
   return authResponse.w3.U3; // Grab email from google auth
 }
 
-async function signOut() {
+export async function signOut() {
   return gapi.auth2.getAuthInstance().signOut();
 }
 
-async function share(fileId, recipients) {
+export async function share(fileId, recipients) {
   if (!recipients.length) {
     return;
   }
-  const makeRequest = user => ({
+  const makeRequest = (user) => ({
     path: `drive/v2/files/${fileId}/permissions`,
     method: 'POST',
     headers: {
@@ -79,7 +79,7 @@ async function share(fileId, recipients) {
     return await gapi.client.request(makeRequest(recipients[0]));
   }
   const httpBatch = gapi.client.newBatch();
-  recipients.map(rcpt => httpBatch.add(gapi.client.request(makeRequest(rcpt))));
+  recipients.map((rcpt) => httpBatch.add(gapi.client.request(makeRequest(rcpt))));
   return await httpBatch;
 }
 
@@ -87,7 +87,7 @@ async function share(fileId, recipients) {
  * @param {String} name the file name
  * @param {*} content ArrayBuffer object containing the TDF.html content
  */
-async function upload(name, content) {
+export async function upload(name, content) {
   // NOTE(DSAT-1): Unfortunately, AFAICT the current `drive.files.create` method in GAPI
   // does not support POST content. See relevant discussions:
   //   * https://stackoverflow.com/questions/51775917
@@ -102,7 +102,7 @@ async function upload(name, content) {
     name: name,
     mimeType: 'text/html',
   };
-  const base64 = buffer => {
+  const base64 = (buffer) => {
     return btoa(
       buffer.reduce((data, byte) => {
         return data + String.fromCharCode(byte);
@@ -131,5 +131,3 @@ async function upload(name, content) {
 
   return await gapi.client.request(request);
 }
-
-export default { init, share, upload, signIn, signOut };
