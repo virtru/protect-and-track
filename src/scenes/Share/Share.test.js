@@ -13,6 +13,7 @@ describe('Share', () => {
     const setShare = jest.fn();
     const file = { name: 'a.tdf' };
     gsuite.init.mockReturnValue(true);
+    expect(gsuite.init).toHaveBeenCalledTimes(0)
     const { getByText, rerender } = render(
       <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
     );
@@ -22,7 +23,10 @@ describe('Share', () => {
     gsuite.upload.mockReturnValue({ result: { id: 'fake-id' } });
     fireEvent.click(getByText('Google Drive'));
     // Make sure we are sharing with the expected recipients
-    await waitFor(() => expect(gsuite.share).toHaveBeenCalledWith('fake-id', ['a', 'b']));
+    await waitFor(() => {
+      expect(gsuite.upload).toHaveBeenCalledTimes(1);
+      expect(gsuite.share).toHaveBeenCalledWith('fake-id', ['a', 'b']);
+    });
     // Make sure we update the share state after
     const doneState = {
       state: SHARE_STATE.SHARED,

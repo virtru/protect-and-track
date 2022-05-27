@@ -371,6 +371,7 @@ function ShareInternal({ encrypted, onClose, providers, recipients, share, setSh
     onClose(...args);
     setShare(false);
   };
+  console.log('share', share, 'setShare', setShare);
   if (!share) {
     shareContent = (
       <ShareSelect
@@ -434,28 +435,35 @@ share_${serviceProviderName}: {
   }
 }
 */
-const mapToProps = ({ encrypted, policy, share, ...rest }) => ({
-  encrypted,
-  recipients: policy.getUsersWithAccess(),
-  share,
-  providers: (() => {
+const mapToProps = ({ encrypted, policy, share, ...rest }) => {
+  console.log('rest', rest, 'encrypted', encrypted, 'policy', policy, 'share', share);
+  const providers = () => {
     let o = {};
     for (let k in SHARE_PROVIDERS) {
       const provider = SHARE_PROVIDERS[k];
       o[provider] = rest['share_' + provider];
     }
     return o;
-  })(),
-});
-
-const actions = {
-  setShare: (state, value) =>
-    value
-      ? {
-          share: value.provider,
-          ['share_' + value.provider]: value.providerState,
-        }
-      : { share: false },
+  };
+  return {
+    encrypted,
+    recipients: policy.getUsersWithAccess(),
+    share,
+    providers,
+  };
 };
 
-export const Share = connect(mapToProps, actions)(ShareInternal);
+const actions = {
+  setShare: (state, value) => {
+    console.log('setShare', state, value);
+    if (value) {
+      return {
+          share: value.provider,
+          ['share_' + value.provider]: value.providerState,
+        };
+    }
+    return { share: false };
+  }
+};
+
+export const Share =    (mapToProps, actions)(ShareInternal);

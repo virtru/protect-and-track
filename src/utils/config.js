@@ -114,7 +114,7 @@ const backendByEnv = () => {
       console.log('Backend selected: staging');
       return staging;
     default:
-      console.log('Backend selected: develop01');
+      console.log('Backend selected: develop01 (default)');
       return develop01;
   }
 };
