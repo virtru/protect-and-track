@@ -23,7 +23,9 @@ function ShareContainer({ children }) {
 
 function ShareButton({ children, init, onClick, type }) {
   const [buttonState, setButtonState] = useState('start');
+  console.log('ShareButton', init, onClick, type, buttonState);
   const handleClick = (e) => {
+    console.log('handleClick', e);
     e.preventDefault();
     onClick && onClick(e);
   };
@@ -44,7 +46,9 @@ function ShareButton({ children, init, onClick, type }) {
       return;
     }
     async function initializeButtonBackend() {
+      console.log(onClick, init);
       const backendSuccess = onClick && (await init());
+      console.log(backendSuccess)
       setButtonState(backendSuccess ? 'enabled' : 'misconfigured');
     }
     initializeButtonBackend();
@@ -365,7 +369,7 @@ function ShareComplete({ provider, providerState, file, onClose, recipients }) {
   );
 }
 
-function ShareInternal({ encrypted, onClose, providers, recipients, share, setShare }) {
+function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
   let shareContent;
   const closeAndResetState = (...args) => {
     onClose(...args);
@@ -466,4 +470,7 @@ const actions = {
   }
 };
 
-export const Share =    (mapToProps, actions)(ShareInternal);
+export default connect(
+  mapToProps,
+  actions,
+)(Share);

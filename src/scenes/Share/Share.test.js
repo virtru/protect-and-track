@@ -1,6 +1,6 @@
 import React from 'react';
 import { cleanup, render, waitFor, fireEvent } from '@testing-library/react';
-import { Share } from './Share';
+import Share from './Share';
 import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
 import * as gsuite from './services/gsuite';
 
