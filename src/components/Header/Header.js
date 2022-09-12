@@ -6,7 +6,7 @@ import Virtru from '../../utils/sdk';
 import './Header.css';
 import GithubLogo from './github-logo.png';
 import { ReactComponent as GithubIcon } from './github-icon.svg';
-import Button from '../Button/Button';
+import { Button } from '../Button/Button';
 import resetApp from '../../utils/resetApp';
 
 const signOut = (email) => Promise.all(Virtru.Auth.logout(email && { email }), resetApp());

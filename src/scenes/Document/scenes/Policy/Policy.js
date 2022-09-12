@@ -4,7 +4,7 @@ import Access from './components/Access/Access';
 import Expiration from './components/Expiration/Expiration';
 import Watermarking from './components/Watermarking/Watermarking';
 import Resharing from './components/Resharing/Resharing';
-import Button from '../../../../components/Button/Button';
+import { Button } from '../../../../components/Button/Button';
 import { ENCRYPT_STATES } from '../../../../constants/encryptStates';
 import './Policy.css';
 

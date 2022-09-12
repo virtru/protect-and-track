@@ -3,7 +3,7 @@ import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
 import Virtru from '../../utils/sdk';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import logAction from '../../utils/virtruActionLogger';
 import Alert from './components/Alert/Alert';
@@ -21,7 +21,7 @@ import localForage from 'localforage';
 import './Document.css';
 
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
-import Button from '../../components/Button/Button';
+import { Button } from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 
 let auditTimerId;
@@ -453,7 +453,7 @@ const actions = {
      */
     logAction('createPolicyBuilder');
     // Virtru: Create a new policy builder
-    const policy = new Virtru.PolicyBuilder().withPolicyId(uuid.v4()).build();
+    const policy = new Virtru.PolicyBuilder().withPolicyId(uuidv4()).build();
     /**** END Virtru Block ****/
 
     await saveFileToLocalStorage({ fileName, fileType, fileBuffer });

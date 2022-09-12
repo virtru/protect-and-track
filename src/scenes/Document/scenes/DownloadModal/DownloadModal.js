@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
 import { Modal } from '../../../../components/Modal/Modal';
-import Button from '../../../../components/Button/Button';
+import { Button } from '../../../../components/Button/Button';
 import { downloadHtml, downloadTdf, downloadDecrypted } from '../../../../utils/download';
 
 import './DownloadModal.css';
 import '../LoadingModal/LoadingModal.css';
 
-import PolicyUtils from '../../../../utils/policy';
+import { policyFlagCheck } from '../../../../utils/policy';
 
 export const DownloadModal = ({ onClose, encrypted, virtruClient }) => {
   const [decrypting, setDecrypting] = useState(false);
@@ -100,7 +100,7 @@ export const DownloadModal = ({ onClose, encrypted, virtruClient }) => {
     const [whichModal, setWhichModal] = useState(null);
 
     useEffect(() => {
-      PolicyUtils.policyFlagCheck({ encrypted, virtruClient }).then((res) => {
+      policyFlagCheck({ encrypted, virtruClient }).then((res) => {
         setWhichModal(res);
       });
     });

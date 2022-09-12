@@ -4,7 +4,7 @@ import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
 import { base64ToArrayBuffer } from '../../utils/buffer';
 import Virtru from '../../utils/sdk';
-import uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';
 import Header from '../../components/Header/Header';
@@ -169,7 +169,7 @@ async function getFileData() {
 
       // Virtru: create a new policy builder
       const builder = new Virtru.PolicyBuilder();
-      builder.setPolicyId(uuid.v4());
+      builder.setPolicyId(uuidv4());
       if (policyData !== null && typeof policyData === 'object') {
         if (policyId) {
           // Virtru: restore policy id from localstorage

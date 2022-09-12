@@ -6,7 +6,7 @@ import * as gsuite from './services/gsuite';
 import * as onedrive from './services/onedrive';
 import './Share.css';
 import { SHARE_STATE, SHARE_PROVIDERS, SHARE_TITLES } from '../../constants/sharing';
-import Button from '../../components/Button/Button';
+import { Button } from '../../components/Button/Button';
 import { Modal } from '../../components/Modal/Modal';
 
 function Ico({ type }) {
