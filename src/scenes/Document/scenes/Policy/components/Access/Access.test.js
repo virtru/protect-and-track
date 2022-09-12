@@ -3,7 +3,7 @@ import Virtru from 'utils/sdk';
 import { generatePolicyChanger } from '../../services/policyChanger';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
-import { ENCRYPT_STATES } from 'constants/encryptStates';
+import { ENCRYPT_STATES } from '../../../../../constants/encryptStates';
 import Access from './Access';
 
 afterEach(cleanup);

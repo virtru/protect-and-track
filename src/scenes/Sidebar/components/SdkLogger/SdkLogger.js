@@ -1,6 +1,6 @@
 import React from 'react';
 import './SdkLogger.css';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from 'rc-scrollbars';
 import { SidebarItem } from './components/SidebarItem';
 
 const { useEffect, useRef } = React;

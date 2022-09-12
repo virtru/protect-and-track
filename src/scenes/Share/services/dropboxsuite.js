@@ -1,5 +1,5 @@
 import { Dropbox } from 'dropbox';
-const ClientOAuth2 = require('client-oauth2');
+import ClientOAuth2 from 'client-oauth2';
 
 // NOTE(deployment) You must set this environment variable to support sharing.
 // Pulled in as an app from the dropbox devlopers console. To create one,

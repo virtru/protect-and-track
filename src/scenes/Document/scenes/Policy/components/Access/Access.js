@@ -4,7 +4,7 @@ import { SectionHeader } from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
 import { NOPE } from '../../services/policyChanger';
 import './Access.css';
-import Button from 'components/Button/Button';
+import Button from '../../../../../../components/Button/Button';
 import { ReactComponent as InfoIcon } from './info-icon.svg';
 
 function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked }) {

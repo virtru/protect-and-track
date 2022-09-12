@@ -1,9 +1,9 @@
 import React from 'react';
 import moment from 'moment';
 import './AuditEventItem.css';
-import { AUDIT_EVENTS } from 'constants/auditEvents';
-import { ReactComponent as Doc } from 'assets/doc.svg';
-import { ReactComponent as Download } from 'assets/download.svg';
+import { AUDIT_EVENTS } from '../../../../../../constants/auditEvents';
+import { ReactComponent as Doc } from '../../../../../../assets/doc.svg';
+import { ReactComponent as Download } from '../../../../../../assets/download.svg';
 
 export const AuditEventItem = ({ auditDataType, userId, timestamp, index, onDownload }) => (
   <div className="auditEventWrapper">

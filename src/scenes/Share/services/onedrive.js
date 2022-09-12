@@ -1,4 +1,4 @@
-import { awaitify } from 'services/core/awaitify';
+import { awaitify } from '../../../services/core/awaitify';
 
 // NOTE(deployment)
 // To connect to OneDrive, you must have an MS Azure dev account and register

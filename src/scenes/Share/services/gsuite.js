@@ -1,7 +1,7 @@
 /* global gapi */
 
-import { loadGapi } from 'services/core/remoteLoad';
-import { awaitify } from 'services/core/awaitify';
+import { loadGapi } from '../../../services/core/remoteLoad';
+import { awaitify } from '../../../services/core/awaitify';
 
 // API connectors.
 // First, create a project at https://console.developers.google.com/

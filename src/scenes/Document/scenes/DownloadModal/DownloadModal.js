@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
-import { Modal } from 'components/Modal/Modal';
-import Button from 'components/Button/Button';
-import { downloadHtml, downloadTdf, downloadDecrypted } from 'utils/download';
+import { Modal } from '../../../../components/Modal/Modal';
+import Button from '../../../../components/Button/Button';
+import { downloadHtml, downloadTdf, downloadDecrypted } from '../../../../utils/download';
 
 import './DownloadModal.css';
 import '../LoadingModal/LoadingModal.css';
 
-import PolicyUtils from 'utils/policy';
+import PolicyUtils from '../../../../utils/policy';
 
 export const DownloadModal = ({ onClose, encrypted, virtruClient }) => {
   const [decrypting, setDecrypting] = useState(false);

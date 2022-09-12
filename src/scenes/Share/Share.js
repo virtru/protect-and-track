@@ -5,9 +5,9 @@ import * as dropboxsuite from './services/dropboxsuite';
 import * as gsuite from './services/gsuite';
 import * as onedrive from './services/onedrive';
 import './Share.css';
-import { SHARE_STATE, SHARE_PROVIDERS, SHARE_TITLES } from 'constants/sharing';
-import Button from 'components/Button/Button';
-import { Modal } from 'components/Modal/Modal';
+import { SHARE_STATE, SHARE_PROVIDERS, SHARE_TITLES } from '../../constants/sharing';
+import Button from '../../components/Button/Button';
+import { Modal } from '../../components/Modal/Modal';
 
 function Ico({ type }) {
   return <img alt="" src={`${type}.svg`} className="ShareSelect-ico" />;

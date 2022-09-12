@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'redux-zero/react';
-import { ENCRYPT_STATES } from 'constants/encryptStates';
-import { base64ToArrayBuffer } from 'utils/buffer';
-import Virtru from 'utils/sdk';
+import { ENCRYPT_STATES } from '../../constants/encryptStates';
+import { base64ToArrayBuffer } from '../../utils/buffer';
+import Virtru from '../../utils/sdk';
 import uuid from 'uuid';
 
 import './App.css';
-import Header from 'components/Header/Header';
-import Document from 'scenes/Document/Document';
+import Header from '../../components/Header/Header';
+import Document from '../../scenes/Document/Document';
 import localForage from 'localforage';
 
 const useEffect = React.useEffect;

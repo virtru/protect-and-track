@@ -1,5 +1,5 @@
 import { getQueryParam } from './getQueryParam';
-import { proxy } from 'utils/config';
+import { proxy } from './config';
 
 let Virtru;
 

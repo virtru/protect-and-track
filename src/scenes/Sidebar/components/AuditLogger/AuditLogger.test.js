@@ -2,8 +2,8 @@ import React from 'react';
 import { render, getByTestId, fireEvent } from '@testing-library/react';
 import AuditLogger from './AuditLogger';
 import moment from 'moment';
-import { AUDIT_EVENTS } from 'constants/auditEvents';
-import * as Download from 'utils/download';
+import { AUDIT_EVENTS } from '../../../../constants/auditEvents';
+import * as Download from '../../../../utils/download';
 
 describe('AuditLogger', () => {
   test('renders "Protect a file..." text if events array is empty', () => {

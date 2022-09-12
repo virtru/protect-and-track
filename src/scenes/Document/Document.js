@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
-import Virtru from 'utils/sdk';
+import Virtru from '../../utils/sdk';
 import uuid from 'uuid';
 
-import logAction from 'utils/virtruActionLogger';
+import logAction from '../../utils/virtruActionLogger';
 import Alert from './components/Alert/Alert';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
@@ -15,7 +15,7 @@ import Share from '../Share/Share';
 import AuthSelect from '../AuthSelect/AuthSelect';
 import StayUp from '../StayUp/StayUp';
 import { generatePolicyChanger } from './scenes/Policy/services/policyChanger';
-import { ENCRYPT_STATES } from 'constants/encryptStates';
+import { ENCRYPT_STATES } from '../../constants/encryptStates';
 import localForage from 'localforage';
 
 import './Document.css';

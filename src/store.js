@@ -1,12 +1,12 @@
 import createStore from 'redux-zero';
-import Virtru from 'utils/sdk';
+import Virtru from './utils/sdk';
 import moment from 'moment';
 
-import { clientConfig } from 'utils/config';
-import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
-import { isMobile } from 'utils/checkIsMobile';
-import { isSupportedBrowser } from 'utils/checkIsSupportedBrowser';
-import { getQueryParam } from 'utils/getQueryParam';
+import { clientConfig } from './utils/config';
+import { SHARE_PROVIDERS, SHARE_STATE } from './constants/sharing';
+import { isMobile } from './utils/checkIsMobile';
+import { isSupportedBrowser } from './utils/checkIsSupportedBrowser';
+import { getQueryParam } from './utils/getQueryParam';
 
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];

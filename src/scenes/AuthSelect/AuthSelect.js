@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './AuthSelect.css';
-import { authOptions } from 'utils/config';
+import { authOptions } from '../../utils/config';
 import { Modal } from '../../components/Modal/Modal';
 
 function AuthSelect({ onClose, login }) {

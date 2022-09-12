@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'redux-zero/react';
-import { dispatchAuth } from 'utils/dispatchAuth';
+import { dispatchAuth } from './utils/dispatchAuth';
 
-import 'index.css';
+import './index.css';
 import App from './scenes/App/App';
-import * as serviceWorker from 'serviceWorker';
+import * as serviceWorker from './serviceWorker';
 import store from './store';
 
 console.info(
