@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'redux-zero/react';
 import { dispatchAuth } from './utils/dispatchAuth';
 
@@ -20,11 +20,12 @@ if (dispatchAuth()) {
   // dispatchAuth just sends a message to the parent window, but if auth parts use clientside storage
   // we could do that part so the auth will work on a refresh (or click of the 'app' button above)
 } else {
-  ReactDOM.render(
+  const container = document.getElementById('root');
+  const root = createRoot(container);
+  root.render(
     <Provider store={store}>
       <App />
-    </Provider>,
-    document.getElementById('root'),
+    </Provider>
   );
 }
 

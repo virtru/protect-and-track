@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import Loading from './components/Loading/Loading';
-import * as dropboxsuite from './services/dropboxsuite';
 import * as gsuite from './services/gsuite';
 import * as onedrive from './services/onedrive';
 import './Share.css';
@@ -58,54 +57,6 @@ function ShareButton({ children, init, onClick, type }) {
 }
 
 function ShareSelect({ setShare, file, recipients, fileName }) {
-  const shareToDropBox = async () => {
-    let link, id, state, error;
-    const upstate = () =>
-      setShare({
-        provider: SHARE_PROVIDERS.DROPBOX,
-        providerState: {
-          state,
-          recipients,
-          ...(id && { id }),
-          ...(link && { link }),
-          ...(error && { error }),
-        },
-      });
-    try {
-      state = SHARE_STATE.AUTHORIZING;
-      upstate();
-      const accessToken = await dropboxsuite.signIn();
-
-      state = SHARE_STATE.UPLOADING;
-      upstate();
-      const uploadResponse = await dropboxsuite.upload(accessToken, file);
-      id = uploadResponse.id;
-      link = 'https://www.dropbox.com/preview' + uploadResponse.path_lower;
-
-      state = SHARE_STATE.SHARING;
-      upstate();
-      await dropboxsuite.share(accessToken, uploadResponse.id, recipients);
-
-      state = SHARE_STATE.SHARED;
-      upstate();
-
-      dropboxsuite.signOut();
-    } catch (e) {
-      console.warn({ type: 'Drive share failure', cause: e });
-      error = {
-        during: state,
-      };
-      // TODO(DSAT-67) enhance error messages
-      if (e.status === 409) {
-        error.message = `${fileName} already exists in your Dropbox.`;
-      } else if (e.status === 403) {
-        error.message =
-          'Dropbox is rate limiting access to this application or user; please build the app locally and add your own app token';
-      }
-      state = SHARE_STATE.FAIL;
-      upstate();
-    }
-  };
   const shareToDrive = async () => {
     let link, id, state, error;
     const upstate = () =>
@@ -229,9 +180,6 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
       </ShareButton>
       <ShareButton type="onedrive" init={onedrive.init} onClick={shareToOnedrive}>
         OneDrive
-      </ShareButton>
-      <ShareButton type="dropbox" init={dropboxsuite.init} onClick={shareToDropBox}>
-        Dropbox
       </ShareButton>
       <ShareButton type="box">Box</ShareButton>
     </ShareContainer>
@@ -430,7 +378,7 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
 
 /* TODO(dmihalcik) maybe move this to a separate store?
 share: {
-  provider: null | ∈ {box dropbox googledrive onedrive},
+  provider: null | ∈ {box googledrive onedrive},
 }
 share_${serviceProviderName}: {
   state: ∈ SHARE_STATE,

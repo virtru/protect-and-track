@@ -66,7 +66,7 @@ function App({
         <main className="main">
           <Router>
             <Routes>
-              <Route path="/" component={Document} />
+              <Route path="/" element={ <Document /> } />
             </Routes>
             {/* TODO(dmihalcik): <Route 404 /> */}
           </Router>

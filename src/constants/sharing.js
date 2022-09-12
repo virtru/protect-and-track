@@ -1,7 +1,6 @@
 // Constants for the share state in the store.
 export const SHARE_PROVIDERS = {
   BOX: 'box',
-  DROPBOX: 'dropbox',
   GOOGLEDRIVE: 'googledrive',
   ONEDRIVE: 'onedrive',
 };
@@ -16,7 +15,6 @@ export const SHARE_STATE = {
 // Text friendly sharing provider names/titles
 export const SHARE_TITLES = {
   box: 'box.com',
-  dropbox: 'Dropbox',
   googledrive: 'Google Drive',
   onedrive: 'OneDrive',
 };
