@@ -22,9 +22,7 @@ function ShareContainer({ children }) {
 
 function ShareButton({ children, init, onClick, type }) {
   const [buttonState, setButtonState] = useState('start');
-  console.log('ShareButton', init, onClick, type, buttonState);
   const handleClick = (e) => {
-    console.log('handleClick', e);
     e.preventDefault();
     onClick && onClick(e);
   };
@@ -57,7 +55,6 @@ function ShareButton({ children, init, onClick, type }) {
 function ShareSelect({ setShare, file, recipients, fileName }) {
   const shareToDrive = async () => {
     let link, id, state, error;
-    console.log('ShareSelect:a');
     const upstate = () => {
       setShare({
         provider: SHARE_PROVIDERS.GOOGLEDRIVE,
@@ -388,7 +385,6 @@ share_${serviceProviderName}: {
 }
 */
 const mapToProps = ({ encrypted, policy, share, ...rest }) => {
-  console.log('rest', rest, 'encrypted', encrypted, 'policy', policy, 'share', share);
   const providers = () => {
     let o = {};
     for (let k in SHARE_PROVIDERS) {
@@ -407,7 +403,6 @@ const mapToProps = ({ encrypted, policy, share, ...rest }) => {
 
 const actions = {
   setShare: (state, value) => {
-    console.log('setShare', state, value);
     if (value) {
       return {
         share: value.provider,
