@@ -320,7 +320,6 @@ function Share({ encrypted, onClose, providers, recipients, share, setShare }) {
     onClose(...args);
     setShare(false);
   };
-  console.log('share', share, 'setShare', setShare);
   if (!share) {
     shareContent = (
       <ShareSelect
