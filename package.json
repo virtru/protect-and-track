@@ -4,7 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "classnames": "^2.3.1",
+    "classnames": "^2.3.2",
     "client-oauth2": "^4.3.3",
     "clipboard": "^2.0.11",
     "json2csv": "^5.0.7",
@@ -13,7 +13,7 @@
     "rc-scrollbars": "^1.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^6.4.0",
     "redux-zero": "^5.1.7",
     "virtru-sdk-current": "npm:virtru-sdk@3.0.1",
     "virtru-sdk-lts": "npm:virtru-sdk@2.4.4"
@@ -24,7 +24,7 @@
     "url": "git+https://github.com/virtru/protect-and-track.git"
   },
   "scripts": {
-    "start": "HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
+    "start": "sudo HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
     "build": "react-scripts build",
     "license": "./license-update",
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json,yml}\"",
@@ -49,8 +49,10 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/dom": "^8.17.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^14.4.3",
     "husky": "^8.0.1",
     "prettier": "2.7.1",
     "pretty-quick": "^3.1.3",

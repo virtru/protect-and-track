@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import {TextDecoder} from 'node:util';
+import { TextDecoder } from 'node:util';
 
 // eslint-disable-next-line no-undef
 globalThis.TextDecoder ??= TextDecoder;

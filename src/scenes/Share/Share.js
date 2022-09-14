@@ -45,9 +45,9 @@ function ShareButton({ children, init, onClick, type }) {
       return;
     }
     async function initializeButtonBackend() {
-      console.log(onClick, init);
+      console.log('initializeButtonBackend: start', type, onClick, init);
       const backendSuccess = onClick && (await init());
-      console.log(backendSuccess)
+      console.log('initializeButtonBackend: fin', type, onClick, backendSuccess);
       setButtonState(backendSuccess ? 'enabled' : 'misconfigured');
     }
     initializeButtonBackend();
@@ -59,7 +59,8 @@ function ShareButton({ children, init, onClick, type }) {
 function ShareSelect({ setShare, file, recipients, fileName }) {
   const shareToDrive = async () => {
     let link, id, state, error;
-    const upstate = () =>
+    console.log('ShareSelect:a');
+    const upstate = () => {
       setShare({
         provider: SHARE_PROVIDERS.GOOGLEDRIVE,
         providerState: {
@@ -70,6 +71,7 @@ function ShareSelect({ setShare, file, recipients, fileName }) {
           ...(error && { error }),
         },
       });
+    };
     try {
       state = SHARE_STATE.AUTHORIZING;
       upstate();
@@ -410,15 +412,12 @@ const actions = {
     console.log('setShare', state, value);
     if (value) {
       return {
-          share: value.provider,
-          ['share_' + value.provider]: value.providerState,
-        };
+        share: value.provider,
+        ['share_' + value.provider]: value.providerState,
+      };
     }
     return { share: false };
-  }
+  },
 };
 
-export default connect(
-  mapToProps,
-  actions,
-)(Share);
+export default connect(mapToProps, actions)(Share);
