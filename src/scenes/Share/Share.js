@@ -45,9 +45,7 @@ function ShareButton({ children, init, onClick, type }) {
       return;
     }
     async function initializeButtonBackend() {
-      console.log('initializeButtonBackend: start', type, onClick, init);
       const backendSuccess = onClick && (await init());
-      console.log('initializeButtonBackend: fin', type, onClick, backendSuccess);
       setButtonState(backendSuccess ? 'enabled' : 'misconfigured');
     }
     initializeButtonBackend();
