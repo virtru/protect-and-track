@@ -1,5 +1,5 @@
 module.exports = {
   connect() {
-    return Component => Component;
+    return (Component) => Component;
   },
 };

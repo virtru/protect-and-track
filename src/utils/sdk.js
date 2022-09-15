@@ -1,5 +1,5 @@
-import getQueryParam from 'utils/getQueryParam';
-import { proxy } from 'utils/config';
+import { getQueryParam } from './getQueryParam';
+import { proxy } from './config';
 
 let Virtru;
 
@@ -32,6 +32,4 @@ const sdk =
     ? console.log('SDK Selector: PRODUCTION') || require('virtru-sdk-current')
     : sdkByParam();
 
-export default {
-  ...sdk,
-};
+export default sdk;

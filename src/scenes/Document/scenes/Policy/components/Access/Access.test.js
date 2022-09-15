@@ -3,7 +3,7 @@ import Virtru from 'utils/sdk';
 import { generatePolicyChanger } from '../../services/policyChanger';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
-import ENCRYPT_STATES from 'constants/encryptStates';
+import { ENCRYPT_STATES } from '../../../../../../constants/encryptStates';
 import Access from './Access';
 
 afterEach(cleanup);
@@ -18,7 +18,7 @@ describe('Access', () => {
       />,
     );
     // We should have just one form to grant a new user access
-    expect(getByRole('form')).toBeTruthy();
+    expect(getByRole('textbox')).toBeTruthy();
     // We should just get the 'who has access' list
     expect(getByRole('heading')).toBeTruthy();
     // We should have the owner be 'you'
@@ -34,7 +34,7 @@ describe('Access', () => {
         userId="user@example.com"
       />,
     );
-    expect(getByRole('form')).toBeTruthy();
+    expect(getByRole('textbox')).toBeTruthy();
     expect(getByRole('heading')).toBeTruthy();
     expect(getByText('user@example.com')).toBeTruthy();
     expect(queryAllByText('you')).toHaveLength(0);
@@ -59,11 +59,10 @@ describe('Access', () => {
   test('Adds a new user', () => {
     const setPolicy = jest.fn();
     const policy = new Virtru.PolicyBuilder().build();
-    const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
+    const policyChange = (change) => generatePolicyChanger(policy, setPolicy, change);
     const { getByRole } = render(<Access policy={policy} policyChange={policyChange} />);
 
-    const textForm = getByRole('form');
-    const textField = textForm.querySelector('input[type="email"]');
+    const textField = getByRole('textbox');
     fireEvent.change(textField, { target: { value: 'recipient@example.com' } });
     fireEvent.submit(textField);
 

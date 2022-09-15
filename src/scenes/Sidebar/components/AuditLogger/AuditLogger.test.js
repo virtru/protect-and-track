@@ -2,8 +2,8 @@ import React from 'react';
 import { render, getByTestId, fireEvent } from '@testing-library/react';
 import AuditLogger from './AuditLogger';
 import moment from 'moment';
-import auditEvents from 'constants/auditEvents';
-import * as Download from 'utils/download';
+import { AUDIT_EVENTS } from '../../../../constants/auditEvents';
+import * as Download from '../../../../utils/download';
 
 describe('AuditLogger', () => {
   test('renders "Protect a file..." text if events array is empty', () => {
@@ -21,7 +21,7 @@ describe('AuditLogger', () => {
     const { getByText } = render(<AuditLogger auditLog={{ events: [event] }} />);
     const formattedDate = moment(event.timestamp).format('hh:mm:ss');
 
-    expect(getByText(auditEvents[event.auditDataType])).toBeInTheDocument();
+    expect(getByText(AUDIT_EVENTS[event.auditDataType])).toBeInTheDocument();
     expect(getByText(formattedDate)).toBeInTheDocument();
     expect(getByText(event.userId)).toBeInTheDocument();
   });

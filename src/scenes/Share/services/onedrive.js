@@ -1,4 +1,4 @@
-import awaitify from 'services/core/awaitify';
+import { awaitify } from '../../../services/core/awaitify';
 
 // NOTE(deployment)
 // To connect to OneDrive, you must have an MS Azure dev account and register
@@ -11,7 +11,7 @@ const CLIENT_ID = process.env.REACT_APP_CLIENT_ID_ONEDRIVE;
 const AUTHORIZATION_URI = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize';
 const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 
-async function init() {
+export async function init() {
   if (!CLIENT_ID) {
     console.warn('Onedrive integration not enabled');
     return false;
@@ -91,7 +91,7 @@ function processOneDrive(authResponse) {
   return authInfo.access_token;
 }
 
-async function signIn() {
+export async function signIn() {
   const auth = JSON.parse(localStorage.getItem('virtru-onedrive-auth'));
   if (!auth || !auth.token) {
     // TODO check expiration, or store as a time limited cookie so we don't have to...
@@ -106,11 +106,11 @@ async function signIn() {
   return auth.token;
 }
 
-async function signOut() {
+export async function signOut() {
   localStorage.removeItem('virtru-onedrive-auth');
 }
 
-async function share(token, fileId, recipients) {
+export async function share(token, fileId, recipients) {
   if (!(fileId && token && recipients && recipients.length)) {
     console.warn({ type: 'invalid share request', arguments: arguments });
     return;
@@ -123,7 +123,7 @@ async function share(token, fileId, recipients) {
       Authorization: `bearer ${token}`,
     },
     body: JSON.stringify({
-      recipients: recipients.map(email => ({ email })),
+      recipients: recipients.map((email) => ({ email })),
       message: 'Please view this Virtru encrypted content',
       // Arguably unnecessary
       requireSignIn: true,
@@ -143,7 +143,7 @@ async function share(token, fileId, recipients) {
   return await response.json();
 }
 
-async function upload(token, file) {
+export async function upload(token, file) {
   // https://docs.microsoft.com/en-us/onedrive/developer/rest-api/api/driveitem_put_content?view=odsp-graph-online
   if (!(token && file && file.name && file.payload)) {
     console.warn({ type: 'invalid upload request', arguments: arguments });
@@ -168,5 +168,3 @@ async function upload(token, file) {
   }
   return response.json();
 }
-
-export default { init, share, upload, signIn, signOut };

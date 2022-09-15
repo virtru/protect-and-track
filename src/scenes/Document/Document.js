@@ -2,26 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
-import Virtru from 'utils/sdk';
-import uuid from 'uuid';
+import Virtru from '../../utils/sdk';
+import { v4 as uuidv4 } from 'uuid';
 
-import logAction from 'utils/virtruActionLogger';
+import logAction from '../../utils/virtruActionLogger';
 import Alert from './components/Alert/Alert';
 import Drop from './components/Drop/Drop';
 import Filename from './components/Filename/Filename';
 import Policy from './scenes/Policy/Policy';
-import DownloadModal from './scenes/DownloadModal/DownloadModal';
+import { DownloadModal } from './scenes/DownloadModal/DownloadModal';
 import Share from '../Share/Share';
 import AuthSelect from '../AuthSelect/AuthSelect';
 import StayUp from '../StayUp/StayUp';
 import { generatePolicyChanger } from './scenes/Policy/services/policyChanger';
-import ENCRYPT_STATES from 'constants/encryptStates';
+import { ENCRYPT_STATES } from '../../constants/encryptStates';
 import localForage from 'localforage';
 
 import './Document.css';
 
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
-import Button from '../../components/Button/Button';
+import { Button } from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 
 let auditTimerId;
@@ -61,7 +61,7 @@ function Document({
     setStayUpOpen(true);
   };
 
-  const login = async email => {
+  const login = async (email) => {
     // Just refresh with the email query param
     localStorage.setItem('virtru-demo-email', email);
     window.location.reload();
@@ -199,7 +199,7 @@ function Document({
       return <Drop userId={userId} setFile={setFile} />;
     }
 
-    const policyChange = change => generatePolicyChanger(policy, setPolicy, change, policyId);
+    const policyChange = (change) => generatePolicyChanger(policy, setPolicy, change, policyId);
     return (
       <>
         <Drop
@@ -259,7 +259,7 @@ function Document({
           <span>or drag this... </span>
           <div
             draggable="true"
-            onDragStart={ev => ev.dataTransfer.setData('text', 'demo-example.txt')}
+            onDragStart={(ev) => ev.dataTransfer.setData('text', 'demo-example.txt')}
           >
             <FileIcon className="file-icon" />
             demo-example.txt
@@ -453,7 +453,7 @@ const actions = {
      */
     logAction('createPolicyBuilder');
     // Virtru: Create a new policy builder
-    const policy = new Virtru.PolicyBuilder().withPolicyId(uuid.v4()).build();
+    const policy = new Virtru.PolicyBuilder().withPolicyId(uuidv4()).build();
     /**** END Virtru Block ****/
 
     await saveFileToLocalStorage({ fileName, fileType, fileBuffer });
@@ -527,10 +527,7 @@ const actions = {
        */
       if (policy && value !== policy.getPolicyId()) {
         // Virtru: Build a policy with an id
-        policy = policy
-          .builder()
-          .withPolicyId(value)
-          .build();
+        policy = policy.builder().withPolicyId(value).build();
       }
       /**** END Virtru Block ****/
     } else {
@@ -540,7 +537,4 @@ const actions = {
   },
 };
 
-export default connect(
-  mapToProps,
-  actions,
-)(Document);
+export default connect(mapToProps, actions)(Document);

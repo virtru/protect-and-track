@@ -1,4 +1,4 @@
-import Virtru from 'utils/sdk';
+import Virtru from './sdk';
 
 export const getPolicy = async ({ encrypted, virtruClient }) => {
   const decryptParams = new Virtru.DecryptParamsBuilder()
@@ -13,9 +13,4 @@ export const policyFlagCheck = async ({ encrypted, virtruClient }) => {
   const thePolicy = await getPolicy({ encrypted, virtruClient });
   const policyFlags = thePolicy._authZFlags;
   return policyFlags.watermark === true || policyFlags.pfp === true;
-};
-
-export default {
-  getPolicy,
-  policyFlagCheck,
 };

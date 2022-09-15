@@ -1,12 +1,12 @@
 import createStore from 'redux-zero';
-import Virtru from 'utils/sdk';
+import Virtru from './utils/sdk';
 import moment from 'moment';
 
-import { clientConfig } from 'utils/config';
-import { SHARE_PROVIDERS, SHARE_STATE } from 'constants/sharing';
-import checkIsMobile from 'utils/checkIsMobile';
-import checkIsSupportedBrowser from 'utils/checkIsSupportedBrowser';
-import getQueryParam from 'utils/getQueryParam';
+import { clientConfig } from './utils/config';
+import { SHARE_PROVIDERS, SHARE_STATE } from './constants/sharing';
+import { isMobile } from './utils/checkIsMobile';
+import { isSupportedBrowser } from './utils/checkIsSupportedBrowser';
+import { getQueryParam } from './utils/getQueryParam';
 
 const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
 const activeAuth = auths && Object.values(auths)[0];
@@ -15,7 +15,7 @@ const appId = activeAuth && activeAuth.split(':')[1];
 let tdfLog;
 try {
   tdfLog = JSON.parse(localStorage.getItem('virtru-demo-sdk-log')) || [];
-  tdfLog.forEach(log => {
+  tdfLog.forEach((log) => {
     log.timestamp = moment(log.timestamp);
   });
 } catch (err) {
@@ -54,9 +54,9 @@ if (isLoggedIn) {
 export default createStore({
   appIdBundle: false,
 
-  isMobile: checkIsMobile(),
+  isMobile: isMobile(),
 
-  isSupportedBrowser: checkIsSupportedBrowser(),
+  isSupportedBrowser: isSupportedBrowser(),
 
   continueAnyway: !!localStorage.getItem('continueAnyway'),
 

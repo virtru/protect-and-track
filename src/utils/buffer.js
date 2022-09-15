@@ -1,4 +1,4 @@
-export const arrayBufferToBase64 = buffer => {
+export const arrayBufferToBase64 = (buffer) => {
   var binary = '';
   var bytes = new Uint8Array(buffer);
   var len = bytes.byteLength;
@@ -9,7 +9,7 @@ export const arrayBufferToBase64 = buffer => {
 };
 
 // Asyncify FileReader's `readAsArrayBuffer`.
-export const fileToArrayBuffer = file => {
+export const fileToArrayBuffer = (file) => {
   const reader = new FileReader();
 
   return new Promise((resolve, reject) => {
@@ -25,7 +25,7 @@ export const fileToArrayBuffer = file => {
   });
 };
 
-export const base64ToArrayBuffer = base64 => {
+export const base64ToArrayBuffer = (base64) => {
   var binary_string = window.atob(base64);
   var len = binary_string.length;
   var bytes = new Uint8Array(len);

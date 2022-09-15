@@ -1,5 +1,5 @@
 import React from 'react';
-import SectionHeader from '../SectionHeader/SectionHeader';
+import { SectionHeader } from '../SectionHeader/SectionHeader';
 import Toggle from '../Toggle/Toggle';
 import { ReactComponent as ForwardIcon } from './forward.svg';
 import classNames from 'classnames';
@@ -17,10 +17,10 @@ function Resharing({ policy, policyChange, isPolicyRevoked }) {
   const hasReshare = policy && !policy.hasReshare();
 
   // Virtu: Disable reshare
-  const disableReshare = policy => policy.disableReshare();
+  const disableReshare = (policy) => policy.disableReshare();
 
   // Virtu: Enable reshare
-  const enableReshare = policy => policy.enableReshare();
+  const enableReshare = (policy) => policy.enableReshare();
 
   /**** END Virtru Block ****/
 

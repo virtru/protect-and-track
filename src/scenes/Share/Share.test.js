@@ -1,8 +1,10 @@
 import React from 'react';
-import { cleanup, render, wait, fireEvent } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import Share from './Share';
 import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
-import gsuite from './services/gsuite';
+import * as gsuite from './services/gsuite';
 
 jest.mock('./services/gsuite');
 
@@ -10,19 +12,24 @@ afterEach(cleanup);
 
 describe('Share', () => {
   test('to gsuite', async () => {
+    const user = userEvent.setup();
     const setShare = jest.fn();
     const file = { name: 'a.tdf' };
     gsuite.init.mockReturnValue(true);
-    const { getByText, rerender } = render(
+    expect(gsuite.init).toHaveBeenCalledTimes(0);
+    const { rerender } = render(
       <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />,
     );
-    expect(getByText('Share protected file')).toBeInTheDocument();
-    await wait(() => expect(gsuite.init).toHaveBeenCalled());
+    expect(screen.getByText('Share protected file')).toBeInTheDocument();
+    await waitFor(() => expect(gsuite.init).toHaveBeenCalled());
 
     gsuite.upload.mockReturnValue({ result: { id: 'fake-id' } });
-    fireEvent.click(getByText('Google Drive'));
+    await user.click(screen.getByText('Google Drive'));
     // Make sure we are sharing with the expected recipients
-    await wait(() => expect(gsuite.share).toHaveBeenCalledWith('fake-id', ['a', 'b']));
+    await waitFor(() => {
+      expect(gsuite.upload).toHaveBeenCalledTimes(1);
+      expect(gsuite.share).toHaveBeenCalledWith('fake-id', ['a', 'b']);
+    });
     // Make sure we update the share state after
     const doneState = {
       state: SHARE_STATE.SHARED,
@@ -30,7 +37,7 @@ describe('Share', () => {
       link: 'https://drive.google.com/open?id=fake-id',
       recipients: ['a', 'b'],
     };
-    await wait(() =>
+    await waitFor(() =>
       expect(setShare).toHaveBeenCalledWith({
         provider: SHARE_PROVIDERS.GOOGLEDRIVE,
         providerState: doneState,
@@ -47,52 +54,44 @@ describe('Share', () => {
         onClose={onClose}
       />,
     );
-    fireEvent.click(getByText('Done'));
-    await wait(() => expect(onClose).toHaveBeenCalled());
+    await user.click(screen.getByText('Done'));
+    await waitFor(() => expect(onClose).toHaveBeenCalled());
   });
 
   test('to gsuite fail auth', async () => {
+    const user = userEvent.setup();
     const setShare = jest.fn();
-    const file = { name: 'a.tdf', payload: {} };
-    const policy = {
-      getPolicyId: () => {},
-      getUsersWithAccess: () => [],
-      getExpirationDeadline: () => '',
-      hasReshare: () => '',
-      hasWatermarking: () => '',
-    };
-    const { getByText } = render(
-      <Share encrypted={file} recipients={['a', 'b']} setShare={setShare} policy={policy} />,
-    );
-    expect(getByText('Share protected file')).toBeInTheDocument();
-    await wait(() => expect(gsuite.init).toHaveBeenCalled());
+    const file = { name: 'a.tdf' };
+    gsuite.init.mockReturnValue(true);
+    expect(gsuite.init).toHaveBeenCalledTimes(0);
+    render(<Share encrypted={file} recipients={['a', 'b']} setShare={setShare} />);
+    expect(screen.getByText('Share protected file')).toBeInTheDocument();
+    await waitFor(() => expect(gsuite.init).toHaveBeenCalled());
 
-    gsuite.signIn.mockImplementation(() => {
-      throw { error: 'popup_closed_by_user' };
+    gsuite.upload.mockImplementation(() => {
+      throw new Error('upload_fail');
     });
-    fireEvent.click(getByText('Google Drive'));
-
-    await wait(() =>
-      expect(setShare).toHaveBeenCalledWith({
-        provider: SHARE_PROVIDERS.GOOGLEDRIVE,
-        providerState: {
-          state: SHARE_STATE.AUTHORIZING,
-          recipients: ['a', 'b'],
-        },
-      }),
-    );
-    await wait(() =>
+    await user.click(screen.getByText('Google Drive'));
+    await Promise.all([
+      waitFor(() =>
+        expect(setShare).toHaveBeenCalledWith({
+          provider: SHARE_PROVIDERS.GOOGLEDRIVE,
+          providerState: {
+            state: SHARE_STATE.AUTHORIZING,
+            recipients: ['a', 'b'],
+          },
+        }),
+      ),
       expect(setShare).toHaveBeenCalledWith({
         provider: SHARE_PROVIDERS.GOOGLEDRIVE,
         providerState: {
           state: SHARE_STATE.FAIL,
           error: {
-            during: SHARE_STATE.AUTHORIZING,
-            message: 'Authorization popup window closed or disabled',
+            during: SHARE_STATE.UPLOADING,
           },
           recipients: ['a', 'b'],
         },
       }),
-    );
+    ]);
   });
 });

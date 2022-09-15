@@ -10,7 +10,12 @@ afterEach(cleanup);
 describe('Expiration', () => {
   test('Renders a toggled off expiration', () => {
     const { container, queryByRole } = render(
-      <Expiration policy={new Virtru.PolicyBuilder().build()} policyChange={() => {}} />,
+      <Expiration
+        policy={new Virtru.PolicyBuilder().build()}
+        policyChange={(change) => () => (e) => {
+          e && e.preventDefault();
+        }}
+      />,
     );
     expect(container.querySelector('input[type=checkbox]').checked).toBeFalsy();
     expect(queryByRole('textinput')).toBeFalsy();
@@ -19,7 +24,7 @@ describe('Expiration', () => {
   test('Custom', () => {
     const setPolicy = jest.fn();
     const policy = new Virtru.PolicyBuilder().build();
-    const policyChange = change => generatePolicyChanger(policy, setPolicy, change);
+    const policyChange = (change) => generatePolicyChanger(policy, setPolicy, change);
     const now = new Date();
     let later = new Date(now);
     later.setMinutes(now.getMinutes() + 5, 0, 0);

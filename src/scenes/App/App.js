@@ -1,14 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'redux-zero/react';
-import ENCRYPT_STATES from 'constants/encryptStates';
-import { base64ToArrayBuffer } from 'utils/buffer';
-import Virtru from 'utils/sdk';
-import uuid from 'uuid';
+import { ENCRYPT_STATES } from '../../constants/encryptStates';
+import { base64ToArrayBuffer } from '../../utils/buffer';
+import Virtru from '../../utils/sdk';
+import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';
-import Header from 'components/Header/Header';
-import Document from 'scenes/Document/Document';
+import Header from '../../components/Header/Header';
+import Document from '../../scenes/Document/Document';
 import localForage from 'localforage';
 
 const useEffect = React.useEffect;
@@ -65,7 +65,9 @@ function App({
         <Header isLoggedIn={false} userId={userId} />
         <main className="main">
           <Router>
-            <Route path="/" component={Document} />
+            <Routes>
+              <Route path="/" element={<Document />} />
+            </Routes>
             {/* TODO(dmihalcik): <Route 404 /> */}
           </Router>
         </main>
@@ -167,7 +169,7 @@ async function getFileData() {
 
       // Virtru: create a new policy builder
       const builder = new Virtru.PolicyBuilder();
-      builder.setPolicyId(uuid.v4());
+      builder.setPolicyId(uuidv4());
       if (policyData !== null && typeof policyData === 'object') {
         if (policyId) {
           // Virtru: restore policy id from localstorage
@@ -199,7 +201,4 @@ async function getFileData() {
   };
 }
 
-export default connect(
-  mapToProps,
-  actions,
-)(App);
+export default connect(mapToProps, actions)(App);

@@ -12,7 +12,7 @@ const helloWorldHandle = {
  * A place to drop an encrypted or uncrypted file.
  */
 function Drop({ children, setFile, policyState }) {
-  const processFile = async files => {
+  const processFile = async (files) => {
     // Default to hello world
     if (!files.length) {
       return setFile({
@@ -25,7 +25,7 @@ function Drop({ children, setFile, policyState }) {
     setFile({ fileHandle });
   };
 
-  const handleFileInput = async event => {
+  const handleFileInput = async (event) => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -41,7 +41,7 @@ function Drop({ children, setFile, policyState }) {
     await processFile(files);
   };
 
-  const handleDrag = event => {
+  const handleDrag = (event) => {
     event.stopPropagation();
     event.preventDefault();
     event.dataTransfer.dropEffect = 'copy';
@@ -50,13 +50,13 @@ function Drop({ children, setFile, policyState }) {
     }
   };
 
-  const handleDragEnter = event => {
+  const handleDragEnter = (event) => {
     if (event.target.id === 'dropzone') {
       event.target.classList.add('Drop-hover');
     }
   };
 
-  const handleDragLeave = event => {
+  const handleDragLeave = (event) => {
     if (event.target.id === 'dropzone') {
       event.target.classList.remove('Drop-hover');
     }

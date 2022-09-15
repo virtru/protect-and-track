@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import SectionHeader from '../SectionHeader/SectionHeader';
+import { SectionHeader } from '../SectionHeader/SectionHeader';
 import { ReactComponent as AccessIcon } from './access.svg';
 import { NOPE } from '../../services/policyChanger';
 import './Access.css';
-import Button from 'components/Button/Button';
+import { Button } from '../../../../../../components/Button/Button';
 import { ReactComponent as InfoIcon } from './info-icon.svg';
 
 function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked }) {
@@ -21,7 +21,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
 
   // Add users with access to the policy by email address
   const addUsersToPolicy = ({ valid, text: email }) =>
-    policyChange(policy => {
+    policyChange((policy) => {
       if (valid) {
         // Virtru: Add users with access to the policy by email address
         return policy.addUsersWithAccess(email);
@@ -42,7 +42,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
     }
 
     return (
-      <form className="Grant" onSubmit={policyChange(p => p.removeUsersWithAccess(user))}>
+      <form className="Grant" onSubmit={policyChange((p) => p.removeUsersWithAccess(user))}>
         <div className="Grant-user">{user}</div>
         <input type="submit" className="Grant-revoke" value="Revoke" disabled={isPolicyRevoked} />
       </form>
@@ -73,7 +73,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
             type="email"
             name="newUser"
             pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,24}$"
-            onChange={e =>
+            onChange={(e) =>
               setInput({
                 text: e.target.value,
                 valid: e.target && !!e.target.value && e.target.validity.valid,
@@ -105,7 +105,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
         </li>
         {!isPolicyRevoked &&
           policyUsersWithAccess
-            .filter(u => u !== userId)
+            .filter((u) => u !== userId)
             .map((user, i) => {
               return (
                 <li key={user}>

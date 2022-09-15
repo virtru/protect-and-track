@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, act } from '@testing-library/react';
 
-import useIsPortrait from './useIsPortrait.js';
+import { useIsPortrait } from './useIsPortrait.js';
 
 const IsPortraitWrapper = () => <div>{useIsPortrait() ? 'is portrait' : 'is landscape'}</div>;
 

@@ -1,5 +1,5 @@
-import Virtru from 'utils/sdk';
-import logAction from 'utils/virtruActionLogger';
+import Virtru from './sdk';
+import logAction from './virtruActionLogger';
 
 function click(node) {
   try {
@@ -32,13 +32,13 @@ export function saver(blob, name) {
   a.download = name;
   a.rel = 'noopener';
   a.href = URL.createObjectURL(blob);
-  setTimeout(function() {
+  setTimeout(function () {
     URL.revokeObjectURL(a.href);
   }, 4e4); // 40s
   click(a);
 }
 
-export const downloadHtml = async encrypted => {
+export const downloadHtml = async (encrypted) => {
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
   const blob = new Blob([html], { type: 'text/plain;charset=utf-8' });
   return saver(blob, encrypted.name);
@@ -54,7 +54,7 @@ function getOriginalNameOf(encrypted) {
   return encrypted.name;
 }
 
-export const downloadTdf = async encrypted => {
+export const downloadTdf = async (encrypted) => {
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
 
   // Virtru: Unwrap the encrypted HTML file

@@ -1,6 +1,6 @@
 import React from 'react';
 import RadioButton from '../RadioButton/RadioButton';
-import SectionHeader from '../SectionHeader/SectionHeader';
+import { SectionHeader } from '../SectionHeader/SectionHeader';
 import Toggle from '../Toggle/Toggle';
 import { ReactComponent as HourglassIcon } from './hourglass.svg';
 import classNames from 'classnames';
@@ -22,14 +22,14 @@ function Expiration({ policy, policyChange, isPolicyRevoked, now = new Date() })
   const enableDeadline = (policy, date) => policy.enableExpirationDeadline(d2sZ(date));
 
   // Virtru: Change policy to disable expiration deadline
-  const disableDeadline = policy => policy.disableExpirationDeadline();
+  const disableDeadline = (policy) => policy.disableExpirationDeadline();
 
   /**** END Virtru Block ****/
 
   // NOTE(DSAT-59) Chrome `datetime-local` expects ISO dates with no trailing `Z`
   // But the Virtru policy requires them. So use the right one to convert from a JS Date to
   // the appropriate field value.
-  const d2sZ = d => d.toISOString();
+  const d2sZ = (d) => d.toISOString();
   const withDate = (toChange, ...args) => {
     let d = new Date(toChange);
     d.setDate(...args);
@@ -58,7 +58,7 @@ function Expiration({ policy, policyChange, isPolicyRevoked, now = new Date() })
       : // Virtru: Change policy to disable expiration deadline
         disableDeadline(builder);
   });
-  const onRadioChange = newDate =>
+  const onRadioChange = (newDate) =>
     policyChange((builder, e) => e.target.checked && enableDeadline(builder, newDate));
 
   const currentDeadline = isNaN(new Date(currentDeadlineString))

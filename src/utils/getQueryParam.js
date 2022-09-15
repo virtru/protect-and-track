@@ -1,4 +1,4 @@
-export default (name, url) => {
+export const getQueryParam = (name, url) => {
   url = url || window.location.href;
   if (URL) {
     return new URL(url).searchParams.get(name);

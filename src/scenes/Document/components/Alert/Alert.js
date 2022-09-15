@@ -33,7 +33,4 @@ const actions = {
   clearAlert: ({ alert: currentAlert }, oldAlert) =>
     currentAlert === oldAlert ? { alert: false } : {},
 };
-export default connect(
-  mapToProps,
-  actions,
-)(Alert);
+export default connect(mapToProps, actions)(Alert);

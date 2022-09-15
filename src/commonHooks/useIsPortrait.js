@@ -3,7 +3,7 @@ import React from 'react';
 const mql = window.matchMedia(`(max-width: 768px)`);
 const { useState, useEffect } = React;
 
-export default () => {
+export const useIsPortrait = () => {
   const [mediaIsMatched, setMediaIsMatched] = useState(mql.matches);
 
   const resolutionHandler = () => setMediaIsMatched(mql.matches);
