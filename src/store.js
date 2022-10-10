@@ -52,8 +52,6 @@ if (isLoggedIn) {
 }
 
 export default createStore({
-  appIdBundle: false,
-
   isMobile: isMobile(),
 
   isSupportedBrowser: isSupportedBrowser(),
