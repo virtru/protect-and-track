@@ -1,12 +1,12 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'redux-zero/react';
-import { dispatchAuth } from './utils/dispatchAuth';
+import { dispatchAuth } from './utils/dispatchAuth.js';
 
 import './index.css';
-import App from './scenes/App/App';
-import * as serviceWorker from './serviceWorker';
-import store from './store';
+import App from './scenes/App/App.js';
+import * as serviceWorker from './serviceWorker.js';
+import store from './store.js';
 
 console.info(
   `AppInfo: ${process.env.REACT_APP_NAME}:${process.env.REACT_APP_VERSION}-${

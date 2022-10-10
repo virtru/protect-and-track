@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar.js';
 import { render } from '@testing-library/react';
 
 describe('SdkLogger', () => {

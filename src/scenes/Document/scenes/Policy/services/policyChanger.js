@@ -1,4 +1,4 @@
-import logAction, { builderLogger } from '../../../../../utils/virtruActionLogger';
+import logAction, { builderLogger } from '../../../../../utils/virtruActionLogger.js';
 
 export const NOPE = 'NOPE';
 

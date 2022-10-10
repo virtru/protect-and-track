@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { Button } from '../../../../components/Button/Button';
-import { Modal } from '../../../../components/Modal/Modal';
+import { Button } from '../../../../components/Button/Button.js';
+import { Modal } from '../../../../components/Modal/Modal.js';
 
 import './RevokeAll.css';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RevokeAll from '../RevokeAll/RevokeAll';
+import RevokeAll from '../RevokeAll/RevokeAll.js';
 import './Filename.css';
 
 function Filename({ userId, file, isTdf, isPolicyRevoked, revokePolicy }) {

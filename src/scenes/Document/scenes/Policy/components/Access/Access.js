@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { SectionHeader } from '../SectionHeader/SectionHeader';
+import { SectionHeader } from '../SectionHeader/SectionHeader.js';
 import { ReactComponent as AccessIcon } from './access.svg';
-import { NOPE } from '../../services/policyChanger';
+import { NOPE } from '../../services/policyChanger.js';
 import './Access.css';
-import { Button } from '../../../../../../components/Button/Button';
+import { Button } from '../../../../../../components/Button/Button.js';
 import { ReactComponent as InfoIcon } from './info-icon.svg';
 
 function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked }) {

@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
-import Sidebar from '../Sidebar/Sidebar';
+import Sidebar from '../Sidebar/Sidebar.js';
 import * as Virtru from 'virtru-sdk';
 import { v4 as uuidv4 } from 'uuid';
 
-import logAction from '../../utils/virtruActionLogger';
-import Alert from './components/Alert/Alert';
-import Drop from './components/Drop/Drop';
-import Filename from './components/Filename/Filename';
-import Policy from './scenes/Policy/Policy';
-import { DownloadModal } from './scenes/DownloadModal/DownloadModal';
-import Share from '../Share/Share';
-import AuthSelect from '../AuthSelect/AuthSelect';
-import StayUp from '../StayUp/StayUp';
-import { generatePolicyChanger } from './scenes/Policy/services/policyChanger';
-import { ENCRYPT_STATES } from '../../constants/encryptStates';
+import logAction from '../../utils/virtruActionLogger.js';
+import Alert from './components/Alert/Alert.js';
+import Drop from './components/Drop/Drop.js';
+import Filename from './components/Filename/Filename.js';
+import Policy from './scenes/Policy/Policy.js';
+import { DownloadModal } from './scenes/DownloadModal/DownloadModal.js';
+import Share from '../Share/Share.js';
+import AuthSelect from '../AuthSelect/AuthSelect.js';
+import StayUp from '../StayUp/StayUp.js';
+import { generatePolicyChanger } from './scenes/Policy/services/policyChanger.js';
+import { ENCRYPT_STATES } from '../../constants/encryptStates.js';
 import localForage from 'localforage';
 
 import './Document.css';
 
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
-import { Button } from '../../components/Button/Button';
-import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
+import { Button } from '../../components/Button/Button.js';
+import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer.js';
 
 let auditTimerId;
 

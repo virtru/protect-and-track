@@ -3,8 +3,8 @@ import { connect } from 'redux-zero/react';
 import { parse as parseCsvToJson } from 'json2csv';
 import './AuditLogger.css';
 import { Scrollbars } from 'rc-scrollbars';
-import { AuditEventItem } from './components/AuditEventItem/AuditEventItem';
-import { saver } from '../../../../utils/download';
+import { AuditEventItem } from './components/AuditEventItem/AuditEventItem.js';
+import { saver } from '../../../../utils/download.js';
 
 const { useEffect, useRef } = React;
 

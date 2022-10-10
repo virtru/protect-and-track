@@ -1,7 +1,7 @@
 import React from 'react';
-import RadioButton from '../RadioButton/RadioButton';
-import { SectionHeader } from '../SectionHeader/SectionHeader';
-import Toggle from '../Toggle/Toggle';
+import RadioButton from '../RadioButton/RadioButton.js';
+import { SectionHeader } from '../SectionHeader/SectionHeader.js';
+import Toggle from '../Toggle/Toggle.js';
 import { ReactComponent as HourglassIcon } from './hourglass.svg';
 import classNames from 'classnames';
 import './Expiration.css';

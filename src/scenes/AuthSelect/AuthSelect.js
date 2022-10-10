@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './AuthSelect.css';
-import { authOptions } from '../../utils/config';
-import { Modal } from '../../components/Modal/Modal';
+import { authOptions } from '../../utils/config.js';
+import { Modal } from '../../components/Modal/Modal.js';
 
 function AuthSelect({ onClose, login }) {
   useEffect(() => {

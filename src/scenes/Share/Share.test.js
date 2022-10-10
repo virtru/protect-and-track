@@ -2,9 +2,9 @@ import React from 'react';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import Share from './Share';
+import Share from './Share.js';
 import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
-import * as gsuite from './services/gsuite';
+import * as gsuite from './services/gsuite.js';
 
 jest.mock('./services/gsuite');
 

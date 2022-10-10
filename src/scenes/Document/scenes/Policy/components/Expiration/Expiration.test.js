@@ -1,9 +1,9 @@
 import React from 'react';
 import * as Virtru from 'virtru-sdk';
-import { generatePolicyChanger } from '../../services/policyChanger';
+import { generatePolicyChanger } from '../../services/policyChanger.js';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
-import Expiration from './Expiration';
+import Expiration from './Expiration.js';
 
 afterEach(cleanup);
 

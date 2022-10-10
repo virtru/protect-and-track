@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'redux-zero/react';
 import './Sidebar.css';
-import AuditLogger from './components/AuditLogger/AuditLogger';
+import AuditLogger from './components/AuditLogger/AuditLogger.js';
 
-import SdkLogger from './components/SdkLogger/SdkLogger';
+import SdkLogger from './components/SdkLogger/SdkLogger.js';
 
 const Sidebar = ({ tdfLog = [] }) => {
   return (

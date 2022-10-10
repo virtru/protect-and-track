@@ -1,6 +1,6 @@
 import React from 'react';
-import { SectionHeader } from '../SectionHeader/SectionHeader';
-import Toggle from '../Toggle/Toggle';
+import { SectionHeader } from '../SectionHeader/SectionHeader.js';
+import Toggle from '../Toggle/Toggle.js';
 import { ReactComponent as WatermarkIcon } from './watermark.svg';
 import classNames from 'classnames';
 import './Watermarking.css';

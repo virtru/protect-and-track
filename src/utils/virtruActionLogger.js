@@ -1,6 +1,6 @@
 import { bindActions } from 'redux-zero/utils';
 import moment from 'moment';
-import store from '../store';
+import store from '../store.js';
 
 const boundActions = bindActions(
   {

@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import './StayUp.css';
-import { Modal } from '../../components/Modal/Modal';
+import { Modal } from '../../components/Modal/Modal.js';
 
 function StayUp({ onClose, userId }) {
   const scriptWrapper = useRef();

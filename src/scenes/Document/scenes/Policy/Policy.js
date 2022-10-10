@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Access from './components/Access/Access';
-import Expiration from './components/Expiration/Expiration';
-import Watermarking from './components/Watermarking/Watermarking';
-import Resharing from './components/Resharing/Resharing';
-import { Button } from '../../../../components/Button/Button';
-import { ENCRYPT_STATES } from '../../../../constants/encryptStates';
+import Access from './components/Access/Access.js';
+import Expiration from './components/Expiration/Expiration.js';
+import Watermarking from './components/Watermarking/Watermarking.js';
+import Resharing from './components/Resharing/Resharing.js';
+import { Button } from '../../../../components/Button/Button.js';
+import { ENCRYPT_STATES } from '../../../../constants/encryptStates.js';
 import './Policy.css';
 
 function Policy({

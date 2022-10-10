@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react';
-import Loading from './components/Loading/Loading';
-import * as gsuite from './services/gsuite';
-import * as onedrive from './services/onedrive';
+import Loading from './components/Loading/Loading.js';
+import * as gsuite from './services/gsuite.js';
+import * as onedrive from './services/onedrive.js';
 import './Share.css';
-import { SHARE_STATE, SHARE_PROVIDERS, SHARE_TITLES } from '../../constants/sharing';
-import { Button } from '../../components/Button/Button';
-import { Modal } from '../../components/Modal/Modal';
+import { SHARE_STATE, SHARE_PROVIDERS, SHARE_TITLES } from '../../constants/sharing.js';
+import { Button } from '../../components/Button/Button.js';
+import { Modal } from '../../components/Modal/Modal.js';
 
 function Ico({ type }) {
   return <img alt="" src={`${type}.svg`} className="ShareSelect-ico" />;

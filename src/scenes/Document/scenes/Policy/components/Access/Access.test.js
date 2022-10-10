@@ -1,10 +1,10 @@
 import React from 'react';
 import * as Virtru from 'virtru-sdk';
-import { generatePolicyChanger } from '../../services/policyChanger';
+import { generatePolicyChanger } from '../../services/policyChanger.js';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
-import { ENCRYPT_STATES } from '../../../../../../constants/encryptStates';
-import Access from './Access';
+import { ENCRYPT_STATES } from '../../../../../../constants/encryptStates.js';
+import Access from './Access.js';
 
 afterEach(cleanup);
 
