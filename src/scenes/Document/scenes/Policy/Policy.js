@@ -19,7 +19,7 @@ function Policy({
   virtruClient,
   policyId,
   isPolicyRevoked,
-  isLoggedIn,
+  authState,
 }) {
   const renderButtons = () => {
     switch (encryptState) {
@@ -32,7 +32,7 @@ function Policy({
       case ENCRYPT_STATES.PROTECTED_NO_AUTH:
         return <Button onClick={openAuthModal}>Sign In to Protect</Button>;
       default:
-        if (isLoggedIn) {
+        if (authState) {
           return (
             <Button data-testid="encryptFile" onClick={encrypt}>
               Protect File

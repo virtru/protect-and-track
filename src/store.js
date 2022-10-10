@@ -38,15 +38,16 @@ if (userId) {
   window.history.replaceState({}, document.title, pathname + search + hash);
 }
 
-let isLoggedIn = email && Virtru.Auth.isLoggedIn({ email });
+let authState = email && Virtru.Auth.isLoggedIn({ email }) ? 'loggedin' : false;
 let virtruClient = false;
 
-if (isLoggedIn) {
+if (authState) {
   console.log(`Creating virtruClient in store`);
   virtruClient = new Virtru.Client({ ...clientConfig, email });
   userId = email;
 } else {
   // remove the email from localstorage
+  console.log(`Skipping virtruClient in store`);
   localStorage.removeItem('virtru-demo-email');
   userId = false;
 }
@@ -101,7 +102,7 @@ export default createStore({
   virtruClient,
 
   // Is the user logged in?
-  isLoggedIn,
+  authState,
 
   // The policy ID
   //policyId,

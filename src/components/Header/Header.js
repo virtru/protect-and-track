@@ -14,7 +14,7 @@ const signOut = (email) => Promise.all(Virtru.Auth.logout(email && { email }), r
 /**
  * Header Component that displays content at the top of the page.
  */
-const Header = ({ userId }) => {
+const Header = ({ authState, openAuthModal, userId }) => {
   function renderAuth() {
     if (userId) {
       return (
@@ -27,9 +27,15 @@ const Header = ({ userId }) => {
       );
     }
     return (
-      <Button variant="link" onClick={() => signOut()} verySmall light>
-        Reset
-      </Button>
+      <>
+        <Button variant="link" onClick={openAuthModal} verySmall light>
+          Sign In
+        </Button>
+        ·
+        <Button variant="link" onClick={() => signOut()} verySmall light>
+          Reset
+        </Button>
+      </>
     );
   }
   return (

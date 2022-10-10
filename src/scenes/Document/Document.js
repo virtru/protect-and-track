@@ -27,11 +27,14 @@ import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 let auditTimerId;
 
 function Document({
-  policyId,
   appId,
+  authState,
   encrypted,
   file,
+  isAuthOpen,
+  openAuthModal,
   policy,
+  policyId,
   userId,
   virtruClient,
   encryptState,
@@ -39,23 +42,17 @@ function Document({
   setFile,
   setEncrypted,
   setAuditEvents,
+  setAuthOpen,
   setEncryptState,
   setPolicy,
   setPolicyId,
-  isLoggedIn,
 }) {
   const [isShareOpen, setShareOpen] = useState(false);
-  const [isAuthOpen, setAuthOpen] = useState(false);
   const [isStayUpOpen, setStayUpOpen] = useState(false);
   const [isDownloadOpen, setDownloadOpen] = useState(false);
   const [isPolicyRevoked, setPolicyRevoked] = useState(
     !!localStorage.getItem('virtru-demo-policyRevoked'),
   );
-
-  const openAuthModal = () => {
-    setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
-    setAuthOpen(true);
-  };
 
   const openStayUpModal = () => {
     setStayUpOpen(true);
@@ -226,7 +223,7 @@ function Document({
               encrypt={encrypt}
               encryptState={encryptState}
               policyChange={policyChange}
-              isLoggedIn={isLoggedIn}
+              authState={authState}
             />
           </div>
         </Drop>
@@ -320,25 +317,25 @@ function Document({
 }
 
 const mapToProps = ({
-  policyId,
-  file,
   appId,
-  encrypted,
+  authState,
   encryptState,
+  encrypted,
+  file,
   policy,
+  policyId,
   userId,
   virtruClient,
-  isLoggedIn,
 }) => ({
-  policyId,
+  appId,
+  authState,
+  encryptState,
+  encrypted,
   file,
   policy,
+  policyId,
   userId,
-  appId,
   virtruClient,
-  encrypted,
-  encryptState,
-  isLoggedIn,
 });
 
 const saveFileToLocalStorage = async ({ fileBuffer, fileName, fileType }) => {
@@ -378,6 +375,8 @@ const saveEncryptedToLocalStorage = async ({ encryptedPayload, fileName, fileTyp
 };
 
 const actions = {
+  setEncryptState: (state, value) => ({ encryptState: value }),
+
   setFile: async (state, { fileHandle, fileBuffer }) => {
     const { virtruClient } = state;
     const { name: fileName, type: fileType } = fileHandle || {};
@@ -475,7 +474,6 @@ const actions = {
     });
     return { encrypted: value, auditEvents: false };
   },
-  setEncryptState: (state, value) => ({ encryptState: value }),
   setPolicy: (state, policy) => {
     const { encrypted, virtruClient } = state;
     if (encrypted && virtruClient && policy) {

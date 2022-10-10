@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
@@ -10,8 +10,6 @@ import './App.css';
 import Header from '../../components/Header/Header';
 import Document from '../../scenes/Document/Document';
 import localForage from 'localforage';
-
-const useEffect = React.useEffect;
 
 /**
  * An SDK Share App.
@@ -25,17 +23,22 @@ const useEffect = React.useEffect;
  *  - share panel?
  */
 function App({
+  authState,
+  continueAnyway,
   isLoading,
   isLoggedIn,
+  isMobile,
+  isSupportedBrowser,
+  setContinueAnyway,
   setIsLoading,
   updateFileData,
   userId,
-  isMobile,
-  isSupportedBrowser,
-  continueAnyway,
-  setContinueAnyway,
 }) {
   const isSupported = !isMobile && isSupportedBrowser;
+  const [isAuthOpen, setAuthOpen] = useState(false);
+  const openAuthModal = () => {
+    setAuthOpen(true);
+  };
 
   useEffect(() => {
     async function fetchFileState() {
@@ -60,11 +63,25 @@ function App({
   if (isSupported || continueAnyway) {
     return (
       <>
-        <Header isLoggedIn={false} userId={userId} />
+        <Header
+          authState={authState}
+          isLoggedIn={false}
+          openAuthModal={openAuthModal}
+          userId={userId}
+        />
         <main className="main">
           <Router>
             <Routes>
-              <Route path="/" element={<Document />} />
+              <Route
+                path="/"
+                element={
+                  <Document
+                    isAuthOpen={isAuthOpen}
+                    openAuthModal={openAuthModal}
+                    setAuthOpen={setAuthOpen}
+                  />
+                }
+              />
             </Routes>
             {/* TODO(dmihalcik): <Route 404 /> */}
           </Router>
@@ -87,21 +104,23 @@ function App({
 }
 
 const mapToProps = ({
+  authState,
+  continueAnyway,
   file,
   isLoading,
   isLoggedIn,
-  userId,
   isMobile,
   isSupportedBrowser,
-  continueAnyway,
+  userId,
 }) => ({
+  authState,
+  continueAnyway,
   file,
   isLoading,
   isLoggedIn,
-  userId,
   isMobile,
   isSupportedBrowser,
-  continueAnyway,
+  userId,
 });
 
 const actions = {
