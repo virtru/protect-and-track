@@ -1,4 +1,4 @@
-import Virtru from './sdk';
+import * as Virtru from 'virtru-sdk';
 
 export const getPolicy = async ({ encrypted, virtruClient }) => {
   const decryptParams = new Virtru.DecryptParamsBuilder()

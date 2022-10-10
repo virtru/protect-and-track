@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ReactComponent as LogoText } from '../../assets/logo-text.svg';
 
-import Virtru from '../../utils/sdk';
+import * as Virtru from 'virtru-sdk';
 import './Header.css';
 import GithubLogo from './github-logo.png';
 import { ReactComponent as GithubIcon } from './github-icon.svg';

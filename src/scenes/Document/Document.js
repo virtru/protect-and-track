@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
-import Virtru from '../../utils/sdk';
+import * as Virtru from 'virtru-sdk';
 import { v4 as uuidv4 } from 'uuid';
 
 import logAction from '../../utils/virtruActionLogger';

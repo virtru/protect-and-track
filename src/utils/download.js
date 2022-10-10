@@ -1,5 +1,5 @@
-import Virtru from './sdk';
-import logAction from './virtruActionLogger';
+import * as Virtru from 'virtru-sdk';
+import logAction from './virtruActionLogger.js';
 
 function click(node) {
   try {
