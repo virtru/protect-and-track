@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
 import { base64ToArrayBuffer } from '../../utils/buffer';
-import Virtru from '../../utils/sdk';
+import * as Virtru from 'virtru-sdk';
 import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';

@@ -1,6 +1,6 @@
 import createStore from 'redux-zero';
-import Virtru from './utils/sdk';
 import moment from 'moment';
+import * as Virtru from 'virtru-sdk';
 
 import { clientConfig } from './utils/config';
 import { SHARE_PROVIDERS, SHARE_STATE } from './constants/sharing';

@@ -2,7 +2,7 @@ import React from 'react';
 import { cleanup, render, wait, fireEvent, getByTestId, act } from '@testing-library/react';
 import Document from './Document';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
-import Virtru from '../../utils/sdk';
+import * as Virtru from 'virtru-sdk';
 
 afterEach(cleanup);
 
