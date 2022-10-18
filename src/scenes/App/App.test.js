@@ -11,8 +11,6 @@ describe('App', () => {
   test('renders loader if isLoading set as true', () => {
     const { getByText } = render(
       <App
-        appIdBundle={false}
-        setAppIdBundle={noop}
         isLoading={true}
         setIsLoading={noop}
         continueAnyway
@@ -26,8 +24,6 @@ describe('App', () => {
     const spy = jest.fn();
     const { getByText } = render(
       <App
-        appIdBundle={false}
-        setAppIdBundle={noop}
         isLoading={true}
         setIsLoading={noop}
         setContinueAnyway={spy}

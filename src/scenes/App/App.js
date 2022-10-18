@@ -25,8 +25,6 @@ const useEffect = React.useEffect;
  *  - share panel?
  */
 function App({
-  appIdBundle,
-  setAppIdBundle,
   isLoading,
   isLoggedIn,
   setIsLoading,
@@ -89,7 +87,6 @@ function App({
 }
 
 const mapToProps = ({
-  appIdBundle,
   file,
   isLoading,
   isLoggedIn,
@@ -98,7 +95,6 @@ const mapToProps = ({
   isSupportedBrowser,
   continueAnyway,
 }) => ({
-  appIdBundle,
   file,
   isLoading,
   isLoggedIn,
@@ -109,7 +105,6 @@ const mapToProps = ({
 });
 
 const actions = {
-  setAppIdBundle: (state, value) => ({ appIdBundle: value }),
   setIsLoading: (state, value) => ({ isLoading: value }),
   updateFileData: (state, value) => {
     console.log('Value: ');
