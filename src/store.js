@@ -1,16 +1,13 @@
+import { OidcClient } from '@virtru/oidc-client-js';
 import createStore from 'redux-zero';
 import moment from 'moment';
 import * as Virtru from 'virtru-sdk';
 
-import { clientConfig } from './utils/config';
+import { oidc as oidcConfig, clientConfig } from './utils/config';
 import { SHARE_PROVIDERS, SHARE_STATE } from './constants/sharing';
 import { isMobile } from './utils/checkIsMobile';
 import { isSupportedBrowser } from './utils/checkIsSupportedBrowser';
-import { getQueryParam } from './utils/getQueryParam';
-
-const auths = JSON.parse(localStorage.getItem('virtru-client-auth')) || null;
-const activeAuth = auths && Object.values(auths)[0];
-const appId = activeAuth && activeAuth.split(':')[1];
+import { OidcProvider, restoreUserId } from './utils/oidc';
 
 let tdfLog;
 try {
@@ -23,33 +20,19 @@ try {
   tdfLog = [];
 }
 
-let userId = getQueryParam('virtruAuthWidgetEmail');
-let email = localStorage.getItem('virtru-demo-email');
-
-if (userId) {
-  email = userId;
-  localStorage.setItem('virtru-demo-email', userId);
-  const pathname = window.location.pathname;
-  // Strip out auth widget specified virtruAuthWidgetEmail
-  const search = window.location.search
-    .replace(/([?&])virtruAuthWidgetEmail(=[^&#]+&?)/, '$1')
-    .replace(/[?&]$/, '');
-  const hash = window.location.hash;
-  window.history.replaceState({}, document.title, pathname + search + hash);
-}
-
-let authState = email && Virtru.Auth.isLoggedIn({ email }) ? 'loggedin' : false;
+const oidcClient = new OidcClient(oidcConfig);
+const userId = restoreUserId(oidcConfig);
+let authState = userId ? 'loggedin' : false;
 let virtruClient = false;
 
 if (authState) {
   console.log(`Creating virtruClient in store`);
-  virtruClient = new Virtru.Client({ ...clientConfig, email });
-  userId = email;
+  const authProvider = new OidcProvider(oidcClient);
+  virtruClient = new Virtru.Client({ ...clientConfig, email: userId, authProvider });
 } else {
   // remove the email from localstorage
   console.log(`Skipping virtruClient in store`);
   localStorage.removeItem('virtru-demo-email');
-  userId = false;
 }
 
 export default createStore({
@@ -77,6 +60,10 @@ export default createStore({
   // Application loading status
   isLoading: true,
 
+  oidcClient,
+
+  redirectCodes: [],
+
   // Current share provider displayed in the 'sharing' wizard
   share: false,
 
@@ -89,11 +76,6 @@ export default createStore({
     }
     return o;
   })(),
-
-  // Username; displayed in appbar
-  userId,
-
-  appId,
 
   // Audit events associated with the current policy
   auditEvents: false,
@@ -109,4 +91,6 @@ export default createStore({
 
   // Any current alerts that should be displayed atop the app
   alert: false,
+
+  userId,
 });

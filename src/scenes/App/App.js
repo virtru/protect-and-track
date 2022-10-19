@@ -10,6 +10,8 @@ import './App.css';
 import Header from '../../components/Header/Header';
 import Document from '../../scenes/Document/Document';
 import localForage from 'localforage';
+import { OidcProvider, restoreUserId } from '../../utils/oidc';
+import { oidc as oidcConfig, clientConfig } from '../../utils/config';
 
 /**
  * An SDK Share App.
@@ -25,10 +27,12 @@ import localForage from 'localforage';
 function App({
   authState,
   continueAnyway,
+  handleRedirect,
   isAuthOpen,
   isLoading,
   isMobile,
   isSupportedBrowser,
+  oidcClient,
   setAuthOpen,
   setContinueAnyway,
   setIsLoading,
@@ -36,6 +40,13 @@ function App({
   userId,
 }) {
   const isSupported = !isMobile && isSupportedBrowser;
+
+  const queryParams = new URLSearchParams(window.location.search);
+  const code = queryParams.get('code');
+  const state = queryParams.get('state');
+  if (code && state) {
+    handleRedirect({ state, code });
+  }
 
   useEffect(() => {
     async function fetchFileState() {
@@ -63,6 +74,7 @@ function App({
         <Header
           authState={authState}
           isLoggedIn={false}
+          oidcClient={oidcClient}
           setAuthOpen={setAuthOpen}
           userId={userId}
         />
@@ -102,6 +114,8 @@ const mapToProps = ({
   isLoading,
   isMobile,
   isSupportedBrowser,
+  oidcClient,
+  redirectCodes,
   userId,
 }) => ({
   authState,
@@ -111,20 +125,41 @@ const mapToProps = ({
   isLoading,
   isMobile,
   isSupportedBrowser,
+  oidcClient,
+  redirectCodes,
   userId,
 });
 
 const actions = {
+  handleRedirect: async ({ oidcClient, redirectCodes }, { code, state }) => {
+    console.log('redirect response:', { code, state, redirectCodes });
+    if (redirectCodes.includes(code)) {
+      console.log('Ignoring repeated redirect code');
+      return;
+    }
+    redirectCodes.push(code);
+    console.log('login redirect', state);
+    await oidcClient.handleLoginRedirectResult();
+    const authState = 'loggedin';
+    const email = restoreUserId(oidcConfig);
+    const userId = email;
+    const authProvider = new OidcProvider(oidcClient);
+    const virtruClient = new Virtru.Client({ ...clientConfig, email, authProvider });
+
+    return { authState, redirectCodes, userId, virtruClient };
+  },
+
   setAuthOpen: (_, value) => ({ isAuthOpen: value }),
+
+  setContinueAnyway: () => {
+    localStorage.setItem('continueAnyway', 'true');
+    return { continueAnyway: true };
+  },
   setIsLoading: (_, value) => ({ isLoading: value }),
   updateFileData: (_, value) => {
     console.log('Value: ');
     console.log({ ...value });
     return { ...value };
-  },
-  setContinueAnyway: () => {
-    localStorage.setItem('continueAnyway', 'true');
-    return { continueAnyway: true };
   },
 };
 

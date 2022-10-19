@@ -9,5 +9,8 @@ export default async function resetApp() {
   localStorage.removeItem('virtru-demo-policyRevoked');
   localStorage.removeItem('virtru-demo-sdk-log');
   localStorage.removeItem('virtru-demo-login-tracked');
-  window.location = window.location.href.split(/[?#]/)[0];
+  const [home, ...params] = window.location.href.split(/[?#]/);
+  if (params.length) {
+    window.location = home;
+  }
 }

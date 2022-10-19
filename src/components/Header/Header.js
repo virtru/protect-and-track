@@ -3,7 +3,6 @@ import { connect } from 'redux-zero/react';
 
 import { ReactComponent as LogoText } from '../../assets/logo-text.svg';
 
-import * as Virtru from 'virtru-sdk';
 import './Header.css';
 import GithubLogo from './github-logo.png';
 import { ReactComponent as GithubIcon } from './github-icon.svg';
@@ -11,10 +10,10 @@ import { Button } from '../Button/Button';
 import resetApp from '../../utils/resetApp';
 
 const actions = {
-  logout: async ({ userId }) => {
+  logout: async ({ oidcClient, userId }) => {
     console.log(`logging out ${userId}`);
     try {
-      await Promise.all([Virtru.Auth.logout(userId && { email: userId }), resetApp()]);
+      await Promise.all([oidcClient.logout(), resetApp()]);
     } catch (e) {
       console.warn(e);
     } finally {
@@ -100,5 +99,5 @@ const Header = ({ authState, logout, setAuthOpen, userId }) => {
   );
 };
 
-const mapToProps = ({ authState, userId }) => ({ authState, userId });
+const mapToProps = ({ authState, oidcClient, userId }) => ({ authState, oidcClient, userId });
 export default connect(mapToProps, actions)(Header);
