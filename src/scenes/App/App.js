@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
@@ -10,8 +10,6 @@ import './App.css';
 import Header from '../../components/Header/Header';
 import Document from '../../scenes/Document/Document';
 import localForage from 'localforage';
-
-const useEffect = React.useEffect;
 
 /**
  * An SDK Share App.
@@ -25,15 +23,17 @@ const useEffect = React.useEffect;
  *  - share panel?
  */
 function App({
+  authState,
+  continueAnyway,
+  isAuthOpen,
   isLoading,
-  isLoggedIn,
+  isMobile,
+  isSupportedBrowser,
+  setAuthOpen,
+  setContinueAnyway,
   setIsLoading,
   updateFileData,
   userId,
-  isMobile,
-  isSupportedBrowser,
-  continueAnyway,
-  setContinueAnyway,
 }) {
   const isSupported = !isMobile && isSupportedBrowser;
 
@@ -55,16 +55,24 @@ function App({
     }
 
     fetchFileState();
-  }, [isLoading, setIsLoading, isLoggedIn, updateFileData]);
+  }, [isLoading, setIsLoading, authState, updateFileData]);
 
   if (isSupported || continueAnyway) {
     return (
       <>
-        <Header isLoggedIn={false} userId={userId} />
+        <Header
+          authState={authState}
+          isLoggedIn={false}
+          setAuthOpen={setAuthOpen}
+          userId={userId}
+        />
         <main className="main">
           <Router>
             <Routes>
-              <Route path="/" element={<Document />} />
+              <Route
+                path="/"
+                element={<Document isAuthOpen={isAuthOpen} setAuthOpen={setAuthOpen} />}
+              />
             </Routes>
             {/* TODO(dmihalcik): <Route 404 /> */}
           </Router>
@@ -87,26 +95,29 @@ function App({
 }
 
 const mapToProps = ({
+  authState,
+  continueAnyway,
   file,
+  isAuthOpen,
   isLoading,
-  isLoggedIn,
-  userId,
   isMobile,
   isSupportedBrowser,
-  continueAnyway,
+  userId,
 }) => ({
+  authState,
+  continueAnyway,
   file,
+  isAuthOpen,
   isLoading,
-  isLoggedIn,
-  userId,
   isMobile,
   isSupportedBrowser,
-  continueAnyway,
+  userId,
 });
 
 const actions = {
-  setIsLoading: (state, value) => ({ isLoading: value }),
-  updateFileData: (state, value) => {
+  setAuthOpen: (_, value) => ({ isAuthOpen: value }),
+  setIsLoading: (_, value) => ({ isLoading: value }),
+  updateFileData: (_, value) => {
     console.log('Value: ');
     console.log({ ...value });
     return { ...value };
@@ -117,7 +128,7 @@ const actions = {
   },
 };
 
-async function getEncryptedFile(isLoggedIn) {
+async function getEncryptedFile(authState) {
   let encrypted;
   let encryptState;
   try {
@@ -132,7 +143,7 @@ async function getEncryptedFile(isLoggedIn) {
         name: encryptedFileData.name,
         type: encryptedFileData.type,
       };
-      encryptState = isLoggedIn ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
+      encryptState = authState ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
     }
   } catch (err) {
     console.error(err);

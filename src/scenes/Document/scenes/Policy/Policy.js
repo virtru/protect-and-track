@@ -9,17 +9,17 @@ import { ENCRYPT_STATES } from '../../../../constants/encryptStates';
 import './Policy.css';
 
 function Policy({
-  file,
-  userId,
-  openAuthModal,
+  authState,
   encrypt,
   encryptState,
+  file,
+  isPolicyRevoked,
   policy,
   policyChange,
-  virtruClient,
   policyId,
-  isPolicyRevoked,
-  isLoggedIn,
+  setAuthOpen,
+  userId,
+  virtruClient,
 }) {
   const renderButtons = () => {
     switch (encryptState) {
@@ -30,9 +30,9 @@ function Policy({
       case ENCRYPT_STATES.PROTECTED:
         return null;
       case ENCRYPT_STATES.PROTECTED_NO_AUTH:
-        return <Button onClick={openAuthModal}>Sign In to Protect</Button>;
+        return <Button onClick={() => setAuthOpen(true)}>Sign In to Protect</Button>;
       default:
-        if (isLoggedIn) {
+        if (authState) {
           return (
             <Button data-testid="encryptFile" onClick={encrypt}>
               Protect File
@@ -44,7 +44,7 @@ function Policy({
         if (hasUsers) {
           return (
             <>
-              <Button onClick={openAuthModal}>Sign In to Protect</Button>
+              <Button onClick={() => setAuthOpen(true)}>Sign In to Protect</Button>
               <Button disabled>Protect File</Button>
             </>
           );

@@ -27,44 +27,34 @@ import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 let auditTimerId;
 
 function Document({
-  policyId,
   appId,
+  authState,
+  encryptState,
   encrypted,
   file,
+  isAuthOpen,
   policy,
+  policyId,
   userId,
   virtruClient,
-  encryptState,
   setAlert,
-  setFile,
-  setEncrypted,
   setAuditEvents,
+  setAuthOpen,
   setEncryptState,
+  setEncrypted,
+  setFile,
   setPolicy,
   setPolicyId,
-  isLoggedIn,
 }) {
   const [isShareOpen, setShareOpen] = useState(false);
-  const [isAuthOpen, setAuthOpen] = useState(false);
   const [isStayUpOpen, setStayUpOpen] = useState(false);
   const [isDownloadOpen, setDownloadOpen] = useState(false);
   const [isPolicyRevoked, setPolicyRevoked] = useState(
     !!localStorage.getItem('virtru-demo-policyRevoked'),
   );
 
-  const openAuthModal = () => {
-    setEncryptState(ENCRYPT_STATES.AUTHENTICATING);
-    setAuthOpen(true);
-  };
-
   const openStayUpModal = () => {
     setStayUpOpen(true);
-  };
-
-  const login = async (email) => {
-    // Just refresh with the email query param
-    localStorage.setItem('virtru-demo-email', email);
-    window.location.reload();
   };
 
   const encrypt = async () => {
@@ -196,7 +186,20 @@ function Document({
 
   const renderDrop = () => {
     if (!file) {
-      return <Drop userId={userId} setFile={setFile} />;
+      if (!isAuthOpen) {
+        return <Drop userId={userId} setFile={setFile} />;
+      }
+      return (
+        <>
+          <Drop userId={userId} setFile={setFile} />
+          <AuthSelect
+            onClose={() => {
+              setAuthOpen(false);
+              setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+            }}
+          />
+        </>
+      );
     }
 
     const policyChange = (change) => generatePolicyChanger(policy, setPolicy, change, policyId);
@@ -222,11 +225,11 @@ function Document({
               policyId={policyId}
               isPolicyRevoked={isPolicyRevoked}
               userId={userId}
-              openAuthModal={openAuthModal}
+              setAuthOpen={setAuthOpen}
               encrypt={encrypt}
               encryptState={encryptState}
               policyChange={policyChange}
-              isLoggedIn={isLoggedIn}
+              authState={authState}
             />
           </div>
         </Drop>
@@ -237,7 +240,6 @@ function Document({
               setAuthOpen(false);
               setEncryptState(ENCRYPT_STATES.UNPROTECTED);
             }}
-            login={login}
           />
         )}
         {isStayUpOpen && (
@@ -320,25 +322,25 @@ function Document({
 }
 
 const mapToProps = ({
-  policyId,
-  file,
   appId,
-  encrypted,
+  authState,
   encryptState,
+  encrypted,
+  file,
   policy,
+  policyId,
   userId,
   virtruClient,
-  isLoggedIn,
 }) => ({
-  policyId,
+  appId,
+  authState,
+  encryptState,
+  encrypted,
   file,
   policy,
+  policyId,
   userId,
-  appId,
   virtruClient,
-  encrypted,
-  encryptState,
-  isLoggedIn,
 });
 
 const saveFileToLocalStorage = async ({ fileBuffer, fileName, fileType }) => {
@@ -378,6 +380,8 @@ const saveEncryptedToLocalStorage = async ({ encryptedPayload, fileName, fileTyp
 };
 
 const actions = {
+  setEncryptState: (state, value) => ({ encryptState: value }),
+
   setFile: async (state, { fileHandle, fileBuffer }) => {
     const { virtruClient } = state;
     const { name: fileName, type: fileType } = fileHandle || {};
@@ -475,7 +479,6 @@ const actions = {
     });
     return { encrypted: value, auditEvents: false };
   },
-  setEncryptState: (state, value) => ({ encryptState: value }),
   setPolicy: (state, policy) => {
     const { encrypted, virtruClient } = state;
     if (encrypted && virtruClient && policy) {
