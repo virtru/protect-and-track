@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'redux-zero/react';
 
 import { ReactComponent as LogoText } from '../../assets/logo-text.svg';
 
@@ -9,35 +10,62 @@ import { ReactComponent as GithubIcon } from './github-icon.svg';
 import { Button } from '../Button/Button';
 import resetApp from '../../utils/resetApp';
 
-const signOut = (email) => Promise.all(Virtru.Auth.logout(email && { email }), resetApp());
+const actions = {
+  logout: async ({ userId }) => { 
+    console.log(`logging out ${userId}`)
+    try {
+      await Promise.all([Virtru.Auth.logout(userId && { email: userId }), resetApp()]);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      return {
+        authState: false,
+        userId: false,
+        virtruClient: false,
+      };
+    }
+  },
+};
+
+const AuthBlock = ({ authState, logout, setAuthOpen, userId }) => {
+  if (userId) {
+    return (
+      <span className="currentUser">
+        <span className="userID">{userId}</span>
+        {'   '}
+        <Button variant="link" onClick={logout} verySmall light>
+          Reset &amp; Sign Out
+        </Button>
+      </span>
+    );
+  } else if (authState) {
+    <>
+      <Button variant="link" enabled="false" verySmall light>
+        {authState}
+      </Button>
+      {'   '}
+      <Button variant="link" onClick={logout} verySmall light>
+        Reset
+      </Button>
+    </>
+  }
+  return (
+    <>
+      <Button variant="link" onClick={() => setAuthOpen(true)} verySmall light>
+        Sign In
+      </Button>
+      {'   '}
+      <Button variant="link" onClick={logout} verySmall light>
+        Reset
+      </Button>
+    </>
+  );
+}
 
 /**
  * Header Component that displays content at the top of the page.
  */
-const Header = ({ authState, openAuthModal, userId }) => {
-  function renderAuth() {
-    if (userId) {
-      return (
-        <span className="currentUser">
-          <span className="userID">{userId}</span>{' '}
-          <Button variant="link" onClick={() => signOut(userId)} verySmall light>
-            Reset &amp; Sign Out
-          </Button>
-        </span>
-      );
-    }
-    return (
-      <>
-        <Button variant="link" onClick={openAuthModal} verySmall light>
-          Sign In
-        </Button>
-        ·
-        <Button variant="link" onClick={() => signOut()} verySmall light>
-          Reset
-        </Button>
-      </>
-    );
-  }
+const Header = ({ authState, logout, setAuthOpen, userId }) => {
   return (
     <div className="headerWrapper">
       <div className="headerContainer">
@@ -59,10 +87,13 @@ const Header = ({ authState, openAuthModal, userId }) => {
             <img alt="Virtru SDK Github" src={GithubLogo} />
           </a>
         </button>
-        <span className="headerAuth">{renderAuth()}</span>
+        <span className="headerAuth">
+          <AuthBlock authState={authState} logout={logout} setAuthOpen={setAuthOpen} userId={userId}/>
+        </span>
       </div>
     </div>
   );
 };
 
-export default Header;
+const mapToProps = ({ authState, userId }) => ({ authState, userId });
+export default connect(mapToProps, actions)(Header);

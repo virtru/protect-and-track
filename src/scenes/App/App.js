@@ -25,20 +25,17 @@ import localForage from 'localforage';
 function App({
   authState,
   continueAnyway,
+  isAuthOpen,
   isLoading,
-  isLoggedIn,
   isMobile,
   isSupportedBrowser,
+  setAuthOpen,
   setContinueAnyway,
   setIsLoading,
   updateFileData,
   userId,
 }) {
   const isSupported = !isMobile && isSupportedBrowser;
-  const [isAuthOpen, setAuthOpen] = useState(false);
-  const openAuthModal = () => {
-    setAuthOpen(true);
-  };
 
   useEffect(() => {
     async function fetchFileState() {
@@ -58,7 +55,7 @@ function App({
     }
 
     fetchFileState();
-  }, [isLoading, setIsLoading, isLoggedIn, updateFileData]);
+  }, [isLoading, setIsLoading, authState, updateFileData]);
 
   if (isSupported || continueAnyway) {
     return (
@@ -66,7 +63,7 @@ function App({
         <Header
           authState={authState}
           isLoggedIn={false}
-          openAuthModal={openAuthModal}
+          setAuthOpen={setAuthOpen}
           userId={userId}
         />
         <main className="main">
@@ -77,7 +74,6 @@ function App({
                 element={
                   <Document
                     isAuthOpen={isAuthOpen}
-                    openAuthModal={openAuthModal}
                     setAuthOpen={setAuthOpen}
                   />
                 }
@@ -107,8 +103,8 @@ const mapToProps = ({
   authState,
   continueAnyway,
   file,
+  isAuthOpen,
   isLoading,
-  isLoggedIn,
   isMobile,
   isSupportedBrowser,
   userId,
@@ -116,16 +112,17 @@ const mapToProps = ({
   authState,
   continueAnyway,
   file,
+  isAuthOpen,
   isLoading,
-  isLoggedIn,
   isMobile,
   isSupportedBrowser,
   userId,
 });
 
 const actions = {
-  setIsLoading: (state, value) => ({ isLoading: value }),
-  updateFileData: (state, value) => {
+  setAuthOpen: (_, value) => ({ isAuthOpen: value}),
+  setIsLoading: (_, value) => ({ isLoading: value }),
+  updateFileData: (_, value) => {
     console.log('Value: ');
     console.log({ ...value });
     return { ...value };
@@ -136,7 +133,7 @@ const actions = {
   },
 };
 
-async function getEncryptedFile(isLoggedIn) {
+async function getEncryptedFile(authState) {
   let encrypted;
   let encryptState;
   try {
@@ -151,7 +148,7 @@ async function getEncryptedFile(isLoggedIn) {
         name: encryptedFileData.name,
         type: encryptedFileData.type,
       };
-      encryptState = isLoggedIn ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
+      encryptState = authState ? ENCRYPT_STATES.PROTECTED : ENCRYPT_STATES.PROTECTED_NO_AUTH;
     }
   } catch (err) {
     console.error(err);
