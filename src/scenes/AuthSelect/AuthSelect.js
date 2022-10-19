@@ -31,4 +31,4 @@ function AuthSelect({ login, onClose, userId }) {
   );
 }
 
-export default connect((({userId}) => ({userId})), { login })(AuthSelect);
+export default connect(({ userId }) => ({ userId }), { login })(AuthSelect);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
@@ -71,12 +71,7 @@ function App({
             <Routes>
               <Route
                 path="/"
-                element={
-                  <Document
-                    isAuthOpen={isAuthOpen}
-                    setAuthOpen={setAuthOpen}
-                  />
-                }
+                element={<Document isAuthOpen={isAuthOpen} setAuthOpen={setAuthOpen} />}
               />
             </Routes>
             {/* TODO(dmihalcik): <Route 404 /> */}
@@ -120,7 +115,7 @@ const mapToProps = ({
 });
 
 const actions = {
-  setAuthOpen: (_, value) => ({ isAuthOpen: value}),
+  setAuthOpen: (_, value) => ({ isAuthOpen: value }),
   setIsLoading: (_, value) => ({ isLoading: value }),
   updateFileData: (_, value) => {
     console.log('Value: ');

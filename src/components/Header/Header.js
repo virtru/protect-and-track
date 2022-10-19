@@ -11,8 +11,8 @@ import { Button } from '../Button/Button';
 import resetApp from '../../utils/resetApp';
 
 const actions = {
-  logout: async ({ userId }) => { 
-    console.log(`logging out ${userId}`)
+  logout: async ({ userId }) => {
+    console.log(`logging out ${userId}`);
     try {
       await Promise.all([Virtru.Auth.logout(userId && { email: userId }), resetApp()]);
     } catch (e) {
@@ -47,7 +47,7 @@ const AuthBlock = ({ authState, logout, setAuthOpen, userId }) => {
       <Button variant="link" onClick={logout} verySmall light>
         Reset
       </Button>
-    </>
+    </>;
   }
   return (
     <>
@@ -60,7 +60,7 @@ const AuthBlock = ({ authState, logout, setAuthOpen, userId }) => {
       </Button>
     </>
   );
-}
+};
 
 /**
  * Header Component that displays content at the top of the page.
@@ -88,7 +88,12 @@ const Header = ({ authState, logout, setAuthOpen, userId }) => {
           </a>
         </button>
         <span className="headerAuth">
-          <AuthBlock authState={authState} logout={logout} setAuthOpen={setAuthOpen} userId={userId}/>
+          <AuthBlock
+            authState={authState}
+            logout={logout}
+            setAuthOpen={setAuthOpen}
+            userId={userId}
+          />
         </span>
       </div>
     </div>

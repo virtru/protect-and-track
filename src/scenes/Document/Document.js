@@ -189,15 +189,17 @@ function Document({
       if (!isAuthOpen) {
         return <Drop userId={userId} setFile={setFile} />;
       }
-      return <>
-        <Drop userId={userId} setFile={setFile} />
-        <AuthSelect
-          onClose={() => {
-            setAuthOpen(false);
-            setEncryptState(ENCRYPT_STATES.UNPROTECTED);
-          }}
-        />
-      </>;
+      return (
+        <>
+          <Drop userId={userId} setFile={setFile} />
+          <AuthSelect
+            onClose={() => {
+              setAuthOpen(false);
+              setEncryptState(ENCRYPT_STATES.UNPROTECTED);
+            }}
+          />
+        </>
+      );
     }
 
     const policyChange = (change) => generatePolicyChanger(policy, setPolicy, change, policyId);
