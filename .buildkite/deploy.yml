@@ -41,6 +41,7 @@ steps:
   - label: ':npm: NPM Build (${VIRTRU_ENV})'
     command: 'buildkite-scripts/scripts/npm-build.sh'
     env:
+      REACT_APP_OIDC_CLIENT_ID: '${OIDC_CLIENT_ID}'
       REACT_APP_VIRTRU_ENV: '${VIRTRU_ENV}'
 
   - wait
