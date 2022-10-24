@@ -33,7 +33,7 @@ steps:
 
   - wait
 
-  - label: ':npm: Install Dependencies'
+  - label: ':npm: npm ci'
     command: 'buildkite-scripts/mars/wrap/npm-ci.sh'
 
   - wait
