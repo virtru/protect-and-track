@@ -10,7 +10,7 @@ import './App.css';
 import Header from '../../components/Header/Header';
 import Document from '../../scenes/Document/Document';
 import localForage from 'localforage';
-import { OidcProvider, restoreUserId } from '../../utils/oidc';
+import { restoreUserId } from '../../utils/oidc';
 import { oidc as oidcConfig, clientConfig } from '../../utils/config';
 
 /**
@@ -143,7 +143,7 @@ const actions = {
     const authState = 'loggedin';
     const email = restoreUserId(oidcConfig);
     const userId = email;
-    const authProvider = new OidcProvider(oidcClient);
+    const authProvider = new Virtru.OidcProvider(oidcClient);
     const virtruClient = new Virtru.Client({ ...clientConfig, email, authProvider });
 
     return { authState, redirectCodes, userId, virtruClient };

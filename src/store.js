@@ -7,7 +7,7 @@ import { oidc as oidcConfig, clientConfig } from './utils/config';
 import { SHARE_PROVIDERS, SHARE_STATE } from './constants/sharing';
 import { isMobile } from './utils/checkIsMobile';
 import { isSupportedBrowser } from './utils/checkIsSupportedBrowser';
-import { OidcProvider, restoreUserId } from './utils/oidc';
+import { restoreUserId } from './utils/oidc';
 
 let tdfLog;
 try {
@@ -27,7 +27,7 @@ let virtruClient = false;
 
 if (authState) {
   console.log(`Creating virtruClient in store`);
-  const authProvider = new OidcProvider(oidcClient);
+  const authProvider = new Virtru.OidcProvider(oidcClient);
   virtruClient = new Virtru.Client({ ...clientConfig, email: userId, authProvider });
 } else {
   // remove the email from localstorage

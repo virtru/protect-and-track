@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'redux-zero/react';
 
 import './AuthSelect.css';
@@ -10,19 +10,6 @@ const Authenticated = () => (
   <div>
     <div className="instruction">Your identity has been verified</div>
     <div className="authenticatedIcon" />
-  </div>
-);
-
-const ErrorMessage = ({ id = '', message, onRetry, supportUrl }) => (
-  <div>
-    <div className="instruction">{message}</div>
-    <div className="errorIcon" />
-    {/* <PrimaryButton children={'Retry'} onClick={onRetry} isDisabled={false} />
-    <SecondaryButton
-      children={'Contact Support'}
-      isDisabled={false}
-      onClick={() => window.open(supportUrl)}
-    /> */}
   </div>
 );
 
