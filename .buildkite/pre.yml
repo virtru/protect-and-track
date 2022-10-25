@@ -8,7 +8,7 @@ env:
   USE_NODE_16: ${USE_NODE_16:-}
 
 steps:
-  - label: ':npm: Install Dependencies'
+  - label: ':npm: npm ci'
     command: 'buildkite-scripts/mars/wrap/npm-ci.sh'
 
   - wait

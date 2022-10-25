@@ -6,8 +6,6 @@ import * as Virtru from 'virtru-sdk';
 
 afterEach(cleanup);
 
-Virtru.AuthWidget = jest.fn();
-
 describe('Document', () => {
   test.skip('should trigger auth and and updates Virtru Client on every update, if userId defined but there is no virtruClient Document ', async () => {
     const client = { userId: 'foo' };

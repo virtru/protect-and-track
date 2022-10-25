@@ -45,8 +45,9 @@ steps:
       branch: '${BUILDKITE_BRANCH}'
       env:
         BLOCK_DEPLOY: 'build.branch =~ /^feature\//'
-        VIRTRU_ENV: ${VIRTRU_ENV:-develop01}
+        OIDC_CLIENT_ID: '${OIDC_CLIENT_ID_DEVELOP}'
         S3_PATH: protect-develop
+        VIRTRU_ENV: ${VIRTRU_ENV:-develop01}
     branches: master feature/*
 
   - wait
@@ -59,8 +60,9 @@ steps:
       branch: '${BUILDKITE_BRANCH}'
       env:
         BLOCK_DEPLOY: 'build.branch == "master"'
-        VIRTRU_ENV: staging
+        OIDC_CLIENT_ID: '${OIDC_CLIENT_ID_STAGING}'
         S3_PATH: 'protect-staging'
+        VIRTRU_ENV: staging
     branches: 'master release/*'
 
   - wait
@@ -72,8 +74,9 @@ steps:
       commit: '${BUILDKITE_COMMIT}'
       branch: '${BUILDKITE_BRANCH}'
       env:
-        VIRTRU_ENV: production
+        OIDC_CLIENT_ID: '${OIDC_CLIENT_ID_PRODUCTION}'
         S3_PATH: 'protect'
+        VIRTRU_ENV: production
     branches: 'release/*'
 
   - wait

@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "@virtru/oidc-client-js": "^1.0.6",
     "classnames": "^2.3.2",
     "json2csv": "^5.0.7",
     "localforage": "^1.10.0",
@@ -13,7 +14,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
     "redux-zero": "^5.1.7",
-    "virtru-sdk": "npm:virtru-sdk@3.0.3"
+    "virtru-sdk": "npm:virtru-sdk@3.0.4-beta.7.10"
   },
   "license": "MIT",
   "repository": {

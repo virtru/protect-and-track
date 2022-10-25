@@ -9,3 +9,16 @@ if [[ "${BUILDKITE_LABEL}" = *"Tests"* ]]; then
   # We do this to prevent BK from uploading artifacts to s3
   export BUILDKITE_ARTIFACT_UPLOAD_DESTINATION=""
 fi
+
+if [[ "${BUILDKITE_LABEL}" = *"npm ci"* ]]; then
+  if [ -z "${GITHUB_TOKEN:-}" ]; then
+    log-error "Empty Github Auth Token"
+    exit 1
+  fi
+
+  GITHUB_REGISTRY_AUTH='//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}'
+  if [ -z "$(grep -Fx "${GITHUB_REGISTRY_AUTH}" ./.npmrc 2>/dev/null)" ]; then
+    log-debug "Adding auth token config to ./.npmrc"
+    printf "\n${GITHUB_REGISTRY_AUTH}" >>./.npmrc
+  fi
+fi
