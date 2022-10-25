@@ -29,7 +29,7 @@ steps:
 
   - label: ':house_with_garden: Set Environment'
     command: 'buildkite-scripts/mars/scripts/set-deploy-environment.sh'
-    branches: 'master release/* feature/* hotfix/*'
+    branches: 'main release/* feature/* hotfix/*'
 
   - wait
 

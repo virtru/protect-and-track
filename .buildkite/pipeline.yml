@@ -1,14 +1,14 @@
 # Deploy using gitflow
 #
 # Basic idea:
-# * Developers almost always patch to master first.
+# * Developers almost always push to main first.
 # * Releases happen on a branch
 # * They can cherry-pick (or ffwd-merge, aka no-fault rebase) to releases
 # * Once a release goes out it is tagged. Tags are on releases, these may or
 #   may not be in a history.
 #
 # Where do deployments go:
-# master -> develop01
+# main -> develop01
 # feature/* -> develop[X] after select
 # release/* -> staging
 # v* -> production after block & shout
@@ -48,7 +48,7 @@ steps:
         OIDC_CLIENT_ID: '${OIDC_CLIENT_ID_DEVELOP}'
         S3_PATH: protect-develop
         VIRTRU_ENV: ${VIRTRU_ENV:-develop01}
-    branches: master feature/*
+    branches: main feature/*
 
   - wait
 
@@ -59,11 +59,11 @@ steps:
       commit: '${BUILDKITE_COMMIT}'
       branch: '${BUILDKITE_BRANCH}'
       env:
-        BLOCK_DEPLOY: 'build.branch == "master"'
+        BLOCK_DEPLOY: 'build.branch == "main"'
         OIDC_CLIENT_ID: '${OIDC_CLIENT_ID_STAGING}'
         S3_PATH: 'protect-staging'
         VIRTRU_ENV: staging
-    branches: 'master release/*'
+    branches: 'main release/*'
 
   - wait
 
