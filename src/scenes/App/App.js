@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
 import { base64ToArrayBuffer } from '../../utils/buffer';
@@ -67,15 +66,7 @@ function App({
           userId={userId}
         />
         <main className="main">
-          <Router>
-            <Routes>
-              <Route
-                path="/"
-                element={<Document isAuthOpen={isAuthOpen} setAuthOpen={setAuthOpen} />}
-              />
-            </Routes>
-            {/* TODO(dmihalcik): <Route 404 /> */}
-          </Router>
+          <Document isAuthOpen={isAuthOpen} setAuthOpen={setAuthOpen} />
         </main>
       </>
     );
