@@ -45,7 +45,6 @@ steps:
       branch: '${BUILDKITE_BRANCH}'
       env:
         BLOCK_DEPLOY: 'build.branch =~ /^feature\//'
-        S3_PATH: protect-develop
         VIRTRU_ENV: ${VIRTRU_ENV:-develop01}
     branches: main feature/*
 
@@ -73,7 +72,6 @@ steps:
       commit: '${BUILDKITE_COMMIT}'
       branch: '${BUILDKITE_BRANCH}'
       env:
-        S3_PATH: 'protect'
         VIRTRU_ENV: production
         S3_PATH: 'protect'
     branches: 'release/*'
