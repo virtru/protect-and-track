@@ -45,7 +45,6 @@ steps:
       branch: '${BUILDKITE_BRANCH}'
       env:
         BLOCK_DEPLOY: 'build.branch =~ /^feature\//'
-        OIDC_CLIENT_ID: '${OIDC_CLIENT_ID_DEVELOP}'
         S3_PATH: protect-develop
         VIRTRU_ENV: ${VIRTRU_ENV:-develop01}
     branches: main feature/*
@@ -74,9 +73,9 @@ steps:
       commit: '${BUILDKITE_COMMIT}'
       branch: '${BUILDKITE_BRANCH}'
       env:
-        OIDC_CLIENT_ID: '${OIDC_CLIENT_ID_PRODUCTION}'
         S3_PATH: 'protect'
         VIRTRU_ENV: production
+        S3_PATH: 'protect'
     branches: 'release/*'
 
   - wait

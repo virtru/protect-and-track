@@ -27,6 +27,7 @@ import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 let auditTimerId;
 
 function Document({
+  appId,
   authState,
   encryptState,
   encrypted,
@@ -181,7 +182,7 @@ function Document({
       return;
     }
     auditTimerId = setTimeout(updateAuditEvents, 2000);
-  }, [encryptState, policy, policyId, setAuditEvents, userId, virtruClient]);
+  }, [appId, encryptState, policy, policyId, setAuditEvents, userId, virtruClient]);
 
   const renderDrop = () => {
     if (!file) {
@@ -321,6 +322,7 @@ function Document({
 }
 
 const mapToProps = ({
+  appId,
   authState,
   encryptState,
   encrypted,
@@ -330,6 +332,7 @@ const mapToProps = ({
   userId,
   virtruClient,
 }) => ({
+  appId,
   authState,
   encryptState,
   encrypted,

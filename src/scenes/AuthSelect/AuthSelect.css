@@ -15,66 +15,8 @@
   font-family: var(--fontSecondary);
 }
 
-.authenticatedIcon {
-  background-image: url('./assets/Check-24.svg');
-  position: relative;
-  width: 4.6rem;
-  height: 4.6rem;
-  left: 43%;
-  margin: 2.5rem -50% 2.5em 0;
-}
-
 .Email-input {
   width: 100%;
-}
-
-.footer {
-  margin: 2rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 12rem;
-}
-
-.footer a.tos {
-  font-size: 1.3rem;
-}
-
-.header {
-  font-family: 'Raleway';
-  display: flex;
-  height: 5.5rem;
-  align-items: center;
-  padding: 0 0 0 2rem;
-  background-color: var(--header-background-color);
-  color: #ffffff;
-}
-
-.header img {
-  content: var(--header-company-logo);
-}
-
-.header label {
-  font-size: 1.9rem;
-}
-
-.instruction {
-  margin: 0 0 1.6rem 0;
-  line-height: 2.4rem;
-  font-size: 1.6rem;
-  color: #515864;
-}
-
-.label {
-  height: 2.4rem;
-  font-family: 'Open Sans';
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: #2d323b;
-  line-height: 2.4rem;
-  margin: 0 0 10rem 0;
 }
 
 .login-button {
@@ -99,22 +41,4 @@
 
 .login-button-outlook {
   background-image: url('./assets/outlooklogin.png');
-}
-
-.oauthButtons {
-  display: flex;
-  flex-direction: column;
-}
-
-.verticalSeparator {
-  border-left: 0.1rem solid #fff;
-  height: 2.5rem;
-  margin: 0 1.2rem;
-}
-
-.footerDivider {
-  height: 0.1rem;
-  min-width: 24rem;
-  background-color: #f3f5f7;
-  margin: 0 3.8rem;
 }
