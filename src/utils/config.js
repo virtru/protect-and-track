@@ -1,12 +1,5 @@
 import { getQueryParam } from './getQueryParam';
 
-const oidcConfigShared = {
-  clientId: process.env.REACT_APP_OIDC_CLIENT_ID,
-  redirectUri: window.location.href.split(/[?#]/)[0],
-  postLogoutRedirectUri: window.location.href.split(/[?#]/)[0] + '?bye=1',
-  scope: 'openid profile email offline_access',
-};
-
 const develop01 = {
   authOptions: {
     accountsUrl: 'https://api-develop01.develop.virtru.com/accounts',
@@ -19,15 +12,6 @@ const develop01 = {
     easEndpoint: 'https://api-develop01.develop.virtru.com/accounts',
     acmEndpoint: 'https://api-develop01.develop.virtru.com/acm',
     readerUrl: 'https://secure-develop01.develop.virtru.com/start?htmlProtocol=1',
-  },
-  oidc: {
-    ...oidcConfigShared,
-    authServiceBaseUrl: 'https://api.develop.virtru.com/auth',
-    authorizationEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/authorize',
-    tokenEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/token',
-    revokeEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/revoke',
-    logoutEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/logout',
-    storageKeyUniqueId: 'pt-dev01',
   },
   proxy: {
     url: 'https://sdk-develop01.develop.virtru.com/js/latest/proxy.html',
@@ -51,10 +35,6 @@ const develop02 = {
     acmEndpoint: 'https://api-develop02.develop.virtru.com/acm',
     readerUrl: 'https://secure-develop02.develop.virtru.com/start?htmlProtocol=1',
   },
-  oidc: {
-    ...develop01.oidc,
-    storageKeyUniqueId: 'pt-dev02',
-  },
   proxy: {
     url: 'https://sdk-develop02.develop.virtru.com/js/latest/proxy.html',
     origins: [
@@ -77,16 +57,6 @@ const staging = {
     acmEndpoint: 'https://api.staging.virtru.com/acm',
     readerUrl: 'https://secure.staging.virtru.com/start?htmlProtocol=1',
   },
-  oidc: {
-    ...oidcConfigShared,
-    authServiceBaseUrl: 'https://api.staging.virtru.com/auth',
-
-    authorizationEndpoint: 'https://virtru-staging.oktapreview.com/oauth2/default/v1/authorize',
-    tokenEndpoint: 'https://virtru-staging.oktapreview.com/oauth2/default/v1/token',
-    revokeEndpoint: 'https://virtru-staging.oktapreview.com/oauth2/default/v1/revoke',
-    logoutEndpoint: 'https://virtru-staging.oktapreview.com/oauth2/default/v1/logout',
-    storageKeyUniqueId: 'pt-staging',
-  },
   proxy: {
     url: 'https://sdk.staging.virtru.com/js/latest/proxy.html',
     origins: ['https://api.staging.virtru.com', 'https://audit.staging.virtru.com'],
@@ -105,15 +75,6 @@ const production = {
     easEndpoint: 'https://api.virtru.com/accounts',
     acmEndpoint: 'https://api.virtru.com/acm',
     readerUrl: 'https://secure.virtru.com/start?htmlProtocol=1',
-  },
-  oidc: {
-    ...oidcConfigShared,
-    authServiceBaseUrl: 'https://api.virtru.com/auth',
-    authorizationEndpoint: 'https://virtrudev.okta.com/oauth2/default/v1/authorize',
-    tokenEndpoint: 'https://virtrudev.okta.com/oauth2/default/v1/token',
-    revokeEndpoint: 'https://virtrudev.okta.com/oauth2/default/v1/revoke',
-    logoutEndpoint: 'https://virtrudev.okta.com/oauth2/default/v1/logout',
-    storageKeyUniqueId: 'pt',
   },
   proxy: undefined,
 };
@@ -165,4 +126,4 @@ const config =
     ? backendByEnv()
     : backendByParam() || backendByEnv();
 
-export const { authOptions, clientConfig, oidc, proxy } = config;
+export const { authOptions, clientConfig, proxy } = config;

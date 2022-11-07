@@ -14,11 +14,6 @@ const boundActions = bindActions(
 );
 
 const actionList = {
-  loginWithRedirect: {
-    title: 'Sign In',
-    code: 'oidcClient.loginWithRedirect(IdentityProvider.Google)',
-  },
-
   existingPolicyBuilder: {
     title: 'Get Policy Builder',
     code: 'const builder = existingPolicy.builder();',
