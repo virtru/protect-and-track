@@ -1,12 +1,31 @@
+import { datadogRum } from '@datadog/browser-rum';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'redux-zero/react';
 import { dispatchAuth } from './utils/dispatchAuth';
 
+
 import './index.css';
 import App from './scenes/App/App';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
+
+datadogRum.init({
+  applicationId: '575c63b8-eb4f-468e-8b29-6edd87f3452a',
+  clientToken: 'puba880a3d33c8a569513d1119834aeb6e5',
+  site: 'datadoghq.com',
+  service: process.env.REACT_APP_NAME || 'protect-and-track-local',
+  env: process.env.REACT_APP_VIRTRU_ENV || 'local',
+  version: process.env.REACT_APP_VERSION || '0.0.1',
+  sampleRate: 100,
+  sessionReplaySampleRate: 20,
+  trackInteractions: true,
+  trackResources: true,
+  trackLongTasks: true,
+  defaultPrivacyLevel:'mask-user-input'
+});
+  
+datadogRum.startSessionReplayRecording();
 
 console.info(
   `AppInfo: ${process.env.REACT_APP_NAME}:${process.env.REACT_APP_VERSION}-${
