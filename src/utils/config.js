@@ -3,7 +3,7 @@ import { getQueryParam } from './getQueryParam';
 const oidcConfigShared = {
   clientId: process.env.REACT_APP_OIDC_CLIENT_ID,
   redirectUri: window.location.href.split(/[?#]/)[0],
-  postLogoutRedirectUri: window.location.href.split(/[?#]/)[0] + '?bye=1',
+  postLogoutRedirectUri: window.location.href.split(/[?#]/)[0],
   scope: 'openid profile email offline_access',
 };
 
