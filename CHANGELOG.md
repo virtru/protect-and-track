@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Set current virtru-sdk to 3.1.0
 - Switch to OIDC
-
+- Adds datadog telemetry (RUM and Browser Logs)
 
 
 ## [v1.2.7](https://github.com/virtru/protect-and-track/pull/187)
