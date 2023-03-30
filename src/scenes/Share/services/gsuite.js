@@ -13,8 +13,8 @@ import { awaitify } from '../../../services/core/awaitify';
 // Next, create an API key and restrict it to the deployment web domain
 // and to use just the google drive API.
 // To edit: https://console.developers.google.com/apis/api/drive.googleapis.com/overview
-const CLIENT_ID = process.env.REACT_APP_CLIENT_ID_GSUITE;
-const API_KEY = process.env.REACT_APP_API_KEY_GSUITE;
+const CLIENT_ID = process.env.VITE_CLIENT_ID_GSUITE;
+const API_KEY = process.env.VITE_API_KEY_GSUITE;
 
 // Array of API discovery doc URLs for APIs used by the quickstart
 const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'];

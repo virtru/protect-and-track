@@ -8,7 +8,7 @@
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -16,7 +16,7 @@
     "skipLibCheck": false,
     "strict": true,
     "target": "ESNext",
-    "types": ["vite/client", "vite-plugin-svgr/client"],
+    "types": ["node", "vite/client", "vite-plugin-svgr/client"],
     "useDefineForClassFields": true
   },
   "include": ["src"]

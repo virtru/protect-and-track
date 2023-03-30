@@ -7,7 +7,7 @@ import { awaitify } from '../../../services/core/awaitify';
 // Under 'Authentication', enable an implicit access flow; the redirect will be the SPA's url.
 // Under API Permissions, add Microsoft.Graph > Files.ReadWrite.AppFolder
 // Then, when building or deploying this, make sure to set this variabls
-const CLIENT_ID = process.env.REACT_APP_CLIENT_ID_ONEDRIVE;
+const CLIENT_ID = process.env.VITE_CLIENT_ID_ONEDRIVE;
 const AUTHORIZATION_URI = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize';
 const REDIRECT_URI = window.location.href.split(/[?#]/)[0];
 

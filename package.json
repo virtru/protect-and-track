@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@opentdf/client": "^1.3.0",
     "@playwright/test": "^1.37.1",
     "@testing-library/dom": "^9.3.1",
     "@testing-library/jest-dom": "^6.0.1",
