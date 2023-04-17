@@ -16,7 +16,7 @@ const boundActions = bindActions(
 const actionList = {
   loginWithRedirect: {
     title: 'Sign In',
-    code: 'oidcClient.loginWithRedirect(IdentityProvider.Google)',
+    code: 'oidcClient.loginWithRedirect({idp: IdentityProvider.Google})',
   },
 
   existingPolicyBuilder: {

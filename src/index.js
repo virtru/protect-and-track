@@ -1,10 +1,9 @@
-import { datadogLogs } from '@datadog/browser-logs'
+import { datadogLogs } from '@datadog/browser-logs';
 import { datadogRum } from '@datadog/browser-rum';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'redux-zero/react';
 import { dispatchAuth } from './utils/dispatchAuth';
-
 
 import './index.css';
 import App from './scenes/App/App';
@@ -27,7 +26,7 @@ import store from './store';
     trackInteractions: true,
     trackResources: true,
     trackLongTasks: true,
-    defaultPrivacyLevel:'mask-user-input'
+    defaultPrivacyLevel: 'mask-user-input',
   });
   datadogLogs.init({
     ...ddCfg,

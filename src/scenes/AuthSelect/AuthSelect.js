@@ -14,9 +14,8 @@ const Authenticated = () => (
 );
 
 const login = async (oidcClient, provider) => {
-  oidcClient.loginWithRedirect(
-    provider === 'microsoft' ? IdentityProvider.Microsoft : IdentityProvider.Google,
-  );
+  const idp = provider === 'microsoft' ? IdentityProvider.Microsoft : IdentityProvider.Google;
+  oidcClient.loginWithRedirect({ idp });
 };
 
 function AuthSelect({ authState, oidcClient, onClose, setAuthState }) {
