@@ -27,6 +27,10 @@ const develop01 = {
     tokenEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/token',
     revokeEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/revoke',
     logoutEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/logout',
+    idpIds: {
+      google: 'google',
+      microsoft: 'microsoft',
+    },
     storageKeyUniqueId: 'pt-dev01',
   },
   proxy: {
