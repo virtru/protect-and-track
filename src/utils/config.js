@@ -1,6 +1,8 @@
+import { getDefaultOidcClientConfig } from '@virtru/oidc-client-js';
 import { getQueryParam } from './getQueryParam';
 
 const oidcConfigShared = {
+  ...getDefaultOidcClientConfig({ environment: process.env.REACT_APP_VIRTRU_ENV || 'develop' }),
   clientId: process.env.REACT_APP_OIDC_CLIENT_ID,
   redirectUri: window.location.href.split(/[?#]/)[0],
   postLogoutRedirectUri: window.location.href.split(/[?#]/)[0],
@@ -27,10 +29,6 @@ const develop01 = {
     tokenEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/token',
     revokeEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/revoke',
     logoutEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/logout',
-    idpIds: {
-      google: 'google',
-      microsoft: 'microsoft',
-    },
     storageKeyUniqueId: 'pt-dev01',
   },
   proxy: {
