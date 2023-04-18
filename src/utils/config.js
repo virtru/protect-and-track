@@ -1,11 +1,22 @@
-import { getDefaultOidcClientConfig } from '@virtru/oidc-client-js';
+import { OidcEnvironment, getDefaultOidcClientConfig } from '@virtru/oidc-client-js';
 import { getQueryParam } from './getQueryParam';
 
+function fromOldEnvironment(e) {
+  if (!e || e.startsWith('develop')) {
+    return 'develop';
+  }
+  return e;
+}
+
+const environment = fromOldEnvironment(process.env.REACT_APP_VIRTRU_ENV);
+
 const oidcConfigShared = {
-  ...getDefaultOidcClientConfig({ environment: process.env.REACT_APP_VIRTRU_ENV || 'develop' }),
+  ...getDefaultOidcClientConfig({
+    environment,
+    redirectUri: window.location.href.split(/[?#]/)[0],
+    postLogoutRedirectUri: window.location.href.split(/[?#]/)[0],
+  }),
   clientId: process.env.REACT_APP_OIDC_CLIENT_ID,
-  redirectUri: window.location.href.split(/[?#]/)[0],
-  postLogoutRedirectUri: window.location.href.split(/[?#]/)[0],
   scope: 'openid profile email offline_access',
 };
 
@@ -24,11 +35,6 @@ const develop01 = {
   },
   oidc: {
     ...oidcConfigShared,
-    authServiceBaseUrl: 'https://api.develop.virtru.com/auth',
-    authorizationEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/authorize',
-    tokenEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/token',
-    revokeEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/revoke',
-    logoutEndpoint: 'https://login.develop.virtru.com/oauth2/default/v1/logout',
     storageKeyUniqueId: 'pt-dev01',
   },
   proxy: {
@@ -81,12 +87,6 @@ const staging = {
   },
   oidc: {
     ...oidcConfigShared,
-    authServiceBaseUrl: 'https://api.staging.virtru.com/auth',
-
-    authorizationEndpoint: 'https://virtru-staging.oktapreview.com/oauth2/default/v1/authorize',
-    tokenEndpoint: 'https://virtru-staging.oktapreview.com/oauth2/default/v1/token',
-    revokeEndpoint: 'https://virtru-staging.oktapreview.com/oauth2/default/v1/revoke',
-    logoutEndpoint: 'https://virtru-staging.oktapreview.com/oauth2/default/v1/logout',
     storageKeyUniqueId: 'pt-staging',
   },
   proxy: {
@@ -110,11 +110,6 @@ const production = {
   },
   oidc: {
     ...oidcConfigShared,
-    authServiceBaseUrl: 'https://api.virtru.com/auth',
-    authorizationEndpoint: 'https://virtrudev.okta.com/oauth2/default/v1/authorize',
-    tokenEndpoint: 'https://virtrudev.okta.com/oauth2/default/v1/token',
-    revokeEndpoint: 'https://virtrudev.okta.com/oauth2/default/v1/revoke',
-    logoutEndpoint: 'https://virtrudev.okta.com/oauth2/default/v1/logout',
     storageKeyUniqueId: 'pt',
   },
   proxy: undefined,
