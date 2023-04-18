@@ -1,4 +1,4 @@
-import { OidcEnvironment, getDefaultOidcClientConfig } from '@virtru/oidc-client-js';
+import { getDefaultOidcClientConfig } from '@virtru/oidc-client-js';
 import { getQueryParam } from './getQueryParam';
 
 function fromOldEnvironment(e) {
