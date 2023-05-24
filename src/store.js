@@ -1,13 +1,15 @@
 import { OidcClient } from '@virtru/oidc-client-js';
 import createStore from 'redux-zero';
 import moment from 'moment';
-import * as Virtru from 'virtru-sdk';
-
+import '../node_modules/virtru-sdk/dist/virtru-sdk.web.js';
+// import '../node_modules/virtru-sdk/dist/virtru-sdk.web.js';
 import { oidc as oidcConfig, clientConfig } from './utils/config';
 import { SHARE_PROVIDERS, SHARE_STATE } from './constants/sharing';
 import { isMobile } from './utils/checkIsMobile';
 import { isSupportedBrowser } from './utils/checkIsSupportedBrowser';
 import { restoreUserId } from './utils/oidc';
+
+const Virtru = window.Virtru;
 
 let tdfLog;
 try {

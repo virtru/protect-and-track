@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
-import * as Virtru from 'virtru-sdk';
+// import * as Virtru from '../../../node_modules/virtru-sdk/dist/virtru-sdk.web.min.js';
 import { v4 as uuidv4 } from 'uuid';
 
 import logAction from '../../utils/virtruActionLogger';
@@ -23,6 +23,9 @@ import './Document.css';
 import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import { Button } from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
+import { saver } from '../../utils/download';
+
+const Virtru = window.Virtru;
 
 let auditTimerId;
 
@@ -391,8 +394,28 @@ const actions = {
 
     // Attempt to parse as TDF. If successful, load as encrypted data.
     if (fileName && fileName.endsWith('.tdf')) {
-      // TODO handle TDF files
-      return { alert: 'TDF support not yet implemented' };
+      // TODO UI update regarding this changes
+      try {
+        const decryptParams = new Virtru.DecryptParamsBuilder()
+            .withArrayBufferSource(fileBuffer)
+            .build();
+
+        const policyId = await virtruClient.getPolicyId(decryptParams);
+        const existingPolicy = await virtruClient.fetchPolicy(policyId);
+        console.log('existingPolicy', existingPolicy);
+
+        const initialUsers = await existingPolicy.getUsersWithAccess();
+        console.log('initialUsers', initialUsers);
+
+        console.log('virtruClient###', virtruClient);
+        const decryptStream = await virtruClient.decrypt(decryptParams);
+        const decrypted = await decryptStream.toBuffer();
+        const blob = new Blob([decrypted]);
+
+        return saver(blob, fileName.replace('.tdf', ''));
+      } catch (e) {
+        return { alert: e.message };
+      }
     } else if (fileName && fileName.endsWith('.html')) {
       // maybe a TDF?
       try {

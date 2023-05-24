@@ -93,7 +93,7 @@ function Drop({ children, setFile, policyState }) {
           <div className="Drop-box">
             <DropIcon className="Drop-icon" />
           </div>
-          <p>Drag in any regular file to protect it</p>
+          <p>Drag in any regular file to protect it or decrypt .tdf files</p>
           <UploadButton />
         </div>
         <div className="dragging-instructions">drop here</div>
