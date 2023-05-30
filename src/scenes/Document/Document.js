@@ -400,14 +400,6 @@ const actions = {
             .withArrayBufferSource(fileBuffer)
             .build();
 
-        const policyId = await virtruClient.getPolicyId(decryptParams);
-        const existingPolicy = await virtruClient.fetchPolicy(policyId);
-        console.log('existingPolicy', existingPolicy);
-
-        const initialUsers = await existingPolicy.getUsersWithAccess();
-        console.log('initialUsers', initialUsers);
-
-        console.log('virtruClient###', virtruClient);
         const decryptStream = await virtruClient.decrypt(decryptParams);
         const decrypted = await decryptStream.toBuffer();
         const blob = new Blob([decrypted]);
