@@ -1,4 +1,4 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test';
+import { PlaywrightTestConfig, devices, defineConfig } from '@playwright/test';
 import * as dotenv from "dotenv";
 // @ts-ignore
 dotenv.config({ multiline: true });
@@ -9,36 +9,24 @@ const config: PlaywrightTestConfig = {
     testDir: './e2e',
     forbidOnly: Boolean(process.env.CI),
     /* Retry on CI only */
-    retries: 0,
+    retries: 1,
     /* Opt out of parallel tests on CI and Local env for now (due to test failures with multiple workers - PLAT-1774  */
     workers: 1,
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     // globalSetup: require.resolve('./global-setup'),
     use: {
-        viewport: { width: 1280, height: 720 },
+        viewport: { width: 500, height: 720 },
         ignoreHTTPSErrors: true,
         acceptDownloads: true,
-
-        // actionTimeout: 3 * 60 * 1000,
-        // navigationTimeout: 30 * 1000,
-        // // storageState: './tests/e2e/storageState.json',
-        // /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-        // // actionTimeout: 0,
-        // /* Base URL to use in actions like `await page.goto('/')`. */
+        /* Base URL to use in actions like `await page.goto('/')`. */
         baseURL: "https://local.virtru.com/",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: 'retain-on-failure',
-        // screenshot: 'only-on-failure',
-        // browserName: "firefox",
-        // // headless: Boolean(process.env.CI),
+        // headless: Boolean(process.env.CI),
         headless: false,
         launchOptions: {
-          slowMo: 25,
-          // args: ['--disable-component-extensions-with-background-pages']
+          slowMo: 250,
         },
-        // contextOptions: {
-        //     ignoreHTTPSErrors: true
-        // },
     },
     expect: {
         /**
@@ -54,30 +42,55 @@ const config: PlaywrightTestConfig = {
     /* Configure projects for major browsers */
     projects: [
       {
-        name: 'setup-non-cks',
+        name: 'setup-phase-0',
         use: { ...devices['Desktop Firefox'] },
-        testMatch: /.*\.setup-non-cks\.ts/ ,
+        fullyParallel: true,
+        testMatch: /.*\.setup-(cks|non-cks)\.ts/,
       },
       {
         name: 'non-cks',
         testMatch: '*.non-cks.spec.ts',
-        use: {
-          ...devices['Desktop Chrome'],
-        },
-        dependencies: ['setup-non-cks'],
+        use: { ...devices['Desktop Chrome'] },
+        dependencies: ['setup-phase-0'],
       },
       {
-        name: 'setup-cks',
+        name: 'setup-phase-1',
         use: { ...devices['Desktop Firefox'] },
-        testMatch: /.*\.setup-cks\.ts/ ,
+        fullyParallel: true,
+        testMatch: /.*\.setup-(cks|non-cks)\.ts/,
+        dependencies: ['non-cks'],
       },
       {
         name: 'cks',
         testMatch: '*.cks.spec.ts',
-        use: {
-          ...devices['Desktop Chrome'],
-        },
-        dependencies: ['setup-cks'],
+        use: { ...devices['Desktop Chrome'] },
+        dependencies: ['setup-phase-1'],
+      },
+      {
+        name: 'setup-phase-2',
+        use: { ...devices['Desktop Firefox'] },
+        fullyParallel: true,
+        testMatch: /.*\.setup-(cks|non-cks)\.ts/,
+        dependencies: ['cks'],
+      },
+      {
+        name: 'unhappy paths cks user',
+        testMatch: '*.unhappy-path-cks.spec.ts',
+        use: { ...devices['Desktop Chrome'] },
+        dependencies: ['setup-phase-2'],
+      },
+      {
+        name: 'setup-phase-3',
+        use: { ...devices['Desktop Firefox'] },
+        fullyParallel: true,
+        testMatch: /.*\.setup-(cks|non-cks)\.ts/,
+        dependencies: ['unhappy paths cks user'],
+      },
+      {
+        name: 'unhappy paths non cks user',
+        testMatch: '*.unhappy-path-non-cks.spec.ts',
+        use: { ...devices['Desktop Chrome'] },
+        dependencies: ['setup-phase-3'],
       },
     ],
 };

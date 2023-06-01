@@ -2,7 +2,7 @@ import { test as setup } from '@playwright/test';
 import { signInUser } from "../helpers/operations";
 import { userAuthData } from '../config';
 
-setup('authenticate', async ({ page }) => {
+setup('authenticate 2', async ({ page }) => {
 	const { nonCKS: { user2 }, mainUser } = userAuthData;
 
 	await signInUser(
@@ -16,6 +16,7 @@ setup('authenticate', async ({ page }) => {
 	await page
 		.context()
 		.storageState({
-			path: 'e2e/tests/playwright-test/.auth-non-cks/user2.json'
+			path: 'e2e/tests/playwright-tests/.auth-non-cks/user2.json'
 		});
+	await page.close();
 });

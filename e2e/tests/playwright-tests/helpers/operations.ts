@@ -183,7 +183,6 @@ export const signInUser = async (
     }
     if (await page.isVisible(notNowBtn)) await page.locator(notNowBtn).click();
 
-
     await page.goto('/');
 
     await page.waitForSelector(selectors.firstScreen.unsupportedModal.continueAnywayBtn);
@@ -214,23 +213,23 @@ export const encryptDecryptProcedure = async (props: EncryptDecryptProcedure) =>
 
     await page.getByText(selectors.protectFileBtnText).click();
 
-    const responsePublicKey = await page.waitForResponse('**/auth/oidc/public-key');
-    await expect(responsePublicKey.status() === 200).toBeTruthy();
-
-    const responseToken = await page.waitForResponse('**/oauth2/default/v1/token');
-    await expect(responseToken.status() === 200).toBeTruthy();
-
-    const responseEntityObject = await page.waitForResponse('**/accounts/api/entityobject');
-    await expect(responseEntityObject.status() === 200).toBeTruthy();
-
-    const responseUserSettings = await page.waitForResponse('**/accounts/api/userSettings');
-    await expect(responseUserSettings.status() === 200).toBeTruthy();
-
-    const responseUpsert = await page.waitForResponse('**/kas/upsert');
-    await expect(responseUpsert.status() === 200).toBeTruthy();
-    await page.getByText(selectors.downloadFileBtnText).click();
-
     if (full) {
+        const responsePublicKey = await page.waitForResponse('**/auth/oidc/public-key');
+        await expect(responsePublicKey.status() === 200).toBeTruthy();
+
+        const responseToken = await page.waitForResponse('**/oauth2/default/v1/token');
+        await expect(responseToken.status() === 200).toBeTruthy();
+
+        const responseEntityObject = await page.waitForResponse('**/accounts/api/entityobject');
+        await expect(responseEntityObject.status() === 200).toBeTruthy();
+
+        const responseUserSettings = await page.waitForResponse('**/accounts/api/userSettings');
+        await expect(responseUserSettings.status() === 200).toBeTruthy();
+
+        const responseUpsert = await page.waitForResponse('**/kas/upsert');
+        await expect(responseUpsert.status() === 200).toBeTruthy();
+        await page.getByText(selectors.downloadFileBtnText).click();
+
         const downloadPromise = page.waitForEvent('download');
         await page.getByText(selectors.decryptAndDownloadBtnText).click();
         // Start waiting for download before clicking. Note no await.

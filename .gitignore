@@ -18,7 +18,7 @@ lib-cov
 coverage
 /playwright-report
 /test-results
-/e2e/tests/playwright-test/.auth*
+/e2e/tests/playwright-tests/.auth*
 /e2e/tests/playwright-tests/config.ts
 
 # nyc test coverage
