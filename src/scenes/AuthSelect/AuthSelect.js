@@ -19,7 +19,7 @@ function AuthSelect({ login, onClose, userId }) {
   useEffect(() => {
     console.log('Mounting auth UI...');
     window.Virtru.AuthWidget('virtru-auth-widget-mount', {
-      afterAuth: () => login(userId),
+      afterAuth: (userId) => login(userId),
       authOptions,
     });
   }, [login, userId]);
