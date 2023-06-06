@@ -8,6 +8,7 @@ import { Modal } from '../../components/Modal/Modal';
 
 const login = async (state, userId) => {
   // Just refresh with the email query param
+  console.log('loggedin in as ', userId);
   localStorage.setItem('virtru-demo-email', userId);
   state.userId = userId;
   state.authState = 'loggedin';
@@ -19,7 +20,7 @@ function AuthSelect({ login, onClose, userId }) {
   useEffect(() => {
     console.log('Mounting auth UI...');
     window.Virtru.AuthWidget('virtru-auth-widget-mount', {
-      afterAuth: () => login(userId),
+      afterAuth: (userId) => login(userId),
       authOptions,
     });
   }, [login, userId]);
