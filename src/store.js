@@ -38,7 +38,16 @@ if (userId) {
   window.history.replaceState({}, document.title, pathname + search + hash);
 }
 
-let authState = email && Virtru.Auth.isLoggedIn({ email }) ? 'loggedin' : false;
+let authState = ((e) => {
+  try {
+    if (email && Virtru.Auth.isLoggedIn({ email })) {
+      return 'loggedin';
+    }
+  } catch(e) {
+    console.error(e);
+  }
+  return false;
+})(email);
 let virtruClient = false;
 
 if (authState) {
