@@ -1,7 +1,5 @@
-// import * as Virtru from '../../node_modules/virtru-sdk/dist/virtru-sdk.web.min.js';
+import * as Virtru from 'virtru-sdk';
 import logAction from './virtruActionLogger';
-
-const Virtru = window.Virtru;
 
 function click(node) {
   try {

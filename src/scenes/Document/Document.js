@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'redux-zero/react/index';
 
 import Sidebar from '../Sidebar/Sidebar';
-// import * as Virtru from '../../../node_modules/virtru-sdk/dist/virtru-sdk.web.min.js';
+import * as Virtru from 'virtru-sdk';
 import { v4 as uuidv4 } from 'uuid';
 
 import logAction from '../../utils/virtruActionLogger';
@@ -24,8 +24,6 @@ import { ReactComponent as FileIcon } from './assets/File-24.svg';
 import { Button } from '../../components/Button/Button';
 import { arrayBufferToBase64, fileToArrayBuffer } from '../../utils/buffer';
 import { saver } from '../../utils/download';
-
-const Virtru = window.Virtru;
 
 let auditTimerId;
 

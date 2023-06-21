@@ -3,7 +3,7 @@ import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
 import { base64ToArrayBuffer } from '../../utils/buffer';
 
-// import * as Virtru from '../../../node_modules/virtru-sdk/dist/virtru-sdk.web.min.js';
+import * as Virtru from 'virtru-sdk';
 import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';
@@ -13,8 +13,6 @@ import localForage from 'localforage';
 import { restoreUserId } from '../../utils/oidc';
 import { oidc as oidcConfig, clientConfig } from '../../utils/config';
 
-
-const Virtru = window.Virtru;
 
 /**
  * An SDK Share App.

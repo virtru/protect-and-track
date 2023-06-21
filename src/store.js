@@ -9,8 +9,6 @@ import { isMobile } from './utils/checkIsMobile';
 import { isSupportedBrowser } from './utils/checkIsSupportedBrowser';
 import { restoreUserId } from './utils/oidc';
 
-const Virtru = window.Virtru;
-
 let tdfLog;
 try {
   tdfLog = JSON.parse(localStorage.getItem('virtru-demo-sdk-log')) || [];
