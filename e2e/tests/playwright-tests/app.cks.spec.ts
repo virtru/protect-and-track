@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { selectors } from "./helpers/selectors";
 import { userAuthData } from './config';
-import {encryptDecryptProcedure, signInUser} from "./helpers/operations";
+import { encryptDecryptProcedure } from "./helpers/operations";
 import * as fs from "fs/promises";
 
 test.describe.configure({ mode: 'serial' });
