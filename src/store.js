@@ -1,8 +1,7 @@
 import { OidcClient } from '@virtru/oidc-client-js';
 import createStore from 'redux-zero';
 import moment from 'moment';
-import '../node_modules/virtru-sdk/dist/virtru-sdk.web.js';
-// import '../node_modules/virtru-sdk/dist/virtru-sdk.web.js';
+import * as Virtru from 'virtru-sdk';
 import { oidc as oidcConfig, clientConfig } from './utils/config';
 import { SHARE_PROVIDERS, SHARE_STATE } from './constants/sharing';
 import { isMobile } from './utils/checkIsMobile';
