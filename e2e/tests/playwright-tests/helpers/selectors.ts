@@ -6,8 +6,6 @@ export const selectors = {
     loginScreen: {
         usernameField: '#identifierId',
         nextFirstBtn: '#identifierNext > div > button > span',
-        passwordField: '#password input',
-        passwordNextBtn: '#passwordNext',
         submitButton: '#kc-login'
     },
     firstScreen: {
@@ -97,3 +95,19 @@ export const selectors = {
     alertMessage: '.Toastify__toast-body',
     tokenMessage: '.Toastify__toast'
 }
+
+export const gmailSelectors = {
+    loginView: {
+        identifierInput: '#identifierId',
+        identifierNextBtn: '#identifierNext',
+        passwordInput: 'input[aria-label="Enter your password"]',
+        passwordNextBtn: 'button:has-text("Next")',
+    },
+    composeBtn: 'div[role=button]:has-text("Compose")',
+    verifyView: {
+        recoveryEmailItem: 'div[data-challengetype="12"]',
+        recoveryEmailInput: '#knowledge-preregistered-email-response',
+        nextBtn: 'button:has-text("Next")',
+        notNowBtn: 'button[class]:has-text("Not now")',
+    },
+};

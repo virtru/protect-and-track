@@ -1,51 +1,34 @@
 import { Page, expect } from '@playwright/test'
-import { selectors } from './selectors';
-// import * as fs from 'fs';
+import { selectors, gmailSelectors } from './selectors';
 import * as fs from 'fs/promises';
-
-const gmail = {
-    loginView: {
-        identifierInput: '#identifierId',
-        identifierNextBtn: '#identifierNext',
-        passwordInput: 'input[type="password"]',
-        passwordNextBtn: '#passwordNext',
-    },
-    composeBtn: 'div[role=button]:has-text("Compose")',
-    verifyView: {
-        recoveryEmailItem: 'div[data-challengetype="12"]',
-        recoveryEmailInput: '#knowledge-preregistered-email-response',
-        nextBtn: 'button:has-text("Next")',
-        notNowBtn: 'button[class]:has-text("Not now")',
-    },
-};
 
 export const signInUser = async (
   page: Page,
   userObject: { email: string, password: string, recoveryEmail: string },
   { selectorAwaited = undefined, checkInitialValue = false } = {}
 ) => {
-    await page.goto('https://gmail.com', { waitUntil: 'commit' });
+    await page.goto('https://gmailSelectors.com', { waitUntil: 'commit' });
 
     if (checkInitialValue) {
-        await expect(page.locator(gmail.loginView.identifierInput))
+        await expect(page.locator(gmailSelectors.loginView.identifierInput))
           .toHaveAttribute('data-initial-value', userObject.email, { timeout: 10000 });
     } else {
-        await page.waitForSelector(gmail.loginView.identifierInput, { state: 'visible', timeout: 60000 });
-        await page.locator(gmail.loginView.identifierInput).fill(userObject.email);
+        await page.waitForSelector(gmailSelectors.loginView.identifierInput, { state: 'visible', timeout: 60000 });
+        await page.locator(gmailSelectors.loginView.identifierInput).fill(userObject.email);
     }
-    await page.locator(gmail.loginView.identifierNextBtn).click();
-    await page.waitForSelector(gmail.loginView.passwordInput, { state: 'visible', timeout: 30000 });
-    await page.locator(gmail.loginView.passwordInput).fill(userObject.password);
-    await page.locator(gmail.loginView.passwordNextBtn).click();
+    await page.locator(gmailSelectors.loginView.identifierNextBtn).click();
+    await page.waitForSelector(gmailSelectors.loginView.passwordInput, { state: 'visible', timeout: 30000 });
+    await page.locator(gmailSelectors.loginView.passwordInput).fill(userObject.password);
+    await page.locator(gmailSelectors.loginView.passwordNextBtn).click();
 
-    const selector = selectorAwaited === undefined ? gmail.composeBtn : selectorAwaited;
-    const { recoveryEmailItem } = gmail.verifyView;
-    const { notNowBtn } = gmail.verifyView;
+    const selector = selectorAwaited === undefined ? gmailSelectors.composeBtn : selectorAwaited;
+    const { recoveryEmailItem } = gmailSelectors.verifyView;
+    const { notNowBtn } = gmailSelectors.verifyView;
     await page.waitForSelector(`:is(${selector}, ${recoveryEmailItem}, ${notNowBtn})`, { timeout: 60000 });
     if (await page.isVisible(recoveryEmailItem)) {
         await page.locator(recoveryEmailItem).click();
-        await page.locator(gmail.verifyView.recoveryEmailInput).fill(userObject.recoveryEmail);
-        await page.locator(gmail.verifyView.nextBtn).click();
+        await page.locator(gmailSelectors.verifyView.recoveryEmailInput).fill(userObject.recoveryEmail);
+        await page.locator(gmailSelectors.verifyView.nextBtn).click();
         await page.locator(selector).waitFor({ state: 'visible', timeout: 60000 });
     }
     if (await page.isVisible(notNowBtn)) await page.locator(notNowBtn).click();
