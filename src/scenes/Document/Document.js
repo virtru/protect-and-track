@@ -392,7 +392,6 @@ const actions = {
 
     // Attempt to parse as TDF. If successful, load as encrypted data.
     if (fileName && fileName.endsWith('.tdf')) {
-      // TODO UI update regarding this changes
       try {
         const decryptParams = new Virtru.DecryptParamsBuilder()
             .withArrayBufferSource(fileBuffer)

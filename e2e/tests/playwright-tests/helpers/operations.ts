@@ -7,7 +7,7 @@ export const signInUser = async (
   userObject: { email: string, password: string, recoveryEmail: string },
   { selectorAwaited = undefined, checkInitialValue = false } = {}
 ) => {
-    await page.goto('https://gmailSelectors.com', { waitUntil: 'commit' });
+    await page.goto('https://gmail.com', { waitUntil: 'commit' });
 
     if (checkInitialValue) {
         await expect(page.locator(gmailSelectors.loginView.identifierInput))

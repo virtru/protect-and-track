@@ -1,7 +1,9 @@
 import { test as baseTest } from "@playwright/test";
+// @ts-ignore
+import crypto from 'crypto'
 
 export const generateRandomDigit = (max = 10, min = 0) =>
-    Math.floor(Math.random() * max + min);
+  crypto.randomInt(min, max)
 
 export const test = baseTest.extend<{ attributeName: string; authority: string; attributeValue: string; }>({
     attributeName: async ({ page }, use) => {

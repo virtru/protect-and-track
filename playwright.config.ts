@@ -1,4 +1,4 @@
-import { PlaywrightTestConfig, devices, defineConfig } from '@playwright/test';
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 import * as dotenv from "dotenv";
 // @ts-ignore
 dotenv.config({ multiline: true });
@@ -45,7 +45,7 @@ const config: PlaywrightTestConfig = {
         name: 'setup-phase-0',
         use: { ...devices['Desktop Firefox'] },
         fullyParallel: true,
-        testMatch: /.*\.setup-(cks|non-cks)\.ts/,
+        testMatch: 'auth*.setup-*',
       },
       {
         name: 'non-cks',
@@ -57,7 +57,7 @@ const config: PlaywrightTestConfig = {
         name: 'setup-phase-1',
         use: { ...devices['Desktop Firefox'] },
         fullyParallel: true,
-        testMatch: /.*\.setup-(cks|non-cks)\.ts/,
+        testMatch: 'auth*.setup-*',
         dependencies: ['non-cks'],
       },
       {
@@ -70,7 +70,7 @@ const config: PlaywrightTestConfig = {
         name: 'setup-phase-2',
         use: { ...devices['Desktop Firefox'] },
         fullyParallel: true,
-        testMatch: /.*\.setup-(cks|non-cks)\.ts/,
+        testMatch: 'auth*.setup-*',
         dependencies: ['cks'],
       },
       {
@@ -83,7 +83,7 @@ const config: PlaywrightTestConfig = {
         name: 'setup-phase-3',
         use: { ...devices['Desktop Firefox'] },
         fullyParallel: true,
-        testMatch: /.*\.setup-(cks|non-cks)\.ts/,
+        testMatch: 'auth*.setup-*',
         dependencies: ['unhappy paths cks user'],
       },
       {
