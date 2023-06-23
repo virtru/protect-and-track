@@ -39,7 +39,7 @@ test.describe('Unhappy paths CKS user', () => {
 		await pageY.locator(selectors.uploadInput).setInputFiles(fileName);
 
 		const responsePublicKeyY = await pageY.waitForResponse('**/rewrap');
-		await expect(responsePublicKeyY.status() === 403).toBeTruthy();
+		await expect(responsePublicKeyY.status()).toBe(403);
 		await contextY.close();
 	});
 });
