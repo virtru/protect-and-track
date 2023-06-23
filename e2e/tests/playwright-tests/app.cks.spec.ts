@@ -26,6 +26,7 @@ test.describe('For CKS user', () => {
 		await download.saveAs(fileName);
 		const fileContent = await fs.readFile(fileName);
 		expect(fileContent.toString()).toBeTruthy();
+    await fs.rm(fileName);
 		await contextZ.close();
 	});
 
