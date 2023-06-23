@@ -5,8 +5,8 @@ dotenv.config({ multiline: true });
 
 /* See https://playwright.dev/docs/test-configuration. */
 const config: PlaywrightTestConfig = {
-    /* Fail the build on CI if you accidentally left test.only in the source code. */
     testDir: './e2e',
+    /* Fail the build on CI if you accidentally left test.only in the source code. */
     forbidOnly: Boolean(process.env.CI),
     /* Retry on CI only */
     retries: process.env.CI ? 3 : 1,
