@@ -32,7 +32,7 @@ test.describe('Unhappy paths Non CKS user', () => {
 		await pageZ.locator(selectors.uploadInput).setInputFiles(fileName);
 
 		const responsePublicKeyZ = await pageZ.waitForResponse('**/rewrap');
-		await expect(responsePublicKeyZ.status() === 403).toBeTruthy();
+		await expect(responsePublicKeyZ.status()).toBe(403);
 		await contextZ.close();
 
 		const contextY = await browser.newContext({ storageState: 'e2e/tests/playwright-tests/.auth-non-cks/user2.json' });
