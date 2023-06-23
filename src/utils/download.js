@@ -39,6 +39,8 @@ export function saver(blob, name) {
 }
 
 export const downloadHtml = async (encrypted) => {
+  // Virtru: Unwrap the encrypted HTML file
+  logAction('unwrapHtml');
   const html = new TextDecoder('utf-8').decode(encrypted.payload);
   const blob = new Blob([html], { type: 'text/plain;charset=utf-8' });
   return saver(blob, encrypted.name);
@@ -55,14 +57,13 @@ function getOriginalNameOf(encrypted) {
 }
 
 export const downloadTdf = async (encrypted) => {
-  const html = new TextDecoder('utf-8').decode(encrypted.payload);
-
-  // Virtru: Unwrap the encrypted HTML file
-  logAction('unwrapHtml');
-  const tdf = window.TDF.unwrapHtml(html); // TODO: implement using Virtru SDK
+  const tdf = window.TDF.unwrapHtml(encrypted.payload); // TODO: implement using Virtru SDK
+  // todo
+  // logAction('downloadTdf');
 
   const blob = new Blob([tdf]);
   const originalName = getOriginalNameOf(encrypted);
+
   return saver(blob, originalName + '.tdf');
 };
 

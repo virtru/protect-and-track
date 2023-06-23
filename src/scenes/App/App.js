@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
 import { base64ToArrayBuffer } from '../../utils/buffer';
+
 import * as Virtru from 'virtru-sdk';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -11,6 +12,7 @@ import Document from '../../scenes/Document/Document';
 import localForage from 'localforage';
 import { restoreUserId } from '../../utils/oidc';
 import { oidc as oidcConfig, clientConfig } from '../../utils/config';
+
 
 /**
  * An SDK Share App.
