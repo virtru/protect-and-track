@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { selectors } from "./helpers/selectors";
-import { encryptDecryptProcedure } from "./helpers/operations";
+import { encrypt } from "./helpers/operations";
 import * as fs from "fs/promises";
 
 test.describe.configure({ mode: 'serial' });
@@ -14,7 +14,7 @@ test.describe('Unhappy paths Non CKS user', () => {
 		const pageW = await contextW.newPage();
 		await pageW.goto('/');
 
-		await encryptDecryptProcedure({
+		await encrypt({
 			page: pageW,
 		});
 		const downloadPromiseW = pageW.waitForEvent('download');

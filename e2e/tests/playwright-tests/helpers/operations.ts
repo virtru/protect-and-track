@@ -51,7 +51,19 @@ type EncryptDecryptProcedure = {
     full?: boolean
 }
 
-export const encryptDecryptProcedure = async ({ page, recipientEmail, full }: EncryptDecryptProcedure) => {
+export const encrypt = async ({ page, recipientEmail }: EncryptDecryptProcedure) => {
+    await page.locator(selectors.draggableItem).dragTo(page.locator(selectors.dropZone));
+
+    if (recipientEmail) {
+        await page.fill('input[type=email]', recipientEmail);
+        await page.getByText(selectors.grantBtnText).click();
+        await expect(page.getByText(selectors.revokeBtnText)).toBeVisible();
+    }
+
+    await page.getByText(selectors.protectFileBtnText).click();
+}
+
+export const encryptAndDecrypt = async ({ page, recipientEmail }: EncryptDecryptProcedure) => {
     await page.locator(selectors.draggableItem).dragTo(page.locator(selectors.dropZone));
 
     if (recipientEmail) {
@@ -62,36 +74,34 @@ export const encryptDecryptProcedure = async ({ page, recipientEmail, full }: En
 
     await page.getByText(selectors.protectFileBtnText).click();
 
-    if (full) {
-        const responsePublicKey = await page.waitForResponse('**/auth/oidc/public-key');
-        await expect(responsePublicKey.status()).toEqual(200);
+    const responsePublicKey = await page.waitForResponse('**/auth/oidc/public-key');
+    await expect(responsePublicKey.status()).toEqual(200);
 
-        const responseToken = await page.waitForResponse('**/oauth2/default/v1/token');
-        await expect(responseToken.status()).toEqual(200);
+    const responseToken = await page.waitForResponse('**/oauth2/default/v1/token');
+    await expect(responseToken.status()).toEqual(200);
 
-        const responseEntityObject = await page.waitForResponse('**/accounts/api/entityobject');
-        await expect(responseEntityObject.status()).toEqual(200);
+    const responseEntityObject = await page.waitForResponse('**/accounts/api/entityobject');
+    await expect(responseEntityObject.status()).toEqual(200);
 
-        const responseUserSettings = await page.waitForResponse('**/accounts/api/userSettings');
-        await expect(responseUserSettings.status()).toEqual(200);
+    const responseUserSettings = await page.waitForResponse('**/accounts/api/userSettings');
+    await expect(responseUserSettings.status()).toEqual(200);
 
-        const responseUpsert = await page.waitForResponse('**/kas/upsert');
-        await expect(responseUpsert.status()).toEqual(200);
-        await page.getByText(selectors.downloadFileBtnText).click();
+    const responseUpsert = await page.waitForResponse('**/kas/upsert');
+    await expect(responseUpsert.status()).toEqual(200);
+    await page.getByText(selectors.downloadFileBtnText).click();
 
-        const downloadPromise = page.waitForEvent('download');
-        await page.getByText(selectors.decryptAndDownloadBtnText).click();
-        // Start waiting for download before clicking. Note no await.
-        const download = await downloadPromise;
-        const fileName = download.suggestedFilename();
-        // Wait for the download process to complete
-        // console.log(await download.path());
-        // Save downloaded file somewhere
-        await download.saveAs(fileName);
-        const fileContent = await fs.readFile(fileName);
-        expect(fileContent.toString() === 'Hello world!').toBeTruthy();
-        await fs.rm(fileName);
-    }
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByText(selectors.decryptAndDownloadBtnText).click();
+    // Start waiting for download before clicking. Note no await.
+    const download = await downloadPromise;
+    const fileName = download.suggestedFilename();
+    // Wait for the download process to complete
+    // console.log(await download.path());
+    // Save downloaded file somewhere
+    await download.saveAs(fileName);
+    const fileContent = await fs.readFile(fileName);
+    expect(fileContent.toString() === 'Hello world!').toBeTruthy();
+    await fs.rm(fileName);
 };
 
 

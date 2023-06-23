@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { selectors } from "./helpers/selectors";
-import { encryptDecryptProcedure } from "./helpers/operations";
+import { encryptAndDecrypt } from "./helpers/operations";
 
 test.describe.configure({ mode: 'serial' });
 
@@ -12,7 +12,7 @@ test.describe('Unhappy paths CKS user', () => {
 		const pageX = await contextX.newPage();
 		await pageX.goto('/');
 
-		await encryptDecryptProcedure({
+		await encryptAndDecrypt({
 			page: pageX,
 		});
 

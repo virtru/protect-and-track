@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { selectors } from './helpers/selectors';
 import { userAuthData } from './config';
-import { encryptDecryptProcedure } from './helpers/operations';
+import { encrypt, encryptAndDecrypt } from './helpers/operations';
 import * as fs from 'fs/promises';
 
 test.describe.configure({ mode: 'serial' });
@@ -13,10 +13,9 @@ test.describe('For Non CKS users', () => {
 		const pageW = await contextW.newPage();
 		await pageW.goto('/');
 
-		await encryptDecryptProcedure({
+		await encryptAndDecrypt({
 			page: pageW,
 			recipientEmail: userAuthData.nonCKS.user2.login,
-			full: true
 		});
 
 		const downloadPromise = pageW.waitForEvent('download');
@@ -49,7 +48,7 @@ test.describe('For Non CKS users', () => {
 		const pageW = await contextW.newPage();
 		await pageW.goto('/');
 
-		await encryptDecryptProcedure({
+		await encrypt({
 			page: pageW,
 			recipientEmail: userAuthData.mainUser.login,
 		});
