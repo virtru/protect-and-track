@@ -9,7 +9,7 @@ const config: PlaywrightTestConfig = {
     testDir: './e2e',
     forbidOnly: Boolean(process.env.CI),
     /* Retry on CI only */
-    retries: 1,
+    retries: process.env.CI ? 3 : 1,
     /* Opt out of parallel tests on CI and Local env for now (due to test failures with multiple workers - PLAT-1774  */
     workers: 1,
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
