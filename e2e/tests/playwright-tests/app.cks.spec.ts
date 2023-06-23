@@ -74,7 +74,7 @@ test.describe('For CKS user', () => {
 		const download = await downloadPromise;
 		await download.saveAs(fileName);
 		const fileContent = await fs.readFile(fileName);
-		expect(fileContent.toString() === 'Hello world!').toBeTruthy();
+		expect(fileContent.toString()).toBe('Hello world!');
 		await contextW.close();
 		await fs.rm(fileName);
 	});
