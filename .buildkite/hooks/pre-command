@@ -4,14 +4,14 @@ set -eu
 
 echo "--- :checkered_flag: Running pre-command for command ${BUILDKITE_COMMAND}"
 
-SSH_KEY_LOCATION=/var/lib/buildkite-agent/.ssh/id_rsa
-if [[ "${BUILDKITE_SOURCE}" == "local" ]]; then
-  # symlinks buildkite-scripts, make sure it is up-to-date
-  ln -s ../buildkite-scripts buildkite-scripts
-  # assumes default ssh private key is your github
-  SSH_KEY_LOCATION=~/.ssh/id_rsa
-  # TODO add additonal environmnet variables for buildkite-scripts
-fi
-
-SSH_PRIVATE_KEY="$(cat $SSH_KEY_LOCATION)"
-export SSH_PRIVATE_KEY
+#SSH_KEY_LOCATION=/var/lib/buildkite-agent/.ssh/id_rsa
+#if [[ "${BUILDKITE_SOURCE}" == "local" ]]; then
+#  # symlinks buildkite-scripts, make sure it is up-to-date
+#  ln -s ../buildkite-scripts buildkite-scripts
+#  # assumes default ssh private key is your github
+#  SSH_KEY_LOCATION=~/.ssh/id_rsa
+#  # TODO add additonal environmnet variables for buildkite-scripts
+#fi
+#
+#SSH_PRIVATE_KEY="$(cat $SSH_KEY_LOCATION)"
+#export SSH_PRIVATE_KEY
