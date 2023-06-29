@@ -2,7 +2,6 @@ env:
   USE_NODE_16: true
 
 steps:
-
   - label: ":hammer: :git: version"
     key: "version"
     command: '.buildkite/scripts/git-version.sh'
