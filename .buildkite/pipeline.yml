@@ -1,17 +1,3 @@
-# Deploy using gitflow
-#
-# Basic idea:
-# * Developers almost always push to main first.
-# * Releases happen on a branch
-# * They can cherry-pick (or ffwd-merge, aka no-fault rebase) to releases
-# * Once a release goes out it is tagged. Tags are on releases, these may or
-#   may not be in a history.
-#
-# Where do deployments go:
-# main -> develop01
-# feature/* -> develop[X] after select
-# release/* -> staging
-# v* -> production after block & shout
 
 env:
   AWS_ACCOUNT_ALIAS: common
@@ -23,5 +9,4 @@ env:
 
 steps:
   - label: ':gear: build & unit test'
-    commands:
-      - buildkite-agent pipeline upload .buildkite/pr.yml
+    command: 'buildkite-agent pipeline upload .buildkite/pr.yml'

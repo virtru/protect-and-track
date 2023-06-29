@@ -4,7 +4,6 @@ env:
 steps:
   - label: ':npm: :lock: NPM Version'
     command: 'npm -v'
-
 #  - label: ":npm: Install Dependencies (CI)"
 #    command: "buildkite-scripts/mars/wrap/npm-ci.sh"
 #    key: "dependency"
