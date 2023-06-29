@@ -6,7 +6,7 @@ set -eu
 echo "--- :checkered_flag: Running pre-command for command ${BUILDKITE_COMMAND}"
 
 # entry point for using AWS Secrets Manager (in progress)
-aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json
+# aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json
 
 if [[ "${BUILDKITE_LABEL}" = *"Tests"* ]]; then
   # We do this to prevent BK from uploading artifacts to s3
