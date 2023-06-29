@@ -1,0 +1,34 @@
+# dotenv environment variables file
+.env
+.env.test
+
+# Output of 'npm pack'
+*.tgz
+
+# Optional eslint cache
+.eslintcache
+
+# Optional npm cache directory
+.npm
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+### Node template
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+
+### Tests
+/playwright-report
+/build
+/test-results
+
+/e2e/tests/playwright-tests/.auth*
+/e2e/tests/playwright-tests/config/*
