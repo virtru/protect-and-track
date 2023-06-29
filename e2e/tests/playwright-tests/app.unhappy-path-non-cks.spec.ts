@@ -41,7 +41,7 @@ test.describe('Unhappy paths Non CKS user', () => {
 		await pageY.locator(selectors.uploadInput).setInputFiles(fileName);
 
 		const responsePublicKeyY = await pageY.waitForResponse('**/rewrap');
-		await expect(responsePublicKeyY.status() === 403).toBeTruthy();
+		await expect(responsePublicKeyY.status()).toBe(403);
 		await fs.rm(fileName);
 		await contextY.close();
 	});

@@ -15,7 +15,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "redux-zero": "^5.1.7",
-    "virtru-sdk": "^4.0.0-beta.36"
+    "virtru-sdk": "^5.0.0"
   },
   "license": "MIT",
   "repository": {
@@ -29,7 +29,7 @@
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json,yml}\"",
     "test": "eslint src && react-scripts test --watchAll=false",
     "test-watch": "react-scripts test",
-    "playwright-test": "playwright test --workers=4",
+    "playwright-test": "playwright test",
     "playwright-debug": "playwright test --debug",
     "show-report": "playwright show-report",
     "test-e2e": ".buildkite/scripts/e2e.sh",

@@ -100,7 +100,7 @@ export const encryptAndDecrypt = async ({ page, recipientEmail }: EncryptDecrypt
     // Save downloaded file somewhere
     await download.saveAs(fileName);
     const fileContent = await fs.readFile(fileName);
-    expect(fileContent.toString() === 'Hello world!').toBeTruthy();
+    expect(fileContent.toString()).toBe('Hello world!');
     await fs.rm(fileName);
 };
 

@@ -17,7 +17,6 @@ test.describe('Unhappy paths CKS user', () => {
 		});
 
 		const downloadPromiseX = pageX.waitForEvent('download');
-		await pageX.getByText(selectors.downloadFileBtnText).click();
 		await pageX.getByText(selectors.downloadTDFFileBtnText).click();
 		const downloadX = await downloadPromiseX;
 		fileName = downloadX.suggestedFilename();
