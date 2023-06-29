@@ -8,3 +8,8 @@ steps:
   - label: ":npm: Install Dependencies (CI)"
     command: "buildkite-scripts/mars/wrap/npm-ci.sh"
     key: "dependency"
+
+  - label: ":mag: Run unit tests"
+    command: "buildkite-scripts/scripts/npm-test.sh"
+    key: "unit-tests"
+    depends_on: "dependency"
