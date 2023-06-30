@@ -1,5 +1,5 @@
 env:
-  USE_NODE_16: true
+  USE_NODE_18: true
   NODE_VERSION: "$(cat .nvmrc)"
 
 steps:
