@@ -1,10 +1,18 @@
 env:
   USE_NODE_16: true
+  NODE_VERSION: "$(cat .nvmrc)"
 
 steps:
   - label: ":npm: Install Dependencies (CI)"
     command: "buildkite-scripts/mars/wrap/npm-ci.sh"
     key: "dependency"
+
+  - wait
+
+  - label: ":npm: :lock: NPM Audit"
+    command: "buildkite-scripts/mars/wrap/npm-audit.sh"
+    key: "dependency-audit"
+    depends_on: "dependency"
 
   - wait
 
