@@ -17,6 +17,7 @@ steps:
   - label: ":docker: Run App"
     command:
       - |
+        echo "127.0.0.1 local.virtru.com" | sudo tee -a /etc/hosts
         docker build -t pt:latest .
         docker run -p 433:433 pt:latest
     key: "docker"
