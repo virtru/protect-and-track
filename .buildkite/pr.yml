@@ -9,6 +9,6 @@ steps:
   - wait
 
   - label: ":mag: Run unit tests"
-    command: "npm run test"
+    command: "buildkite-scripts/scripts/npm-test.sh"
     key: "unit-tests"
     depends_on: "dependency"

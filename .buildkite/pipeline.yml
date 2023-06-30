@@ -8,5 +8,5 @@ env:
   USE_NODE_16: true
 
 steps:
-  - label: ':gear: build & unit test'
+  - label: ':gear: build & run tests'
     command: 'buildkite-agent pipeline upload .buildkite/pr.yml'
