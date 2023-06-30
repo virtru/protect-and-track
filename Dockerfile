@@ -13,8 +13,8 @@ COPY . .
 #RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 # ==== BUILD =====
-RUN npm i virtru-oidc-client-js-3.0.0.tgz
 RUN npm i
+RUN npm i virtru-oidc-client-js-3.0.0.tgz
 #RUN npm run build
 
 # ==== RUN =======
