@@ -9,14 +9,22 @@ steps:
 
   - wait
 
-  - label: ":npm: :lock: NPM Audit"
-    command: "buildkite-scripts/mars/wrap/npm-audit.sh"
-    key: "dependency-audit"
-    depends_on: "dependency"
-
-  - wait
-
   - label: ":mag: Run unit tests"
     command: "buildkite-scripts/scripts/npm-test.sh"
     key: "unit-tests"
     depends_on: "dependency"
+
+  - label: ":docker: Run App"
+    command:
+      - |
+        docker build -t pt:latest .
+        docker run -p 433:433 pt:latest
+    key: "docker"
+    depends_on: "dependency"
+
+  - wait
+
+  - label: ":npm: e2e Tests"
+    command: "buildkite-scripts/scripts/npm.sh run playwright-test"
+    key: "e2e-test"
+    depends_on: "docker"

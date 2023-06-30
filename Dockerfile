@@ -13,13 +13,14 @@ COPY . .
 #RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 # ==== BUILD =====
-RUN npm ci
-RUN npm run build
+RUN npm i virtru-oidc-client-js-3.0.0.tgz
+RUN npm i
+#RUN npm run build
 
 # ==== RUN =======
 EXPOSE 433
 # Start the app
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "start-docker" ]
 
 # docker build -t pt:latest .
 # docker run -p 433:433 pt:latest

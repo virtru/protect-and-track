@@ -6,7 +6,7 @@
   "dependencies": {
     "@datadog/browser-logs": "^4.39.0",
     "@datadog/browser-rum": "^4.39.0",
-    "@virtru/oidc-client-js": "^2.1.0",
+    "@virtru/oidc-client-js": "file:virtru-oidc-client-js-3.0.0.tgz",
     "classnames": "^2.3.2",
     "json2csv": "^5.0.7",
     "localforage": "^1.10.0",
@@ -24,6 +24,7 @@
   },
   "scripts": {
     "start": "sudo HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
+    "start-docker": "HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
     "build": "react-scripts build",
     "license": "./license-update",
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json,yml}\"",
