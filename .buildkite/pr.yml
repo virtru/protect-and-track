@@ -2,13 +2,13 @@ env:
   USE_NODE_16: true
 
 steps:
-  - label: ':npm: :lock: NPM Version'
-    command: 'npm -v'
-#  - label: ":npm: Install Dependencies (CI)"
-#    command: "buildkite-scripts/mars/wrap/npm-ci.sh"
-#    key: "dependency"
+  - label: ":npm: Install Dependencies (CI)"
+    command: "buildkite-scripts/mars/wrap/npm-ci.sh"
+    key: "dependency"
 
-#  - label: ":mag: Run unit tests"
-#    command: "npm run test"
-#    key: "unit-tests"
-#    depends_on: "dependency"
+  - wait
+
+  - label: ":mag: Run unit tests"
+    command: "npm run test"
+    key: "unit-tests"
+    depends_on: "dependency"
