@@ -24,6 +24,7 @@
   },
   "scripts": {
     "start": "HTTPS=true PORT=433 HOST='local.virtru.com' react-scripts start",
+    "start-docker": "HTTPS=true PORT=3000 react-scripts start",
     "build": "react-scripts build",
     "license": "./license-update",
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json,yml}\"",

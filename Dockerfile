@@ -15,12 +15,13 @@ COPY . .
 # ==== BUILD =====
 RUN npm i virtru-oidc-client-js-3.0.0.tgz
 RUN npm i
+#RUN echo "127.0.0.1    local.virtru.com" >> /etc/hosts
 #RUN npm run build
 
 ## ==== RUN =======
-EXPOSE 433
+EXPOSE 443
 ## Start the app
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "run", "start-docker" ]
 
-# docker build --add-host=local.virtru.com:127.0.0.1 -t pt:latest .
-# docker run -p local.virtru.com:local.virtru.com pt:latest
+# docker build -t pt:latest .
+# docker run -p 443:3000 pt:latest

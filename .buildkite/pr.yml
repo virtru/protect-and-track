@@ -17,12 +17,8 @@ steps:
   - label: ":docker: Run App"
     command:
       - |
-        echo "127.0.0.1 local.virtru.com" >> /etc/hosts
-#        echo "127.0.0.1 local.virtru.com" | sudo tee -a /etc/hosts
-        npm start
-        npm run playwright-test
-#        docker build --add-host=local.virtru.com:127.0.0.1 -t pt:latest .
-#        docker run -p local.virtru.com:local.virtru.com pt:latest
+        docker build -t pt:latest .
+        docker run -p 443:3000 pt:latest
     key: "docker"
     depends_on: "dependency"
 
