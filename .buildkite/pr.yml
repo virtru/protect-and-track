@@ -15,16 +15,16 @@ steps:
     depends_on: "dependency"
 
   - label: ":docker: Run App"
-    command:
-      - |
-        docker build -t pt:latest .
-        docker run -p 443:3000 pt:latest
+    command: "buildkite-scripts/scripts/npm.sh run playwright-test"
     key: "docker"
     depends_on: "dependency"
+    plugins:
+      - docker-compose#v3.0.3:
+          run: front
 
-  - wait
-
-  - label: ":npm: e2e Tests"
-    command: "buildkite-scripts/scripts/npm.sh run playwright-test"
-    key: "e2e-test"
-    depends_on: "docker"
+#  - wait
+#
+#  - label: ":npm: e2e Tests"
+#    command: "buildkite-scripts/scripts/npm.sh run playwright-test"
+#    key: "e2e-test"
+#    depends_on: "docker"
