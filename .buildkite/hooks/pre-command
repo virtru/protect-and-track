@@ -2,16 +2,31 @@
 
 set -eu
 
-echo "--- :checkered_flag: Running pre-command for command ${BUILDKITE_COMMAND}"
+source buildkite-scripts/mars/functions/aws.sh
 
-#SSH_KEY_LOCATION=/var/lib/buildkite-agent/.ssh/id_rsa
-#if [[ "${BUILDKITE_SOURCE}" == "local" ]]; then
-#  # symlinks buildkite-scripts, make sure it is up-to-date
-#  ln -s ../buildkite-scripts buildkite-scripts
-#  # assumes default ssh private key is your github
-#  SSH_KEY_LOCATION=~/.ssh/id_rsa
-#  # TODO add additonal environmnet variables for buildkite-scripts
-#fi
-#
-#SSH_PRIVATE_KEY="$(cat $SSH_KEY_LOCATION)"
-#export SSH_PRIVATE_KEY
+echo "loading /secret/common/buildkite_build_agent/sauce_user..."
+export SAUCE_USER=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/sauce_user" "us-west-2")
+export SAUCE_PASS=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/sauce_pass" "us-west-2")
+export BUILDKITE_ACCESS_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/buildkite_api_token" "us-west-2")
+export JIRA_ACCESS_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/jira_access_token" "us-west-2")
+export MAILTRAP_API_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/mailtrap_api_token" "us-west-2")
+export TESTRAIL_USER=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/testrail_user" "us-west-2")
+export TESTRAIL_PASS=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/testrail_pass" "us-west-2")
+export SLACK_API_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/slack_api_token" "us-west-2")
+export QA_TEST_REPORT_FROM_EMAIL=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/qa_test_report_from_email" "us-west-2")
+export QA_TEST_REPORT_FROM_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/qa_test_report_from_password" "us-west-2")
+export ESGAROTH_PKI_KEYGEN_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/esgaroth_pki_keygen_password" "us-west-2")
+
+aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json
+# local command if needed to create/update accounts.json,
+# ```aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --profile qa | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json```
+# validate accounts.json is correctly downloaded
+ls -lah ./resources/external/accounts.json
+
+echo "+++ SAUCE_USER loaded as $SAUCE_USER"
+
+if [ "$USE_SAUCE_TUNNEL" = true ] ; then
+  echo "--- Start up SauceLabs Tunnel"
+  source .buildkite/scripts/sauce_connect.sh
+  start_sc
+fi
