@@ -18,7 +18,7 @@ export QA_TEST_REPORT_FROM_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/
 export ESGAROTH_PKI_KEYGEN_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/esgaroth_pki_keygen_password" "us-west-2")
 
 #aws secretsmanager list-secrets --region us-west-2
-aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq -c '.SecretString' | fromjson' > ./accounts.json'
+aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq -c '.SecretString' | fromjson > './accounts.json'
 cat ./accounts.json
 ls -l
 #aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json
