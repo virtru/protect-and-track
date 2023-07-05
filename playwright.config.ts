@@ -22,8 +22,7 @@ const config: PlaywrightTestConfig = {
         baseURL: "https://local.virtru.com/",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: 'retain-on-failure',
-        // headless: Boolean(process.env.CI),
-        headless: !false,
+        headless: Boolean(process.env.CI),
         launchOptions: {
           slowMo: 250,
         },
