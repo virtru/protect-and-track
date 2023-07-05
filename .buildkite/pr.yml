@@ -15,7 +15,7 @@ steps:
     depends_on: "dependency"
 
   - label: ":docker: Run App"
-    command: "buildkite-scripts/scripts/npm.sh run playwright-test"
+    command: "npm run playwright-test"
     key: "docker"
     depends_on: "dependency"
     plugins:
