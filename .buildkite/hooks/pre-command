@@ -26,8 +26,8 @@ aws secretsmanager list-secrets --region us-west-2
 
 echo "+++ SAUCE_USER loaded as $SAUCE_USER"
 
-if [ "$USE_SAUCE_TUNNEL" = true ] ; then
-  echo "--- Start up SauceLabs Tunnel"
-  source .buildkite/scripts/sauce_connect.sh
-  start_sc
-fi
+#if [ "$USE_SAUCE_TUNNEL" = true ] ; then
+#  echo "--- Start up SauceLabs Tunnel"
+#  source .buildkite/scripts/sauce_connect.sh
+#  start_sc
+#fi
