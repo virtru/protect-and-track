@@ -9,7 +9,7 @@ steps:
 
 
   - label: ":mag: Setup host"
-    command: echo "127.0.0.1		local.virtru.com" | sudo tee -a /etc/hosts"
+    command: "echo \"127.0.0.1		local.virtru.com\" | sudo tee -a /etc/hosts"
     key: "host"
 
   - wait
