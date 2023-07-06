@@ -19,8 +19,6 @@ coverage
 /playwright-report
 /test-results
 /e2e/tests/playwright-tests/.auth*
-/e2e/tests/playwright-tests/config/*
-
 # nyc test coverage
 .nyc_output
 
