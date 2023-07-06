@@ -7,6 +7,11 @@ steps:
     command: "buildkite-scripts/mars/wrap/npm-ci.sh"
     key: "dependency"
 
+
+  - label: ":mag: Setup host"
+    command: echo "127.0.0.1		local.virtru.com" | sudo tee -a /etc/hosts"
+    key: "dependency"
+
   - wait
 
   - label: ":mag: Run unit tests"
