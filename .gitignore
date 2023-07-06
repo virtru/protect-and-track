@@ -96,6 +96,9 @@ typings/
 .env.production.local
 .idea
 
+# local creds shouldn't be in repo
+accounts.json
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
