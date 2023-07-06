@@ -21,6 +21,8 @@ export ESGAROTH_PKI_KEYGEN_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/
 aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq '.SecretString | fromjson | with_entries(select([.key] | inside(["testerfour@trusteddataformat.org", "test-user1@trusteddataformat.org", "virtruqa3@gmail.com", "shareautomation01@gmail.com"])))' > accounts.json
 ls -l
 
+echo "127.0.0.1		local.virtru.com" | sudo tee -a /etc/hosts > /dev/null
+
 # jq '.SecretString | fromjson | ."testerfour@trusteddataformat.org" + {email: "testerfour@trusteddataformat.org"} , ."test-user1@trusteddataformat.org" + {email: "test-user1@trusteddataformat.org"}' test.json
 #aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json
 # local command if needed to create/update accounts.json,

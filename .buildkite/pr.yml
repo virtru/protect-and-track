@@ -14,7 +14,7 @@ steps:
     key: "unit-tests"
     depends_on: "dependency"
 
-  - label: ":docker: Run App"
+  - label: ":mag: Run e2e tests"
     command: "npm run playwright-test"
     key: "docker"
     depends_on: "dependency"
