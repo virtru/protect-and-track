@@ -15,6 +15,7 @@ COPY . .
 # ==== BUILD =====
 RUN npm i virtru-oidc-client-js-3.0.0.tgz
 RUN npm i
+RUN npx playwright install
 #RUN npm run build
 
 ## ==== RUN =======
