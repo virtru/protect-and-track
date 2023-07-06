@@ -1,6 +1,6 @@
 import { test as setup } from '@playwright/test';
 import { signInUser } from '../helpers/operations';
-import { userAuthData } from '../config';
+import { userAuthData } from '../config/index';
 
 setup('authenticate 0', async ({ page }) => {
 	const { mainUser } = userAuthData;
