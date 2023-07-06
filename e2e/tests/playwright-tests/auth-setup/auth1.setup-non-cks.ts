@@ -1,6 +1,6 @@
 import { test as setup } from '@playwright/test';
 import { signInUser } from "../helpers/operations";
-import { userAuthData } from '../config/index';
+import { userAuthData } from '../config';
 
 setup('authenticate 1', async ({ page }) => {
 	const { nonCKS: { user1 }, mainUser } = userAuthData;

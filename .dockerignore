@@ -31,4 +31,3 @@ lerna-debug.log*
 /test-results
 
 /e2e/tests/playwright-tests/.auth*
-/e2e/tests/playwright-tests/config/*
