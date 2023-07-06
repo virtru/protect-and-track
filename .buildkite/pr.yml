@@ -10,7 +10,7 @@ steps:
 
   - label: ":mag: Setup host"
     command: echo "127.0.0.1		local.virtru.com" | sudo tee -a /etc/hosts"
-    key: "dependency"
+    key: "host"
 
   - wait
 
