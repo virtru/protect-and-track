@@ -2,6 +2,8 @@ version: "3.9"
 
 services:
   front:
+    extra_hosts:
+      - "local.virtru.com:127.0.0.1"
     build:
       context: .
       dockerfile: ./Dockerfile
