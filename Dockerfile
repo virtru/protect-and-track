@@ -52,7 +52,9 @@ RUN npx playwright install-deps
 
 ## ==== RUN =======
 EXPOSE 443
-CMD [ "npm", "run", "start-docker" ]
+
+RUN ["chmod", "+x", "/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 # docker build -t pt:latest .
 # docker run --add-host=local.virtru.com:127.0.0.1 -p 443:3000 pt:latest
