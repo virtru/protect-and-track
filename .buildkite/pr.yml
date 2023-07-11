@@ -24,4 +24,4 @@ steps:
     depends_on: "dependency"
     plugins:
       - docker-compose#v3.0.3:
-         run: "ls -l"
+          run: "ls -l"
