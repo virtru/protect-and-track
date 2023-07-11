@@ -58,4 +58,5 @@ EXPOSE 443
 CMD ["npm", "run", "docker-start"]
 
 # docker build -t pt:latest .
-# docker run --add-host=local.virtru.com:127.0.0.1 -p 443:3000 pt:latest
+# docker run --name protect-and-track --add-host=local.virtru.com:127.0.0.1 -p 443:443 pt:latest
+# docker exec -it protect-and-track sh npm run playwright-test

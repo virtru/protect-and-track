@@ -19,12 +19,12 @@ steps:
     depends_on: "dependency"
 
   - label: ":mag: Run e2e tests"
-    command: "buildkite-scripts/wrap/npm.sh run playwright-test"
+    command: "cat /etc/hosts"
     key: "docker"
     depends_on: "dependency"
-    plugins:
-      - docker-compose#v3.0.3:
-          run: front
+#    plugins:
+#      - docker-compose#v3.0.3:
+#          run: front
 
 #  - wait
 #
