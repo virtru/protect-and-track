@@ -23,8 +23,8 @@
     "url": "git+https://github.com/virtru/protect-and-track.git"
   },
   "scripts": {
-    "start": "sudo HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
-    "start-docker": "HTTPS=true PORT=3000 react-scripts start",
+    "start": "HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
+    "start-docker": "npm run start; npm run playwright-test",
     "build": "react-scripts build",
     "license": "./license-update",
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json,yml}\"",
