@@ -4,24 +4,27 @@ set -eu
 
 source buildkite-scripts/mars/functions/aws.sh
 
-echo "loading /secret/common/buildkite_build_agent/sauce_user..."
-export SAUCE_USER=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/sauce_user" "us-west-2")
-export SAUCE_PASS=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/sauce_pass" "us-west-2")
-export BUILDKITE_ACCESS_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/buildkite_api_token" "us-west-2")
-export JIRA_ACCESS_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/jira_access_token" "us-west-2")
-export MAILTRAP_API_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/mailtrap_api_token" "us-west-2")
-export TESTRAIL_USER=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/testrail_user" "us-west-2")
-export TESTRAIL_PASS=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/testrail_pass" "us-west-2")
-export SLACK_API_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/slack_api_token" "us-west-2")
-export QA_TEST_REPORT_FROM_EMAIL=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/qa_test_report_from_email" "us-west-2")
-export QA_TEST_REPORT_FROM_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/qa_test_report_from_password" "us-west-2")
-export ESGAROTH_PKI_KEYGEN_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/esgaroth_pki_keygen_password" "us-west-2")
+#echo "loading /secret/common/buildkite_build_agent/sauce_user..."
+#export SAUCE_USER=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/sauce_user" "us-west-2")
+#export SAUCE_PASS=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/sauce_pass" "us-west-2")
+#export BUILDKITE_ACCESS_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/buildkite_api_token" "us-west-2")
+#export JIRA_ACCESS_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/jira_access_token" "us-west-2")
+#export MAILTRAP_API_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/mailtrap_api_token" "us-west-2")
+#export TESTRAIL_USER=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/testrail_user" "us-west-2")
+#export TESTRAIL_PASS=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/testrail_pass" "us-west-2")
+#export SLACK_API_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/slack_api_token" "us-west-2")
+#export QA_TEST_REPORT_FROM_EMAIL=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/qa_test_report_from_email" "us-west-2")
+#export QA_TEST_REPORT_FROM_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/qa_test_report_from_password" "us-west-2")
+#export ESGAROTH_PKI_KEYGEN_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/esgaroth_pki_keygen_password" "us-west-2")
 
 #aws secretsmanager list-secrets --region us-west-2
-aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq '.SecretString | fromjson | with_entries(select([.key] | inside(["testerfour@trusteddataformat.org", "test-user1@trusteddataformat.org", "virtruqa3@gmail.com", "shareautomation01@gmail.com"])))' > accounts.json
+#aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq '.SecretString | fromjson | with_entries(select([.key] | inside(["testerfour@trusteddataformat.org", "test-user1@trusteddataformat.org", "virtruqa3@gmail.com", "shareautomation01@gmail.com"])))' > accounts.json
 #ls -l
 
 #echo "127.0.0.1		local.virtru.com" | tee -a /etc/hosts > /dev/null
+
+cat /etc/hosts
+
 sudo -- sh -c "echo 127.0.0.1		local.virtru.com >> /etc/hosts"
 
 cat /etc/hosts
