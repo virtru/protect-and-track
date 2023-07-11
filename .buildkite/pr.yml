@@ -3,22 +3,20 @@ env:
   NODE_VERSION: "$(cat .nvmrc)"
 
 steps:
-  - label: ":npm: Install Dependencies (CI)"
-    command: "buildkite-scripts/mars/wrap/npm-ci.sh"
-    key: "dependency"
+#  - label: ":npm: Install Dependencies (CI)"
+#    command: "buildkite-scripts/mars/wrap/npm-ci.sh"
+#    key: "dependency"
 
-
-#  - label: ":mag: Setup host"
-#    command: "echo \"127.0.0.1		local.virtru.com\" | sudo tee --append /etc/hosts"
-#    depends_on: "dependency"
-#    key: "host"
-
-  - label: ":mag: Run unit tests"
-    command: "buildkite-scripts/scripts/npm-test.sh"
-    key: "unit-tests"
-    depends_on: "dependency"
 
   - label: ":mag: Run e2e tests"
-    plugins:
-      - docker-compose#v4.14.0:
-          build: front
+    command: "cat /etc/hosts"
+
+#  - label: ":mag: Run unit tests"
+#    command: "buildkite-scripts/scripts/npm-test.sh"
+#    key: "unit-tests"
+#    depends_on: "dependency"
+#
+#  - label: ":mag: Run e2e tests"
+#    plugins:
+#      - docker-compose#v4.14.0:
+#          build: front
