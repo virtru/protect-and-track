@@ -23,4 +23,4 @@ steps:
     plugins:
       - docker-compose#v4.14.0:
           build: front
-          run: npm run playwright-test
+          run: "buildkite-scripts/wrap/npm.sh run playwright-test"
