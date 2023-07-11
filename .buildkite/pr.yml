@@ -19,7 +19,7 @@ steps:
     depends_on: "dependency"
 
   - label: ":mag: Run e2e tests"
-    command: "npm run playwright-test"
+    command: "buildkite-scripts/wrap/npm.sh run playwright-test"
     key: "docker"
     depends_on: "dependency"
     plugins:
