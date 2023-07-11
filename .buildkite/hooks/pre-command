@@ -24,7 +24,9 @@ source buildkite-scripts/mars/functions/aws.sh
 
 cat /etc/hosts
 
-echo "127.0.0.1		local.virtru.com" | sudo tee -a /etc/hosts
+#echo "127.0.0.1		local.virtru.com" | tee -a /etc/hosts
+
+tee --version
 
 cat /etc/hosts
 # jq '.SecretString | fromjson | ."testerfour@trusteddataformat.org" + {email: "testerfour@trusteddataformat.org"} , ."test-user1@trusteddataformat.org" + {email: "test-user1@trusteddataformat.org"}' test.json
