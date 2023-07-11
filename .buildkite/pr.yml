@@ -19,7 +19,7 @@ steps:
     depends_on: "dependency"
 
   - label: ":mag: Run e2e tests"
-    command: "cat /etc/hosts"
+    command: "echo '127.0.0.1 local.virtru.com' | sudo tee -a /etc/hosts"
     key: "docker"
     depends_on: "dependency"
 #    plugins:
