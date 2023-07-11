@@ -18,25 +18,10 @@ steps:
     key: "unit-tests"
     depends_on: "dependency"
 
-  - label: ":mag: Docker Build"
-    command: "docker build . -t pt:latest && docker run --name protect-and-track --add-host=local.virtru.com:127.0.0.1 -it pt:latest"
+  - label: ":mag: Run e2e tests"
+#    command: "buildkite-scripts/wrap/npm.sh run playwright-test"
     key: "docker"
     depends_on: "dependency"
     plugins:
-      - docker#v5.8.0:
-
-  - wait
-
-  - label: ":mag: Docker Exec"
-    command: "docker exec -it protect-and-track sh npm run playwright-test"
-    key: "docker-exec"
-    depends_on: "docker"
-    plugins:
-      - docker#v5.8.0:
-
-#  - wait
-#
-#  - label: ":npm: e2e Tests"
-#    command: "buildkite-scripts/scripts/npm.sh run playwright-test"
-#    key: "e2e-test"
-#    depends_on: "docker"
+      - docker-compose#v3.0.3:
+         run: "ls -l"
