@@ -24,7 +24,7 @@ const config: PlaywrightTestConfig = {
         trace: 'retain-on-failure',
         headless: true,
         launchOptions: {
-          slowMo: 250,
+          slowMo: 500,
         },
     },
     expect: {
