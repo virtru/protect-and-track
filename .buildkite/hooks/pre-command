@@ -29,7 +29,6 @@ ls -l
 # local command if needed to create/update accounts.json,
 # ```aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --profile qa | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json```
 # validate accounts.json is correctly downloaded
-ls -lah ./resources
 
 #echo "+++ SAUCE_USER loaded as $SAUCE_USER"
 
