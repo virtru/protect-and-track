@@ -8,5 +8,5 @@ services:
       context: .
       dockerfile: ./Dockerfile
     ports:
-      - "443:443"
+      - "443:3000"
     container_name: protect-and-track

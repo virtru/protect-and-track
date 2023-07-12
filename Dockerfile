@@ -54,7 +54,7 @@ EXPOSE 443
 
 #RUN ["chmod", "+x", "./entrypoint.sh"]
 #ENTRYPOINT ["./entrypoint.sh"]
-CMD ["npm", "run", "docker-start"]
+CMD ["npm", "run", "ci-start"]
 
 # docker build -t pt:latest .
 # docker run --name protect-and-track --add-host=local.virtru.com:127.0.0.1 -it pt:latest
