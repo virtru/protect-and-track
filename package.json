@@ -11,7 +11,7 @@
     "json2csv": "^5.0.7",
     "localforage": "^1.10.0",
     "moment": "^2.29.4",
-    "node-fetch": "^3.3.1",
+    "node-fetch": "^2.6.0",
     "rc-scrollbars": "^1.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -26,6 +26,7 @@
   "scripts": {
     "start": "sudo HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
     "ci-start": "HTTPS=true PORT=443 HOST='local.virtru.com' react-scripts start",
+    "ci-e2e-test": "npm run ci-start & ./wait-for-it.sh local.virtru.com:443 -t 30000 -- npm run playwright-test",
     "build": "react-scripts build",
     "license": "./license-update",
     "pretty": "prettier --write \"./**/*.{css,md,js,jsx,json,yml}\"",

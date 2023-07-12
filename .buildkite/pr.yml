@@ -16,10 +16,4 @@ steps:
     depends_on: "dependency"
     plugins:
       - docker-compose#v4.14.0:
-          build: front
-          command: ["npm", "run", "playwright-test"]
-
-#  - label: ":mag: Run e2e tests"
-#    plugins:
-#      - docker-compose#v4.14.0:
-#          build: front
+          run: front
