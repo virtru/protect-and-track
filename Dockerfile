@@ -44,10 +44,10 @@ COPY . .
 #RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 # ==== BUILD =====
-RUN npm i virtru-oidc-client-js-3.0.0.tgz
-RUN npm i
-RUN npx playwright install
-RUN npx playwright install-deps
+RUN npm i virtru-oidc-client-js-3.0.0.tgz && \
+npm i && \
+npx playwright install && \
+npx playwright install-deps
 
 ## ==== RUN =======
 EXPOSE 443
