@@ -10,6 +10,7 @@ export const userAuthData = {
 	secondUser: { // .auth-cks/user3.json |Y
 		login: 'test-user1@trusteddataformat.org',
 		password: accounts['test-user1@trusteddataformat.org'].password,
+		email: 'testerfour@trusteddataformat.org',
 	},
 	nonCKS: {
 		user1: { // .auth-non-cks/user1.json | user W

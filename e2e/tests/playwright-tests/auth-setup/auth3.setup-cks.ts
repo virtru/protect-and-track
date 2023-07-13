@@ -3,14 +3,14 @@ import { signInUser } from '../helpers/operations';
 import { userAuthData } from '../config';
 
 setup('authenticate 3', async ({ page }) => {
-	const { mainUser, secondUser } = userAuthData;
+	const { secondUser } = userAuthData;
 
 	await signInUser(
 		page,
 		{
 			email: secondUser.login,
 			password: secondUser.password,
-			recoveryEmail: mainUser.email
+			recoveryEmail: secondUser.email
 		}
 	);
 
