@@ -44,6 +44,7 @@ COPY ./package.json /
 COPY ./package-lock.json /
 COPY ./wait-for-it.sh /
 COPY ./playwright.config.ts /
+COPY ./docker-compose.yml /
 
 # ==== BUILD =====
 RUN npm i --ignore-scripts virtru-oidc-client-js-3.0.0.tgz &&\
