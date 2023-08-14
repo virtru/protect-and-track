@@ -9,9 +9,9 @@ RUN addgroup -S nonroot \
 USER nonroot
 RUN apt-get update && \
     # Install Node 18
-    apt-get install -y curl wget gpg && \
+    apt-get install -y --no-install-recommends curl wget gpg && \
     curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs && \
+    apt-get install -y --no-install-recommends nodejs && \
     # Feature-parity with node.js base images.
     apt-get install -y --no-install-recommends git openssh-client && \
     # clean apt cache
@@ -47,7 +47,7 @@ COPY ./playwright.config.ts /
 
 # ==== BUILD =====
 RUN npm i virtru-oidc-client-js-3.0.0.tgz &&\
-npm i &&\
+npm i --ignore-scripts &&\
 npx playwright install &&\
 npx playwright install-deps &&\
 npm run build
