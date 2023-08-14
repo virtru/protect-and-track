@@ -40,7 +40,8 @@ WORKDIR /build/
 COPY ./e2e .
 COPY ./src .
 COPY ./virtru-oidc-client-js-3.0.0.tgz /
-COPY ./package* /
+COPY ./package.json /
+COPY ./package-lock.json /
 COPY ./wait-for-it.sh /
 COPY ./playwright.config.ts /
 
