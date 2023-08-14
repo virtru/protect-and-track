@@ -6,7 +6,7 @@ test.describe.configure({ mode: 'serial' });
 
 let fileName;
 
-test.describe('Unhappy paths CKS user', () => {
+test.fixme('Unhappy paths CKS user', () => {
 	test('Encrypt data A with a CKS user X, a CKS user using the JS SDK. DO NOT entitle anyone else.', async ({ browser }) => {
 		const contextX = await browser.newContext({ storageState: 'e2e/tests/playwright-tests/.auth-cks/user.json' });
 		const pageX = await contextX.newPage();

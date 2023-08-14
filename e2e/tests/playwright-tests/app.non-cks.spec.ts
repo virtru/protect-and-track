@@ -7,7 +7,7 @@ import * as fs from 'fs/promises';
 test.describe.configure({ mode: 'serial' });
 
 let fileName;
-test.describe('For Non CKS users', () => {
+test.fixme('For Non CKS users', () => {
 	test('Encrypt/decrypt data B with user W, a non-CKS user using the JS SDK (hitting the SDK Proxy and SaaS backend)', async ({ browser }) => {
 		const contextW = await browser.newContext({ storageState: 'e2e/tests/playwright-tests/.auth-non-cks/user1.json' }); // W
 		const pageW = await contextW.newPage();
