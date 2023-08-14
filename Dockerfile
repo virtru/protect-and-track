@@ -46,8 +46,8 @@ COPY ./wait-for-it.sh /
 COPY ./playwright.config.ts /
 
 # ==== BUILD =====
-RUN npm i virtru-oidc-client-js-3.0.0.tgz &&\
-npm i --ignore-scripts &&\
+RUN npm i --ignore-scripts virtru-oidc-client-js-3.0.0.tgz &&\
+npm i  &&\
 npx playwright install &&\
 npx playwright install-deps &&\
 npm run build
