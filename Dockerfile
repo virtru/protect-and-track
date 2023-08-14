@@ -2,8 +2,11 @@ ARG NODE_VERSION=18
 
 # ==== CONFIGURE =====
 FROM ubuntu:jammy as builder
-#FROM node:${NODE_VERSION}-alpine as builder
 
+RUN addgroup -S nonroot \
+    && adduser -S nonroot -G nonroot
+
+USER nonroot
 RUN apt-get update && \
     # Install Node 18
     apt-get install -y curl wget gpg && \
@@ -34,14 +37,12 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 #COPY ./playwright-core.tar.gz /tmp/playwright-core.tar.gz
 
 WORKDIR /build/
-COPY . .
-# needed for dependencies git+ssh
-#ARG SSH_PRIVATE_KEY
-#RUN mkdir -p /root/.ssh
-#RUN echo "${SSH_PRIVATE_KEY}" >> /root/.ssh/id_rsa
-#RUN chmod 600 /root/.ssh/id_rsa
-#RUN touch /root/.ssh/known_hosts
-#RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+COPY ./e2e .
+COPY ./src .
+COPY ./virtru-oidc-client-js-3.0.0.tgz /
+COPY ./package* /
+COPY ./wait-for-it.sh /
+COPY ./playwright.config.ts /
 
 # ==== BUILD =====
 RUN npm i virtru-oidc-client-js-3.0.0.tgz &&\
