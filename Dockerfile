@@ -3,8 +3,6 @@ ARG NODE_VERSION=18
 # ==== CONFIGURE =====
 FROM ubuntu:jammy AS builder
 
-RUN groupadd -g 1000 nonroot && useradd -u 1000 -g nonroot -m nonroot
-
 RUN apt-get update && apt-get install -y curl &&\
 apt-get install -y --no-install-recommends sudo &&\
 apt-get install -y --no-install-recommends curl wget gpg &&\
@@ -14,8 +12,6 @@ apt-get install -y --no-install-recommends git openssh-client
 
 # Change ownership of the application files to the non-root user
 WORKDIR /build/
-#RUN chown -R myuser:myuser /build
-#USER myuser
 
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
@@ -31,7 +27,6 @@ COPY /playwright.config.ts /build
 COPY /public /build/public
 
 # ==== BUILD =====
-#RUN mkdir -p node_modules/ && chmod -R 777 node_modules/
 RUN npm i --ignore-scripts &&\
 npm i --ignore-scripts virtru-oidc-client-js-3.0.0.tgz &&\
 npx playwright install &&\
