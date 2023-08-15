@@ -21,7 +21,6 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 #COPY . .
 COPY /e2e /build/e2e
 COPY /src /build/src
-COPY /virtru-oidc-client-js-3.0.0.tgz /build
 COPY /accounts.json /build
 COPY /package.json /build
 COPY /package-lock.json /build
