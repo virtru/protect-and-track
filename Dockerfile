@@ -36,7 +36,6 @@ npm run build
 ## ==== RUN =======
 EXPOSE 443
 
-USER nonroot
 #RUN ["chmod", "+x", "./entrypoint.sh"]
 #ENTRYPOINT ["./entrypoint.sh"]
 CMD ["npm", "run", "ci-e2e-test"]
