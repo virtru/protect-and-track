@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'redux-zero/react';
 
 import './AuthSelect.css';
-import { IdentityProvider } from '@virtru/oidc-client-js';
+import { IdentityProvider } from '@virtru-private/oidc-client-js';
 import { Button } from '../../components/Button/Button';
 import { Modal } from '../../components/Modal/Modal';
 

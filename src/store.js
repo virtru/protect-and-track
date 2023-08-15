@@ -1,4 +1,4 @@
-import { OidcClient } from '@virtru/oidc-client-js';
+import { OidcClient } from '@virtru-private/oidc-client-js';
 import createStore from 'redux-zero';
 import moment from 'moment';
 import * as Virtru from 'virtru-sdk';
