@@ -5,7 +5,7 @@ env:
   DEPLOY_ENVIRONMENT_NAME: production
   TEST_ENVIRONMENT_NAME: production
   S3_HOSTNAME: demos.developer.virtru.com
-  USE_NODE_16: true
+  USE_NODE_18: true
 
 steps:
   - label: ':gear: build & run tests'
