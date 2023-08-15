@@ -1,0 +1,21 @@
+# Build and deploy to one of develop, staging, or production.
+#
+# Variables:
+#   VIRTRU_ENV: Environment to release to
+#   S3_PATH: path upload contents to on S3
+#   BLOCK_DEPLOY: [optional, defaults to true]
+
+env:
+  AWS_ACCOUNT_ALIAS: ${AWS_ACCOUNT_ALIAS}
+  ENVIRONMENT_NAME: ${ENVIRONMENT_NAME}
+  DEPLOY_ENVIRONMENT_NAME: ${DEPLOY_ENVIRONMENT_NAME}
+  S3_HOSTNAME: ${S3_HOSTNAME}
+  TEST_ENVIRONMENT_NAME: ${VIRTRU_ENV}
+  USE_NODE_16: ${USE_NODE_16:-}
+
+steps:
+  - command: 'npm run test-e2e'
+    label: ':chrome: E2E Tests: $TEST_ENVIRONMENT_NAME'
+    artifact_paths: 'e2e/reports/*.html'
+    concurrency: 3
+    concurrency_group: 'desktop-chrome-sdk'
