@@ -3,13 +3,6 @@ ARG NODE_VERSION=18
 # ==== CONFIGURE =====
 FROM ubuntu:jammy AS builder
 
-# RUN apt-get update && apt-get install -y curl &&\
-# apt-get install -y --no-install-recommends sudo &&\
-# apt-get install -y --no-install-recommends curl wget gpg &&\
-# curl -sL https://deb.nodesource.com/setup_18.x | bash - &&\
-# apt-get install -y --no-install-recommends nodejs &&\
-# apt-get install -y --no-install-recommends git openssh-client
-
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
