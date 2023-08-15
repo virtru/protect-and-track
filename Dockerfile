@@ -5,7 +5,8 @@ FROM ubuntu:jammy as builder
 
 RUN groupadd -g 1000 nonroot && useradd -u 1000 -g nonroot -m nonroot
 
-RUN apt-get update && apt-get install -y curl && apt-get install sudo &&\
+RUN apt-get update && apt-get install -y --no-install-recommends curl &&\
+apt-get install -y --no-install-recommends sudo &&\
 apt-get install -y --no-install-recommends curl wget gpg &&\
 curl -sL https://deb.nodesource.com/setup_18.x | bash - &&\
 apt-get install -y --no-install-recommends nodejs &&\
