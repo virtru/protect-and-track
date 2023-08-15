@@ -10,7 +10,8 @@ FROM ubuntu:jammy AS builder
 # apt-get install -y --no-install-recommends nodejs &&\
 # apt-get install -y --no-install-recommends git openssh-client
 
-RUN set -o pipefail && apt-get update && \
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN apt-get update && \
   apt-get install -y --no-install-recommends \
     ca-certificates=20230311ubuntu0.22.04.1 \
     curl=7.81.0-1ubuntu1.13 \
