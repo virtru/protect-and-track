@@ -1,27 +1,39 @@
 #!/bin/bash
-source buildkite-scripts/utils/logging.sh
 
 set -eu
 
-echo "--- :checkered_flag: Running pre-command for command ${BUILDKITE_COMMAND}"
+source buildkite-scripts/mars/functions/aws.sh
 
-# entry point for using AWS Secrets Manager (in progress)
-aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json
+echo "loading /secret/common/buildkite_build_agent/sauce_user..."
+export SAUCE_USER=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/sauce_user" "us-west-2")
+export SAUCE_PASS=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/sauce_pass" "us-west-2")
+export BUILDKITE_ACCESS_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/buildkite_api_token" "us-west-2")
+export JIRA_ACCESS_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/jira_access_token" "us-west-2")
+export MAILTRAP_API_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/mailtrap_api_token" "us-west-2")
+export TESTRAIL_USER=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/testrail_user" "us-west-2")
+export TESTRAIL_PASS=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/testrail_pass" "us-west-2")
+export SLACK_API_TOKEN=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/slack_api_token" "us-west-2")
+export QA_TEST_REPORT_FROM_EMAIL=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/qa_test_report_from_email" "us-west-2")
+export QA_TEST_REPORT_FROM_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/qa_test_report_from_password" "us-west-2")
+export ESGAROTH_PKI_KEYGEN_PASSWORD=$(get_ssm_parameter_secret_by_name "/secret/common/buildkite_build_agent/esgaroth_pki_keygen_password" "us-west-2")
 
-if [[ "${BUILDKITE_LABEL}" = *"Tests"* ]]; then
-  # We do this to prevent BK from uploading artifacts to s3
-  export BUILDKITE_ARTIFACT_UPLOAD_DESTINATION=""
-fi
+#aws secretsmanager list-secrets --region us-west-2
+aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq '.SecretString | fromjson | with_entries(select([.key] | inside(["testerfour@trusteddataformat.org", "test-user1@trusteddataformat.org", "virtruqa3@gmail.com", "shareautomation01@gmail.com"])))' > accounts.json
+ls -l
 
-if [[ "${BUILDKITE_LABEL}" = *"npm ci"* ]]; then
-  if [ -z "${GITHUB_TOKEN:-}" ]; then
-    log-error "Empty Github Auth Token"
-    exit 1
-  fi
+#echo "127.0.0.1		local.virtru.com" | tee -a /etc/hosts
 
-  GITHUB_REGISTRY_AUTH='//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}'
-  if [ -z "$(grep -Fx "${GITHUB_REGISTRY_AUTH}" ./.npmrc 2>/dev/null)" ]; then
-    log-debug "Adding auth token config to ./.npmrc"
-    printf "\n${GITHUB_REGISTRY_AUTH}" >>./.npmrc
-  fi
-fi
+
+# jq '.SecretString | fromjson | ."testerfour@trusteddataformat.org" + {email: "testerfour@trusteddataformat.org"} , ."test-user1@trusteddataformat.org" + {email: "test-user1@trusteddataformat.org"}' test.json
+#aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --region us-west-2 | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json
+# local command if needed to create/update accounts.json,
+# ```aws secretsmanager get-secret-value --secret-id qa/automated-tests/v3/accounts --profile qa | jq -c '.SecretString | fromjson' > ./resources/external/accounts.json```
+# validate accounts.json is correctly downloaded
+
+#echo "+++ SAUCE_USER loaded as $SAUCE_USER"
+
+#if [ "$USE_SAUCE_TUNNEL" = true ] ; then
+#  echo "--- Start up SauceLabs Tunnel"
+#  source .buildkite/scripts/sauce_connect.sh
+#  start_sc
+#fi

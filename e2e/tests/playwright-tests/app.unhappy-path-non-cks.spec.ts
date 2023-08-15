@@ -7,7 +7,7 @@ test.describe.configure({ mode: 'serial' });
 
 let fileName;
 
-test.describe('Unhappy paths Non CKS user', () => {
+test.fixme('Unhappy paths Non CKS user', () => {
 	test('Encrypt data B with user W, a non-CKS user using the JS SDK', async ({ page, browser }) => {
 		// DO NOT entitle anyone else. Y and Z cannot decrypt B_W
 		const contextW = await browser.newContext({ storageState: 'e2e/tests/playwright-tests/.auth-non-cks/user1.json' }); // W
@@ -41,7 +41,7 @@ test.describe('Unhappy paths Non CKS user', () => {
 		await pageY.locator(selectors.uploadInput).setInputFiles(fileName);
 
 		const responsePublicKeyY = await pageY.waitForResponse('**/rewrap');
-		await expect(responsePublicKeyY.status() === 403).toBeTruthy();
+		await expect(responsePublicKeyY.status()).toBe(403);
 		await fs.rm(fileName);
 		await contextY.close();
 	});

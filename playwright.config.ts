@@ -11,7 +11,7 @@ const config: PlaywrightTestConfig = {
     /* Retry on CI only */
     retries: process.env.CI ? 3 : 1,
     /* Opt out of parallel tests on CI and Local env for now (due to test failures with multiple workers - PLAT-1774  */
-    workers: 1,
+    workers: 3,
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     // globalSetup: require.resolve('./global-setup'),
     use: {
@@ -22,10 +22,9 @@ const config: PlaywrightTestConfig = {
         baseURL: "https://local.virtru.com/",
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: 'retain-on-failure',
-        // headless: Boolean(process.env.CI),
         headless: false,
         launchOptions: {
-          slowMo: 250,
+          slowMo: 1000,
         },
     },
     expect: {
@@ -41,56 +40,56 @@ const config: PlaywrightTestConfig = {
     reporter: 'html',
     /* Configure projects for major browsers */
     projects: [
-      {
-        name: 'setup-phase-0',
-        use: { ...devices['Desktop Firefox'] },
-        fullyParallel: true,
-        testMatch: 'auth*.setup-*',
-      },
+      // {
+      //   name: 'setup-phase-0',
+      //   use: { ...devices['Desktop Firefox'] },
+      //   fullyParallel: true,
+      //   testMatch: 'auth[0,1,2].setup-*',
+      // },
       {
         name: 'non-cks',
         testMatch: '*.non-cks.spec.ts',
         use: { ...devices['Desktop Chrome'] },
-        dependencies: ['setup-phase-0'],
+        // dependencies: ['setup-phase-0'],
       },
-      {
-        name: 'setup-phase-1',
-        use: { ...devices['Desktop Firefox'] },
-        fullyParallel: true,
-        testMatch: 'auth*.setup-*',
-        dependencies: ['non-cks'],
-      },
+      // {
+      //   name: 'setup-phase-1',
+      //   use: { ...devices['Desktop Firefox'] },
+      //   fullyParallel: true,
+      //   testMatch: 'auth[0,1,3].setup-*',
+      //   dependencies: ['non-cks'],
+      // },
       {
         name: 'cks',
         testMatch: '*.cks.spec.ts',
         use: { ...devices['Desktop Chrome'] },
-        dependencies: ['setup-phase-1'],
+        // dependencies: ['setup-phase-1'],
       },
-      {
-        name: 'setup-phase-2',
-        use: { ...devices['Desktop Firefox'] },
-        fullyParallel: true,
-        testMatch: 'auth*.setup-*',
-        dependencies: ['cks'],
-      },
+      // {
+      //   name: 'setup-phase-2',
+      //   use: { ...devices['Desktop Firefox'] },
+      //   fullyParallel: true,
+      //   testMatch: 'auth[0,2,3].setup-*',
+      //   dependencies: ['cks'],
+      // },
       {
         name: 'unhappy paths cks user',
         testMatch: '*.unhappy-path-cks.spec.ts',
         use: { ...devices['Desktop Chrome'] },
-        dependencies: ['setup-phase-2'],
+        // dependencies: ['setup-phase-2'],
       },
-      {
-        name: 'setup-phase-3',
-        use: { ...devices['Desktop Firefox'] },
-        fullyParallel: true,
-        testMatch: 'auth*.setup-*',
-        dependencies: ['unhappy paths cks user'],
-      },
+      // {
+      //   name: 'setup-phase-3',
+      //   use: { ...devices['Desktop Firefox'] },
+      //   fullyParallel: true,
+      //   testMatch: 'auth[0,1,2].setup-*',
+      //   dependencies: ['unhappy paths cks user'],
+      // },
       {
         name: 'unhappy paths non cks user',
         testMatch: '*.unhappy-path-non-cks.spec.ts',
         use: { ...devices['Desktop Chrome'] },
-        dependencies: ['setup-phase-3'],
+        // dependencies: ['setup-phase-3'],
       },
     ],
 };

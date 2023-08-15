@@ -1,0 +1,19 @@
+env:
+  USE_NODE_18: true
+  NODE_VERSION: "$(cat .nvmrc)"
+
+steps:
+  - label: ":npm: Install Dependencies (CI)"
+    command: "buildkite-scripts/mars/wrap/npm-ci.sh"
+    key: "dependency"
+
+  - label: ":mag: Run unit tests"
+    command: "buildkite-scripts/scripts/npm-test.sh"
+    key: "unit-tests"
+    depends_on: "dependency"
+
+  - label: ":mag: Run e2e tests"
+    depends_on: "dependency"
+    plugins:
+      - docker-compose#v4.14.0:
+          run: front
