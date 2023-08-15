@@ -6,7 +6,7 @@
   "dependencies": {
     "@datadog/browser-logs": "^4.46.0",
     "@datadog/browser-rum": "^4.46.0",
-    "@virtru/oidc-client-js": "file:virtru-oidc-client-js-3.0.0.tgz",
+    "@virtru-private/oidc-client-js": "^4.0.0",
     "classnames": "^2.3.2",
     "json2csv": "^5.0.7",
     "localforage": "^1.10.0",
