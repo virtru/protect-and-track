@@ -3,52 +3,34 @@ ARG NODE_VERSION=18
 # ==== CONFIGURE =====
 FROM ubuntu:jammy as builder
 
-RUN addgroup -S nonroot \
-    && adduser -S nonroot -G nonroot
+#RUN groupadd -g 1000 myuser && useradd -u 1000 -g myuser -m myuser
+RUN apt-get update && apt-get install -y curl && apt-get install sudo &&\
+apt-get install -y --no-install-recommends curl wget gpg &&\
+curl -sL https://deb.nodesource.com/setup_18.x | bash - &&\
+apt-get install -y --no-install-recommends nodejs &&\
+apt-get install -y --no-install-recommends git openssh-client
 
-USER nonroot
-RUN apt-get update && \
-    # Install Node 18
-    apt-get install -y --no-install-recommends curl wget gpg && \
-    curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y --no-install-recommends nodejs && \
-    # Feature-parity with node.js base images.
-    apt-get install -y --no-install-recommends git openssh-client && \
-    # clean apt cache
-    rm -rf /var/lib/apt/lists/* && \
-    # Create the pwuser
-    adduser pwuser
-
-#RUN mkdir /ms-playwright && \
-#    mkdir /ms-playwright-agent && \
-#    cd /ms-playwright-agent && npm init -y && \
-#    npm i /tmp/playwright-core.tar.gz && \
-#    npm exec --no -- playwright-core mark-docker-image "${DOCKER_IMAGE_NAME_TEMPLATE}" && \
-#    npm exec --no -- playwright-core install --with-deps && rm -rf /var/lib/apt/lists/* && \
-#    rm /tmp/playwright-core.tar.gz && \
-#    rm -rf /ms-playwright-agent && \
-#    chmod -R 777 /ms-playwright
-# === BAKE BROWSERS INTO IMAGE ===
+# Change ownership of the application files to the non-root user
+WORKDIR /build/
+#RUN chown -R myuser:myuser /build
+#USER myuser
 
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
-# 1. Add tip-of-tree Playwright package to install its browsers.
-#    The package should be built beforehand from tip-of-tree Playwright.
-#COPY ./playwright-core.tar.gz /tmp/playwright-core.tar.gz
-
-WORKDIR /build/
-COPY ./e2e .
-COPY ./src .
-COPY ./virtru-oidc-client-js-3.0.0.tgz /
-COPY ./package.json /
-COPY ./package-lock.json /
-COPY ./wait-for-it.sh /
-COPY ./playwright.config.ts /
-COPY ./docker-compose.yml /
+#COPY . .
+COPY /e2e /build/e2e
+COPY /src /build/src
+COPY /virtru-oidc-client-js-3.0.0.tgz /build
+COPY /package.json /build
+COPY /package-lock.json /build
+COPY /wait-for-it.sh /build
+COPY /playwright.config.ts /build
+COPY /public /build/public
 
 # ==== BUILD =====
-RUN npm i --ignore-scripts virtru-oidc-client-js-3.0.0.tgz &&\
-npm i  &&\
+#RUN mkdir -p node_modules/ && chmod -R 777 node_modules/
+RUN npm i &&\
+npm i --ignore-scripts virtru-oidc-client-js-3.0.0.tgz &&\
 npx playwright install &&\
 npx playwright install-deps &&\
 npm run build
