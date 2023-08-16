@@ -10,7 +10,7 @@ function fromOldEnvironment(e) {
 
 const environment = fromOldEnvironment(process.env.REACT_APP_VIRTRU_ENV);
 
-const oidc = {
+const oidcConfig = {
   ...getDefaultOidcClientConfig({
     environment,
     redirectUri: window.location.href.split(/[?#]/)[0],
@@ -33,7 +33,7 @@ const develop01 = {
     acmEndpoint: 'https://api-develop01.develop.virtru.com/acm',
     readerUrl: 'https://secure-develop01.develop.virtru.com/start?htmlProtocol=1',
   },
-  oidc,
+  oidc: oidcConfig,
   proxy: {
     url: 'https://sdk-develop01.develop.virtru.com/js/latest/proxy.html',
     origins: [
@@ -56,7 +56,7 @@ const develop02 = {
     acmEndpoint: 'https://api-develop02.develop.virtru.com/acm',
     readerUrl: 'https://secure-develop02.develop.virtru.com/start?htmlProtocol=1',
   },
-  oidc,
+  oidc: oidcConfig,
   proxy: {
     url: 'https://sdk-develop02.develop.virtru.com/js/latest/proxy.html',
     origins: [
@@ -79,7 +79,7 @@ const staging = {
     acmEndpoint: 'https://api.staging.virtru.com/acm',
     readerUrl: 'https://secure.staging.virtru.com/start?htmlProtocol=1',
   },
-  oidc,
+  oidc: oidcConfig,
   proxy: {
     url: 'https://sdk.staging.virtru.com/js/latest/proxy.html',
     origins: ['https://api.staging.virtru.com', 'https://audit.staging.virtru.com'],
@@ -99,7 +99,7 @@ const production = {
     acmEndpoint: 'https://api.virtru.com/acm',
     readerUrl: 'https://secure.virtru.com/start?htmlProtocol=1',
   },
-  oidc,
+  oidc: oidcConfig,
   proxy: undefined,
 };
 
