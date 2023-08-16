@@ -394,8 +394,8 @@ const actions = {
     if (fileName && fileName.endsWith('.tdf')) {
       try {
         const decryptParams = new Virtru.DecryptParamsBuilder()
-            .withArrayBufferSource(fileBuffer)
-            .build();
+          .withArrayBufferSource(fileBuffer)
+          .build();
 
         const decryptStream = await virtruClient.decrypt(decryptParams);
         const decrypted = await decryptStream.toBuffer();

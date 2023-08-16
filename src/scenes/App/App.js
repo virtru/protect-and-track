@@ -13,7 +13,6 @@ import localForage from 'localforage';
 import { restoreUserId } from '../../utils/oidc';
 import { oidc as oidcConfig, clientConfig } from '../../utils/config';
 
-
 /**
  * An SDK Share App.
  * This will have several children:
