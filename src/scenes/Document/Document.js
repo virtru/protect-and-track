@@ -150,6 +150,7 @@ function Document({
       if (encryptState !== ENCRYPT_STATES.PROTECTED) {
         return;
       }
+      let timeout = 2000;
       try {
         /**** Virtru Block ****
          *
@@ -165,13 +166,14 @@ function Document({
         setAuditEvents({ events: auditData, error: false });
       } catch (err) {
         console.error(err);
+        timeout = 60_000;
         setAuditEvents({ error: err });
       }
       if (currentTimerId !== auditTimerId) {
         // The policy changed while waiting for the audit log, so don't update it.
         return;
       }
-      auditTimerId = setTimeout(updateAuditEvents, 2000);
+      auditTimerId = setTimeout(updateAuditEvents, timeout);
     }
     if (auditTimerId) {
       // Clear the existing timer
