@@ -20,7 +20,7 @@ try {
 }
 
 const oidcClient = new OidcClient(oidcConfig);
-const userId = restoreUserId(oidcConfig);
+const userId = restoreUserId();
 let authState = userId ? 'loggedin' : false;
 let virtruClient = false;
 
