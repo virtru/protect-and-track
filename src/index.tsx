@@ -14,9 +14,9 @@ import store from './store';
   const ddCfg = {
     clientToken: 'puba880a3d33c8a569513d1119834aeb6e5',
     site: 'datadoghq.com',
-    service: process.env.VITE_NAME || 'protect-and-track-local',
-    env: process.env.VITE_VIRTRU_ENV || 'local',
-    version: process.env.VITE_VERSION || '0.0.1',
+    service: import.meta.env.VITE_NAME || 'protect-and-track-local',
+    env: import.meta.env.VITE_VIRTRU_ENV || 'local',
+    version: import.meta.env.VITE_VERSION || '0.0.1',
     sampleRate: 100,
   };
   datadogRum.init({
@@ -36,8 +36,8 @@ import store from './store';
 }
 
 console.info(
-  `AppInfo: ${process.env.VITE_NAME}:${process.env.VITE_VERSION}-${
-    process.env.VITE_BUILD_NUMBER || '0'
+  `AppInfo: ${import.meta.env.VITE_NAME}:${import.meta.env.VITE_VERSION}-${
+    import.meta.env.VITE_BUILD_NUMBER || '0'
   }`,
 );
 if (dispatchAuth()) {

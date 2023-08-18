@@ -6,11 +6,12 @@
   "dependencies": {
     "@datadog/browser-logs": "^4.47.0",
     "@datadog/browser-rum": "^4.47.0",
+    "@json2csv/plainjs": "^7.0.2",
     "@virtru-private/oidc-client-js": "^4.0.0",
     "classnames": "^2.3.2",
-    "json2csv": "^5.0.7",
     "localforage": "^1.10.0",
     "moment": "^2.29.4",
+    "prop-types": "^15.8.1",
     "rc-scrollbars": "^1.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

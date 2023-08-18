@@ -8,7 +8,7 @@ function fromOldEnvironment(e) {
   return e;
 }
 
-const environment = fromOldEnvironment(process.env.VITE_VIRTRU_ENV);
+const environment = fromOldEnvironment(import.meta.env.VITE_VIRTRU_ENV);
 
 const oidcConfig = {
   ...getDefaultOidcClientConfig({
@@ -16,7 +16,7 @@ const oidcConfig = {
     redirectUri: window.location.href.split(/[?#]/)[0],
     postLogoutRedirectUri: window.location.href.split(/[?#]/)[0],
   }),
-  clientId: process.env.VITE_OIDC_CLIENT_ID,
+  clientId: import.meta.env.VITE_OIDC_CLIENT_ID,
   scope: 'openid profile email offline_access',
 };
 
@@ -127,7 +127,7 @@ const backendByParam = () => {
 };
 
 const backendByEnv = () => {
-  switch (process.env.VITE_VIRTRU_ENV) {
+  switch (import.meta.env.VITE_VIRTRU_ENV) {
     case 'production':
       console.log('Backend selected: production');
       return production;
@@ -146,7 +146,7 @@ const backendByEnv = () => {
 // If in prod, only use production backend.
 // Otherwise, allow selecting sdk by `zapi` parameter.
 const config =
-  process.env.VITE_VIRTRU_ENV === 'production'
+  import.meta.env.VITE_VIRTRU_ENV === 'production'
     ? backendByEnv()
     : backendByParam() || backendByEnv();
 

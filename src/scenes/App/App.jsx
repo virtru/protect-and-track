@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
 import { base64ToArrayBuffer } from '../../utils/buffer';
@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import './App.css';
 import Header from '../../components/Header/Header';
-import Document from '../../scenes/Document/Document';
+import Document from '../Document/Document';
 import localForage from 'localforage';
 import { restoreUserId } from '../../utils/oidc';
 import { oidc as oidcConfig, clientConfig } from '../../utils/config';
