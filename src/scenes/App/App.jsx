@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'redux-zero/react';
 import { ENCRYPT_STATES } from '../../constants/encryptStates';
 import { base64ToArrayBuffer } from '../../utils/buffer';

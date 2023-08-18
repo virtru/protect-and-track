@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { TextDecoder } from 'node:util';
+import { afterAll, beforeAll, vi } from 'vitest';
 
 // eslint-disable-next-line no-undef
 globalThis.TextDecoder ??= TextDecoder;
@@ -13,18 +14,19 @@ const matchMedia = {
   addListener(listener) {
     this._events.push(listener);
   },
-  removeListener: jest.fn(),
+  removeListener: vi.fn(),
 };
 window.matchMedia = () => matchMedia;
 window.PR = {
-  prettyPrint: jest.fn(),
+  prettyPrint: vi.fn(),
 };
-window.alert = jest.fn();
+window.alert = vi.fn();
 
-jest.mock('redux-zero/react', () => jest.requireActual('../__mocks__/reduxZeroReact'));
+vi.mock('redux-zero/react', () => vi.importActual('../__mocks__/reduxZeroReact'));
 
-afterEach(() => {
-  jest.restoreAllMocks();
+afterAll(() => {
+  vi.clearAllMocks();
+  vi.resetAllMocks();
   matchMedia._events = [];
 });
 

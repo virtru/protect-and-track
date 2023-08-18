@@ -3,17 +3,21 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Share from './Share';
-import { SHARE_STATE, SHARE_PROVIDERS } from 'constants/sharing';
+import { SHARE_STATE, SHARE_PROVIDERS } from '../../constants/sharing';
 import * as gsuite from './services/gsuite';
 
-jest.mock('./services/gsuite');
+vi.mock('./services/gsuite');
 
 afterEach(cleanup);
+afterEach(() => {
+  vi.clearAllMocks();
+  vi.resetAllMocks();
+});
 
 describe('Share', () => {
   test('to gsuite', async () => {
     const user = userEvent.setup();
-    const setShare = jest.fn();
+    const setShare = vi.fn();
     const file = { name: 'a.tdf' };
     gsuite.init.mockReturnValue(true);
     expect(gsuite.init).toHaveBeenCalledTimes(0);
@@ -43,7 +47,7 @@ describe('Share', () => {
         providerState: doneState,
       }),
     );
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     rerender(
       <Share
         share={SHARE_PROVIDERS.GOOGLEDRIVE}
@@ -60,7 +64,7 @@ describe('Share', () => {
 
   test('to gsuite fail auth', async () => {
     const user = userEvent.setup();
-    const setShare = jest.fn();
+    const setShare = vi.fn();
     const file = { name: 'a.tdf' };
     gsuite.init.mockReturnValue(true);
     expect(gsuite.init).toHaveBeenCalledTimes(0);

@@ -33,11 +33,11 @@ describe('AuditLogger', () => {
       timestamp: '2019-07-15T14:48:22+00:00',
       recordId: 0,
     };
-    Download.saver = jest.fn();
+    const spy = vi.spyOn(Download, 'saver').mockImplementation(vi.fn());
 
     const { container } = render(<AuditLogger auditLog={{ events: [event] }} />);
 
     fireEvent.click(getByTestId(container, 'auditEventDownload'));
-    expect(Download.saver).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

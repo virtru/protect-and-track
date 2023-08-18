@@ -1,3 +1,4 @@
+import React from 'react';
 import { connect } from 'redux-zero/react';
 
 import { ReactComponent as LogoText } from '../../assets/logo-text.svg';
