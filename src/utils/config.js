@@ -20,51 +20,29 @@ const oidcConfig = {
   scope: 'openid profile email offline_access',
 };
 
-const develop01 = {
+const develop = {
   authOptions: {
-    accountsUrl: 'https://api-develop01.develop.virtru.com/accounts',
-    acmUrl: 'https://api-develop01.develop.virtru.com/acm',
-    apiUrl: 'https://api-develop01.develop.virtru.com',
+    accountsUrl: 'https://api.develop.virtru.com/accounts',
+    acmUrl: 'https://api.develop.virtru.com/acm',
+    apiUrl: 'https://api.develop.virtru.com',
   },
   clientConfig: {
-    auditEndpoint: 'https://audit-develop01.develop.virtru.com',
-    kasEndpoint: 'https://api-develop01.develop.virtru.com/kas',
-    easEndpoint: 'https://api-develop01.develop.virtru.com/accounts',
-    acmEndpoint: 'https://api-develop01.develop.virtru.com/acm',
-    readerUrl: 'https://secure-develop01.develop.virtru.com/start?htmlProtocol=1',
+    auditEndpoint: 'https://audit.develop.virtru.com',
+    kasEndpoint: 'https://api.develop.virtru.com/kas',
+    easEndpoint: 'https://api.develop.virtru.com/accounts',
+    acmEndpoint: 'https://api.develop.virtru.com/acm',
+    readerUrl: 'https://secure.develop.virtru.com/start?htmlProtocol=1',
   },
   oidc: oidcConfig,
   proxy: {
-    url: 'https://sdk-develop01.develop.virtru.com/js/latest/proxy.html',
+    url: 'https://sdk.develop.virtru.com/js/latest/proxy.html',
     origins: [
-      'https://api-develop01.develop.virtru.com',
-      'https://audit-develop01.develop.virtru.com',
+      'https://api.develop.virtru.com',
+      'https://audit.develop.virtru.com',
     ],
   },
 };
 
-const develop02 = {
-  authOptions: {
-    accountsUrl: 'https://api-develop02.develop.virtru.com/accounts',
-    acmUrl: 'https://api-develop02.develop.virtru.com/acm',
-    apiUrl: 'https://api-develop02.develop.virtru.com',
-  },
-  clientConfig: {
-    auditEndpoint: 'https://audit-develop02.develop.virtru.com',
-    kasEndpoint: 'https://api-develop02.develop.virtru.com/kas',
-    easEndpoint: 'https://api-develop02.develop.virtru.com/accounts',
-    acmEndpoint: 'https://api-develop02.develop.virtru.com/acm',
-    readerUrl: 'https://secure-develop02.develop.virtru.com/start?htmlProtocol=1',
-  },
-  oidc: oidcConfig,
-  proxy: {
-    url: 'https://sdk-develop02.develop.virtru.com/js/latest/proxy.html',
-    origins: [
-      'https://api-develop02.develop.virtru.com',
-      'https://audit-develop02.develop.virtru.com',
-    ],
-  },
-};
 
 const staging = {
   authOptions: {
@@ -106,18 +84,18 @@ const production = {
 const backendByParam = () => {
   switch (getQueryParam('zapi')) {
     case 'develop':
+    case 'dev':
     case 'develop01':
-    case 'd':
-      console.log('Backend forced: develop01');
-      return develop01;
     case 'develop02':
-      console.log('Backend forced: develop02');
-      return develop02;
+    case 'd':
+      console.log('Backend forced: develop');
+      return develop;
     case 'staging':
     case 's':
       console.log('Backend forced: staging');
       return staging;
     case 'production':
+    case 'prod':
     case 'p':
       console.log('Backend forced: production');
       return production;
@@ -131,15 +109,12 @@ const backendByEnv = () => {
     case 'production':
       console.log('Backend selected: production');
       return production;
-    case 'develop02':
-      console.log('Backend selected: develop02');
-      return develop02;
     case 'staging':
       console.log('Backend selected: staging');
       return staging;
     default:
-      console.log('Backend selected: develop01 (default)');
-      return develop01;
+      console.log('Backend selected: develop (default)');
+      return develop;
   }
 };
 
