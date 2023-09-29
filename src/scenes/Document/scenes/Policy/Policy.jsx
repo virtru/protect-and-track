@@ -40,8 +40,7 @@ function Policy({
           );
         }
 
-        let hasUsers = policy.getUsersWithAccess().length > 0;
-        if (hasUsers) {
+        if (policy.getUsersWithAccess().length) {
           return (
             <>
               <Button onClick={() => setAuthOpen(true)}>Sign In to Protect</Button>

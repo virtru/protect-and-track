@@ -3,7 +3,7 @@ import React from 'react';
 import RevokeAll from '../RevokeAll/RevokeAll';
 import './Filename.css';
 
-function Filename({ userId, file, isTdf, isPolicyRevoked, revokePolicy }) {
+function Filename({ file, isTdf, isPolicyRevoked, revokePolicy }) {
   return (
     <h2 className="Filename">
       <span className="Filename-original" title={file.file.name}>

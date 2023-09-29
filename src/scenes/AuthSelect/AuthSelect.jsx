@@ -18,7 +18,7 @@ const login = async (oidcClient, provider) => {
   oidcClient.loginWithRedirect({ idp });
 };
 
-function AuthSelect({ authState, oidcClient, onClose, setAuthState }) {
+function AuthSelect({ authState, oidcClient, onClose }) {
   return (
     <Modal onClose={onClose}>
       <div className="Auth-container">

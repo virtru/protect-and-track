@@ -96,12 +96,8 @@ export async function signIn() {
   if (!auth || !auth.token) {
     // TODO check expiration, or store as a time limited cookie so we don't have to...
     const doAuth = awaitify(initiateOauth);
-    try {
-      const token = await doAuth();
-      return token;
-    } catch (e) {
-      throw e;
-    }
+    const token = await doAuth();
+    return token;
   }
   return auth.token;
 }

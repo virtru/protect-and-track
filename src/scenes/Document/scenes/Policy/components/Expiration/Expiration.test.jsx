@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Virtru from 'virtru-sdk';
-import { vi } from 'vitest'
+import { vi } from 'vitest';
 import { generatePolicyChanger } from '../../services/policyChanger';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
@@ -13,7 +13,7 @@ describe('Expiration', () => {
     const { container, queryByRole } = render(
       <Expiration
         policy={new Virtru.PolicyBuilder().build()}
-        policyChange={(change) => () => (e) => {
+        policyChange={() => () => (e) => {
           e && e.preventDefault();
         }}
       />,

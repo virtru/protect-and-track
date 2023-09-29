@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { TextDecoder } from 'node:util';
-import { afterAll, beforeAll, vi } from 'vitest';
+import { afterAll, vi } from 'vitest';
 
 // eslint-disable-next-line no-undef
 globalThis.TextDecoder ??= TextDecoder;
@@ -29,9 +29,3 @@ afterAll(() => {
   vi.resetAllMocks();
   matchMedia._events = [];
 });
-
-global.TextEncoder = class {
-  constructor() {} // eslint-disable-line no-useless-constructor
-  encode() {}
-  decode() {}
-};

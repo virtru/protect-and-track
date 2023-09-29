@@ -89,7 +89,7 @@ const actionList = {
 export function builderLogger(builder) {
   let actions = [];
   return new Proxy(builder, {
-    get(target, propKey, receiver) {
+    get(target, propKey) {
       const origMethod = target[propKey];
       if (origMethod) {
         return function (...args) {

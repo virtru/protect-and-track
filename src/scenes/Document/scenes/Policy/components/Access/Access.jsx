@@ -7,7 +7,7 @@ import './Access.css';
 import { Button } from '../../../../../../components/Button/Button';
 import { ReactComponent as InfoIcon } from './info-icon.svg';
 
-function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked }) {
+function Access({ userId, policy, policyChange, isPolicyRevoked }) {
   /**** Virtru Block ****
    *
    * The following code shows how to get users who have access to a policy
@@ -106,7 +106,7 @@ function Access({ encryptState, userId, policy, policyChange, isPolicyRevoked })
         {!isPolicyRevoked &&
           policyUsersWithAccess
             .filter((u) => u !== userId)
-            .map((user, i) => {
+            .map((user) => {
               return (
                 <li key={user}>
                   <Grant user={user} status="reader" />
