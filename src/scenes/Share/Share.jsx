@@ -52,7 +52,7 @@ function ShareButton({ children, init, onClick, type }) {
   return button;
 }
 
-function ShareSelect({ setShare, file, recipients, fileName }) {
+function ShareSelect({ setShare, file, recipients }) {
   const shareToDrive = async () => {
     let link, id, state, error;
     const upstate = () => {
@@ -229,7 +229,7 @@ function Fail({ provider, providerState, setShare }) {
   const verb = verbs[error && error.during] || 'share with';
   return (
     <ShareContainer>
-      <Title>Couldn't {verb + '  ' + SHARE_TITLES[provider]}</Title>
+      <Title>Could not {verb + '  ' + SHARE_TITLES[provider]}</Title>
       <div className="Share-center">
         <Ico type={provider} /> <Ico type="danger" />
       </div>
@@ -242,7 +242,7 @@ function Fail({ provider, providerState, setShare }) {
           .
         </p>
       ) : (
-        <p>Try 'Download' on the demo page to share via email or other means.</p>
+        <p>Try &lsquo;Download&rsquo; on the demo page to share via email or other means.</p>
       )}
 
       {error && error.message && (
@@ -265,7 +265,7 @@ function Uploading({ file, provider }) {
       <div className="Share-center">
         <Ico type={provider} /> <Loading />
       </div>
-      <p>We're uploading your file to {'  ' + SHARE_TITLES[provider]}</p>
+      <p>We are uploading your file to {'  ' + SHARE_TITLES[provider]}</p>
     </ShareContainer>
   );
 }
@@ -278,7 +278,7 @@ function Sharing({ file, provider, recipients }) {
       <div className="Share-center">
         <Ico type={provider} /> <Loading />
       </div>
-      <p>We're sharing your file with the following people:</p>
+      <p>We are sharing your file with the following people:</p>
       <RecipientList recipients={recipients} />
     </ShareContainer>
   );

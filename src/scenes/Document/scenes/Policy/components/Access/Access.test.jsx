@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Virtru from 'virtru-sdk';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { generatePolicyChanger } from '../../services/policyChanger';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
@@ -57,7 +58,7 @@ describe('Access', () => {
   });
 
   test('Adds a new user', () => {
-    const setPolicy = jest.fn();
+    const setPolicy = vi.fn();
     const policy = new Virtru.PolicyBuilder().build();
     const policyChange = (change) => generatePolicyChanger(policy, setPolicy, change);
     const { getByRole } = render(<Access policy={policy} policyChange={policyChange} />);

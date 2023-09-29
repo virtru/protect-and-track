@@ -14,9 +14,9 @@ import store from './store';
   const ddCfg = {
     clientToken: 'puba880a3d33c8a569513d1119834aeb6e5',
     site: 'datadoghq.com',
-    service: process.env.REACT_APP_NAME || 'protect-and-track-local',
-    env: process.env.REACT_APP_VIRTRU_ENV || 'local',
-    version: process.env.REACT_APP_VERSION || '0.0.1',
+    service: import.meta.env.VITE_NAME || 'protect-and-track-local',
+    env: import.meta.env.VITE_VIRTRU_ENV || 'local',
+    version: import.meta.env.VITE_VERSION || '0.0.1',
     sampleRate: 100,
   };
   datadogRum.init({
@@ -36,8 +36,8 @@ import store from './store';
 }
 
 console.info(
-  `AppInfo: ${process.env.REACT_APP_NAME}:${process.env.REACT_APP_VERSION}-${
-    process.env.REACT_APP_BUILD_NUMBER || '0'
+  `AppInfo: ${import.meta.env.VITE_NAME}:${import.meta.env.VITE_VERSION}-${
+    import.meta.env.VITE_BUILD_NUMBER || '0'
   }`,
 );
 if (dispatchAuth()) {
@@ -48,6 +48,9 @@ if (dispatchAuth()) {
   // we could do that part so the auth will work on a refresh (or click of the 'app' button above)
 } else {
   const container = document.getElementById('root');
+  if (!container) {
+    throw new Error('Missing root for react attachment');
+  }
   const root = createRoot(container);
   root.render(
     <Provider store={store}>

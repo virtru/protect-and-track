@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Virtru from 'virtru-sdk';
+import { vi } from 'vitest';
 import { generatePolicyChanger } from '../../services/policyChanger';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 
@@ -12,7 +13,7 @@ describe('Expiration', () => {
     const { container, queryByRole } = render(
       <Expiration
         policy={new Virtru.PolicyBuilder().build()}
-        policyChange={(change) => () => (e) => {
+        policyChange={() => () => (e) => {
           e && e.preventDefault();
         }}
       />,
@@ -22,7 +23,7 @@ describe('Expiration', () => {
   });
 
   test('Custom', () => {
-    const setPolicy = jest.fn();
+    const setPolicy = vi.fn();
     const policy = new Virtru.PolicyBuilder().build();
     const policyChange = (change) => generatePolicyChanger(policy, setPolicy, change);
     const now = new Date();

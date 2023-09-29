@@ -1,6 +1,6 @@
+import { Parser } from '@json2csv/plainjs';
 import React from 'react';
 import { connect } from 'redux-zero/react';
-import { parse as parseCsvToJson } from 'json2csv';
 import './AuditLogger.css';
 import { Scrollbars } from 'rc-scrollbars';
 import { AuditEventItem } from './components/AuditEventItem/AuditEventItem';
@@ -10,6 +10,7 @@ const { useEffect, useRef } = React;
 
 const AuditLogger = ({ auditLog = {} }) => {
   const scroll = useRef();
+  const csvParser = new Parser();
   const { error, events = [] } = auditLog;
   useEffect(() => {
     if (!scroll.current) return;
@@ -18,7 +19,7 @@ const AuditLogger = ({ auditLog = {} }) => {
   }, [auditLog]);
 
   const onDownload = (i) => {
-    const csvContent = parseCsvToJson(events[i]);
+    const csvContent = csvParser.parse(events[i]);
     const blob = new Blob([csvContent], { type: 'text/plain;charset=utf-8' });
     saver(blob, `${events[i].recordId}.csv`);
   };

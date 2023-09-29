@@ -16,13 +16,12 @@ const actions = {
       await Promise.all([oidcClient.logout(), resetApp()]);
     } catch (e) {
       console.warn(e);
-    } finally {
-      return {
-        authState: false,
-        userId: false,
-        virtruClient: false,
-      };
     }
+    return {
+      authState: false,
+      userId: false,
+      virtruClient: false,
+    };
   },
 };
 

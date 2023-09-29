@@ -16,7 +16,7 @@ describe('App', () => {
   });
 
   test('should trigger setContinueAnyway on button click', () => {
-    const spy = jest.fn();
+    const spy = vi.fn();
     const { getByText } = render(
       <App isLoading={true} setIsLoading={noop} setContinueAnyway={spy} updateFileData={noop} />,
     );

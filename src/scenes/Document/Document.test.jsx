@@ -9,7 +9,7 @@ afterEach(cleanup);
 describe('Document', () => {
   test.skip('should trigger auth and and updates Virtru Client on every update, if userId defined but there is no virtruClient Document ', async () => {
     const client = { userId: 'foo' };
-    const spy = jest.fn();
+    const spy = vi.fn();
 
     const { rerender } = render(<Document setVirtruClient={spy} setEncryptState={() => {}} />);
     expect(spy).not.toHaveBeenCalled();
@@ -39,15 +39,15 @@ describe('Document', () => {
   });
 
   test.skip('should encrypt file, trigger setEncrypted and set 2sec interval audit update', async () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     const file = { file: { name: 'foo.txt' }, arrayBuffer: 'arrayBuffer' };
     const policy = new Virtru.PolicyBuilder().build();
     const client = 'clientVirttu';
-    const spy = jest.fn(() =>
+    const spy = vi.fn(() =>
       Promise.resolve({ encryptedFile: 'encFile', policyId: 'foo1bar', type: 'someType' }),
     );
-    const setEncrypted = jest.fn();
-    const setAuditEvents = jest.fn();
+    const setEncrypted = vi.fn();
+    const setAuditEvents = vi.fn();
     Virtru.encrypt.mockImplementation(spy);
 
     const { container, rerender } = render(
@@ -101,7 +101,7 @@ describe('Document', () => {
     );
 
     for (let i = 1; i <= 5; i++) {
-      jest.runOnlyPendingTimers();
+      vi.runOnlyPendingTimers();
       await wait(() => {
         expect(setAuditEvents).toHaveBeenCalledTimes(i);
       });
@@ -119,7 +119,7 @@ describe('Document', () => {
         setEncryptState={() => {}}
       />,
     );
-    jest.runOnlyPendingTimers();
+    vi.runOnlyPendingTimers();
     await wait(() => {
       expect(setAuditEvents).toHaveBeenCalledTimes(5);
     });
