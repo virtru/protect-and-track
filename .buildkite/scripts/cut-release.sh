@@ -9,7 +9,7 @@
 # 
 # Variables:
 #     SKIP_TAG: if 'true', disable this method
-#     DEPLOY_ENVIRONMENT_NAME: Deployment environment, e.g. develop01 or production
+#     DEPLOY_ENVIRONMENT_NAME: Deployment environment, e.g. develop or production
 #     BUILDKITE_COMMIT: current commit id
 #     IGNORE_TAG_CHECK: Allow tag conflict 
 # 

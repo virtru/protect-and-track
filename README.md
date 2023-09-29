@@ -65,7 +65,7 @@ This demo can run on your local environment. Please ensure you meet the prerequi
 
   - Make sure SAUCE_USER, SAUCE_PASS, you can find them in 1Password
   - `npm run test-e2e`, available environment vars:
-    - any valid TEST_ENVIRONMENT_NAME, such as production, staging, or develop01
+    - any valid TEST_ENVIRONMENT_NAME, such as production, staging, or develop
     - any valid TEST_MARKER, such as smoke and regression.
   - WARNING: due to e2e tests requires BP CRX to send secure email, it could be very slow when uploading BP CRX to SauceLabs for testing, especially when BP CRX files are large
 
@@ -77,7 +77,7 @@ This demo can run on your local environment. Please ensure you meet the prerequi
     - No need to use triggered steps, test steps and test reports will be available directly in the product build pipeline.
   - TEST_ENVIRONMENT_NAME determines which URL the e2e test will run against, in BuildKite CI/CD pipelines:
     - For master/staging/develop branches, TEST_ENVIRONMENT_NAME will be set based on BUILDKITE_BRANCH accordingly
-    - for other branches, TEST_ENVIRONMENT_NAME will be based on DEPLOY_ENVIRONMENT_NAME, currently only develop01 is supported, because it needs BP CRX with that environment in chrome store to be able to run the tests
+    - for other branches, TEST_ENVIRONMENT_NAME will be based on DEPLOY_ENVIRONMENT_NAME, currently only develop is supported
   - For detailed use cases and explanations, please refer [use cases section](https://github.com/virtru/automated-test-scripts-v3#use-cases)
 
 ### Prerequisites
